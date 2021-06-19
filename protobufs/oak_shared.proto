@@ -1,0 +1,47 @@
+syntax = "proto3";
+package OakSave;
+message Vec3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+message GameStatSaveGameData {
+  int32 stat_value = 1;
+  string stat_path = 2;
+}
+message InventoryCategorySaveData {
+  uint32 base_category_definition_hash = 1;
+  int32 quantity = 2;
+}
+message OakSDUSaveGameData {
+  int32 sdu_level = 1;
+  string sdu_data_path = 2;
+}
+message RegisteredDownloadableEntitlement {
+  int32 id = 1;
+  uint32 consumed = 2;
+  bool registered = 3;
+  bool seen = 4;
+}
+message RegisteredDownloadableEntitlements {
+  string entitlement_source_asset_path = 1;
+  repeated int64 entitlement_ids = 2;
+  repeated RegisteredDownloadableEntitlement entitlements = 3;
+}
+message ChallengeStatSaveGameData {
+  int32 current_stat_value = 1;
+  string challenge_stat_path = 2;
+}
+message OakChallengeRewardSaveGameData {
+  bool challenge_reward_claimed = 1;
+}
+message ChallengeSaveGameData {
+  int32 completed_count = 1;
+  bool is_active = 2;
+  bool currently_completed = 3;
+  int32 completed_progress_level = 4;
+  int32 progress_counter = 5;
+  repeated ChallengeStatSaveGameData stat_instance_state = 6;
+  string challenge_class_path = 7;
+  repeated OakChallengeRewardSaveGameData challenge_reward_info = 8;
+}

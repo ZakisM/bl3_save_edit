@@ -1,0 +1,322 @@
+syntax = "proto3";
+package OakSave;
+import "oak_shared.proto";
+message PlayerInputBinding_Button {
+  string rebind_data_path = 1;
+  repeated string key_names = 2;
+}
+message PlayerInputBinding_Axis_Key {
+  string key_name = 1;
+  Vec3 scale_3d = 2;
+}
+message PlayerInputBinding_Axis {
+  string rebind_data_path = 1;
+  repeated PlayerInputBinding_Axis_Key keys = 2;
+}
+message PlayerInputBinding_Category {
+  string category_data_path = 1;
+  string context_data_path = 2;
+  repeated PlayerInputBinding_Button button_bindings = 3;
+  repeated PlayerInputBinding_Axis axis_bindings = 4;
+}
+message PlayerInputBindings {
+  repeated PlayerInputBinding_Category categories = 1;
+}
+message OakProfileLastInventoryFilterInfo {
+  string slot_type_id = 1;
+  int32 last_filter_index = 2;
+}
+message OakProfileMenuTutorialInfo {
+  repeated string seen_tutorials = 1;
+  bool tutorials_disabled = 2;
+  bool tutorials_allowed_in_non_game_modes = 3;
+}
+message OakFriendEncounterData {
+  uint32 num_encounters = 1;
+  int64 time_last_encounter = 2;
+}
+message OakMailItem {
+  uint32 mail_item_type = 1;
+  string sender_display_name = 2;
+  string subject = 3;
+  string body = 4;
+  string gear_serial_number = 5;
+  string mail_guid = 6;
+  int64 date_sent = 7;
+  int64 expiration_date = 8;
+  string from_player_id = 9;
+  bool has_been_read = 10;
+}
+message GearSoldByFriendData {
+  string gear_serial_number = 1;
+  int32 player_class_identifier_hash = 2;
+  string friend_net_id = 3;
+}
+message OakCustomizationSaveGameData {
+  bool is_new = 1;
+  string customization_asset_path = 2;
+}
+message OakInventoryCustomizationPartInfo {
+  uint32 customization_part_hash = 1;
+  bool is_new = 2;
+}
+message GuardianRankRewardSaveGameData {
+  int32 num_tokens = 1;
+  string reward_data_path = 2;
+}
+message GuardianRankProfileData {
+  int32 available_tokens = 1;
+  repeated GuardianRankRewardSaveGameData rank_rewards = 2;
+  int32 guardian_rank = 3;
+  int32 guardian_experience = 4;
+  int32 guardian_reward_random_seed = 5;
+  int64 new_guardian_experience = 6;
+}
+message CrewQuartersDecorationItemSaveGameData {
+  bool is_new = 1;
+  string decoration_item_asset_path = 2;
+}
+message CrewQuartersRoomItemSaveGameData {
+  bool is_new = 1;
+  string room_item_asset_path = 2;
+}
+message VaultCardSaveGameData {
+  uint32 last_active_vault_card_id = 2;
+  int32 current_day_seed = 3;
+  int32 current_week_seed = 4;
+  repeated VaultCardPreviousChallenge vault_card_previous_challenges = 5;
+  repeated VaultCardRewardList vault_card_claimed_rewards = 6;
+}
+message VaultCardReward {
+  int32 column_index = 1;
+  int32 row_index = 2;
+}
+message VaultCardGearReward {
+  int32 gear_index = 1;
+  uint32 repurchase_count = 2;
+}
+message VaultCardRewardList {
+  uint32 vault_card_id = 1;
+  int64 vault_card_experience = 2;
+  repeated VaultCardReward unlocked_reward_list = 4;
+  repeated VaultCardReward redeemed_reward_list = 5;
+  uint32 vault_card_chests = 7;
+  uint32 vault_card_chests_opened = 8;
+  uint32 vault_card_keys_spent = 9;
+  repeated VaultCardGearReward gear_rewards = 10;
+}
+message VaultCardPreviousChallenge {
+  int32 previous_challenge_seed = 1;
+  uint32 previous_challenge_id = 2;
+}
+message RecentlyMetPlayer {
+  string shift_player_id = 1;
+  string first_party_player_id = 2;
+  bool show_shift_player_entry = 3;
+}
+message Profile {
+  message FriendEncountersEntry {
+    string key = 1;
+    OakFriendEncounterData value = 2;
+  }
+  bool enable_aim_assist = 1;
+  bool gamepad_invert_look = 2;
+  bool gamepad_invert_turn = 3;
+  bool gamepad_invert_move = 4;
+  bool gamepad_invert_strafe = 5;
+  bool enable_vibration = 6;
+  bool invert_mouse_pitch = 7;
+  bool enable_mouse_smoothing = 8;
+  float mouse_scale = 9;
+  bool show_damage_numbers = 10;
+  bool show_damage_number_icons = 11;
+  bool enable_training_messages = 12;
+  bool show_text_chat = 13;
+  bool center_crosshair = 14;
+  bool toggle_sprint = 15;
+  bool toggle_crouch = 16;
+  bool censor_content = 17;
+  float music_volume = 18;
+  float sound_effects_volume = 19;
+  float vo_volume = 20;
+  float voice_volume = 21;
+  bool enable_optional_vo = 22;
+  bool push_to_talk = 23;
+  bool enable_controller_audio = 24;
+  float speaker_angle_front = 25;
+  float speaker_angle_side = 26;
+  float speaker_angle_back = 27;
+  uint32 speaker_setup = 28;
+  bool mute_audio_on_focus_loss = 29;
+  bool hide_strict_nat_help_dialog = 34;
+  PlayerInputBindings player_input_bindings = 35;
+  repeated uint32 news_hashes = 36;
+  uint32 last_used_savegame_id = 37;
+  int32 gamepad_hip_sensitivity_level = 38;
+  int32 gamepad_zoomed_sensitivity_level = 39;
+  int32 gamepad_vehicle_sensitivity_level = 40;
+  float gamepad_movement_dead_zone_x = 41;
+  float gamepad_movement_dead_zone_y = 42;
+  float gamepad_look_dead_zone_inner_x = 43;
+  float gamepad_look_dead_zone_outer_x = 44;
+  float gamepad_look_dead_zone_inner_y = 45;
+  float gamepad_look_dead_zone_outer_y = 46;
+  float gamepad_vehicle_movement_dead_zone_x = 47;
+  float gamepad_vehicle_movement_dead_zone_y = 48;
+  float gamepad_vehicle_look_dead_zone_inner_x = 49;
+  float gamepad_vehicle_look_dead_zone_outer_x = 50;
+  float gamepad_vehicle_look_dead_zone_inner_y = 51;
+  float gamepad_vehicle_look_dead_zone_outer_y = 52;
+  float gamepad_left_dead_zone_inner = 53;
+  float gamepad_left_dead_zone_outer = 54;
+  float gamepad_right_dead_zone_inner = 55;
+  float gamepad_right_dead_zone_outer = 56;
+  float gamepad_look_axial_dead_zone_scale = 57;
+  float gamepad_move_axial_dead_zone_scale = 58;
+  bool gamepad_use_advanced_hip_aim_settings = 59;
+  bool gamepad_use_advanced_zoomed_aim_settings = 60;
+  bool gamepad_use_advanced_vehicle_aim_settings = 61;
+  float gamepad_hip_yaw_rate = 62;
+  float gamepad_hip_pitch_rate = 63;
+  float gamepad_hip_extra_yaw = 64;
+  float gamepad_hip_extra_pitch = 65;
+  float gamepad_hip_ramp_up_time = 66;
+  float gamepad_hip_ramp_up_delay = 67;
+  float gamepad_zoomed_yaw_rate = 68;
+  float gamepad_zoomed_pitch_rate = 69;
+  float gamepad_zoomed_extra_yaw = 70;
+  float gamepad_zoomed_extra_pitch = 71;
+  float gamepad_zoomed_ramp_up_time = 72;
+  float gamepad_zoomed_ramp_up_delay = 73;
+  float gamepad_vehicle_yaw_rate = 74;
+  float gamepad_vehicle_pitch_rate = 75;
+  float gamepad_vehicle_extra_yaw = 76;
+  float gamepad_vehicle_extra_pitch = 77;
+  float gamepad_vehicle_ramp_up_time = 78;
+  float gamepad_vehicle_ramp_up_delay = 79;
+  bool ironsight_aim_assist = 80;
+  uint32 walking_joystick_scheme = 81;
+  uint32 driving_joystick_scheme = 82;
+  float mouse_ads_scale = 83;
+  float mouse_vehicle_scale = 84;
+  bool mouse_ironsight_aim_assist = 85;
+  uint32 vehicle_input_mode = 86;
+  bool weapon_aim_toggle = 87;
+  bool mantle_requires_button = 88;
+  bool fixed_minimap_rotation = 89;
+  bool map_invert_pitch = 90;
+  bool map_invert_yaw = 91;
+  uint32 difficulty = 92;
+  bool swap_dual_wield_controls = 93;
+  float base_fov = 94;
+  uint32 crosshair_neutral_color_frame = 95;
+  uint32 crosshair_enemy_color_frame = 96;
+  uint32 crosshair_ally_color_frame = 97;
+  bool enable_subtitles = 98;
+  bool enable_closed_captions = 99;
+  string last_status_menu_page = 100;
+  repeated OakProfileLastInventoryFilterInfo inventory_screen_last_filter = 101;
+  OakProfileMenuTutorialInfo tutorial_info = 102;
+  uint32 default_network_type = 103;
+  uint32 default_invite_type = 104;
+  string matchmaking_region = 105;
+  uint32 streaming_service = 106;
+  int32 max_cached_friend_events = 107;
+  int32 max_cached_friend_statuses = 108;
+  repeated string friend_events = 109;
+  repeated string friend_statuses = 110;
+  int64 last_whisper_fetch_events_time = 111;
+  int64 last_whisper_fetch_statuses_time = 112;
+  uint32 desired_crossplay_state = 113;
+  repeated FriendEncountersEntry friend_encounters = 133;
+  int32 max_friend_encounter_size = 134;
+  repeated GameStatSaveGameData profile_stats_data = 135;
+  repeated InventoryCategorySaveData bank_inventory_category_list = 136;
+  repeated bytes bank_inventory_list = 137;
+  repeated bytes lost_loot_inventory_list = 138;
+  repeated OakMailItem npc_mail_items = 139;
+  repeated string mail_guids = 140;
+  repeated string unread_mail_guids = 141;
+  repeated GearSoldByFriendData gear_sold_by_friends = 142;
+  repeated OakSDUSaveGameData profile_sdu_list = 143;
+  repeated OakCustomizationSaveGameData unlocked_customizations = 144;
+  repeated OakInventoryCustomizationPartInfo unlocked_inventory_customization_parts = 145;
+  GuardianRankProfileData guardian_rank = 146;
+  repeated CrewQuartersDecorationItemSaveGameData unlocked_crew_quarters_decorations = 147;
+  repeated CrewQuartersRoomItemSaveGameData unlocked_crew_quarters_rooms = 148;
+  bool enable_mouse_acceleration = 150;
+  bool enable_gamepad_input = 151;
+  bool use_classic_gamepad_input = 152;
+  float master_volume = 153;
+  uint32 monitor_display_type = 154;
+  uint32 graphics_mode = 155;
+  uint32 frame_rate_limit = 156;
+  float base_vehicle_fov = 157;
+  uint32 graphics_quality = 158;
+  uint32 anisotropic_filtering = 159;
+  uint32 shadow_quality = 160;
+  uint32 display_performance_stats = 161;
+  uint32 texture_detail = 162;
+  uint32 draw_distance = 163;
+  uint32 clutter = 164;
+  uint32 tessellation = 165;
+  uint32 foliage = 166;
+  bool foliage_shadows = 167;
+  bool planar_reflections = 168;
+  uint32 volumetric_fog = 169;
+  uint32 screen_space_reflections = 170;
+  uint32 character_texture_detail = 171;
+  uint32 character_detail = 172;
+  uint32 ambient_occlusion_quality = 173;
+  bool object_motion_blur = 174;
+  bool lens_flare = 175;
+  bool combat_number_long_format = 176;
+  bool show_minimap_legendaries = 177;
+  bool use_player_callouts = 178;
+  uint32 friend_event_notification_lifetime = 179;
+  uint32 friend_event_notification_frequency = 180;
+  uint32 trade_request_reception_type = 181;
+  float head_bob_scale = 182;
+  bool has_seen_first_boot = 184;
+  float subs_cc_size = 189;
+  float cc_subs_background_opacity = 190;
+  uint32 walking_button_scheme = 191;
+  uint32 driving_button_scheme = 192;
+  uint32 glyph_mode = 193;
+  bool use_MPH = 194;
+  repeated RegisteredDownloadableEntitlements registered_downloadable_entitlements = 195;
+  repeated string seen_news_items = 196;
+  bool auto_centering_enabled = 197;
+  bool increased_chance_for_subscribers = 198;
+  bool rare_chest_event_enabled = 199;
+  bool badass_event_enabled = 200;
+  bool pinata_event_enabled = 201;
+  int32 min_time_between_badass_events = 202;
+  float hud_scale_multiplier = 203;
+  bool disable_spatial_audio = 204;
+  int32 total_playtime_seconds = 205;
+  bool moxxis_drink_event_enabled = 206;
+  int32 moxxis_drink_event_bits_product_id = 207;
+  repeated ChallengeSaveGameData challenge_data = 208;
+  repeated int32 CitizenScienceLevelProgression = 209;
+  bool default_dead_zone_inner_updated = 210;
+  bool disable_event_content = 211;
+  uint32 desired_friend_sync_state = 212;
+  bool needs_shift_first_boot = 213;
+  repeated RecentlyMetPlayer recently_met_players = 214;
+  int32 CitizenScienceActiveBoosterIndex = 215;
+  float CitizenScienceActiveBoosterRemainingTime = 216;
+  float CitizenScienceActiveBoosterTotalTime = 217;
+  int32 StreamerPrimaryActiveBoosterIndex = 218;
+  float StreamerPrimaryActiveBoosterRemainingTime = 219;
+  float StreamerPrimaryActiveBoosterTotalTime = 220;
+  int32 StreamerSecondaryActiveBoosterIndex = 221;
+  float StreamerSecondaryActiveBoosterRemainingTime = 222;
+  float StreamerSecondaryActiveBoosterTotalTime = 223;
+  int32 StreamerBoosterTier = 224;
+  int32 CitizenScienceCSBucksAmount = 226;
+  bool bCitizenScienceHasSeenIntroVideo = 227;
+  bool bCitizenScienceTutorialDone = 228;
+  bool fixed_initial_zonemap_rotation = 230;
+  VaultCardSaveGameData vault_card = 231;
+}

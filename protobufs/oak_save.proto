@@ -1,0 +1,311 @@
+syntax = "proto3";
+package OakSave;
+import "oak_shared.proto";
+message PlayerClassSaveGameData {
+  string player_class_path = 1;
+  uint32 dlc_package_id = 2;
+}
+message ResourcePoolSavegameData {
+  float amount = 1;
+  string resource_path = 2;
+}
+message RegionSaveGameData {
+  int32 game_stage = 1;
+  int32 play_through_idx = 2;
+  string region_path = 3;
+  uint32 dlc_package_id = 4;
+}
+message InventoryBalanceStateInitializationData {
+  int32 game_stage = 1;
+  string inventory_data = 2;
+  string inventory_balance_data = 3;
+  string manufacturer_data = 4;
+  repeated string part_list = 5;
+  repeated string generic_part_list = 6;
+  bytes additional_data = 7;
+  repeated string customization_part_list = 8;
+}
+message OakInventoryItemSaveGameData {
+  bytes item_serial_number = 1;
+  int32 pickup_order_index = 2;
+  int32 flags = 3;
+  string weapon_skin_path = 4;
+  InventoryBalanceStateInitializationData development_save_data = 5;
+}
+message EquippedInventorySaveGameData {
+  int32 inventory_list_index = 1;
+  bool enabled = 2;
+  string slot_data_path = 3;
+  string trinket_data_path = 4;
+}
+message OakAbilityTreeItemSaveGameData {
+  string item_asset_path = 1;
+  int32 points = 2;
+  int32 max_points = 3;
+  int32 tree_identifier = 4;
+}
+message OakAbilitySlotSaveGameData {
+  string ability_class_path = 1;
+  string slot_asset_path = 2;
+}
+message OakActionAbilityAugmentSaveGameData {
+  string action_ability_class_path = 1;
+  string slot_asset_path = 2;
+  string augment_asset_path = 3;
+}
+message OakActionAbilityAugmentConfigurationSaveGameData {
+  string ability_class_path = 1;
+  string augment_asset_path = 2;
+  string mod_slot_asset_path = 3;
+  string mod_asset_path = 4;
+}
+message OakPlayerAbilitySaveGameData {
+  int32 ability_points = 1;
+  repeated OakAbilityTreeItemSaveGameData tree_item_list = 2;
+  repeated OakAbilitySlotSaveGameData ability_slot_list = 3;
+  repeated OakActionAbilityAugmentSaveGameData augment_slot_list = 4;
+  repeated OakActionAbilityAugmentConfigurationSaveGameData augment_configuration_list = 5;
+  int32 tree_grade = 6;
+}
+message MissionStatusPlayerSaveGameData {
+  enum MissionState {
+    MS_NotStarted = 0;
+    MS_Active = 1;
+    MS_Complete = 2;
+    MS_Failed = 3;
+    MS_Unknown = 4;
+  }
+  MissionState status = 1;
+  bool has_been_viewed_in_log = 2;
+  repeated int32 objectives_progress = 3;
+  string mission_class_path = 4;
+  string active_objective_set_path = 5;
+  uint32 dlc_package_id = 6;
+  bool kickoff_played = 7;
+  uint32 league_instance = 8;
+}
+message MissionPlaythroughSaveGameData {
+  repeated MissionStatusPlayerSaveGameData mission_list = 1;
+  string tracked_mission_class_path = 2;
+}
+message ActiveFastTravelSaveData {
+  string active_travel_station_name = 1;
+  bool blacklisted = 2;
+}
+message PlaythroughActiveFastTravelSaveData {
+  repeated ActiveFastTravelSaveData active_travel_stations = 1;
+}
+message DiscoveredAreaInfo {
+  string discovered_area_name = 1;
+  uint32 discovered_playthroughs = 2;
+}
+message DiscoveredLevelInfo {
+  string discovered_level_name = 1;
+  uint32 discovered_playthroughs = 3;
+  repeated DiscoveredAreaInfo discovered_area_info = 4;
+}
+message DiscoveredPlanetInfo {
+  string discovered_planet = 1;
+  bool is_new_planet = 2;
+}
+message DiscoverySaveData {
+  repeated DiscoveredLevelInfo discovered_level_info = 1;
+}
+message VehicleUnlockedSaveGameData {
+  string asset_path = 1;
+  bool just_unlocked = 2;
+}
+message OakCARMenuVehicleConfigSaveData {
+  string loadout_save_name = 1;
+  string body_asset_path = 2;
+  string wheel_asset_path = 3;
+  string armor_asset_path = 4;
+  string core_mod_asset_path = 5;
+  string gunner_weapon_asset_path = 6;
+  string driver_weapon_asset_path = 7;
+  string ornament_asset_path = 8;
+  string material_decal_asset_path = 9;
+  string material_asset_path = 10;
+  int32 color_index_1 = 11;
+  int32 color_index_2 = 12;
+  int32 color_index_3 = 13;
+}
+message CustomPlayerColorSaveGameData {
+  string color_parameter = 1;
+  Vec3 applied_color = 2;
+  Vec3 split_color = 3;
+  bool use_default_color = 4;
+  bool use_default_split_color = 5;
+}
+message GuardianRankSaveGameData {
+  int32 guardian_rank = 1;
+  int32 guardian_experience = 2;
+}
+message GuardianRankRewardCharacterSaveGameData {
+  int32 num_tokens = 1;
+  bool is_enabled = 2;
+  string reward_data_path = 3;
+}
+message GuardianRankPerkCharacterSaveGameData {
+  bool is_enabled = 1;
+  string perk_data_path = 2;
+}
+message GuardianRankCharacterSaveGameData {
+  int32 guardian_available_tokens = 1;
+  int32 guardian_rank = 2;
+  int32 guardian_experience = 3;
+  repeated GuardianRankRewardCharacterSaveGameData rank_rewards = 4;
+  repeated GuardianRankPerkCharacterSaveGameData rank_perks = 5;
+  int32 guardian_reward_random_seed = 6;
+  int64 new_guardian_experience = 7;
+  bool is_rank_system_enabled = 8;
+}
+message CrewQuartersDecorationSaveData {
+  int32 decoration_index = 1;
+  string decoration_data_path = 2;
+}
+message CrewQuartersSaveData {
+  int32 preferred_room_assignment = 1;
+  repeated CrewQuartersDecorationSaveData decorations = 2;
+  string room_data_path = 3;
+}
+message CrewQuartersGunRackItemSaveData {
+  bytes encrypted_serial_number = 1;
+  string slot_asset_path = 2;
+  InventoryBalanceStateInitializationData development_save_data = 3;
+}
+message CrewQuartersGunRackSaveData {
+  repeated CrewQuartersGunRackItemSaveData rack_save_data = 1;
+}
+message EchoLogSaveGameData {
+  bool has_been_seen_in_log = 1;
+  string echo_log_path = 2;
+}
+message MapIDData {
+  uint32 zone_name_id = 1;
+  uint32 map_name_id = 2;
+}
+message GameStateSaveData {
+  MapIDData last_traveled_map_id = 1;
+  int32 mayhem_level = 2;
+  int32 mayhem_random_seed = 3;
+}
+message ChallengeCategoryProgressSaveData {
+  bytes category_progress = 1;
+}
+message OakPlayerCharacterAugmentSaveGameData {
+  string slot_asset_path = 1;
+  string augment_asset_path = 2;
+}
+message OakPlayerCharacterSlotSaveGameData {
+  repeated OakPlayerCharacterAugmentSaveGameData augment_slot_list = 1;
+}
+message UITrackingSaveGameData {
+  bool has_seen_skill_menu_unlock = 1;
+  bool has_seen_guardian_rank_menu_unlock = 2;
+  bool has_seen_echo_boot_ammo_bar = 3;
+  bool has_seen_echo_boot_shield_bar = 4;
+  bool has_seen_echo_boot_grenades = 5;
+  int32 highest_thvm_breadcrumb_seen = 6;
+  repeated string inventory_slot_unlocks_seen = 7;
+  int32 saved_spin_offset = 8;
+}
+message PlanetCycleInfo {
+  string planet_name = 1;
+  float cycle_length = 2;
+  float last_cached_time = 3;
+}
+message TimeOfDaySaveGameData {
+  repeated PlanetCycleInfo planet_cycle_info = 1;
+  string planet_cycle = 2;
+}
+message LevelPersistence_Actor_SaveGameData {
+  string actor_name = 1;
+  int32 timer_remaining = 2;
+}
+message LevelPersistence_Level_SaveGameData {
+  string level_name = 1;
+  repeated LevelPersistence_Actor_SaveGameData saved_actors = 2;
+}
+message GbxZoneMapFODSavedLevelData {
+  string level_name = 1;
+  uint32 fod_texture_size = 2;
+  uint32 num_chunks = 3;
+  float discovery_percentage = 4;
+  uint32 data_state = 5;
+  uint32 data_revision = 6;
+  bytes fod_data = 7;
+}
+message GbxZoneMapFODSaveGameData {
+  repeated GbxZoneMapFODSavedLevelData level_data = 1;
+}
+message Character {
+  message NicknameMappingsEntry {
+    string key = 1;
+    string value = 2;
+  }
+  message ActiveLeagueInstanceForEventEntry {
+    uint32 key = 1;
+    uint32 value = 2;
+  }
+  uint32 save_game_id = 1;
+  int64 last_save_timestamp = 2;
+  uint32 time_played_seconds = 3;
+  PlayerClassSaveGameData player_class_data = 4;
+  repeated ResourcePoolSavegameData resource_pools = 5;
+  repeated RegionSaveGameData saved_regions = 6;
+  int32 experience_points = 7;
+  repeated GameStatSaveGameData game_stats_data = 8;
+  repeated InventoryCategorySaveData inventory_category_list = 9;
+  repeated OakInventoryItemSaveGameData inventory_items = 10;
+  repeated EquippedInventorySaveGameData equipped_inventory_list = 11;
+  repeated int32 active_weapon_list = 12;
+  OakPlayerAbilitySaveGameData ability_data = 13;
+  int32 last_play_through_index = 14;
+  int32 playthroughs_completed = 15;
+  bool show_new_playthrough_notification = 16;
+  repeated MissionPlaythroughSaveGameData mission_playthroughs_data = 17;
+  repeated string active_travel_stations = 21;
+  DiscoverySaveData discovery_data = 22;
+  string last_active_travel_station = 23;
+  repeated VehicleUnlockedSaveGameData vehicles_unlocked_data = 24;
+  repeated string vehicle_parts_unlocked = 25;
+  repeated OakCARMenuVehicleConfigSaveData vehicle_loadouts = 26;
+  int32 vehicle_last_loadout_index = 27;
+  repeated ChallengeSaveGameData challenge_data = 28;
+  repeated OakSDUSaveGameData sdu_list = 29;
+  repeated string selected_customizations = 30;
+  repeated int32 equipped_emote_customizations = 31;
+  repeated CustomPlayerColorSaveGameData selected_color_customizations = 32;
+  GuardianRankSaveGameData guardian_rank = 33;
+  CrewQuartersSaveData crew_quarters_room = 34;
+  CrewQuartersGunRackSaveData crew_quarters_gun_rack = 35;
+  repeated EchoLogSaveGameData unlocked_echo_logs = 36;
+  bool has_played_special_echo_log_insert_already = 37;
+  repeated NicknameMappingsEntry nickname_mappings = 38;
+  MapIDData last_traveled_map_id = 39;
+  ChallengeCategoryProgressSaveData challenge_category_completion_pcts = 40;
+  OakPlayerCharacterSlotSaveGameData character_slot_save_game_data = 41;
+  UITrackingSaveGameData ui_tracking_save_game_data = 42;
+  string preferred_character_name = 43;
+  int32 name_character_limit = 44;
+  uint32 preferred_group_mode = 45;
+  TimeOfDaySaveGameData time_of_day_save_game_data = 46;
+  repeated LevelPersistence_Level_SaveGameData level_persistence_data = 47;
+  uint32 accumulated_level_persistence_reset_timer_seconds = 48;
+  uint32 mayhem_level = 49;
+  GbxZoneMapFODSaveGameData gbx_zone_map_fod_save_game_data = 50;
+  repeated ActiveFastTravelSaveData active_or_blacklisted_travel_stations = 51;
+  repeated string last_active_travel_station_for_playthrough = 52;
+  repeated GameStateSaveData game_state_save_data_for_playthrough = 53;
+  repeated RegisteredDownloadableEntitlements registered_downloadable_entitlements = 54;
+  repeated PlaythroughActiveFastTravelSaveData active_travel_stations_for_playthrough = 55;
+  string save_game_guid = 56;
+  GuardianRankCharacterSaveGameData guardian_rank_character_data = 57;
+  bool optional_objective_reward_fixup_applied = 58;
+  bool vehicle_part_rewards_fixup_applied = 59;
+  uint32 last_active_league = 60;
+  uint32 last_active_league_instance = 61;
+  repeated ActiveLeagueInstanceForEventEntry active_league_instance_for_event = 62;
+  bool levelled_save_vehicle_part_rewards_fixup_applied = 63;
+}

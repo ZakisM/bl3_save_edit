@@ -1,0 +1,16 @@
+[package]
+name = "bl3_save_edit"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0"
+thiserror = "1.0"
+nom = "6.1"
+protobuf = { version = "2" }
+strum = { version = "0.21", features = ["derive"] }
+
+[build-dependencies]
+protobuf-codegen-pure = "2.3"
