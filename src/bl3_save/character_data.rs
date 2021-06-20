@@ -1,7 +1,9 @@
 use anyhow::{Context, Result};
 
 use crate::bl3_save::player_class::PlayerClass;
-use crate::bl3_save::util::{currency_amount_from_character, experience_to_level, Currency};
+use crate::bl3_save::util::{
+    currency_amount_from_character, experience_to_level, read_playthroughs, Currency,
+};
 use crate::protos::oak_save::Character;
 
 #[derive(Debug)]
@@ -12,6 +14,8 @@ pub struct CharacterData {
     pub guardian_rank: i32,
     pub money: i32,
     pub eridium: i32,
+    pub playthroughs: Vec<Playthrough>,
+    // pub unlockable_inventory_slots: Vec<InventorySlot>
 }
 
 impl CharacterData {
@@ -25,6 +29,7 @@ impl CharacterData {
             .context("could not read character guardian_rank")?;
         let money = currency_amount_from_character(&character, &Currency::Money)?;
         let eridium = currency_amount_from_character(&character, &Currency::Eridium)?;
+        let playthroughs = read_playthroughs(&character)?;
 
         Ok(Self {
             character,
@@ -33,6 +38,23 @@ impl CharacterData {
             guardian_rank,
             money,
             eridium,
+            playthroughs,
         })
     }
+}
+
+#[derive(Debug)]
+pub struct Playthrough {
+    mayhem_level: i32,
+    mayhem_random_seed: i32,
+    current_map: String,
+    active_missions: Vec<String>,
+    missions_completed: i32,
+    mission_milestones: Vec<String>,
+}
+
+#[derive(Debug)]
+pub struct InventorySlot {
+    name: String,
+    unlocked: bool,
 }

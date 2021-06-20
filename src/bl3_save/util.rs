@@ -1,5 +1,6 @@
 use anyhow::{Context, Result};
 
+use crate::bl3_save::character_data::Playthrough;
 use crate::protos::oak_save::Character;
 
 const REQUIRED_XP_LIST: [[i32; 2]; 80] = [
@@ -113,4 +114,11 @@ pub fn experience_to_level(experience: &i32) -> Result<i32> {
         .find(|[xp, _]| experience >= xp)
         .map(|[_, level]| *level)
         .context("could not calculate level based off of experience")
+}
+
+pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
+    dbg!(&character.game_state_save_data_for_playthrough);
+    dbg!(&character.last_active_travel_station_for_playthrough);
+
+    Ok(Vec::new())
 }
