@@ -1,0 +1,428 @@
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep01_ChildrenOfTheVault', 'Children of the Vault');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep02_Sacrifice', 'From the Ground Up');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep03_GetVaultMap', 'Cult Following');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep04_EarnSpaceship', 'Taking Flight');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep05_OvercomeHQBlockade', 'Hostile Takeover');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep05_Sanctuary', 'Sanctuary');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep06_MeetMaya', 'The Impending Storm');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep08_OrbitalPlatform', 'Space-Laser Tag');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/MIssion_Ep09_AtlasHQ', 'Atlas, At Last');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep10_CityVault', 'Beneath the Meridian');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep11_PrisonBreak', 'Hammerlocked');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep12_GrandTour', 'Lair of the Harpy');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep13_JakobsRebellion', 'The Guns of Reliance');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep13_Watership', 'The Family Jewel');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep15_MarshFields', 'Going Rogue');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep16_DesertVault', 'The Great Vault');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep16_SiblingRivalry', 'Cold as the Grave');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep17_BigChase', 'Blood Drive');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep19_MinerDetails', 'Angels and Speed Demons');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep20_FirstVaultHunter', 'The First Vault Hunter');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep21_Beachhead', 'Footsteps of Giants');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep22_TheMachine', 'In the Shadow of Starlight');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Plot/Mission_Ep23_TyreenFinalBoss', 'Divine Retribution');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds1/Mission_ProvingGrounds_Mission01', 'Trial of Survival');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds1/Mission_ProvingGroundsDiscovery_Mission01',
+        'Discover the Trial of Survival');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds4/Mission_ProvingGrounds_Mission04', 'Trial of Fervor');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds4/Mission_ProvingGroundsDiscovery_Mission04',
+        'Discover the Trial of Fervor');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds5/Mission_ProvingGrounds_Mission05', 'Trial of Cunning');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds5/Mission_ProvingGroundsDiscovery_Mission05',
+        'Discover the Trial of Cunning');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds6/Mission_ProvingGrounds_Mission06', 'Trial of Supremacy');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds6/Mission_ProvingGroundsDiscovery_Mission06',
+        'Discover the Trial of Supremacy');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds7/Mission_ProvingGrounds_Mission07', 'Trial of Discipline');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds7/Mission_ProvingGroundsDiscovery_Mission07',
+        'Discover the Trial of Discipline');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds8/Mission_ProvingGrounds_Mission08', 'Trial of Instinct');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/ProvingGrounds/ProvingGrounds8/Mission_ProvingGroundsDiscovery_Mission08',
+        'Discover the Trial of Instinct');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Raid/Raid/Mission_RaidOnMaliwan', 'Raid On Maliwan');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_BormanNates', 'Kill Borman Nates');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_CaptainThunkAndSloth', 'Kill Captain Thunk and Sloth');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_DemoSkag', 'Kill Demoskaggon');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_Dinklebot', 'Kill Dinklebot');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_ElDragonJr', 'Kill El Dragón Jr');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_EnforcerUrist', 'Kill Urist McEnforcer');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_IndoTyrant', 'Kill IndoTyrant');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_Maxitrillion', 'Kill Maxitrillion');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_PowerTroopers', 'Kill the Power Troopers');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_Rakkman', 'Kill Rakkman');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_RedJabber', 'Kill Red Jabber');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_RoadDog', 'Kill Road Dog');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_Tarantella', 'Kill Tarantella');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_TheUnstoppable', 'Kill The Unstoppable');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_ThreeDragons', 'Kill the Grogans and Their Mother');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/RareSpawn/Mission_Async_VicAndWarty', 'Kill Wick and Warty');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Sanctuary3/Mission_Infestation', 'The Kevin Konundrum');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Sanctuary3/Mission_JustAPrick', 'Just A Prick');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Slaughters/CoVSlaughter/Mission_COVSlaughter1', 'The Slaughter Shaft');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Slaughters/CreatureSlaughter/Mission_CreatureSlaughter', 'Cistern of Slaughter');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughter1', 'Tech Slaughter');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery', 'Welcome to Slaughterstar 3000');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_0/Prologue/Mission_BadReception', 'Bad Reception');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_0/Prologue/Mission_FineDining', 'Skag Dog Days');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_0/Prologue/Mission_Scoopers_Bully', 'Dump on Dumptruck');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_0/Prologue/Mission_UnderwearTink', 'Under Taker');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_0/Prologue/Mission_VendingMachineRepair', 'Powerful Connections');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_0/Sacrifice/Mission_GoldenCalves', 'Golden Calves');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_0/Sacrifice/Mission_HeadCase', 'Head Case');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_0/Sacrifice/Mission_PandorasNextTopMouthpiece', 'Pandora''s Next Top Mouthpiece');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/Athenas/Mission_InvasionOfPrivacy', 'Invasion of Privacy');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/Athenas/Mission_MonkMission', 'Holy Spirits');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/AtlasHQ/Mission_RatchetItUp', 'Ratch''d Up');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/City/Mission_BitterPillToSwallow', 'Healers and Dealers');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/City/Mission_DynastyDiner', 'Dynasty Diner');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/City/Mission_PissingContest', 'Maliwannabees');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/City/Mission_RiseAndGrind', 'Rise and Grind');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/City/Mission_WizardOfNogs', 'Technical NOGout');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/OrbitalPlatform/OppositionResearch/Mission_OppResearch', 'Opposition Research');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/Towers/Mission_KillKillavolt', 'Kill Killavolt');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/Towers/Mission_LastKatagawa', 'Proof of Wife');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_1/Towers/Mission_Porta-Prison', 'Porta Prison');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Mansion/Mission_AureliasSkeletons', 'Sacked');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Mansion/Mission_WitchesBrew', 'Witch''s Brew');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/MarshFields/Mission_RockOnPandora', 'Raiders of the Lost Rock');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/MarshFields/Mission_SuckerPunch', 'Sell Out');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Prison/Mission_FreeHugs', 'On the Blood Path');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Prison/Mission_MalevolentPractice', 'Malevolent Practice');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Watership/Mission_RumbleJungle', 'Rumble In The Jungle');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Wetlands/Mission_DriveAwayThePain', 'Get Quick, Slick');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Wetlands/Mission_DudeBro', 'Swamp Bro');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Wetlands/Mission_DynastyDash_Wetlands', 'Dynasty Dash: Eden-6');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Wetlands/Mission_DynastyDash_Wetlands_Repeatable', 'Dynasty Dash: Floodmoor Basin');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Wetlands/Mission_SpecialDelivery', 'Capture the Frag');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Wetlands/Mission_TheHangover', 'Irregular Customers');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_2/Wetlands/Mission_TortureTruck', 'Don''t Truck with Eden-6');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Desert/Mission_BabyDancer', 'Baby Dancer');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Desert/Mission_BirthdaySurprise', 'Life of the Party');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Desert/Mission_BuffFilmBuff', 'Buff Film Buff');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Desert/Mission_CaringForElderly', 'The Feeble and the Furious');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Desert/Mission_ChangeOfHeart', 'Sheega''s All That');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Desert/Mission_DynastyDash_Desert', 'Dynasty Dash: Pandora');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Desert/Mission_DynastyDash_Desert_Repeatable', 'Dynasty Dash: Devil''s Razor');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Desert/Mission_EchoNetNeutrality', 'ECHOnet Neutrality');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Desert/Mission_ItsComplicated', 'Boom Boom Boomtown');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Mine/Mission_BridgeInTheDark', 'The Demon in the Dark');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Mine/Mission_GrowingPains', 'Childhood''s End');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Mine/Mission_WildlifeConservation', 'Wildlife Conservation');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Motorcade/Mission_Gameshow', 'Let''s Get It Vaughn');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Motorcade/Mission_Homestead_Part1', 'The Homestead');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Motorcade/Mission_Homestead_Part2', 'The Homestead (Part 2)');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Motorcade/Mission_Homestead_Part3', 'The Homestead (Part 3)');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_3/Motorcade/Mission_Just_Desserts', 'Just Desserts');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_4/Desolate/Mission_BetterTimes', 'Fire in the Sky');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_4/Desolate/Mission_BoneDeep', 'Bad Vibrations');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_4/Desolate/Mission_Canonization', 'Cannonization');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_4/Desolate/Mission_DestroyerOfWorlds', 'Transaction-Packed');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_4/Desolate/Mission_Homeopathological', 'Homeopathological');
+insert into gi_mission (raw, fullname)
+values ('/Game/Missions/Side/Zone_4/Desolate/Mission_ItsAlive2', 'It''s Alive');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP01', 'Enter the Psychoscape');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP02', 'Siege of Castle Crimson');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP03', 'What Love Remains');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP04', 'Inhuman Trials');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP05', 'Locus of Rage');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_AllShapesAndCalibers', 'A Good Egg');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_BlastRequests', 'Blast Requests');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ChecksAndBalances', 'Check, Please');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ExposureTherapy', 'Remodel Behavior');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_GoodbyeOldFriend', 'Laid to Rust');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_HotNBothered', 'Hot and Unbothered');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_InkBlots', 'Don''t Call it a Rorschach');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ParadeHarpoon', 'Krieg''s on Parade');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ShadesOfTruth', 'It''s an Allegory');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_SpineTingler', 'Scratch, Don''t Sniff');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_StrongBones', 'Does a Body Good');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ThatRingsABell', 'That Rings a Something');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_WhenItRains', 'Brainstorm');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/BloodyHarvest/Missions/Side/Seasonal/Mission_Season_01_Intro',
+        'Bloody Harvest: Descent into Heck');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/BloodyHarvest/Missions/Side/Seasonal/Mission_Season_01_Repeatable',
+        'Bloody Harvest: The Rebloodening');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/CitizenScience/Missions/Mission_CitizenScience_Intro', 'Borderlands Science!');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep01_MeetTimothy', 'The Handsome Jackpot');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep02_MeetCrad', 'Playing with Fire');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep03_Impound', 'Winners and Losers');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep04_Trashtown', 'One Man''s Treasure');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep05_ThePlan', 'The Plan');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep06_TheCore', 'Jack''s Wild');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep07_TheHeist', 'All Bets Off');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_AcidTrip', 'Acid Trip');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_BrotherlyLove', 'Sisterly Love');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_DoItForDigby_Part1', 'Do it for Digby - Part 1');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_DoItForDigby_Part2', 'Do it for Digby - Part 2');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_DoItForDigby_Part3', 'Do it for Digby - Part 3');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_DoubleDown', 'Double Down');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_GreatEscape', 'The Great Escape');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_HeartOfGold', 'Heart of Gold');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_RagingBot', 'Raging Bot');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_RegainingOnesFeet', 'Regaining One''s Feet');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_TooMuchOfAGoodThing', 'Too Much Of A Good Thing');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Event2/Missions/Side/MauriceSide/Mission_Maurice', 'Claw and Order');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Event2/Missions/Side/Seasonal/Mission_Season_02_Intro',
+        'Revenge of the Cartels: Ultraviolet Nights');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Event2/Missions/Side/Seasonal/Mission_Season_02_Repeatable',
+        'Revenge of the Cartels II: The Revengening');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep01_WestlandWelcome', 'Blood From A Stone');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep02_Bathhouse', 'The Name of the Law');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep03_ObsidianForest', 'Off the Rails');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep04_Facility', 'Where It All Started');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep05_Crater', 'Riding to Ruin');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_AnimalControl', 'Lost and Found');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_BloodAndBeans', 'Of Blood and Beans');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_DirtyDeeds', 'Dirty Deeds');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_Dueling', 'The Quick and the Quickerer');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_GhostStories', 'The Meatman Prophecy');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_LoveBarsNone', 'The Dandy and Damsel');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_MoneyBackGuarantee', 'Money Back Guarantee');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_RustlerBaby', 'Devil Rustlers');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_SaurdewValley', 'Saurdew Valley');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_SnakeOil', 'Miracle Elixir Fixer');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Geranium/Missions/Side/Mission_TheLegendOfMcSmugger', 'The Legend of McSmugger');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Plot/EP01_DLC2', 'The Party Out of Space');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Plot/EP02_DLC2', 'The Shadow Over Cursehaven');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Plot/EP03_DLC2', 'The Case of Wainwright Jakobs');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Plot/EP04_DLC2', 'The Horror in the Woods');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Plot/EP05_DLC2', 'On the Mountain of Mayhem');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Plot/EP06_DLC2', 'The Call of Gythian');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/RareSpawn/Mission_Async_FrostbiteDragon',
+        'Kill Shiverous the Unscathed');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/RareSpawn/Mission_Async_MushroomGiant', 'Kill Fungal Gorger');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/RareSpawn/Mission_Async_Shocker', 'Kill Voltborn');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/RareSpawn/Mission_Async_ZealotPilfer', 'Kill Amach');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_Bounty_BusinessAsUsual',
+        'The Proprietor: Rare Vintage');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_Bounty_DebtCollector', 'The Proprietor: Empty Bottles');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_HappilyEverAfter', 'Happily Ever After');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_IntoTheDeep', 'The Madness Beneath');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_Necrocookmicon', 'The Nibblenomicon');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_PrivateEyePart1', 'Cold Case: Buried Questions');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_PrivateEyePart2', 'Cold Case: Restless Memories');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_PrivateEyePart3', 'Cold Case: Forgotten Answers');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_ReturnOfMaxSky', 'The Great Escape (Part 2)');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_SinisterSounds', 'Sinister Sounds');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_WeSlassPart1', 'We Slass!');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_WeSlassPart2', 'We Slass! (Part 2)');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_WeSlassPart3', 'We Slass! (Part 3)');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_WhereIBelong', 'Call of the Deep');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Ixora/Missions/Side/Mission_GearUp', 'Arms Race');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Ixora/Missions/Side/Mission_GearUp_Intro', 'Arms Race: Introduction');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_Main01', 'Mysteriouslier: Murder on Eschaton Row');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_Main02', 'Mysteriouslier: The Vanishing of Hizzen Mays');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_Main03', 'Mysteriouslier: Ghosts of Karass Canyon');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_Main04', 'Mysteriouslier: Horror at Scryer''s Crypt');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_VarkidBoss', 'You. Will. Die. (Over and Over.)');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Raid1/Missions/Mission_Raid1', 'Takedown at the Maliwan Blacksite');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Raid1/Missions/Mission_Raid1Intro', 'Discovery: Takedown at the Maliwan Blacksite');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Takedown2/Missions/Side/Mission_Takedown2', 'Takedown at the Guardian Breach');
+insert into gi_mission (raw, fullname)
+values ('/Game/PatchDLC/Takedown2/Missions/Side/Mission_Takedown2_Intro', 'Discovery: Takedown at the Guardian Breach');

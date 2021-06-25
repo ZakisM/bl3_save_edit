@@ -1,7 +1,11 @@
 use anyhow::{Context, Result};
 
 use crate::bl3_save::character_data::Playthrough;
-use crate::protos::oak_save::Character;
+use crate::conduit::ConduitExt;
+use crate::models::gi_mission::GiMission;
+use crate::protos::oak_save::{Character, MissionPlaythroughSaveGameData, MissionStatusPlayerSaveGameData_MissionState};
+use crate::util::OnceCellExt;
+use crate::{conduit, DB_POOL};
 
 const REQUIRED_XP_LIST: [[i32; 2]; 80] = [
     [0, 1],
@@ -86,6 +90,51 @@ const REQUIRED_XP_LIST: [[i32; 2]; 80] = [
     [12787955, 80],
 ];
 
+pub const IMPORTANT_MISSIONS: [[&str; 2]; 7] = [
+    ["Divine Retribution", "Main Game"],
+    ["All Bets Off", "DLC1 - Moxxi's Heist of the Handsome Jackpot"],
+    ["The Call of Gythian", "DLC2 - Guns, Love, and Tentacles"],
+    ["Riding to Ruin", "DLC3 - Bounty of Blood"],
+    ["Locus of Rage", "DLC4 - Psycho Krieg and the Fantastic Fustercluck"],
+    ["Arms Race", "DLC5 - Designer's Cut"],
+    ["Mysteriouslier: Horror at Scryer's Crypt", "DLC6 - Director's Cut"],
+];
+
+pub const IMPORTANT_CHALLENGES: [[&str; 2]; 8] = [
+    [
+        "/Game/GameData/Challenges/Account/Challenge_VaultReward_Analyzer.Challenge_VaultReward_Analyzer_C",
+        "Eridian Analyzer",
+    ],
+    [
+        "/Game/GameData/Challenges/Account/Challenge_VaultReward_Resonator.Challenge_VaultReward_Resonator_C",
+        "Eridian Resonator",
+    ],
+    [
+        "/Game/GameData/Challenges/Account/Challenge_VaultReward_Mayhem.Challenge_VaultReward_Mayhem_C",
+        "Mayhem Mode",
+    ],
+    [
+        "/Game/GameData/Challenges/Account/Challenge_VaultReward_ArtifactSlot.Challenge_VaultReward_ArtifactSlot_C",
+        "Artifact Slot",
+    ],
+    [
+        "/Game/GameData/Challenges/Character/Beastmaster/BP_Challenge_Beastmaster_ClassMod.BP_Challenge_Beastmaster_ClassMod_C",
+        "BeastMaster Class Mod Slot",
+    ],
+    [
+        "/Game/GameData/Challenges/Character/Gunner/BP_Challenge_Gunner_ClassMod.BP_Challenge_Gunner_ClassMod_C",
+        "Gunner Class Mod Slot",
+    ],
+    [
+        "/Game/GameData/Challenges/Character/Operative/BP_Challenge_Operative_ClassMod.BP_Challenge_Operative_ClassMod_C",
+        "Operative Class Mod Slot",
+    ],
+    [
+        "/Game/GameData/Challenges/Character/Siren/BP_Challenge_Siren_ClassMod.BP_Challenge_Siren_ClassMod_C",
+        "Siren Class Mod Slot",
+    ],
+];
+
 #[derive(Debug)]
 pub enum Currency {
     Money,
@@ -116,9 +165,81 @@ pub fn experience_to_level(experience: &i32) -> Result<i32> {
         .context("could not calculate level based off of experience")
 }
 
-pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
-    dbg!(&character.game_state_save_data_for_playthrough);
-    dbg!(&character.last_active_travel_station_for_playthrough);
+pub async fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
+    let pool = DB_POOL.get_checked()?;
 
-    Ok(Vec::new())
+    let all_gi_fast_travels = conduit::gi_fast_travel::all(pool).await?.to_hash_map();
+
+    let all_missions = conduit::gi_mission::all(pool).await?;
+
+    let mut playthroughs = Vec::with_capacity(character.game_state_save_data_for_playthrough.len());
+    let mut last_active_travel_station = character.last_active_travel_station_for_playthrough.iter();
+    let mut mission_playthroughs_data = character.mission_playthroughs_data.iter();
+
+    for playthrough in character.game_state_save_data_for_playthrough.iter() {
+        let mayhem_level = playthrough.mayhem_level;
+        let mayhem_random_seed = playthrough.mayhem_random_seed;
+        let current_map = last_active_travel_station
+            .next()
+            .map::<Result<String>, _>(|m| {
+                Ok(all_gi_fast_travels
+                    .get(&m.to_lowercase())
+                    .context("failed to get current_map readable name")?
+                    .to_string())
+            })
+            .context("failed to read current_map")??;
+
+        let current_missions_playthrough_data = mission_playthroughs_data.next().context("failed to read active_missions")?;
+
+        let mut active_missions = get_filtered_mission_list(
+            &all_missions,
+            &current_missions_playthrough_data,
+            MissionStatusPlayerSaveGameData_MissionState::MS_Active,
+        );
+
+        let mut missions_completed = get_filtered_mission_list(
+            &all_missions,
+            &current_missions_playthrough_data,
+            MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
+        );
+
+        active_missions.sort();
+        missions_completed.sort();
+
+        let mission_milestones = IMPORTANT_MISSIONS
+            .iter()
+            .filter(|[k, _]| missions_completed.iter().any(|m| *k == m))
+            .map(|[_k, v]| v.to_string())
+            .collect::<Vec<_>>();
+
+        playthroughs.push(Playthrough {
+            mayhem_level,
+            mayhem_random_seed,
+            current_map,
+            active_missions,
+            missions_completed,
+            mission_milestones,
+        });
+    }
+
+    Ok(playthroughs)
+}
+
+fn get_filtered_mission_list(
+    all_missions: &[GiMission],
+    m: &MissionPlaythroughSaveGameData,
+    status: MissionStatusPlayerSaveGameData_MissionState,
+) -> Vec<String> {
+    m.mission_list
+        .as_ref()
+        .iter()
+        .filter(|ms| ms.status == status)
+        .map(|ms| {
+            all_missions
+                .iter()
+                .find(|m| ms.mission_class_path.contains(&m.raw))
+                .map(|m| m.fullname.clone())
+                .unwrap_or_else(|| ms.mission_class_path.to_owned())
+        })
+        .collect()
 }
