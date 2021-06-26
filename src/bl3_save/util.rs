@@ -1,11 +1,12 @@
 use anyhow::{Context, Result};
+use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
+use rayon::slice::ParallelSliceMut;
 
 use crate::bl3_save::character_data::Playthrough;
-use crate::conduit::ConduitExt;
-use crate::models::gi_mission::GiMission;
+use crate::game_data::GameDataExt;
+use crate::game_data::FAST_TRAVEL;
+use crate::game_data::MISSION;
 use crate::protos::oak_save::{Character, MissionPlaythroughSaveGameData, MissionStatusPlayerSaveGameData_MissionState};
-use crate::util::OnceCellExt;
-use crate::{conduit, DB_POOL};
 
 const REQUIRED_XP_LIST: [[i32; 2]; 80] = [
     [0, 1],
@@ -144,8 +145,8 @@ pub enum Currency {
 pub fn currency_amount_from_character(character: &Character, currency: &Currency) -> Result<i32> {
     character
         .inventory_category_list
-        .iter()
-        .find(|i| {
+        .par_iter()
+        .find_first(|i| {
             i.base_category_definition_hash
                 == match currency {
                     Currency::Money => 618814354,
@@ -158,20 +159,14 @@ pub fn currency_amount_from_character(character: &Character, currency: &Currency
 
 pub fn experience_to_level(experience: &i32) -> Result<i32> {
     REQUIRED_XP_LIST
-        .iter()
+        .par_iter()
         .rev()
-        .find(|[xp, _]| experience >= xp)
+        .find_first(|[xp, _]| experience >= xp)
         .map(|[_, level]| *level)
         .context("could not calculate level based off of experience")
 }
 
-pub async fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
-    let pool = DB_POOL.get_checked()?;
-
-    let all_gi_fast_travels = conduit::gi_fast_travel::all(pool).await?.to_hash_map();
-
-    let all_missions = conduit::gi_mission::all(pool).await?;
-
+pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
     let mut playthroughs = Vec::with_capacity(character.game_state_save_data_for_playthrough.len());
     let mut last_active_travel_station = character.last_active_travel_station_for_playthrough.iter();
     let mut mission_playthroughs_data = character.mission_playthroughs_data.iter();
@@ -182,8 +177,8 @@ pub async fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>
         let current_map = last_active_travel_station
             .next()
             .map::<Result<String>, _>(|m| {
-                Ok(all_gi_fast_travels
-                    .get(&m.to_lowercase())
+                Ok(FAST_TRAVEL
+                    .get_value_by_key(&m.to_lowercase())
                     .context("failed to get current_map readable name")?
                     .to_string())
             })
@@ -192,23 +187,23 @@ pub async fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>
         let current_missions_playthrough_data = mission_playthroughs_data.next().context("failed to read active_missions")?;
 
         let mut active_missions = get_filtered_mission_list(
-            &all_missions,
+            MISSION,
             &current_missions_playthrough_data,
             MissionStatusPlayerSaveGameData_MissionState::MS_Active,
         );
 
         let mut missions_completed = get_filtered_mission_list(
-            &all_missions,
+            MISSION,
             &current_missions_playthrough_data,
             MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
         );
 
-        active_missions.sort();
-        missions_completed.sort();
+        active_missions.par_sort();
+        missions_completed.par_sort();
 
         let mission_milestones = IMPORTANT_MISSIONS
-            .iter()
-            .filter(|[k, _]| missions_completed.iter().any(|m| *k == m))
+            .par_iter()
+            .filter(|[k, _]| missions_completed.par_iter().any(|m| *k == m))
             .map(|[_k, v]| v.to_string())
             .collect::<Vec<_>>();
 
@@ -225,20 +220,19 @@ pub async fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>
     Ok(playthroughs)
 }
 
-fn get_filtered_mission_list(
-    all_missions: &[GiMission],
+fn get_filtered_mission_list<const LENGTH: usize>(
+    all_missions: [[&'static str; 2]; LENGTH],
     m: &MissionPlaythroughSaveGameData,
     status: MissionStatusPlayerSaveGameData_MissionState,
 ) -> Vec<String> {
     m.mission_list
-        .as_ref()
-        .iter()
+        .par_iter()
         .filter(|ms| ms.status == status)
         .map(|ms| {
             all_missions
-                .iter()
-                .find(|m| ms.mission_class_path.contains(&m.raw))
-                .map(|m| m.fullname.clone())
+                .par_iter()
+                .find_first(|[k, _]| ms.mission_class_path.to_lowercase().contains(k))
+                .map(|[_, v]| v.to_string())
                 .unwrap_or_else(|| ms.mission_class_path.to_owned())
         })
         .collect()

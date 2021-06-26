@@ -19,9 +19,9 @@ pub enum SduSlot {
     Pistol,
     #[strum(serialize = "/Game/Pickups/SDU/SDU_Grenade.SDU_Grenade", to_string = "Grenade")]
     Grenade,
-    #[strum(serialize = "/Game/Pickups/SDU/SDU_SMG.SDU_SMG", to_string = "Smg")]
+    #[strum(serialize = "/Game/Pickups/SDU/SDU_SMG.SDU_SMG", to_string = "SMG")]
     Smg,
-    #[strum(serialize = "/Game/Pickups/SDU/SDU_AssaultRifle.SDU_AssaultRifle", to_string = "Ar")]
+    #[strum(serialize = "/Game/Pickups/SDU/SDU_AssaultRifle.SDU_AssaultRifle", to_string = "AR")]
     Ar,
     #[strum(serialize = "/Game/Pickups/SDU/SDU_Heavy.SDU_Heavy", to_string = "Heavy")]
     Heavy,

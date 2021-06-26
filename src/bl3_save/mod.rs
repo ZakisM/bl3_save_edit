@@ -3,6 +3,7 @@ use std::fmt::Formatter;
 
 use anyhow::{bail, Result};
 use nom::Finish;
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use crate::bl3_save::character_data::CharacterData;
 use crate::bl3_save::inventory_slot::InventorySlot;
@@ -39,7 +40,7 @@ pub struct Bl3Save {
 }
 
 impl Bl3Save {
-    pub async fn from_data(data: &mut [u8]) -> Result<Self> {
+    pub fn from_data(data: &mut [u8]) -> Result<Self> {
         let (r, _) = read_header(data).finish()?;
         let (r, save_game_version) = read_int(r).finish()?;
         let (r, package_version) = read_int(r).finish()?;
@@ -64,7 +65,7 @@ impl Bl3Save {
 
         let character = decrypt(&mut remaining_data)?;
 
-        let character_data = CharacterData::from_character(character).await?;
+        let character_data = CharacterData::from_character(character)?;
 
         Ok(Self {
             save_game_version,
@@ -145,7 +146,7 @@ impl fmt::Display for Bl3Save {
             InventorySlot::ClassMod,
             InventorySlot::Artifact,
         ] {
-            if let Some(slot) = self.character_data.unlockable_inventory_slots.iter().find(|is| is.slot == i) {
+            if let Some(slot) = self.character_data.unlockable_inventory_slots.par_iter().find_first(|is| is.slot == i) {
                 writeln!(f, "{:>1}- {}: {}", " ", slot.slot, slot.unlocked)?;
             }
         }
@@ -166,6 +167,23 @@ impl fmt::Display for Bl3Save {
 
         for challenge in &self.character_data.challenge_milestones {
             writeln!(f, "{:>1}- {}: {}", " ", challenge.challenge, challenge.unlocked)?;
+        }
+
+        writeln!(f, "Unlocked Vehicle Parts:")?;
+
+        for v_stat in &self.character_data.vehicle_stats {
+            writeln!(
+                f,
+                "{:>1}- {} - Chassis (wheels): {}/{}, Parts: {}/{}, Skins: {}/{}",
+                " ",
+                v_stat.name,
+                v_stat.chassis_count,
+                v_stat.total_chassis_count,
+                v_stat.parts_count,
+                v_stat.total_parts_count,
+                v_stat.skins_count,
+                v_stat.total_skins_count,
+            )?;
         }
 
         Ok(())
