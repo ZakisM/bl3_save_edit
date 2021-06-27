@@ -36,7 +36,7 @@ pub struct Bl3Save {
 }
 
 impl Bl3Save {
-    pub fn from_data(data: &mut [u8]) -> Result<Self> {
+    pub fn from_data(data: &mut [u8], file_type: FileType) -> Result<Self> {
         let FileData {
             file_version,
             package_version,
@@ -52,7 +52,7 @@ impl Bl3Save {
             remaining_data,
         } = file_helper::read_file(data)?;
 
-        let character = decrypt(remaining_data, FileType::PcSave)?;
+        let character = decrypt(remaining_data, file_type)?;
 
         let character_data = CharacterData::from_character(character)?;
 

@@ -11,6 +11,7 @@ thiserror = "1.0"
 nom = "6.1"
 protobuf = "2"
 rayon = "1.5"
+encoding_rs = "0.8"
 
 [dependencies.strum]
 version = "0.21"

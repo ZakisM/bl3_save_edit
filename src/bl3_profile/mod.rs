@@ -3,11 +3,16 @@ use std::fmt::Formatter;
 
 use anyhow::Result;
 
+use crate::bl3_profile::profile_data::ProfileData;
 use crate::file_helper;
 use crate::file_helper::FileData;
 use crate::models::CustomFormatData;
 use crate::parser::{decrypt, FileType};
 use crate::protos::oak_profile::Profile;
+
+mod profile_data;
+//todo: remove pub
+pub mod util;
 
 #[derive(Debug)]
 pub struct Bl3Profile {
@@ -22,10 +27,11 @@ pub struct Bl3Profile {
     custom_format_data_count: u32,
     custom_format_data: Vec<CustomFormatData>,
     save_game_type: String,
+    profile_data: ProfileData,
 }
 
 impl Bl3Profile {
-    pub fn from_data(data: &mut [u8]) -> Result<Self> {
+    pub fn from_data(data: &mut [u8], file_type: FileType) -> Result<Self> {
         let FileData {
             file_version,
             package_version,
@@ -41,7 +47,9 @@ impl Bl3Profile {
             remaining_data,
         } = file_helper::read_file(data)?;
 
-        let profile: Profile = decrypt(remaining_data, FileType::PcProfile)?;
+        let profile: Profile = decrypt(remaining_data, file_type)?;
+
+        let profile_data = ProfileData::from_profile(profile)?;
 
         Ok(Self {
             profile_version: file_version,
@@ -55,6 +63,7 @@ impl Bl3Profile {
             custom_format_data_count,
             custom_format_data,
             save_game_type,
+            profile_data,
         })
     }
 }
