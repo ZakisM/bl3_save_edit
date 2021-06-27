@@ -10939,6 +10939,876 @@ impl ::protobuf::reflect::ProtobufValue for GbxZoneMapFODSaveGameData {
 }
 
 #[derive(PartialEq, Clone, Default)]
+pub struct OakProfileCloudData {
+    // message fields
+    pub profile_stats_data: ::protobuf::RepeatedField<super::oak_shared::GameStatSaveGameData>,
+    pub bank_inventory_list: ::protobuf::RepeatedField<::std::vec::Vec<u8>>,
+    pub lost_loot_inventory_list: ::protobuf::RepeatedField<::std::vec::Vec<u8>>,
+    pub npc_mail_items: ::protobuf::RepeatedField<super::oak_shared::OakMailItem>,
+    pub profile_sdu_list: ::protobuf::RepeatedField<super::oak_shared::OakSDUSaveGameData>,
+    pub unlocked_customizations: ::protobuf::RepeatedField<super::oak_shared::OakCustomizationSaveGameData>,
+    pub unlocked_inventory_customization_parts: ::protobuf::RepeatedField<super::oak_shared::OakInventoryCustomizationPartInfo>,
+    pub guardian_experience: i64,
+    pub unlocked_crew_quarters_decorations: ::protobuf::RepeatedField<super::oak_shared::CrewQuartersDecorationItemSaveGameData>,
+    pub unlocked_crew_quarters_rooms: ::protobuf::RepeatedField<super::oak_shared::CrewQuartersRoomItemSaveGameData>,
+    pub challenge_data: ::protobuf::RepeatedField<super::oak_shared::ChallengeSaveGameData>,
+    pub mail_guids: ::protobuf::RepeatedField<::std::string::String>,
+    pub CitizenScienceLevelProgression: ::std::vec::Vec<i32>,
+    pub CitizenScienceCSBucksAmount: i32,
+    pub vault_card: ::protobuf::SingularPtrField<super::oak_shared::VaultCardSaveGameData>,
+    pub bCitizenScienceHasSeenIntroVideo: bool,
+    pub bCitizenScienceTutorialDone: bool,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a OakProfileCloudData {
+    fn default() -> &'a OakProfileCloudData {
+        <OakProfileCloudData as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl OakProfileCloudData {
+    pub fn new() -> OakProfileCloudData {
+        ::std::default::Default::default()
+    }
+
+    // repeated .OakSave.GameStatSaveGameData profile_stats_data = 1;
+
+
+    pub fn get_profile_stats_data(&self) -> &[super::oak_shared::GameStatSaveGameData] {
+        &self.profile_stats_data
+    }
+    pub fn clear_profile_stats_data(&mut self) {
+        self.profile_stats_data.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_profile_stats_data(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::GameStatSaveGameData>) {
+        self.profile_stats_data = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_profile_stats_data(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::GameStatSaveGameData> {
+        &mut self.profile_stats_data
+    }
+
+    // Take field
+    pub fn take_profile_stats_data(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::GameStatSaveGameData> {
+        ::std::mem::replace(&mut self.profile_stats_data, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated bytes bank_inventory_list = 2;
+
+
+    pub fn get_bank_inventory_list(&self) -> &[::std::vec::Vec<u8>] {
+        &self.bank_inventory_list
+    }
+    pub fn clear_bank_inventory_list(&mut self) {
+        self.bank_inventory_list.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_bank_inventory_list(&mut self, v: ::protobuf::RepeatedField<::std::vec::Vec<u8>>) {
+        self.bank_inventory_list = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_bank_inventory_list(&mut self) -> &mut ::protobuf::RepeatedField<::std::vec::Vec<u8>> {
+        &mut self.bank_inventory_list
+    }
+
+    // Take field
+    pub fn take_bank_inventory_list(&mut self) -> ::protobuf::RepeatedField<::std::vec::Vec<u8>> {
+        ::std::mem::replace(&mut self.bank_inventory_list, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated bytes lost_loot_inventory_list = 3;
+
+
+    pub fn get_lost_loot_inventory_list(&self) -> &[::std::vec::Vec<u8>] {
+        &self.lost_loot_inventory_list
+    }
+    pub fn clear_lost_loot_inventory_list(&mut self) {
+        self.lost_loot_inventory_list.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_lost_loot_inventory_list(&mut self, v: ::protobuf::RepeatedField<::std::vec::Vec<u8>>) {
+        self.lost_loot_inventory_list = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_lost_loot_inventory_list(&mut self) -> &mut ::protobuf::RepeatedField<::std::vec::Vec<u8>> {
+        &mut self.lost_loot_inventory_list
+    }
+
+    // Take field
+    pub fn take_lost_loot_inventory_list(&mut self) -> ::protobuf::RepeatedField<::std::vec::Vec<u8>> {
+        ::std::mem::replace(&mut self.lost_loot_inventory_list, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated .OakSave.OakMailItem npc_mail_items = 4;
+
+
+    pub fn get_npc_mail_items(&self) -> &[super::oak_shared::OakMailItem] {
+        &self.npc_mail_items
+    }
+    pub fn clear_npc_mail_items(&mut self) {
+        self.npc_mail_items.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_npc_mail_items(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::OakMailItem>) {
+        self.npc_mail_items = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_npc_mail_items(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::OakMailItem> {
+        &mut self.npc_mail_items
+    }
+
+    // Take field
+    pub fn take_npc_mail_items(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::OakMailItem> {
+        ::std::mem::replace(&mut self.npc_mail_items, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated .OakSave.OakSDUSaveGameData profile_sdu_list = 5;
+
+
+    pub fn get_profile_sdu_list(&self) -> &[super::oak_shared::OakSDUSaveGameData] {
+        &self.profile_sdu_list
+    }
+    pub fn clear_profile_sdu_list(&mut self) {
+        self.profile_sdu_list.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_profile_sdu_list(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::OakSDUSaveGameData>) {
+        self.profile_sdu_list = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_profile_sdu_list(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::OakSDUSaveGameData> {
+        &mut self.profile_sdu_list
+    }
+
+    // Take field
+    pub fn take_profile_sdu_list(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::OakSDUSaveGameData> {
+        ::std::mem::replace(&mut self.profile_sdu_list, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated .OakSave.OakCustomizationSaveGameData unlocked_customizations = 6;
+
+
+    pub fn get_unlocked_customizations(&self) -> &[super::oak_shared::OakCustomizationSaveGameData] {
+        &self.unlocked_customizations
+    }
+    pub fn clear_unlocked_customizations(&mut self) {
+        self.unlocked_customizations.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_unlocked_customizations(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::OakCustomizationSaveGameData>) {
+        self.unlocked_customizations = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_unlocked_customizations(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::OakCustomizationSaveGameData> {
+        &mut self.unlocked_customizations
+    }
+
+    // Take field
+    pub fn take_unlocked_customizations(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::OakCustomizationSaveGameData> {
+        ::std::mem::replace(&mut self.unlocked_customizations, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated .OakSave.OakInventoryCustomizationPartInfo unlocked_inventory_customization_parts = 7;
+
+
+    pub fn get_unlocked_inventory_customization_parts(&self) -> &[super::oak_shared::OakInventoryCustomizationPartInfo] {
+        &self.unlocked_inventory_customization_parts
+    }
+    pub fn clear_unlocked_inventory_customization_parts(&mut self) {
+        self.unlocked_inventory_customization_parts.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_unlocked_inventory_customization_parts(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::OakInventoryCustomizationPartInfo>) {
+        self.unlocked_inventory_customization_parts = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_unlocked_inventory_customization_parts(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::OakInventoryCustomizationPartInfo> {
+        &mut self.unlocked_inventory_customization_parts
+    }
+
+    // Take field
+    pub fn take_unlocked_inventory_customization_parts(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::OakInventoryCustomizationPartInfo> {
+        ::std::mem::replace(&mut self.unlocked_inventory_customization_parts, ::protobuf::RepeatedField::new())
+    }
+
+    // int64 guardian_experience = 8;
+
+
+    pub fn get_guardian_experience(&self) -> i64 {
+        self.guardian_experience
+    }
+    pub fn clear_guardian_experience(&mut self) {
+        self.guardian_experience = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_guardian_experience(&mut self, v: i64) {
+        self.guardian_experience = v;
+    }
+
+    // repeated .OakSave.CrewQuartersDecorationItemSaveGameData unlocked_crew_quarters_decorations = 9;
+
+
+    pub fn get_unlocked_crew_quarters_decorations(&self) -> &[super::oak_shared::CrewQuartersDecorationItemSaveGameData] {
+        &self.unlocked_crew_quarters_decorations
+    }
+    pub fn clear_unlocked_crew_quarters_decorations(&mut self) {
+        self.unlocked_crew_quarters_decorations.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_unlocked_crew_quarters_decorations(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::CrewQuartersDecorationItemSaveGameData>) {
+        self.unlocked_crew_quarters_decorations = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_unlocked_crew_quarters_decorations(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::CrewQuartersDecorationItemSaveGameData> {
+        &mut self.unlocked_crew_quarters_decorations
+    }
+
+    // Take field
+    pub fn take_unlocked_crew_quarters_decorations(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::CrewQuartersDecorationItemSaveGameData> {
+        ::std::mem::replace(&mut self.unlocked_crew_quarters_decorations, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated .OakSave.CrewQuartersRoomItemSaveGameData unlocked_crew_quarters_rooms = 10;
+
+
+    pub fn get_unlocked_crew_quarters_rooms(&self) -> &[super::oak_shared::CrewQuartersRoomItemSaveGameData] {
+        &self.unlocked_crew_quarters_rooms
+    }
+    pub fn clear_unlocked_crew_quarters_rooms(&mut self) {
+        self.unlocked_crew_quarters_rooms.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_unlocked_crew_quarters_rooms(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::CrewQuartersRoomItemSaveGameData>) {
+        self.unlocked_crew_quarters_rooms = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_unlocked_crew_quarters_rooms(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::CrewQuartersRoomItemSaveGameData> {
+        &mut self.unlocked_crew_quarters_rooms
+    }
+
+    // Take field
+    pub fn take_unlocked_crew_quarters_rooms(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::CrewQuartersRoomItemSaveGameData> {
+        ::std::mem::replace(&mut self.unlocked_crew_quarters_rooms, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated .OakSave.ChallengeSaveGameData challenge_data = 11;
+
+
+    pub fn get_challenge_data(&self) -> &[super::oak_shared::ChallengeSaveGameData] {
+        &self.challenge_data
+    }
+    pub fn clear_challenge_data(&mut self) {
+        self.challenge_data.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_challenge_data(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::ChallengeSaveGameData>) {
+        self.challenge_data = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_challenge_data(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::ChallengeSaveGameData> {
+        &mut self.challenge_data
+    }
+
+    // Take field
+    pub fn take_challenge_data(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::ChallengeSaveGameData> {
+        ::std::mem::replace(&mut self.challenge_data, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated string mail_guids = 12;
+
+
+    pub fn get_mail_guids(&self) -> &[::std::string::String] {
+        &self.mail_guids
+    }
+    pub fn clear_mail_guids(&mut self) {
+        self.mail_guids.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_mail_guids(&mut self, v: ::protobuf::RepeatedField<::std::string::String>) {
+        self.mail_guids = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_mail_guids(&mut self) -> &mut ::protobuf::RepeatedField<::std::string::String> {
+        &mut self.mail_guids
+    }
+
+    // Take field
+    pub fn take_mail_guids(&mut self) -> ::protobuf::RepeatedField<::std::string::String> {
+        ::std::mem::replace(&mut self.mail_guids, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated int32 CitizenScienceLevelProgression = 13;
+
+
+    pub fn get_CitizenScienceLevelProgression(&self) -> &[i32] {
+        &self.CitizenScienceLevelProgression
+    }
+    pub fn clear_CitizenScienceLevelProgression(&mut self) {
+        self.CitizenScienceLevelProgression.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_CitizenScienceLevelProgression(&mut self, v: ::std::vec::Vec<i32>) {
+        self.CitizenScienceLevelProgression = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_CitizenScienceLevelProgression(&mut self) -> &mut ::std::vec::Vec<i32> {
+        &mut self.CitizenScienceLevelProgression
+    }
+
+    // Take field
+    pub fn take_CitizenScienceLevelProgression(&mut self) -> ::std::vec::Vec<i32> {
+        ::std::mem::replace(&mut self.CitizenScienceLevelProgression, ::std::vec::Vec::new())
+    }
+
+    // int32 CitizenScienceCSBucksAmount = 14;
+
+
+    pub fn get_CitizenScienceCSBucksAmount(&self) -> i32 {
+        self.CitizenScienceCSBucksAmount
+    }
+    pub fn clear_CitizenScienceCSBucksAmount(&mut self) {
+        self.CitizenScienceCSBucksAmount = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_CitizenScienceCSBucksAmount(&mut self, v: i32) {
+        self.CitizenScienceCSBucksAmount = v;
+    }
+
+    // .OakSave.VaultCardSaveGameData vault_card = 15;
+
+
+    pub fn get_vault_card(&self) -> &super::oak_shared::VaultCardSaveGameData {
+        self.vault_card.as_ref().unwrap_or_else(|| <super::oak_shared::VaultCardSaveGameData as ::protobuf::Message>::default_instance())
+    }
+    pub fn clear_vault_card(&mut self) {
+        self.vault_card.clear();
+    }
+
+    pub fn has_vault_card(&self) -> bool {
+        self.vault_card.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vault_card(&mut self, v: super::oak_shared::VaultCardSaveGameData) {
+        self.vault_card = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_vault_card(&mut self) -> &mut super::oak_shared::VaultCardSaveGameData {
+        if self.vault_card.is_none() {
+            self.vault_card.set_default();
+        }
+        self.vault_card.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_vault_card(&mut self) -> super::oak_shared::VaultCardSaveGameData {
+        self.vault_card.take().unwrap_or_else(|| super::oak_shared::VaultCardSaveGameData::new())
+    }
+
+    // bool bCitizenScienceHasSeenIntroVideo = 25;
+
+
+    pub fn get_bCitizenScienceHasSeenIntroVideo(&self) -> bool {
+        self.bCitizenScienceHasSeenIntroVideo
+    }
+    pub fn clear_bCitizenScienceHasSeenIntroVideo(&mut self) {
+        self.bCitizenScienceHasSeenIntroVideo = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_bCitizenScienceHasSeenIntroVideo(&mut self, v: bool) {
+        self.bCitizenScienceHasSeenIntroVideo = v;
+    }
+
+    // bool bCitizenScienceTutorialDone = 26;
+
+
+    pub fn get_bCitizenScienceTutorialDone(&self) -> bool {
+        self.bCitizenScienceTutorialDone
+    }
+    pub fn clear_bCitizenScienceTutorialDone(&mut self) {
+        self.bCitizenScienceTutorialDone = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_bCitizenScienceTutorialDone(&mut self, v: bool) {
+        self.bCitizenScienceTutorialDone = v;
+    }
+}
+
+impl ::protobuf::Message for OakProfileCloudData {
+    fn is_initialized(&self) -> bool {
+        for v in &self.profile_stats_data {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.npc_mail_items {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.profile_sdu_list {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.unlocked_customizations {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.unlocked_inventory_customization_parts {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.unlocked_crew_quarters_decorations {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.unlocked_crew_quarters_rooms {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.challenge_data {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.vault_card {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.profile_stats_data)?;
+                }
+                2 => {
+                    ::protobuf::rt::read_repeated_bytes_into(wire_type, is, &mut self.bank_inventory_list)?;
+                }
+                3 => {
+                    ::protobuf::rt::read_repeated_bytes_into(wire_type, is, &mut self.lost_loot_inventory_list)?;
+                }
+                4 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.npc_mail_items)?;
+                }
+                5 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.profile_sdu_list)?;
+                }
+                6 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_customizations)?;
+                }
+                7 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_inventory_customization_parts)?;
+                }
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.guardian_experience = tmp;
+                }
+                9 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_crew_quarters_decorations)?;
+                }
+                10 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_crew_quarters_rooms)?;
+                }
+                11 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.challenge_data)?;
+                }
+                12 => {
+                    ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.mail_guids)?;
+                }
+                13 => {
+                    ::protobuf::rt::read_repeated_int32_into(wire_type, is, &mut self.CitizenScienceLevelProgression)?;
+                }
+                14 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int32()?;
+                    self.CitizenScienceCSBucksAmount = tmp;
+                }
+                15 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.vault_card)?;
+                }
+                25 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.bCitizenScienceHasSeenIntroVideo = tmp;
+                }
+                26 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.bCitizenScienceTutorialDone = tmp;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        for value in &self.profile_stats_data {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        for value in &self.bank_inventory_list {
+            my_size += ::protobuf::rt::bytes_size(2, &value);
+        };
+        for value in &self.lost_loot_inventory_list {
+            my_size += ::protobuf::rt::bytes_size(3, &value);
+        };
+        for value in &self.npc_mail_items {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        for value in &self.profile_sdu_list {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        for value in &self.unlocked_customizations {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        for value in &self.unlocked_inventory_customization_parts {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        if self.guardian_experience != 0 {
+            my_size += ::protobuf::rt::value_size(8, self.guardian_experience, ::protobuf::wire_format::WireTypeVarint);
+        }
+        for value in &self.unlocked_crew_quarters_decorations {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        for value in &self.unlocked_crew_quarters_rooms {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        for value in &self.challenge_data {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        for value in &self.mail_guids {
+            my_size += ::protobuf::rt::string_size(12, &value);
+        };
+        for value in &self.CitizenScienceLevelProgression {
+            my_size += ::protobuf::rt::value_size(13, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
+        if self.CitizenScienceCSBucksAmount != 0 {
+            my_size += ::protobuf::rt::value_size(14, self.CitizenScienceCSBucksAmount, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if let Some(ref v) = self.vault_card.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        if self.bCitizenScienceHasSeenIntroVideo != false {
+            my_size += 3;
+        }
+        if self.bCitizenScienceTutorialDone != false {
+            my_size += 3;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        for v in &self.profile_stats_data {
+            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        for v in &self.bank_inventory_list {
+            os.write_bytes(2, &v)?;
+        };
+        for v in &self.lost_loot_inventory_list {
+            os.write_bytes(3, &v)?;
+        };
+        for v in &self.npc_mail_items {
+            os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        for v in &self.profile_sdu_list {
+            os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        for v in &self.unlocked_customizations {
+            os.write_tag(6, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        for v in &self.unlocked_inventory_customization_parts {
+            os.write_tag(7, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        if self.guardian_experience != 0 {
+            os.write_int64(8, self.guardian_experience)?;
+        }
+        for v in &self.unlocked_crew_quarters_decorations {
+            os.write_tag(9, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        for v in &self.unlocked_crew_quarters_rooms {
+            os.write_tag(10, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        for v in &self.challenge_data {
+            os.write_tag(11, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        for v in &self.mail_guids {
+            os.write_string(12, &v)?;
+        };
+        for v in &self.CitizenScienceLevelProgression {
+            os.write_int32(13, *v)?;
+        };
+        if self.CitizenScienceCSBucksAmount != 0 {
+            os.write_int32(14, self.CitizenScienceCSBucksAmount)?;
+        }
+        if let Some(ref v) = self.vault_card.as_ref() {
+            os.write_tag(15, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        if self.bCitizenScienceHasSeenIntroVideo != false {
+            os.write_bool(25, self.bCitizenScienceHasSeenIntroVideo)?;
+        }
+        if self.bCitizenScienceTutorialDone != false {
+            os.write_bool(26, self.bCitizenScienceTutorialDone)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> OakProfileCloudData {
+        OakProfileCloudData::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::GameStatSaveGameData>>(
+                "profile_stats_data",
+                |m: &OakProfileCloudData| { &m.profile_stats_data },
+                |m: &mut OakProfileCloudData| { &mut m.profile_stats_data },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "bank_inventory_list",
+                |m: &OakProfileCloudData| { &m.bank_inventory_list },
+                |m: &mut OakProfileCloudData| { &mut m.bank_inventory_list },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "lost_loot_inventory_list",
+                |m: &OakProfileCloudData| { &m.lost_loot_inventory_list },
+                |m: &mut OakProfileCloudData| { &mut m.lost_loot_inventory_list },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::OakMailItem>>(
+                "npc_mail_items",
+                |m: &OakProfileCloudData| { &m.npc_mail_items },
+                |m: &mut OakProfileCloudData| { &mut m.npc_mail_items },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::OakSDUSaveGameData>>(
+                "profile_sdu_list",
+                |m: &OakProfileCloudData| { &m.profile_sdu_list },
+                |m: &mut OakProfileCloudData| { &mut m.profile_sdu_list },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::OakCustomizationSaveGameData>>(
+                "unlocked_customizations",
+                |m: &OakProfileCloudData| { &m.unlocked_customizations },
+                |m: &mut OakProfileCloudData| { &mut m.unlocked_customizations },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::OakInventoryCustomizationPartInfo>>(
+                "unlocked_inventory_customization_parts",
+                |m: &OakProfileCloudData| { &m.unlocked_inventory_customization_parts },
+                |m: &mut OakProfileCloudData| { &mut m.unlocked_inventory_customization_parts },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                "guardian_experience",
+                |m: &OakProfileCloudData| { &m.guardian_experience },
+                |m: &mut OakProfileCloudData| { &mut m.guardian_experience },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::CrewQuartersDecorationItemSaveGameData>>(
+                "unlocked_crew_quarters_decorations",
+                |m: &OakProfileCloudData| { &m.unlocked_crew_quarters_decorations },
+                |m: &mut OakProfileCloudData| { &mut m.unlocked_crew_quarters_decorations },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::CrewQuartersRoomItemSaveGameData>>(
+                "unlocked_crew_quarters_rooms",
+                |m: &OakProfileCloudData| { &m.unlocked_crew_quarters_rooms },
+                |m: &mut OakProfileCloudData| { &mut m.unlocked_crew_quarters_rooms },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::ChallengeSaveGameData>>(
+                "challenge_data",
+                |m: &OakProfileCloudData| { &m.challenge_data },
+                |m: &mut OakProfileCloudData| { &mut m.challenge_data },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "mail_guids",
+                |m: &OakProfileCloudData| { &m.mail_guids },
+                |m: &mut OakProfileCloudData| { &mut m.mail_guids },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_vec_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                "CitizenScienceLevelProgression",
+                |m: &OakProfileCloudData| { &m.CitizenScienceLevelProgression },
+                |m: &mut OakProfileCloudData| { &mut m.CitizenScienceLevelProgression },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                "CitizenScienceCSBucksAmount",
+                |m: &OakProfileCloudData| { &m.CitizenScienceCSBucksAmount },
+                |m: &mut OakProfileCloudData| { &mut m.CitizenScienceCSBucksAmount },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::VaultCardSaveGameData>>(
+                "vault_card",
+                |m: &OakProfileCloudData| { &m.vault_card },
+                |m: &mut OakProfileCloudData| { &mut m.vault_card },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "bCitizenScienceHasSeenIntroVideo",
+                |m: &OakProfileCloudData| { &m.bCitizenScienceHasSeenIntroVideo },
+                |m: &mut OakProfileCloudData| { &mut m.bCitizenScienceHasSeenIntroVideo },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "bCitizenScienceTutorialDone",
+                |m: &OakProfileCloudData| { &m.bCitizenScienceTutorialDone },
+                |m: &mut OakProfileCloudData| { &mut m.bCitizenScienceTutorialDone },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakProfileCloudData>(
+                "OakProfileCloudData",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static OakProfileCloudData {
+        static instance: ::protobuf::rt::LazyV2<OakProfileCloudData> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(OakProfileCloudData::new)
+    }
+}
+
+impl ::protobuf::Clear for OakProfileCloudData {
+    fn clear(&mut self) {
+        self.profile_stats_data.clear();
+        self.bank_inventory_list.clear();
+        self.lost_loot_inventory_list.clear();
+        self.npc_mail_items.clear();
+        self.profile_sdu_list.clear();
+        self.unlocked_customizations.clear();
+        self.unlocked_inventory_customization_parts.clear();
+        self.guardian_experience = 0;
+        self.unlocked_crew_quarters_decorations.clear();
+        self.unlocked_crew_quarters_rooms.clear();
+        self.challenge_data.clear();
+        self.mail_guids.clear();
+        self.CitizenScienceLevelProgression.clear();
+        self.CitizenScienceCSBucksAmount = 0;
+        self.vault_card.clear();
+        self.bCitizenScienceHasSeenIntroVideo = false;
+        self.bCitizenScienceTutorialDone = false;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for OakProfileCloudData {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for OakProfileCloudData {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
 pub struct Character {
     // message fields
     pub save_game_id: u32,
@@ -11001,6 +11871,7 @@ pub struct Character {
     pub last_active_league_instance: u32,
     pub active_league_instance_for_event: ::protobuf::RepeatedField<Character_ActiveLeagueInstanceForEventEntry>,
     pub levelled_save_vehicle_part_rewards_fixup_applied: bool,
+    pub profile_cloud_data: ::protobuf::SingularPtrField<OakProfileCloudData>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -12443,6 +13314,39 @@ impl Character {
     pub fn set_levelled_save_vehicle_part_rewards_fixup_applied(&mut self, v: bool) {
         self.levelled_save_vehicle_part_rewards_fixup_applied = v;
     }
+
+    // .OakSave.OakProfileCloudData profile_cloud_data = 64;
+
+
+    pub fn get_profile_cloud_data(&self) -> &OakProfileCloudData {
+        self.profile_cloud_data.as_ref().unwrap_or_else(|| <OakProfileCloudData as ::protobuf::Message>::default_instance())
+    }
+    pub fn clear_profile_cloud_data(&mut self) {
+        self.profile_cloud_data.clear();
+    }
+
+    pub fn has_profile_cloud_data(&self) -> bool {
+        self.profile_cloud_data.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_profile_cloud_data(&mut self, v: OakProfileCloudData) {
+        self.profile_cloud_data = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_profile_cloud_data(&mut self) -> &mut OakProfileCloudData {
+        if self.profile_cloud_data.is_none() {
+            self.profile_cloud_data.set_default();
+        }
+        self.profile_cloud_data.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_profile_cloud_data(&mut self) -> OakProfileCloudData {
+        self.profile_cloud_data.take().unwrap_or_else(|| OakProfileCloudData::new())
+    }
 }
 
 impl ::protobuf::Message for Character {
@@ -12608,6 +13512,11 @@ impl ::protobuf::Message for Character {
             }
         };
         for v in &self.active_league_instance_for_event {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.profile_cloud_data {
             if !v.is_initialized() {
                 return false;
             }
@@ -12871,6 +13780,9 @@ impl ::protobuf::Message for Character {
                     let tmp = is.read_bool()?;
                     self.levelled_save_vehicle_part_rewards_fixup_applied = tmp;
                 }
+                64 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.profile_cloud_data)?;
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 }
@@ -13095,6 +14007,10 @@ impl ::protobuf::Message for Character {
         };
         if self.levelled_save_vehicle_part_rewards_fixup_applied != false {
             my_size += 3;
+        }
+        if let Some(ref v) = self.profile_cloud_data.as_ref() {
+            let len = v.compute_size();
+            my_size += 2 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -13347,6 +14263,11 @@ impl ::protobuf::Message for Character {
         };
         if self.levelled_save_vehicle_part_rewards_fixup_applied != false {
             os.write_bool(63, self.levelled_save_vehicle_part_rewards_fixup_applied)?;
+        }
+        if let Some(ref v) = self.profile_cloud_data.as_ref() {
+            os.write_tag(64, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -13686,6 +14607,11 @@ impl ::protobuf::Message for Character {
                 |m: &Character| { &m.levelled_save_vehicle_part_rewards_fixup_applied },
                 |m: &mut Character| { &mut m.levelled_save_vehicle_part_rewards_fixup_applied },
             ));
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<OakProfileCloudData>>(
+                "profile_cloud_data",
+                |m: &Character| { &m.profile_cloud_data },
+                |m: &mut Character| { &mut m.profile_cloud_data },
+            ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Character>(
                 "Character",
                 fields,
@@ -13762,6 +14688,7 @@ impl ::protobuf::Clear for Character {
         self.last_active_league_instance = 0;
         self.active_league_instance_for_event.clear();
         self.levelled_save_vehicle_part_rewards_fixup_applied = false;
+        self.profile_cloud_data.clear();
         self.unknown_fields.clear();
     }
 }
@@ -14350,41 +15277,66 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     revision\x18\x06\x20\x01(\rR\x0cdataRevisionB\0\x12\x1b\n\x08fod_data\
     \x18\x07\x20\x01(\x0cR\x07fodDataB\0:\0\"d\n\x19GbxZoneMapFODSaveGameDat\
     a\x12E\n\nlevel_data\x18\x01\x20\x03(\x0b2$.OakSave.GbxZoneMapFODSavedLe\
-    velDataR\tlevelDataB\0:\0\"\xde&\n\tCharacter\x12\"\n\x0csave_game_id\
-    \x18\x01\x20\x01(\rR\nsaveGameIdB\0\x120\n\x13last_save_timestamp\x18\
-    \x02\x20\x01(\x03R\x11lastSaveTimestampB\0\x120\n\x13time_played_seconds\
-    \x18\x03\x20\x01(\rR\x11timePlayedSecondsB\0\x12N\n\x11player_class_data\
-    \x18\x04\x20\x01(\x0b2\x20.OakSave.PlayerClassSaveGameDataR\x0fplayerCla\
-    ssDataB\0\x12J\n\x0eresource_pools\x18\x05\x20\x03(\x0b2!.OakSave.Resour\
-    cePoolSavegameDataR\rresourcePoolsB\0\x12B\n\rsaved_regions\x18\x06\x20\
-    \x03(\x0b2\x1b.OakSave.RegionSaveGameDataR\x0csavedRegionsB\0\x12-\n\x11\
-    experience_points\x18\x07\x20\x01(\x05R\x10experiencePointsB\0\x12G\n\
-    \x0fgame_stats_data\x18\x08\x20\x03(\x0b2\x1d.OakSave.GameStatSaveGameDa\
-    taR\rgameStatsDataB\0\x12\\\n\x17inventory_category_list\x18\t\x20\x03(\
-    \x0b2\".OakSave.InventoryCategorySaveDataR\x15inventoryCategoryListB\0\
-    \x12P\n\x0finventory_items\x18\n\x20\x03(\x0b2%.OakSave.OakInventoryItem\
-    SaveGameDataR\x0einventoryItemsB\0\x12`\n\x17equipped_inventory_list\x18\
-    \x0b\x20\x03(\x0b2&.OakSave.EquippedInventorySaveGameDataR\x15equippedIn\
-    ventoryListB\0\x12.\n\x12active_weapon_list\x18\x0c\x20\x03(\x05R\x10act\
-    iveWeaponListB\0\x12J\n\x0cability_data\x18\r\x20\x01(\x0b2%.OakSave.Oak\
-    PlayerAbilitySaveGameDataR\x0babilityDataB\0\x127\n\x17last_play_through\
-    _index\x18\x0e\x20\x01(\x05R\x14lastPlayThroughIndexB\0\x127\n\x16playth\
-    roughs_completed\x18\x0f\x20\x01(\x05R\x15playthroughsCompletedB\0\x12K\
-    \n!show_new_playthrough_notification\x18\x10\x20\x01(\x08R\x1eshowNewPla\
-    ythroughNotificationB\0\x12e\n\x19mission_playthroughs_data\x18\x11\x20\
-    \x03(\x0b2'.OakSave.MissionPlaythroughSaveGameDataR\x17missionPlaythroug\
-    hsDataB\0\x126\n\x16active_travel_stations\x18\x15\x20\x03(\tR\x14active\
-    TravelStationsB\0\x12C\n\x0ediscovery_data\x18\x16\x20\x01(\x0b2\x1a.Oak\
-    Save.DiscoverySaveDataR\rdiscoveryDataB\0\x12=\n\x1alast_active_travel_s\
-    tation\x18\x17\x20\x01(\tR\x17lastActiveTravelStationB\0\x12\\\n\x16vehi\
-    cles_unlocked_data\x18\x18\x20\x03(\x0b2$.OakSave.VehicleUnlockedSaveGam\
-    eDataR\x14vehiclesUnlockedDataB\0\x126\n\x16vehicle_parts_unlocked\x18\
-    \x19\x20\x03(\tR\x14vehiclePartsUnlockedB\0\x12U\n\x10vehicle_loadouts\
-    \x18\x1a\x20\x03(\x0b2(.OakSave.OakCARMenuVehicleConfigSaveDataR\x0fvehi\
-    cleLoadoutsB\0\x12=\n\x1avehicle_last_loadout_index\x18\x1b\x20\x01(\x05\
-    R\x17vehicleLastLoadoutIndexB\0\x12G\n\x0echallenge_data\x18\x1c\x20\x03\
-    (\x0b2\x1e.OakSave.ChallengeSaveGameDataR\rchallengeDataB\0\x128\n\x08sd\
-    u_list\x18\x1d\x20\x03(\x0b2\x1b.OakSave.OakSDUSaveGameDataR\x07sduListB\
+    velDataR\tlevelDataB\0:\0\"\xac\n\n\x13OakProfileCloudData\x12M\n\x12pro\
+    file_stats_data\x18\x01\x20\x03(\x0b2\x1d.OakSave.GameStatSaveGameDataR\
+    \x10profileStatsDataB\0\x120\n\x13bank_inventory_list\x18\x02\x20\x03(\
+    \x0cR\x11bankInventoryListB\0\x129\n\x18lost_loot_inventory_list\x18\x03\
+    \x20\x03(\x0cR\x15lostLootInventoryListB\0\x12<\n\x0enpc_mail_items\x18\
+    \x04\x20\x03(\x0b2\x14.OakSave.OakMailItemR\x0cnpcMailItemsB\0\x12G\n\
+    \x10profile_sdu_list\x18\x05\x20\x03(\x0b2\x1b.OakSave.OakSDUSaveGameDat\
+    aR\x0eprofileSduListB\0\x12`\n\x17unlocked_customizations\x18\x06\x20\
+    \x03(\x0b2%.OakSave.OakCustomizationSaveGameDataR\x16unlockedCustomizati\
+    onsB\0\x12\x81\x01\n&unlocked_inventory_customization_parts\x18\x07\x20\
+    \x03(\x0b2*.OakSave.OakInventoryCustomizationPartInfoR#unlockedInventory\
+    CustomizationPartsB\0\x121\n\x13guardian_experience\x18\x08\x20\x01(\x03\
+    R\x12guardianExperienceB\0\x12~\n\"unlocked_crew_quarters_decorations\
+    \x18\t\x20\x03(\x0b2/.OakSave.CrewQuartersDecorationItemSaveGameDataR\
+    \x1funlockedCrewQuartersDecorationsB\0\x12l\n\x1cunlocked_crew_quarters_\
+    rooms\x18\n\x20\x03(\x0b2).OakSave.CrewQuartersRoomItemSaveGameDataR\x19\
+    unlockedCrewQuartersRoomsB\0\x12G\n\x0echallenge_data\x18\x0b\x20\x03(\
+    \x0b2\x1e.OakSave.ChallengeSaveGameDataR\rchallengeDataB\0\x12\x1f\n\nma\
+    il_guids\x18\x0c\x20\x03(\tR\tmailGuidsB\0\x12H\n\x1eCitizenScienceLevel\
+    Progression\x18\r\x20\x03(\x05R\x1eCitizenScienceLevelProgressionB\0\x12\
+    B\n\x1bCitizenScienceCSBucksAmount\x18\x0e\x20\x01(\x05R\x1bCitizenScien\
+    ceCSBucksAmountB\0\x12?\n\nvault_card\x18\x0f\x20\x01(\x0b2\x1e.OakSave.\
+    VaultCardSaveGameDataR\tvaultCardB\0\x12L\n\x20bCitizenScienceHasSeenInt\
+    roVideo\x18\x19\x20\x01(\x08R\x20bCitizenScienceHasSeenIntroVideoB\0\x12\
+    B\n\x1bbCitizenScienceTutorialDone\x18\x1a\x20\x01(\x08R\x1bbCitizenScie\
+    nceTutorialDoneB\0:\0\"\xac'\n\tCharacter\x12\"\n\x0csave_game_id\x18\
+    \x01\x20\x01(\rR\nsaveGameIdB\0\x120\n\x13last_save_timestamp\x18\x02\
+    \x20\x01(\x03R\x11lastSaveTimestampB\0\x120\n\x13time_played_seconds\x18\
+    \x03\x20\x01(\rR\x11timePlayedSecondsB\0\x12N\n\x11player_class_data\x18\
+    \x04\x20\x01(\x0b2\x20.OakSave.PlayerClassSaveGameDataR\x0fplayerClassDa\
+    taB\0\x12J\n\x0eresource_pools\x18\x05\x20\x03(\x0b2!.OakSave.ResourcePo\
+    olSavegameDataR\rresourcePoolsB\0\x12B\n\rsaved_regions\x18\x06\x20\x03(\
+    \x0b2\x1b.OakSave.RegionSaveGameDataR\x0csavedRegionsB\0\x12-\n\x11exper\
+    ience_points\x18\x07\x20\x01(\x05R\x10experiencePointsB\0\x12G\n\x0fgame\
+    _stats_data\x18\x08\x20\x03(\x0b2\x1d.OakSave.GameStatSaveGameDataR\rgam\
+    eStatsDataB\0\x12\\\n\x17inventory_category_list\x18\t\x20\x03(\x0b2\".O\
+    akSave.InventoryCategorySaveDataR\x15inventoryCategoryListB\0\x12P\n\x0f\
+    inventory_items\x18\n\x20\x03(\x0b2%.OakSave.OakInventoryItemSaveGameDat\
+    aR\x0einventoryItemsB\0\x12`\n\x17equipped_inventory_list\x18\x0b\x20\
+    \x03(\x0b2&.OakSave.EquippedInventorySaveGameDataR\x15equippedInventoryL\
+    istB\0\x12.\n\x12active_weapon_list\x18\x0c\x20\x03(\x05R\x10activeWeapo\
+    nListB\0\x12J\n\x0cability_data\x18\r\x20\x01(\x0b2%.OakSave.OakPlayerAb\
+    ilitySaveGameDataR\x0babilityDataB\0\x127\n\x17last_play_through_index\
+    \x18\x0e\x20\x01(\x05R\x14lastPlayThroughIndexB\0\x127\n\x16playthroughs\
+    _completed\x18\x0f\x20\x01(\x05R\x15playthroughsCompletedB\0\x12K\n!show\
+    _new_playthrough_notification\x18\x10\x20\x01(\x08R\x1eshowNewPlaythroug\
+    hNotificationB\0\x12e\n\x19mission_playthroughs_data\x18\x11\x20\x03(\
+    \x0b2'.OakSave.MissionPlaythroughSaveGameDataR\x17missionPlaythroughsDat\
+    aB\0\x126\n\x16active_travel_stations\x18\x15\x20\x03(\tR\x14activeTrave\
+    lStationsB\0\x12C\n\x0ediscovery_data\x18\x16\x20\x01(\x0b2\x1a.OakSave.\
+    DiscoverySaveDataR\rdiscoveryDataB\0\x12=\n\x1alast_active_travel_statio\
+    n\x18\x17\x20\x01(\tR\x17lastActiveTravelStationB\0\x12\\\n\x16vehicles_\
+    unlocked_data\x18\x18\x20\x03(\x0b2$.OakSave.VehicleUnlockedSaveGameData\
+    R\x14vehiclesUnlockedDataB\0\x126\n\x16vehicle_parts_unlocked\x18\x19\
+    \x20\x03(\tR\x14vehiclePartsUnlockedB\0\x12U\n\x10vehicle_loadouts\x18\
+    \x1a\x20\x03(\x0b2(.OakSave.OakCARMenuVehicleConfigSaveDataR\x0fvehicleL\
+    oadoutsB\0\x12=\n\x1avehicle_last_loadout_index\x18\x1b\x20\x01(\x05R\
+    \x17vehicleLastLoadoutIndexB\0\x12G\n\x0echallenge_data\x18\x1c\x20\x03(\
+    \x0b2\x1e.OakSave.ChallengeSaveGameDataR\rchallengeDataB\0\x128\n\x08sdu\
+    _list\x18\x1d\x20\x03(\x0b2\x1b.OakSave.OakSDUSaveGameDataR\x07sduListB\
     \0\x129\n\x17selected_customizations\x18\x1e\x20\x03(\tR\x16selectedCust\
     omizationsB\0\x12D\n\x1dequipped_emote_customizations\x18\x1f\x20\x03(\
     \x05R\x1bequippedEmoteCustomizationsB\0\x12l\n\x1dselected_color_customi\
@@ -14437,11 +15389,12 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     e_instance_for_event\x18>\x20\x03(\x0b24.OakSave.Character.ActiveLeagueI\
     nstanceForEventEntryR\x1cactiveLeagueInstanceForEventB\0\x12f\n0levelled\
     _save_vehicle_part_rewards_fixup_applied\x18?\x20\x01(\x08R*levelledSave\
-    VehiclePartRewardsFixupAppliedB\0\x1aE\n\x15NicknameMappingsEntry\x12\
-    \x12\n\x03key\x18\x01\x20\x01(\tR\x03keyB\0\x12\x16\n\x05value\x18\x02\
-    \x20\x01(\tR\x05valueB\0:\0\x1aQ\n!ActiveLeagueInstanceForEventEntry\x12\
-    \x12\n\x03key\x18\x01\x20\x01(\rR\x03keyB\0\x12\x16\n\x05value\x18\x02\
-    \x20\x01(\rR\x05valueB\0:\0:\0B\0b\x06proto3\
+    VehiclePartRewardsFixupAppliedB\0\x12L\n\x12profile_cloud_data\x18@\x20\
+    \x01(\x0b2\x1c.OakSave.OakProfileCloudDataR\x10profileCloudDataB\0\x1aE\
+    \n\x15NicknameMappingsEntry\x12\x12\n\x03key\x18\x01\x20\x01(\tR\x03keyB\
+    \0\x12\x16\n\x05value\x18\x02\x20\x01(\tR\x05valueB\0:\0\x1aQ\n!ActiveLe\
+    agueInstanceForEventEntry\x12\x12\n\x03key\x18\x01\x20\x01(\rR\x03keyB\0\
+    \x12\x16\n\x05value\x18\x02\x20\x01(\rR\x05valueB\0:\0:\0B\0b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

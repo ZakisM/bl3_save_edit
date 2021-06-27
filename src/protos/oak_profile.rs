@@ -1721,515 +1721,6 @@ impl ::protobuf::reflect::ProtobufValue for OakFriendEncounterData {
 }
 
 #[derive(PartialEq, Clone, Default)]
-pub struct OakMailItem {
-    // message fields
-    pub mail_item_type: u32,
-    pub sender_display_name: ::std::string::String,
-    pub subject: ::std::string::String,
-    pub body: ::std::string::String,
-    pub gear_serial_number: ::std::string::String,
-    pub mail_guid: ::std::string::String,
-    pub date_sent: i64,
-    pub expiration_date: i64,
-    pub from_player_id: ::std::string::String,
-    pub has_been_read: bool,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a OakMailItem {
-    fn default() -> &'a OakMailItem {
-        <OakMailItem as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl OakMailItem {
-    pub fn new() -> OakMailItem {
-        ::std::default::Default::default()
-    }
-
-    // uint32 mail_item_type = 1;
-
-
-    pub fn get_mail_item_type(&self) -> u32 {
-        self.mail_item_type
-    }
-    pub fn clear_mail_item_type(&mut self) {
-        self.mail_item_type = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_mail_item_type(&mut self, v: u32) {
-        self.mail_item_type = v;
-    }
-
-    // string sender_display_name = 2;
-
-
-    pub fn get_sender_display_name(&self) -> &str {
-        &self.sender_display_name
-    }
-    pub fn clear_sender_display_name(&mut self) {
-        self.sender_display_name.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_sender_display_name(&mut self, v: ::std::string::String) {
-        self.sender_display_name = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_sender_display_name(&mut self) -> &mut ::std::string::String {
-        &mut self.sender_display_name
-    }
-
-    // Take field
-    pub fn take_sender_display_name(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.sender_display_name, ::std::string::String::new())
-    }
-
-    // string subject = 3;
-
-
-    pub fn get_subject(&self) -> &str {
-        &self.subject
-    }
-    pub fn clear_subject(&mut self) {
-        self.subject.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_subject(&mut self, v: ::std::string::String) {
-        self.subject = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_subject(&mut self) -> &mut ::std::string::String {
-        &mut self.subject
-    }
-
-    // Take field
-    pub fn take_subject(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.subject, ::std::string::String::new())
-    }
-
-    // string body = 4;
-
-
-    pub fn get_body(&self) -> &str {
-        &self.body
-    }
-    pub fn clear_body(&mut self) {
-        self.body.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_body(&mut self, v: ::std::string::String) {
-        self.body = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_body(&mut self) -> &mut ::std::string::String {
-        &mut self.body
-    }
-
-    // Take field
-    pub fn take_body(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.body, ::std::string::String::new())
-    }
-
-    // string gear_serial_number = 5;
-
-
-    pub fn get_gear_serial_number(&self) -> &str {
-        &self.gear_serial_number
-    }
-    pub fn clear_gear_serial_number(&mut self) {
-        self.gear_serial_number.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_gear_serial_number(&mut self, v: ::std::string::String) {
-        self.gear_serial_number = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_gear_serial_number(&mut self) -> &mut ::std::string::String {
-        &mut self.gear_serial_number
-    }
-
-    // Take field
-    pub fn take_gear_serial_number(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.gear_serial_number, ::std::string::String::new())
-    }
-
-    // string mail_guid = 6;
-
-
-    pub fn get_mail_guid(&self) -> &str {
-        &self.mail_guid
-    }
-    pub fn clear_mail_guid(&mut self) {
-        self.mail_guid.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_mail_guid(&mut self, v: ::std::string::String) {
-        self.mail_guid = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_mail_guid(&mut self) -> &mut ::std::string::String {
-        &mut self.mail_guid
-    }
-
-    // Take field
-    pub fn take_mail_guid(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.mail_guid, ::std::string::String::new())
-    }
-
-    // int64 date_sent = 7;
-
-
-    pub fn get_date_sent(&self) -> i64 {
-        self.date_sent
-    }
-    pub fn clear_date_sent(&mut self) {
-        self.date_sent = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_date_sent(&mut self, v: i64) {
-        self.date_sent = v;
-    }
-
-    // int64 expiration_date = 8;
-
-
-    pub fn get_expiration_date(&self) -> i64 {
-        self.expiration_date
-    }
-    pub fn clear_expiration_date(&mut self) {
-        self.expiration_date = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_expiration_date(&mut self, v: i64) {
-        self.expiration_date = v;
-    }
-
-    // string from_player_id = 9;
-
-
-    pub fn get_from_player_id(&self) -> &str {
-        &self.from_player_id
-    }
-    pub fn clear_from_player_id(&mut self) {
-        self.from_player_id.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_from_player_id(&mut self, v: ::std::string::String) {
-        self.from_player_id = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_from_player_id(&mut self) -> &mut ::std::string::String {
-        &mut self.from_player_id
-    }
-
-    // Take field
-    pub fn take_from_player_id(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.from_player_id, ::std::string::String::new())
-    }
-
-    // bool has_been_read = 10;
-
-
-    pub fn get_has_been_read(&self) -> bool {
-        self.has_been_read
-    }
-    pub fn clear_has_been_read(&mut self) {
-        self.has_been_read = false;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_has_been_read(&mut self, v: bool) {
-        self.has_been_read = v;
-    }
-}
-
-impl ::protobuf::Message for OakMailItem {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint32()?;
-                    self.mail_item_type = tmp;
-                }
-                2 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.sender_display_name)?;
-                }
-                3 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.subject)?;
-                }
-                4 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.body)?;
-                }
-                5 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.gear_serial_number)?;
-                }
-                6 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.mail_guid)?;
-                }
-                7 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_int64()?;
-                    self.date_sent = tmp;
-                }
-                8 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_int64()?;
-                    self.expiration_date = tmp;
-                }
-                9 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.from_player_id)?;
-                }
-                10 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_bool()?;
-                    self.has_been_read = tmp;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.mail_item_type != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.mail_item_type, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if !self.sender_display_name.is_empty() {
-            my_size += ::protobuf::rt::string_size(2, &self.sender_display_name);
-        }
-        if !self.subject.is_empty() {
-            my_size += ::protobuf::rt::string_size(3, &self.subject);
-        }
-        if !self.body.is_empty() {
-            my_size += ::protobuf::rt::string_size(4, &self.body);
-        }
-        if !self.gear_serial_number.is_empty() {
-            my_size += ::protobuf::rt::string_size(5, &self.gear_serial_number);
-        }
-        if !self.mail_guid.is_empty() {
-            my_size += ::protobuf::rt::string_size(6, &self.mail_guid);
-        }
-        if self.date_sent != 0 {
-            my_size += ::protobuf::rt::value_size(7, self.date_sent, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.expiration_date != 0 {
-            my_size += ::protobuf::rt::value_size(8, self.expiration_date, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if !self.from_player_id.is_empty() {
-            my_size += ::protobuf::rt::string_size(9, &self.from_player_id);
-        }
-        if self.has_been_read != false {
-            my_size += 2;
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.mail_item_type != 0 {
-            os.write_uint32(1, self.mail_item_type)?;
-        }
-        if !self.sender_display_name.is_empty() {
-            os.write_string(2, &self.sender_display_name)?;
-        }
-        if !self.subject.is_empty() {
-            os.write_string(3, &self.subject)?;
-        }
-        if !self.body.is_empty() {
-            os.write_string(4, &self.body)?;
-        }
-        if !self.gear_serial_number.is_empty() {
-            os.write_string(5, &self.gear_serial_number)?;
-        }
-        if !self.mail_guid.is_empty() {
-            os.write_string(6, &self.mail_guid)?;
-        }
-        if self.date_sent != 0 {
-            os.write_int64(7, self.date_sent)?;
-        }
-        if self.expiration_date != 0 {
-            os.write_int64(8, self.expiration_date)?;
-        }
-        if !self.from_player_id.is_empty() {
-            os.write_string(9, &self.from_player_id)?;
-        }
-        if self.has_been_read != false {
-            os.write_bool(10, self.has_been_read)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> OakMailItem {
-        OakMailItem::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "mail_item_type",
-                |m: &OakMailItem| { &m.mail_item_type },
-                |m: &mut OakMailItem| { &mut m.mail_item_type },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "sender_display_name",
-                |m: &OakMailItem| { &m.sender_display_name },
-                |m: &mut OakMailItem| { &mut m.sender_display_name },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "subject",
-                |m: &OakMailItem| { &m.subject },
-                |m: &mut OakMailItem| { &mut m.subject },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "body",
-                |m: &OakMailItem| { &m.body },
-                |m: &mut OakMailItem| { &mut m.body },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "gear_serial_number",
-                |m: &OakMailItem| { &m.gear_serial_number },
-                |m: &mut OakMailItem| { &mut m.gear_serial_number },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "mail_guid",
-                |m: &OakMailItem| { &m.mail_guid },
-                |m: &mut OakMailItem| { &mut m.mail_guid },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
-                "date_sent",
-                |m: &OakMailItem| { &m.date_sent },
-                |m: &mut OakMailItem| { &mut m.date_sent },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
-                "expiration_date",
-                |m: &OakMailItem| { &m.expiration_date },
-                |m: &mut OakMailItem| { &mut m.expiration_date },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "from_player_id",
-                |m: &OakMailItem| { &m.from_player_id },
-                |m: &mut OakMailItem| { &mut m.from_player_id },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
-                "has_been_read",
-                |m: &OakMailItem| { &m.has_been_read },
-                |m: &mut OakMailItem| { &mut m.has_been_read },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakMailItem>(
-                "OakMailItem",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static OakMailItem {
-        static instance: ::protobuf::rt::LazyV2<OakMailItem> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(OakMailItem::new)
-    }
-}
-
-impl ::protobuf::Clear for OakMailItem {
-    fn clear(&mut self) {
-        self.mail_item_type = 0;
-        self.sender_display_name.clear();
-        self.subject.clear();
-        self.body.clear();
-        self.gear_serial_number.clear();
-        self.mail_guid.clear();
-        self.date_sent = 0;
-        self.expiration_date = 0;
-        self.from_player_id.clear();
-        self.has_been_read = false;
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for OakMailItem {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for OakMailItem {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
 pub struct GearSoldByFriendData {
     // message fields
     pub gear_serial_number: ::std::string::String,
@@ -2460,387 +1951,6 @@ impl ::std::fmt::Debug for GearSoldByFriendData {
 }
 
 impl ::protobuf::reflect::ProtobufValue for GearSoldByFriendData {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
-pub struct OakCustomizationSaveGameData {
-    // message fields
-    pub is_new: bool,
-    pub customization_asset_path: ::std::string::String,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a OakCustomizationSaveGameData {
-    fn default() -> &'a OakCustomizationSaveGameData {
-        <OakCustomizationSaveGameData as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl OakCustomizationSaveGameData {
-    pub fn new() -> OakCustomizationSaveGameData {
-        ::std::default::Default::default()
-    }
-
-    // bool is_new = 1;
-
-
-    pub fn get_is_new(&self) -> bool {
-        self.is_new
-    }
-    pub fn clear_is_new(&mut self) {
-        self.is_new = false;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_is_new(&mut self, v: bool) {
-        self.is_new = v;
-    }
-
-    // string customization_asset_path = 2;
-
-
-    pub fn get_customization_asset_path(&self) -> &str {
-        &self.customization_asset_path
-    }
-    pub fn clear_customization_asset_path(&mut self) {
-        self.customization_asset_path.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_customization_asset_path(&mut self, v: ::std::string::String) {
-        self.customization_asset_path = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_customization_asset_path(&mut self) -> &mut ::std::string::String {
-        &mut self.customization_asset_path
-    }
-
-    // Take field
-    pub fn take_customization_asset_path(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.customization_asset_path, ::std::string::String::new())
-    }
-}
-
-impl ::protobuf::Message for OakCustomizationSaveGameData {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_bool()?;
-                    self.is_new = tmp;
-                }
-                2 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.customization_asset_path)?;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.is_new != false {
-            my_size += 2;
-        }
-        if !self.customization_asset_path.is_empty() {
-            my_size += ::protobuf::rt::string_size(2, &self.customization_asset_path);
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.is_new != false {
-            os.write_bool(1, self.is_new)?;
-        }
-        if !self.customization_asset_path.is_empty() {
-            os.write_string(2, &self.customization_asset_path)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> OakCustomizationSaveGameData {
-        OakCustomizationSaveGameData::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
-                "is_new",
-                |m: &OakCustomizationSaveGameData| { &m.is_new },
-                |m: &mut OakCustomizationSaveGameData| { &mut m.is_new },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "customization_asset_path",
-                |m: &OakCustomizationSaveGameData| { &m.customization_asset_path },
-                |m: &mut OakCustomizationSaveGameData| { &mut m.customization_asset_path },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakCustomizationSaveGameData>(
-                "OakCustomizationSaveGameData",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static OakCustomizationSaveGameData {
-        static instance: ::protobuf::rt::LazyV2<OakCustomizationSaveGameData> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(OakCustomizationSaveGameData::new)
-    }
-}
-
-impl ::protobuf::Clear for OakCustomizationSaveGameData {
-    fn clear(&mut self) {
-        self.is_new = false;
-        self.customization_asset_path.clear();
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for OakCustomizationSaveGameData {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for OakCustomizationSaveGameData {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
-pub struct OakInventoryCustomizationPartInfo {
-    // message fields
-    pub customization_part_hash: u32,
-    pub is_new: bool,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a OakInventoryCustomizationPartInfo {
-    fn default() -> &'a OakInventoryCustomizationPartInfo {
-        <OakInventoryCustomizationPartInfo as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl OakInventoryCustomizationPartInfo {
-    pub fn new() -> OakInventoryCustomizationPartInfo {
-        ::std::default::Default::default()
-    }
-
-    // uint32 customization_part_hash = 1;
-
-
-    pub fn get_customization_part_hash(&self) -> u32 {
-        self.customization_part_hash
-    }
-    pub fn clear_customization_part_hash(&mut self) {
-        self.customization_part_hash = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_customization_part_hash(&mut self, v: u32) {
-        self.customization_part_hash = v;
-    }
-
-    // bool is_new = 2;
-
-
-    pub fn get_is_new(&self) -> bool {
-        self.is_new
-    }
-    pub fn clear_is_new(&mut self) {
-        self.is_new = false;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_is_new(&mut self, v: bool) {
-        self.is_new = v;
-    }
-}
-
-impl ::protobuf::Message for OakInventoryCustomizationPartInfo {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint32()?;
-                    self.customization_part_hash = tmp;
-                }
-                2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_bool()?;
-                    self.is_new = tmp;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.customization_part_hash != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.customization_part_hash, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.is_new != false {
-            my_size += 2;
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.customization_part_hash != 0 {
-            os.write_uint32(1, self.customization_part_hash)?;
-        }
-        if self.is_new != false {
-            os.write_bool(2, self.is_new)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> OakInventoryCustomizationPartInfo {
-        OakInventoryCustomizationPartInfo::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "customization_part_hash",
-                |m: &OakInventoryCustomizationPartInfo| { &m.customization_part_hash },
-                |m: &mut OakInventoryCustomizationPartInfo| { &mut m.customization_part_hash },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
-                "is_new",
-                |m: &OakInventoryCustomizationPartInfo| { &m.is_new },
-                |m: &mut OakInventoryCustomizationPartInfo| { &mut m.is_new },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakInventoryCustomizationPartInfo>(
-                "OakInventoryCustomizationPartInfo",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static OakInventoryCustomizationPartInfo {
-        static instance: ::protobuf::rt::LazyV2<OakInventoryCustomizationPartInfo> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(OakInventoryCustomizationPartInfo::new)
-    }
-}
-
-impl ::protobuf::Clear for OakInventoryCustomizationPartInfo {
-    fn clear(&mut self) {
-        self.customization_part_hash = 0;
-        self.is_new = false;
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for OakInventoryCustomizationPartInfo {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for OakInventoryCustomizationPartInfo {
     fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
         ::protobuf::reflect::ReflectValueRef::Message(self)
     }
@@ -3382,1714 +2492,6 @@ impl ::protobuf::reflect::ProtobufValue for GuardianRankProfileData {
 }
 
 #[derive(PartialEq, Clone, Default)]
-pub struct CrewQuartersDecorationItemSaveGameData {
-    // message fields
-    pub is_new: bool,
-    pub decoration_item_asset_path: ::std::string::String,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a CrewQuartersDecorationItemSaveGameData {
-    fn default() -> &'a CrewQuartersDecorationItemSaveGameData {
-        <CrewQuartersDecorationItemSaveGameData as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl CrewQuartersDecorationItemSaveGameData {
-    pub fn new() -> CrewQuartersDecorationItemSaveGameData {
-        ::std::default::Default::default()
-    }
-
-    // bool is_new = 1;
-
-
-    pub fn get_is_new(&self) -> bool {
-        self.is_new
-    }
-    pub fn clear_is_new(&mut self) {
-        self.is_new = false;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_is_new(&mut self, v: bool) {
-        self.is_new = v;
-    }
-
-    // string decoration_item_asset_path = 2;
-
-
-    pub fn get_decoration_item_asset_path(&self) -> &str {
-        &self.decoration_item_asset_path
-    }
-    pub fn clear_decoration_item_asset_path(&mut self) {
-        self.decoration_item_asset_path.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_decoration_item_asset_path(&mut self, v: ::std::string::String) {
-        self.decoration_item_asset_path = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_decoration_item_asset_path(&mut self) -> &mut ::std::string::String {
-        &mut self.decoration_item_asset_path
-    }
-
-    // Take field
-    pub fn take_decoration_item_asset_path(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.decoration_item_asset_path, ::std::string::String::new())
-    }
-}
-
-impl ::protobuf::Message for CrewQuartersDecorationItemSaveGameData {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_bool()?;
-                    self.is_new = tmp;
-                }
-                2 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.decoration_item_asset_path)?;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.is_new != false {
-            my_size += 2;
-        }
-        if !self.decoration_item_asset_path.is_empty() {
-            my_size += ::protobuf::rt::string_size(2, &self.decoration_item_asset_path);
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.is_new != false {
-            os.write_bool(1, self.is_new)?;
-        }
-        if !self.decoration_item_asset_path.is_empty() {
-            os.write_string(2, &self.decoration_item_asset_path)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> CrewQuartersDecorationItemSaveGameData {
-        CrewQuartersDecorationItemSaveGameData::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
-                "is_new",
-                |m: &CrewQuartersDecorationItemSaveGameData| { &m.is_new },
-                |m: &mut CrewQuartersDecorationItemSaveGameData| { &mut m.is_new },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "decoration_item_asset_path",
-                |m: &CrewQuartersDecorationItemSaveGameData| { &m.decoration_item_asset_path },
-                |m: &mut CrewQuartersDecorationItemSaveGameData| { &mut m.decoration_item_asset_path },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersDecorationItemSaveGameData>(
-                "CrewQuartersDecorationItemSaveGameData",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static CrewQuartersDecorationItemSaveGameData {
-        static instance: ::protobuf::rt::LazyV2<CrewQuartersDecorationItemSaveGameData> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(CrewQuartersDecorationItemSaveGameData::new)
-    }
-}
-
-impl ::protobuf::Clear for CrewQuartersDecorationItemSaveGameData {
-    fn clear(&mut self) {
-        self.is_new = false;
-        self.decoration_item_asset_path.clear();
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for CrewQuartersDecorationItemSaveGameData {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for CrewQuartersDecorationItemSaveGameData {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
-pub struct CrewQuartersRoomItemSaveGameData {
-    // message fields
-    pub is_new: bool,
-    pub room_item_asset_path: ::std::string::String,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a CrewQuartersRoomItemSaveGameData {
-    fn default() -> &'a CrewQuartersRoomItemSaveGameData {
-        <CrewQuartersRoomItemSaveGameData as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl CrewQuartersRoomItemSaveGameData {
-    pub fn new() -> CrewQuartersRoomItemSaveGameData {
-        ::std::default::Default::default()
-    }
-
-    // bool is_new = 1;
-
-
-    pub fn get_is_new(&self) -> bool {
-        self.is_new
-    }
-    pub fn clear_is_new(&mut self) {
-        self.is_new = false;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_is_new(&mut self, v: bool) {
-        self.is_new = v;
-    }
-
-    // string room_item_asset_path = 2;
-
-
-    pub fn get_room_item_asset_path(&self) -> &str {
-        &self.room_item_asset_path
-    }
-    pub fn clear_room_item_asset_path(&mut self) {
-        self.room_item_asset_path.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_room_item_asset_path(&mut self, v: ::std::string::String) {
-        self.room_item_asset_path = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_room_item_asset_path(&mut self) -> &mut ::std::string::String {
-        &mut self.room_item_asset_path
-    }
-
-    // Take field
-    pub fn take_room_item_asset_path(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.room_item_asset_path, ::std::string::String::new())
-    }
-}
-
-impl ::protobuf::Message for CrewQuartersRoomItemSaveGameData {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_bool()?;
-                    self.is_new = tmp;
-                }
-                2 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.room_item_asset_path)?;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.is_new != false {
-            my_size += 2;
-        }
-        if !self.room_item_asset_path.is_empty() {
-            my_size += ::protobuf::rt::string_size(2, &self.room_item_asset_path);
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.is_new != false {
-            os.write_bool(1, self.is_new)?;
-        }
-        if !self.room_item_asset_path.is_empty() {
-            os.write_string(2, &self.room_item_asset_path)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> CrewQuartersRoomItemSaveGameData {
-        CrewQuartersRoomItemSaveGameData::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
-                "is_new",
-                |m: &CrewQuartersRoomItemSaveGameData| { &m.is_new },
-                |m: &mut CrewQuartersRoomItemSaveGameData| { &mut m.is_new },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "room_item_asset_path",
-                |m: &CrewQuartersRoomItemSaveGameData| { &m.room_item_asset_path },
-                |m: &mut CrewQuartersRoomItemSaveGameData| { &mut m.room_item_asset_path },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersRoomItemSaveGameData>(
-                "CrewQuartersRoomItemSaveGameData",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static CrewQuartersRoomItemSaveGameData {
-        static instance: ::protobuf::rt::LazyV2<CrewQuartersRoomItemSaveGameData> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(CrewQuartersRoomItemSaveGameData::new)
-    }
-}
-
-impl ::protobuf::Clear for CrewQuartersRoomItemSaveGameData {
-    fn clear(&mut self) {
-        self.is_new = false;
-        self.room_item_asset_path.clear();
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for CrewQuartersRoomItemSaveGameData {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for CrewQuartersRoomItemSaveGameData {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
-pub struct VaultCardSaveGameData {
-    // message fields
-    pub last_active_vault_card_id: u32,
-    pub current_day_seed: i32,
-    pub current_week_seed: i32,
-    pub vault_card_previous_challenges: ::protobuf::RepeatedField<VaultCardPreviousChallenge>,
-    pub vault_card_claimed_rewards: ::protobuf::RepeatedField<VaultCardRewardList>,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a VaultCardSaveGameData {
-    fn default() -> &'a VaultCardSaveGameData {
-        <VaultCardSaveGameData as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl VaultCardSaveGameData {
-    pub fn new() -> VaultCardSaveGameData {
-        ::std::default::Default::default()
-    }
-
-    // uint32 last_active_vault_card_id = 2;
-
-
-    pub fn get_last_active_vault_card_id(&self) -> u32 {
-        self.last_active_vault_card_id
-    }
-    pub fn clear_last_active_vault_card_id(&mut self) {
-        self.last_active_vault_card_id = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_last_active_vault_card_id(&mut self, v: u32) {
-        self.last_active_vault_card_id = v;
-    }
-
-    // int32 current_day_seed = 3;
-
-
-    pub fn get_current_day_seed(&self) -> i32 {
-        self.current_day_seed
-    }
-    pub fn clear_current_day_seed(&mut self) {
-        self.current_day_seed = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_current_day_seed(&mut self, v: i32) {
-        self.current_day_seed = v;
-    }
-
-    // int32 current_week_seed = 4;
-
-
-    pub fn get_current_week_seed(&self) -> i32 {
-        self.current_week_seed
-    }
-    pub fn clear_current_week_seed(&mut self) {
-        self.current_week_seed = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_current_week_seed(&mut self, v: i32) {
-        self.current_week_seed = v;
-    }
-
-    // repeated .OakSave.VaultCardPreviousChallenge vault_card_previous_challenges = 5;
-
-
-    pub fn get_vault_card_previous_challenges(&self) -> &[VaultCardPreviousChallenge] {
-        &self.vault_card_previous_challenges
-    }
-    pub fn clear_vault_card_previous_challenges(&mut self) {
-        self.vault_card_previous_challenges.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_vault_card_previous_challenges(&mut self, v: ::protobuf::RepeatedField<VaultCardPreviousChallenge>) {
-        self.vault_card_previous_challenges = v;
-    }
-
-    // Mutable pointer to the field.
-    pub fn mut_vault_card_previous_challenges(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardPreviousChallenge> {
-        &mut self.vault_card_previous_challenges
-    }
-
-    // Take field
-    pub fn take_vault_card_previous_challenges(&mut self) -> ::protobuf::RepeatedField<VaultCardPreviousChallenge> {
-        ::std::mem::replace(&mut self.vault_card_previous_challenges, ::protobuf::RepeatedField::new())
-    }
-
-    // repeated .OakSave.VaultCardRewardList vault_card_claimed_rewards = 6;
-
-
-    pub fn get_vault_card_claimed_rewards(&self) -> &[VaultCardRewardList] {
-        &self.vault_card_claimed_rewards
-    }
-    pub fn clear_vault_card_claimed_rewards(&mut self) {
-        self.vault_card_claimed_rewards.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_vault_card_claimed_rewards(&mut self, v: ::protobuf::RepeatedField<VaultCardRewardList>) {
-        self.vault_card_claimed_rewards = v;
-    }
-
-    // Mutable pointer to the field.
-    pub fn mut_vault_card_claimed_rewards(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardRewardList> {
-        &mut self.vault_card_claimed_rewards
-    }
-
-    // Take field
-    pub fn take_vault_card_claimed_rewards(&mut self) -> ::protobuf::RepeatedField<VaultCardRewardList> {
-        ::std::mem::replace(&mut self.vault_card_claimed_rewards, ::protobuf::RepeatedField::new())
-    }
-}
-
-impl ::protobuf::Message for VaultCardSaveGameData {
-    fn is_initialized(&self) -> bool {
-        for v in &self.vault_card_previous_challenges {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
-        for v in &self.vault_card_claimed_rewards {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint32()?;
-                    self.last_active_vault_card_id = tmp;
-                }
-                3 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_int32()?;
-                    self.current_day_seed = tmp;
-                }
-                4 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_int32()?;
-                    self.current_week_seed = tmp;
-                }
-                5 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.vault_card_previous_challenges)?;
-                }
-                6 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.vault_card_claimed_rewards)?;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.last_active_vault_card_id != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.last_active_vault_card_id, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.current_day_seed != 0 {
-            my_size += ::protobuf::rt::value_size(3, self.current_day_seed, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.current_week_seed != 0 {
-            my_size += ::protobuf::rt::value_size(4, self.current_week_seed, ::protobuf::wire_format::WireTypeVarint);
-        }
-        for value in &self.vault_card_previous_challenges {
-            let len = value.compute_size();
-            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
-        };
-        for value in &self.vault_card_claimed_rewards {
-            let len = value.compute_size();
-            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
-        };
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.last_active_vault_card_id != 0 {
-            os.write_uint32(2, self.last_active_vault_card_id)?;
-        }
-        if self.current_day_seed != 0 {
-            os.write_int32(3, self.current_day_seed)?;
-        }
-        if self.current_week_seed != 0 {
-            os.write_int32(4, self.current_week_seed)?;
-        }
-        for v in &self.vault_card_previous_challenges {
-            os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
-            os.write_raw_varint32(v.get_cached_size())?;
-            v.write_to_with_cached_sizes(os)?;
-        };
-        for v in &self.vault_card_claimed_rewards {
-            os.write_tag(6, ::protobuf::wire_format::WireTypeLengthDelimited)?;
-            os.write_raw_varint32(v.get_cached_size())?;
-            v.write_to_with_cached_sizes(os)?;
-        };
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> VaultCardSaveGameData {
-        VaultCardSaveGameData::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "last_active_vault_card_id",
-                |m: &VaultCardSaveGameData| { &m.last_active_vault_card_id },
-                |m: &mut VaultCardSaveGameData| { &mut m.last_active_vault_card_id },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
-                "current_day_seed",
-                |m: &VaultCardSaveGameData| { &m.current_day_seed },
-                |m: &mut VaultCardSaveGameData| { &mut m.current_day_seed },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
-                "current_week_seed",
-                |m: &VaultCardSaveGameData| { &m.current_week_seed },
-                |m: &mut VaultCardSaveGameData| { &mut m.current_week_seed },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardPreviousChallenge>>(
-                "vault_card_previous_challenges",
-                |m: &VaultCardSaveGameData| { &m.vault_card_previous_challenges },
-                |m: &mut VaultCardSaveGameData| { &mut m.vault_card_previous_challenges },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardRewardList>>(
-                "vault_card_claimed_rewards",
-                |m: &VaultCardSaveGameData| { &m.vault_card_claimed_rewards },
-                |m: &mut VaultCardSaveGameData| { &mut m.vault_card_claimed_rewards },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardSaveGameData>(
-                "VaultCardSaveGameData",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static VaultCardSaveGameData {
-        static instance: ::protobuf::rt::LazyV2<VaultCardSaveGameData> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(VaultCardSaveGameData::new)
-    }
-}
-
-impl ::protobuf::Clear for VaultCardSaveGameData {
-    fn clear(&mut self) {
-        self.last_active_vault_card_id = 0;
-        self.current_day_seed = 0;
-        self.current_week_seed = 0;
-        self.vault_card_previous_challenges.clear();
-        self.vault_card_claimed_rewards.clear();
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for VaultCardSaveGameData {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for VaultCardSaveGameData {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
-pub struct VaultCardReward {
-    // message fields
-    pub column_index: i32,
-    pub row_index: i32,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a VaultCardReward {
-    fn default() -> &'a VaultCardReward {
-        <VaultCardReward as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl VaultCardReward {
-    pub fn new() -> VaultCardReward {
-        ::std::default::Default::default()
-    }
-
-    // int32 column_index = 1;
-
-
-    pub fn get_column_index(&self) -> i32 {
-        self.column_index
-    }
-    pub fn clear_column_index(&mut self) {
-        self.column_index = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_column_index(&mut self, v: i32) {
-        self.column_index = v;
-    }
-
-    // int32 row_index = 2;
-
-
-    pub fn get_row_index(&self) -> i32 {
-        self.row_index
-    }
-    pub fn clear_row_index(&mut self) {
-        self.row_index = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_row_index(&mut self, v: i32) {
-        self.row_index = v;
-    }
-}
-
-impl ::protobuf::Message for VaultCardReward {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_int32()?;
-                    self.column_index = tmp;
-                }
-                2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_int32()?;
-                    self.row_index = tmp;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.column_index != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.column_index, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.row_index != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.row_index, ::protobuf::wire_format::WireTypeVarint);
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.column_index != 0 {
-            os.write_int32(1, self.column_index)?;
-        }
-        if self.row_index != 0 {
-            os.write_int32(2, self.row_index)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> VaultCardReward {
-        VaultCardReward::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
-                "column_index",
-                |m: &VaultCardReward| { &m.column_index },
-                |m: &mut VaultCardReward| { &mut m.column_index },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
-                "row_index",
-                |m: &VaultCardReward| { &m.row_index },
-                |m: &mut VaultCardReward| { &mut m.row_index },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardReward>(
-                "VaultCardReward",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static VaultCardReward {
-        static instance: ::protobuf::rt::LazyV2<VaultCardReward> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(VaultCardReward::new)
-    }
-}
-
-impl ::protobuf::Clear for VaultCardReward {
-    fn clear(&mut self) {
-        self.column_index = 0;
-        self.row_index = 0;
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for VaultCardReward {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for VaultCardReward {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
-pub struct VaultCardGearReward {
-    // message fields
-    pub gear_index: i32,
-    pub repurchase_count: u32,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a VaultCardGearReward {
-    fn default() -> &'a VaultCardGearReward {
-        <VaultCardGearReward as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl VaultCardGearReward {
-    pub fn new() -> VaultCardGearReward {
-        ::std::default::Default::default()
-    }
-
-    // int32 gear_index = 1;
-
-
-    pub fn get_gear_index(&self) -> i32 {
-        self.gear_index
-    }
-    pub fn clear_gear_index(&mut self) {
-        self.gear_index = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_gear_index(&mut self, v: i32) {
-        self.gear_index = v;
-    }
-
-    // uint32 repurchase_count = 2;
-
-
-    pub fn get_repurchase_count(&self) -> u32 {
-        self.repurchase_count
-    }
-    pub fn clear_repurchase_count(&mut self) {
-        self.repurchase_count = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_repurchase_count(&mut self, v: u32) {
-        self.repurchase_count = v;
-    }
-}
-
-impl ::protobuf::Message for VaultCardGearReward {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_int32()?;
-                    self.gear_index = tmp;
-                }
-                2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint32()?;
-                    self.repurchase_count = tmp;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.gear_index != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.gear_index, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.repurchase_count != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.repurchase_count, ::protobuf::wire_format::WireTypeVarint);
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.gear_index != 0 {
-            os.write_int32(1, self.gear_index)?;
-        }
-        if self.repurchase_count != 0 {
-            os.write_uint32(2, self.repurchase_count)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> VaultCardGearReward {
-        VaultCardGearReward::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
-                "gear_index",
-                |m: &VaultCardGearReward| { &m.gear_index },
-                |m: &mut VaultCardGearReward| { &mut m.gear_index },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "repurchase_count",
-                |m: &VaultCardGearReward| { &m.repurchase_count },
-                |m: &mut VaultCardGearReward| { &mut m.repurchase_count },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardGearReward>(
-                "VaultCardGearReward",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static VaultCardGearReward {
-        static instance: ::protobuf::rt::LazyV2<VaultCardGearReward> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(VaultCardGearReward::new)
-    }
-}
-
-impl ::protobuf::Clear for VaultCardGearReward {
-    fn clear(&mut self) {
-        self.gear_index = 0;
-        self.repurchase_count = 0;
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for VaultCardGearReward {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for VaultCardGearReward {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
-pub struct VaultCardRewardList {
-    // message fields
-    pub vault_card_id: u32,
-    pub vault_card_experience: i64,
-    pub unlocked_reward_list: ::protobuf::RepeatedField<VaultCardReward>,
-    pub redeemed_reward_list: ::protobuf::RepeatedField<VaultCardReward>,
-    pub vault_card_chests: u32,
-    pub vault_card_chests_opened: u32,
-    pub vault_card_keys_spent: u32,
-    pub gear_rewards: ::protobuf::RepeatedField<VaultCardGearReward>,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a VaultCardRewardList {
-    fn default() -> &'a VaultCardRewardList {
-        <VaultCardRewardList as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl VaultCardRewardList {
-    pub fn new() -> VaultCardRewardList {
-        ::std::default::Default::default()
-    }
-
-    // uint32 vault_card_id = 1;
-
-
-    pub fn get_vault_card_id(&self) -> u32 {
-        self.vault_card_id
-    }
-    pub fn clear_vault_card_id(&mut self) {
-        self.vault_card_id = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_vault_card_id(&mut self, v: u32) {
-        self.vault_card_id = v;
-    }
-
-    // int64 vault_card_experience = 2;
-
-
-    pub fn get_vault_card_experience(&self) -> i64 {
-        self.vault_card_experience
-    }
-    pub fn clear_vault_card_experience(&mut self) {
-        self.vault_card_experience = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_vault_card_experience(&mut self, v: i64) {
-        self.vault_card_experience = v;
-    }
-
-    // repeated .OakSave.VaultCardReward unlocked_reward_list = 4;
-
-
-    pub fn get_unlocked_reward_list(&self) -> &[VaultCardReward] {
-        &self.unlocked_reward_list
-    }
-    pub fn clear_unlocked_reward_list(&mut self) {
-        self.unlocked_reward_list.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_unlocked_reward_list(&mut self, v: ::protobuf::RepeatedField<VaultCardReward>) {
-        self.unlocked_reward_list = v;
-    }
-
-    // Mutable pointer to the field.
-    pub fn mut_unlocked_reward_list(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardReward> {
-        &mut self.unlocked_reward_list
-    }
-
-    // Take field
-    pub fn take_unlocked_reward_list(&mut self) -> ::protobuf::RepeatedField<VaultCardReward> {
-        ::std::mem::replace(&mut self.unlocked_reward_list, ::protobuf::RepeatedField::new())
-    }
-
-    // repeated .OakSave.VaultCardReward redeemed_reward_list = 5;
-
-
-    pub fn get_redeemed_reward_list(&self) -> &[VaultCardReward] {
-        &self.redeemed_reward_list
-    }
-    pub fn clear_redeemed_reward_list(&mut self) {
-        self.redeemed_reward_list.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_redeemed_reward_list(&mut self, v: ::protobuf::RepeatedField<VaultCardReward>) {
-        self.redeemed_reward_list = v;
-    }
-
-    // Mutable pointer to the field.
-    pub fn mut_redeemed_reward_list(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardReward> {
-        &mut self.redeemed_reward_list
-    }
-
-    // Take field
-    pub fn take_redeemed_reward_list(&mut self) -> ::protobuf::RepeatedField<VaultCardReward> {
-        ::std::mem::replace(&mut self.redeemed_reward_list, ::protobuf::RepeatedField::new())
-    }
-
-    // uint32 vault_card_chests = 7;
-
-
-    pub fn get_vault_card_chests(&self) -> u32 {
-        self.vault_card_chests
-    }
-    pub fn clear_vault_card_chests(&mut self) {
-        self.vault_card_chests = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_vault_card_chests(&mut self, v: u32) {
-        self.vault_card_chests = v;
-    }
-
-    // uint32 vault_card_chests_opened = 8;
-
-
-    pub fn get_vault_card_chests_opened(&self) -> u32 {
-        self.vault_card_chests_opened
-    }
-    pub fn clear_vault_card_chests_opened(&mut self) {
-        self.vault_card_chests_opened = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_vault_card_chests_opened(&mut self, v: u32) {
-        self.vault_card_chests_opened = v;
-    }
-
-    // uint32 vault_card_keys_spent = 9;
-
-
-    pub fn get_vault_card_keys_spent(&self) -> u32 {
-        self.vault_card_keys_spent
-    }
-    pub fn clear_vault_card_keys_spent(&mut self) {
-        self.vault_card_keys_spent = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_vault_card_keys_spent(&mut self, v: u32) {
-        self.vault_card_keys_spent = v;
-    }
-
-    // repeated .OakSave.VaultCardGearReward gear_rewards = 10;
-
-
-    pub fn get_gear_rewards(&self) -> &[VaultCardGearReward] {
-        &self.gear_rewards
-    }
-    pub fn clear_gear_rewards(&mut self) {
-        self.gear_rewards.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_gear_rewards(&mut self, v: ::protobuf::RepeatedField<VaultCardGearReward>) {
-        self.gear_rewards = v;
-    }
-
-    // Mutable pointer to the field.
-    pub fn mut_gear_rewards(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardGearReward> {
-        &mut self.gear_rewards
-    }
-
-    // Take field
-    pub fn take_gear_rewards(&mut self) -> ::protobuf::RepeatedField<VaultCardGearReward> {
-        ::std::mem::replace(&mut self.gear_rewards, ::protobuf::RepeatedField::new())
-    }
-}
-
-impl ::protobuf::Message for VaultCardRewardList {
-    fn is_initialized(&self) -> bool {
-        for v in &self.unlocked_reward_list {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
-        for v in &self.redeemed_reward_list {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
-        for v in &self.gear_rewards {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint32()?;
-                    self.vault_card_id = tmp;
-                }
-                2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_int64()?;
-                    self.vault_card_experience = tmp;
-                }
-                4 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_reward_list)?;
-                }
-                5 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.redeemed_reward_list)?;
-                }
-                7 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint32()?;
-                    self.vault_card_chests = tmp;
-                }
-                8 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint32()?;
-                    self.vault_card_chests_opened = tmp;
-                }
-                9 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint32()?;
-                    self.vault_card_keys_spent = tmp;
-                }
-                10 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.gear_rewards)?;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.vault_card_id != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.vault_card_id, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.vault_card_experience != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.vault_card_experience, ::protobuf::wire_format::WireTypeVarint);
-        }
-        for value in &self.unlocked_reward_list {
-            let len = value.compute_size();
-            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
-        };
-        for value in &self.redeemed_reward_list {
-            let len = value.compute_size();
-            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
-        };
-        if self.vault_card_chests != 0 {
-            my_size += ::protobuf::rt::value_size(7, self.vault_card_chests, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.vault_card_chests_opened != 0 {
-            my_size += ::protobuf::rt::value_size(8, self.vault_card_chests_opened, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.vault_card_keys_spent != 0 {
-            my_size += ::protobuf::rt::value_size(9, self.vault_card_keys_spent, ::protobuf::wire_format::WireTypeVarint);
-        }
-        for value in &self.gear_rewards {
-            let len = value.compute_size();
-            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
-        };
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.vault_card_id != 0 {
-            os.write_uint32(1, self.vault_card_id)?;
-        }
-        if self.vault_card_experience != 0 {
-            os.write_int64(2, self.vault_card_experience)?;
-        }
-        for v in &self.unlocked_reward_list {
-            os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
-            os.write_raw_varint32(v.get_cached_size())?;
-            v.write_to_with_cached_sizes(os)?;
-        };
-        for v in &self.redeemed_reward_list {
-            os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
-            os.write_raw_varint32(v.get_cached_size())?;
-            v.write_to_with_cached_sizes(os)?;
-        };
-        if self.vault_card_chests != 0 {
-            os.write_uint32(7, self.vault_card_chests)?;
-        }
-        if self.vault_card_chests_opened != 0 {
-            os.write_uint32(8, self.vault_card_chests_opened)?;
-        }
-        if self.vault_card_keys_spent != 0 {
-            os.write_uint32(9, self.vault_card_keys_spent)?;
-        }
-        for v in &self.gear_rewards {
-            os.write_tag(10, ::protobuf::wire_format::WireTypeLengthDelimited)?;
-            os.write_raw_varint32(v.get_cached_size())?;
-            v.write_to_with_cached_sizes(os)?;
-        };
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> VaultCardRewardList {
-        VaultCardRewardList::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "vault_card_id",
-                |m: &VaultCardRewardList| { &m.vault_card_id },
-                |m: &mut VaultCardRewardList| { &mut m.vault_card_id },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
-                "vault_card_experience",
-                |m: &VaultCardRewardList| { &m.vault_card_experience },
-                |m: &mut VaultCardRewardList| { &mut m.vault_card_experience },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardReward>>(
-                "unlocked_reward_list",
-                |m: &VaultCardRewardList| { &m.unlocked_reward_list },
-                |m: &mut VaultCardRewardList| { &mut m.unlocked_reward_list },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardReward>>(
-                "redeemed_reward_list",
-                |m: &VaultCardRewardList| { &m.redeemed_reward_list },
-                |m: &mut VaultCardRewardList| { &mut m.redeemed_reward_list },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "vault_card_chests",
-                |m: &VaultCardRewardList| { &m.vault_card_chests },
-                |m: &mut VaultCardRewardList| { &mut m.vault_card_chests },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "vault_card_chests_opened",
-                |m: &VaultCardRewardList| { &m.vault_card_chests_opened },
-                |m: &mut VaultCardRewardList| { &mut m.vault_card_chests_opened },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "vault_card_keys_spent",
-                |m: &VaultCardRewardList| { &m.vault_card_keys_spent },
-                |m: &mut VaultCardRewardList| { &mut m.vault_card_keys_spent },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardGearReward>>(
-                "gear_rewards",
-                |m: &VaultCardRewardList| { &m.gear_rewards },
-                |m: &mut VaultCardRewardList| { &mut m.gear_rewards },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardRewardList>(
-                "VaultCardRewardList",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static VaultCardRewardList {
-        static instance: ::protobuf::rt::LazyV2<VaultCardRewardList> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(VaultCardRewardList::new)
-    }
-}
-
-impl ::protobuf::Clear for VaultCardRewardList {
-    fn clear(&mut self) {
-        self.vault_card_id = 0;
-        self.vault_card_experience = 0;
-        self.unlocked_reward_list.clear();
-        self.redeemed_reward_list.clear();
-        self.vault_card_chests = 0;
-        self.vault_card_chests_opened = 0;
-        self.vault_card_keys_spent = 0;
-        self.gear_rewards.clear();
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for VaultCardRewardList {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for VaultCardRewardList {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
-pub struct VaultCardPreviousChallenge {
-    // message fields
-    pub previous_challenge_seed: i32,
-    pub previous_challenge_id: u32,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a VaultCardPreviousChallenge {
-    fn default() -> &'a VaultCardPreviousChallenge {
-        <VaultCardPreviousChallenge as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl VaultCardPreviousChallenge {
-    pub fn new() -> VaultCardPreviousChallenge {
-        ::std::default::Default::default()
-    }
-
-    // int32 previous_challenge_seed = 1;
-
-
-    pub fn get_previous_challenge_seed(&self) -> i32 {
-        self.previous_challenge_seed
-    }
-    pub fn clear_previous_challenge_seed(&mut self) {
-        self.previous_challenge_seed = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_previous_challenge_seed(&mut self, v: i32) {
-        self.previous_challenge_seed = v;
-    }
-
-    // uint32 previous_challenge_id = 2;
-
-
-    pub fn get_previous_challenge_id(&self) -> u32 {
-        self.previous_challenge_id
-    }
-    pub fn clear_previous_challenge_id(&mut self) {
-        self.previous_challenge_id = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_previous_challenge_id(&mut self, v: u32) {
-        self.previous_challenge_id = v;
-    }
-}
-
-impl ::protobuf::Message for VaultCardPreviousChallenge {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_int32()?;
-                    self.previous_challenge_seed = tmp;
-                }
-                2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint32()?;
-                    self.previous_challenge_id = tmp;
-                }
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.previous_challenge_seed != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.previous_challenge_seed, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.previous_challenge_id != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.previous_challenge_id, ::protobuf::wire_format::WireTypeVarint);
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if self.previous_challenge_seed != 0 {
-            os.write_int32(1, self.previous_challenge_seed)?;
-        }
-        if self.previous_challenge_id != 0 {
-            os.write_uint32(2, self.previous_challenge_id)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> VaultCardPreviousChallenge {
-        VaultCardPreviousChallenge::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
-                "previous_challenge_seed",
-                |m: &VaultCardPreviousChallenge| { &m.previous_challenge_seed },
-                |m: &mut VaultCardPreviousChallenge| { &mut m.previous_challenge_seed },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "previous_challenge_id",
-                |m: &VaultCardPreviousChallenge| { &m.previous_challenge_id },
-                |m: &mut VaultCardPreviousChallenge| { &mut m.previous_challenge_id },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardPreviousChallenge>(
-                "VaultCardPreviousChallenge",
-                fields,
-                file_descriptor_proto(),
-            )
-        })
-    }
-
-    fn default_instance() -> &'static VaultCardPreviousChallenge {
-        static instance: ::protobuf::rt::LazyV2<VaultCardPreviousChallenge> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(VaultCardPreviousChallenge::new)
-    }
-}
-
-impl ::protobuf::Clear for VaultCardPreviousChallenge {
-    fn clear(&mut self) {
-        self.previous_challenge_seed = 0;
-        self.previous_challenge_id = 0;
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for VaultCardPreviousChallenge {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for VaultCardPreviousChallenge {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq, Clone, Default)]
 pub struct RecentlyMetPlayer {
     // message fields
     pub shift_player_id: ::std::string::String,
@@ -5443,16 +2845,16 @@ pub struct Profile {
     pub bank_inventory_category_list: ::protobuf::RepeatedField<super::oak_shared::InventoryCategorySaveData>,
     pub bank_inventory_list: ::protobuf::RepeatedField<::std::vec::Vec<u8>>,
     pub lost_loot_inventory_list: ::protobuf::RepeatedField<::std::vec::Vec<u8>>,
-    pub npc_mail_items: ::protobuf::RepeatedField<OakMailItem>,
+    pub npc_mail_items: ::protobuf::RepeatedField<super::oak_shared::OakMailItem>,
     pub mail_guids: ::protobuf::RepeatedField<::std::string::String>,
     pub unread_mail_guids: ::protobuf::RepeatedField<::std::string::String>,
     pub gear_sold_by_friends: ::protobuf::RepeatedField<GearSoldByFriendData>,
     pub profile_sdu_list: ::protobuf::RepeatedField<super::oak_shared::OakSDUSaveGameData>,
-    pub unlocked_customizations: ::protobuf::RepeatedField<OakCustomizationSaveGameData>,
-    pub unlocked_inventory_customization_parts: ::protobuf::RepeatedField<OakInventoryCustomizationPartInfo>,
+    pub unlocked_customizations: ::protobuf::RepeatedField<super::oak_shared::OakCustomizationSaveGameData>,
+    pub unlocked_inventory_customization_parts: ::protobuf::RepeatedField<super::oak_shared::OakInventoryCustomizationPartInfo>,
     pub guardian_rank: ::protobuf::SingularPtrField<GuardianRankProfileData>,
-    pub unlocked_crew_quarters_decorations: ::protobuf::RepeatedField<CrewQuartersDecorationItemSaveGameData>,
-    pub unlocked_crew_quarters_rooms: ::protobuf::RepeatedField<CrewQuartersRoomItemSaveGameData>,
+    pub unlocked_crew_quarters_decorations: ::protobuf::RepeatedField<super::oak_shared::CrewQuartersDecorationItemSaveGameData>,
+    pub unlocked_crew_quarters_rooms: ::protobuf::RepeatedField<super::oak_shared::CrewQuartersRoomItemSaveGameData>,
     pub enable_mouse_acceleration: bool,
     pub enable_gamepad_input: bool,
     pub use_classic_gamepad_input: bool,
@@ -5502,7 +2904,7 @@ pub struct Profile {
     pub pinata_event_enabled: bool,
     pub min_time_between_badass_events: i32,
     pub hud_scale_multiplier: f32,
-    pub disable_spatial_audio: bool,
+    pub disable_spatial_audio__or__has_reset_console_fov: bool,
     pub total_playtime_seconds: i32,
     pub moxxis_drink_event_enabled: bool,
     pub moxxis_drink_event_bits_product_id: i32,
@@ -5526,8 +2928,11 @@ pub struct Profile {
     pub CitizenScienceCSBucksAmount: i32,
     pub bCitizenScienceHasSeenIntroVideo: bool,
     pub bCitizenScienceTutorialDone: bool,
+    pub enable_trigger_feedback: bool,
     pub fixed_initial_zonemap_rotation: bool,
-    pub vault_card: ::protobuf::SingularPtrField<VaultCardSaveGameData>,
+    pub vault_card: ::protobuf::SingularPtrField<super::oak_shared::VaultCardSaveGameData>,
+    pub player_selected_league: u32,
+    pub needs_shift_first_boot_primary: bool,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -7420,7 +4825,7 @@ impl Profile {
     // repeated .OakSave.OakMailItem npc_mail_items = 139;
 
 
-    pub fn get_npc_mail_items(&self) -> &[OakMailItem] {
+    pub fn get_npc_mail_items(&self) -> &[super::oak_shared::OakMailItem] {
         &self.npc_mail_items
     }
     pub fn clear_npc_mail_items(&mut self) {
@@ -7428,17 +4833,17 @@ impl Profile {
     }
 
     // Param is passed by value, moved
-    pub fn set_npc_mail_items(&mut self, v: ::protobuf::RepeatedField<OakMailItem>) {
+    pub fn set_npc_mail_items(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::OakMailItem>) {
         self.npc_mail_items = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_npc_mail_items(&mut self) -> &mut ::protobuf::RepeatedField<OakMailItem> {
+    pub fn mut_npc_mail_items(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::OakMailItem> {
         &mut self.npc_mail_items
     }
 
     // Take field
-    pub fn take_npc_mail_items(&mut self) -> ::protobuf::RepeatedField<OakMailItem> {
+    pub fn take_npc_mail_items(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::OakMailItem> {
         ::std::mem::replace(&mut self.npc_mail_items, ::protobuf::RepeatedField::new())
     }
 
@@ -7545,7 +4950,7 @@ impl Profile {
     // repeated .OakSave.OakCustomizationSaveGameData unlocked_customizations = 144;
 
 
-    pub fn get_unlocked_customizations(&self) -> &[OakCustomizationSaveGameData] {
+    pub fn get_unlocked_customizations(&self) -> &[super::oak_shared::OakCustomizationSaveGameData] {
         &self.unlocked_customizations
     }
     pub fn clear_unlocked_customizations(&mut self) {
@@ -7553,24 +4958,24 @@ impl Profile {
     }
 
     // Param is passed by value, moved
-    pub fn set_unlocked_customizations(&mut self, v: ::protobuf::RepeatedField<OakCustomizationSaveGameData>) {
+    pub fn set_unlocked_customizations(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::OakCustomizationSaveGameData>) {
         self.unlocked_customizations = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_unlocked_customizations(&mut self) -> &mut ::protobuf::RepeatedField<OakCustomizationSaveGameData> {
+    pub fn mut_unlocked_customizations(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::OakCustomizationSaveGameData> {
         &mut self.unlocked_customizations
     }
 
     // Take field
-    pub fn take_unlocked_customizations(&mut self) -> ::protobuf::RepeatedField<OakCustomizationSaveGameData> {
+    pub fn take_unlocked_customizations(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::OakCustomizationSaveGameData> {
         ::std::mem::replace(&mut self.unlocked_customizations, ::protobuf::RepeatedField::new())
     }
 
     // repeated .OakSave.OakInventoryCustomizationPartInfo unlocked_inventory_customization_parts = 145;
 
 
-    pub fn get_unlocked_inventory_customization_parts(&self) -> &[OakInventoryCustomizationPartInfo] {
+    pub fn get_unlocked_inventory_customization_parts(&self) -> &[super::oak_shared::OakInventoryCustomizationPartInfo] {
         &self.unlocked_inventory_customization_parts
     }
     pub fn clear_unlocked_inventory_customization_parts(&mut self) {
@@ -7578,17 +4983,17 @@ impl Profile {
     }
 
     // Param is passed by value, moved
-    pub fn set_unlocked_inventory_customization_parts(&mut self, v: ::protobuf::RepeatedField<OakInventoryCustomizationPartInfo>) {
+    pub fn set_unlocked_inventory_customization_parts(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::OakInventoryCustomizationPartInfo>) {
         self.unlocked_inventory_customization_parts = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_unlocked_inventory_customization_parts(&mut self) -> &mut ::protobuf::RepeatedField<OakInventoryCustomizationPartInfo> {
+    pub fn mut_unlocked_inventory_customization_parts(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::OakInventoryCustomizationPartInfo> {
         &mut self.unlocked_inventory_customization_parts
     }
 
     // Take field
-    pub fn take_unlocked_inventory_customization_parts(&mut self) -> ::protobuf::RepeatedField<OakInventoryCustomizationPartInfo> {
+    pub fn take_unlocked_inventory_customization_parts(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::OakInventoryCustomizationPartInfo> {
         ::std::mem::replace(&mut self.unlocked_inventory_customization_parts, ::protobuf::RepeatedField::new())
     }
 
@@ -7628,7 +5033,7 @@ impl Profile {
     // repeated .OakSave.CrewQuartersDecorationItemSaveGameData unlocked_crew_quarters_decorations = 147;
 
 
-    pub fn get_unlocked_crew_quarters_decorations(&self) -> &[CrewQuartersDecorationItemSaveGameData] {
+    pub fn get_unlocked_crew_quarters_decorations(&self) -> &[super::oak_shared::CrewQuartersDecorationItemSaveGameData] {
         &self.unlocked_crew_quarters_decorations
     }
     pub fn clear_unlocked_crew_quarters_decorations(&mut self) {
@@ -7636,24 +5041,24 @@ impl Profile {
     }
 
     // Param is passed by value, moved
-    pub fn set_unlocked_crew_quarters_decorations(&mut self, v: ::protobuf::RepeatedField<CrewQuartersDecorationItemSaveGameData>) {
+    pub fn set_unlocked_crew_quarters_decorations(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::CrewQuartersDecorationItemSaveGameData>) {
         self.unlocked_crew_quarters_decorations = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_unlocked_crew_quarters_decorations(&mut self) -> &mut ::protobuf::RepeatedField<CrewQuartersDecorationItemSaveGameData> {
+    pub fn mut_unlocked_crew_quarters_decorations(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::CrewQuartersDecorationItemSaveGameData> {
         &mut self.unlocked_crew_quarters_decorations
     }
 
     // Take field
-    pub fn take_unlocked_crew_quarters_decorations(&mut self) -> ::protobuf::RepeatedField<CrewQuartersDecorationItemSaveGameData> {
+    pub fn take_unlocked_crew_quarters_decorations(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::CrewQuartersDecorationItemSaveGameData> {
         ::std::mem::replace(&mut self.unlocked_crew_quarters_decorations, ::protobuf::RepeatedField::new())
     }
 
     // repeated .OakSave.CrewQuartersRoomItemSaveGameData unlocked_crew_quarters_rooms = 148;
 
 
-    pub fn get_unlocked_crew_quarters_rooms(&self) -> &[CrewQuartersRoomItemSaveGameData] {
+    pub fn get_unlocked_crew_quarters_rooms(&self) -> &[super::oak_shared::CrewQuartersRoomItemSaveGameData] {
         &self.unlocked_crew_quarters_rooms
     }
     pub fn clear_unlocked_crew_quarters_rooms(&mut self) {
@@ -7661,17 +5066,17 @@ impl Profile {
     }
 
     // Param is passed by value, moved
-    pub fn set_unlocked_crew_quarters_rooms(&mut self, v: ::protobuf::RepeatedField<CrewQuartersRoomItemSaveGameData>) {
+    pub fn set_unlocked_crew_quarters_rooms(&mut self, v: ::protobuf::RepeatedField<super::oak_shared::CrewQuartersRoomItemSaveGameData>) {
         self.unlocked_crew_quarters_rooms = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_unlocked_crew_quarters_rooms(&mut self) -> &mut ::protobuf::RepeatedField<CrewQuartersRoomItemSaveGameData> {
+    pub fn mut_unlocked_crew_quarters_rooms(&mut self) -> &mut ::protobuf::RepeatedField<super::oak_shared::CrewQuartersRoomItemSaveGameData> {
         &mut self.unlocked_crew_quarters_rooms
     }
 
     // Take field
-    pub fn take_unlocked_crew_quarters_rooms(&mut self) -> ::protobuf::RepeatedField<CrewQuartersRoomItemSaveGameData> {
+    pub fn take_unlocked_crew_quarters_rooms(&mut self) -> ::protobuf::RepeatedField<super::oak_shared::CrewQuartersRoomItemSaveGameData> {
         ::std::mem::replace(&mut self.unlocked_crew_quarters_rooms, ::protobuf::RepeatedField::new())
     }
 
@@ -8430,19 +5835,19 @@ impl Profile {
         self.hud_scale_multiplier = v;
     }
 
-    // bool disable_spatial_audio = 204;
+    // bool disable_spatial_audio__or__has_reset_console_fov = 204;
 
 
-    pub fn get_disable_spatial_audio(&self) -> bool {
-        self.disable_spatial_audio
+    pub fn get_disable_spatial_audio__or__has_reset_console_fov(&self) -> bool {
+        self.disable_spatial_audio__or__has_reset_console_fov
     }
-    pub fn clear_disable_spatial_audio(&mut self) {
-        self.disable_spatial_audio = false;
+    pub fn clear_disable_spatial_audio__or__has_reset_console_fov(&mut self) {
+        self.disable_spatial_audio__or__has_reset_console_fov = false;
     }
 
     // Param is passed by value, moved
-    pub fn set_disable_spatial_audio(&mut self, v: bool) {
-        self.disable_spatial_audio = v;
+    pub fn set_disable_spatial_audio__or__has_reset_console_fov(&mut self, v: bool) {
+        self.disable_spatial_audio__or__has_reset_console_fov = v;
     }
 
     // int32 total_playtime_seconds = 205;
@@ -8820,6 +6225,21 @@ impl Profile {
         self.bCitizenScienceTutorialDone = v;
     }
 
+    // bool enable_trigger_feedback = 229;
+
+
+    pub fn get_enable_trigger_feedback(&self) -> bool {
+        self.enable_trigger_feedback
+    }
+    pub fn clear_enable_trigger_feedback(&mut self) {
+        self.enable_trigger_feedback = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_enable_trigger_feedback(&mut self, v: bool) {
+        self.enable_trigger_feedback = v;
+    }
+
     // bool fixed_initial_zonemap_rotation = 230;
 
 
@@ -8838,8 +6258,8 @@ impl Profile {
     // .OakSave.VaultCardSaveGameData vault_card = 231;
 
 
-    pub fn get_vault_card(&self) -> &VaultCardSaveGameData {
-        self.vault_card.as_ref().unwrap_or_else(|| <VaultCardSaveGameData as ::protobuf::Message>::default_instance())
+    pub fn get_vault_card(&self) -> &super::oak_shared::VaultCardSaveGameData {
+        self.vault_card.as_ref().unwrap_or_else(|| <super::oak_shared::VaultCardSaveGameData as ::protobuf::Message>::default_instance())
     }
     pub fn clear_vault_card(&mut self) {
         self.vault_card.clear();
@@ -8850,13 +6270,13 @@ impl Profile {
     }
 
     // Param is passed by value, moved
-    pub fn set_vault_card(&mut self, v: VaultCardSaveGameData) {
+    pub fn set_vault_card(&mut self, v: super::oak_shared::VaultCardSaveGameData) {
         self.vault_card = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_vault_card(&mut self) -> &mut VaultCardSaveGameData {
+    pub fn mut_vault_card(&mut self) -> &mut super::oak_shared::VaultCardSaveGameData {
         if self.vault_card.is_none() {
             self.vault_card.set_default();
         }
@@ -8864,8 +6284,38 @@ impl Profile {
     }
 
     // Take field
-    pub fn take_vault_card(&mut self) -> VaultCardSaveGameData {
-        self.vault_card.take().unwrap_or_else(|| VaultCardSaveGameData::new())
+    pub fn take_vault_card(&mut self) -> super::oak_shared::VaultCardSaveGameData {
+        self.vault_card.take().unwrap_or_else(|| super::oak_shared::VaultCardSaveGameData::new())
+    }
+
+    // uint32 player_selected_league = 232;
+
+
+    pub fn get_player_selected_league(&self) -> u32 {
+        self.player_selected_league
+    }
+    pub fn clear_player_selected_league(&mut self) {
+        self.player_selected_league = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_player_selected_league(&mut self, v: u32) {
+        self.player_selected_league = v;
+    }
+
+    // bool needs_shift_first_boot_primary = 233;
+
+
+    pub fn get_needs_shift_first_boot_primary(&self) -> bool {
+        self.needs_shift_first_boot_primary
+    }
+    pub fn clear_needs_shift_first_boot_primary(&mut self) {
+        self.needs_shift_first_boot_primary = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_needs_shift_first_boot_primary(&mut self, v: bool) {
+        self.needs_shift_first_boot_primary = v;
     }
 }
 
@@ -10091,7 +7541,7 @@ impl ::protobuf::Message for Profile {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
-                    self.disable_spatial_audio = tmp;
+                    self.disable_spatial_audio__or__has_reset_console_fov = tmp;
                 }
                 205 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
@@ -10242,6 +7692,13 @@ impl ::protobuf::Message for Profile {
                     let tmp = is.read_bool()?;
                     self.bCitizenScienceTutorialDone = tmp;
                 }
+                229 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.enable_trigger_feedback = tmp;
+                }
                 230 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
@@ -10251,6 +7708,20 @@ impl ::protobuf::Message for Profile {
                 }
                 231 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.vault_card)?;
+                }
+                232 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.player_selected_league = tmp;
+                }
+                233 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.needs_shift_first_boot_primary = tmp;
                 }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -10801,7 +8272,7 @@ impl ::protobuf::Message for Profile {
         if self.hud_scale_multiplier != 0. {
             my_size += 6;
         }
-        if self.disable_spatial_audio != false {
+        if self.disable_spatial_audio__or__has_reset_console_fov != false {
             my_size += 3;
         }
         if self.total_playtime_seconds != 0 {
@@ -10875,12 +8346,21 @@ impl ::protobuf::Message for Profile {
         if self.bCitizenScienceTutorialDone != false {
             my_size += 3;
         }
+        if self.enable_trigger_feedback != false {
+            my_size += 3;
+        }
         if self.fixed_initial_zonemap_rotation != false {
             my_size += 3;
         }
         if let Some(ref v) = self.vault_card.as_ref() {
             let len = v.compute_size();
             my_size += 2 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        if self.player_selected_league != 0 {
+            my_size += ::protobuf::rt::value_size(232, self.player_selected_league, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.needs_shift_first_boot_primary != false {
+            my_size += 3;
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -11440,8 +8920,8 @@ impl ::protobuf::Message for Profile {
         if self.hud_scale_multiplier != 0. {
             os.write_float(203, self.hud_scale_multiplier)?;
         }
-        if self.disable_spatial_audio != false {
-            os.write_bool(204, self.disable_spatial_audio)?;
+        if self.disable_spatial_audio__or__has_reset_console_fov != false {
+            os.write_bool(204, self.disable_spatial_audio__or__has_reset_console_fov)?;
         }
         if self.total_playtime_seconds != 0 {
             os.write_int32(205, self.total_playtime_seconds)?;
@@ -11516,6 +8996,9 @@ impl ::protobuf::Message for Profile {
         if self.bCitizenScienceTutorialDone != false {
             os.write_bool(228, self.bCitizenScienceTutorialDone)?;
         }
+        if self.enable_trigger_feedback != false {
+            os.write_bool(229, self.enable_trigger_feedback)?;
+        }
         if self.fixed_initial_zonemap_rotation != false {
             os.write_bool(230, self.fixed_initial_zonemap_rotation)?;
         }
@@ -11523,6 +9006,12 @@ impl ::protobuf::Message for Profile {
             os.write_tag(231, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
+        }
+        if self.player_selected_league != 0 {
+            os.write_uint32(232, self.player_selected_league)?;
+        }
+        if self.needs_shift_first_boot_primary != false {
+            os.write_bool(233, self.needs_shift_first_boot_primary)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -12137,7 +9626,7 @@ impl ::protobuf::Message for Profile {
                 |m: &Profile| { &m.lost_loot_inventory_list },
                 |m: &mut Profile| { &mut m.lost_loot_inventory_list },
             ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<OakMailItem>>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::OakMailItem>>(
                 "npc_mail_items",
                 |m: &Profile| { &m.npc_mail_items },
                 |m: &mut Profile| { &mut m.npc_mail_items },
@@ -12162,12 +9651,12 @@ impl ::protobuf::Message for Profile {
                 |m: &Profile| { &m.profile_sdu_list },
                 |m: &mut Profile| { &mut m.profile_sdu_list },
             ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<OakCustomizationSaveGameData>>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::OakCustomizationSaveGameData>>(
                 "unlocked_customizations",
                 |m: &Profile| { &m.unlocked_customizations },
                 |m: &mut Profile| { &mut m.unlocked_customizations },
             ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<OakInventoryCustomizationPartInfo>>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::OakInventoryCustomizationPartInfo>>(
                 "unlocked_inventory_customization_parts",
                 |m: &Profile| { &m.unlocked_inventory_customization_parts },
                 |m: &mut Profile| { &mut m.unlocked_inventory_customization_parts },
@@ -12177,12 +9666,12 @@ impl ::protobuf::Message for Profile {
                 |m: &Profile| { &m.guardian_rank },
                 |m: &mut Profile| { &mut m.guardian_rank },
             ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<CrewQuartersDecorationItemSaveGameData>>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::CrewQuartersDecorationItemSaveGameData>>(
                 "unlocked_crew_quarters_decorations",
                 |m: &Profile| { &m.unlocked_crew_quarters_decorations },
                 |m: &mut Profile| { &mut m.unlocked_crew_quarters_decorations },
             ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<CrewQuartersRoomItemSaveGameData>>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::CrewQuartersRoomItemSaveGameData>>(
                 "unlocked_crew_quarters_rooms",
                 |m: &Profile| { &m.unlocked_crew_quarters_rooms },
                 |m: &mut Profile| { &mut m.unlocked_crew_quarters_rooms },
@@ -12433,9 +9922,9 @@ impl ::protobuf::Message for Profile {
                 |m: &mut Profile| { &mut m.hud_scale_multiplier },
             ));
             fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
-                "disable_spatial_audio",
-                |m: &Profile| { &m.disable_spatial_audio },
-                |m: &mut Profile| { &mut m.disable_spatial_audio },
+                "disable_spatial_audio__or__has_reset_console_fov",
+                |m: &Profile| { &m.disable_spatial_audio__or__has_reset_console_fov },
+                |m: &mut Profile| { &mut m.disable_spatial_audio__or__has_reset_console_fov },
             ));
             fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
                 "total_playtime_seconds",
@@ -12553,14 +10042,29 @@ impl ::protobuf::Message for Profile {
                 |m: &mut Profile| { &mut m.bCitizenScienceTutorialDone },
             ));
             fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "enable_trigger_feedback",
+                |m: &Profile| { &m.enable_trigger_feedback },
+                |m: &mut Profile| { &mut m.enable_trigger_feedback },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
                 "fixed_initial_zonemap_rotation",
                 |m: &Profile| { &m.fixed_initial_zonemap_rotation },
                 |m: &mut Profile| { &mut m.fixed_initial_zonemap_rotation },
             ));
-            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardSaveGameData>>(
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::oak_shared::VaultCardSaveGameData>>(
                 "vault_card",
                 |m: &Profile| { &m.vault_card },
                 |m: &mut Profile| { &mut m.vault_card },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "player_selected_league",
+                |m: &Profile| { &m.player_selected_league },
+                |m: &mut Profile| { &mut m.player_selected_league },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "needs_shift_first_boot_primary",
+                |m: &Profile| { &m.needs_shift_first_boot_primary },
+                |m: &mut Profile| { &mut m.needs_shift_first_boot_primary },
             ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Profile>(
                 "Profile",
@@ -12752,7 +10256,7 @@ impl ::protobuf::Clear for Profile {
         self.pinata_event_enabled = false;
         self.min_time_between_badass_events = 0;
         self.hud_scale_multiplier = 0.;
-        self.disable_spatial_audio = false;
+        self.disable_spatial_audio__or__has_reset_console_fov = false;
         self.total_playtime_seconds = 0;
         self.moxxis_drink_event_enabled = false;
         self.moxxis_drink_event_bits_product_id = 0;
@@ -12776,8 +10280,11 @@ impl ::protobuf::Clear for Profile {
         self.CitizenScienceCSBucksAmount = 0;
         self.bCitizenScienceHasSeenIntroVideo = false;
         self.bCitizenScienceTutorialDone = false;
+        self.enable_trigger_feedback = false;
         self.fixed_initial_zonemap_rotation = false;
         self.vault_card.clear();
+        self.player_selected_league = 0;
+        self.needs_shift_first_boot_primary = false;
         self.unknown_fields.clear();
     }
 }
@@ -13035,287 +10542,244 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x03\x20\x01(\x08R\x1etutorialsAllowedInNonGameModesB\0:\0\"u\n\x16OakFr\
     iendEncounterData\x12'\n\x0enum_encounters\x18\x01\x20\x01(\rR\rnumEncou\
     ntersB\0\x120\n\x13time_last_encounter\x18\x02\x20\x01(\x03R\x11timeLast\
-    EncounterB\0:\0\"\x82\x03\n\x0bOakMailItem\x12&\n\x0email_item_type\x18\
-    \x01\x20\x01(\rR\x0cmailItemTypeB\0\x120\n\x13sender_display_name\x18\
-    \x02\x20\x01(\tR\x11senderDisplayNameB\0\x12\x1a\n\x07subject\x18\x03\
-    \x20\x01(\tR\x07subjectB\0\x12\x14\n\x04body\x18\x04\x20\x01(\tR\x04body\
-    B\0\x12.\n\x12gear_serial_number\x18\x05\x20\x01(\tR\x10gearSerialNumber\
-    B\0\x12\x1d\n\tmail_guid\x18\x06\x20\x01(\tR\x08mailGuidB\0\x12\x1d\n\td\
-    ate_sent\x18\x07\x20\x01(\x03R\x08dateSentB\0\x12)\n\x0fexpiration_date\
-    \x18\x08\x20\x01(\x03R\x0eexpirationDateB\0\x12&\n\x0efrom_player_id\x18\
-    \t\x20\x01(\tR\x0cfromPlayerIdB\0\x12$\n\rhas_been_read\x18\n\x20\x01(\
-    \x08R\x0bhasBeenReadB\0:\0\"\xb1\x01\n\x14GearSoldByFriendData\x12.\n\
-    \x12gear_serial_number\x18\x01\x20\x01(\tR\x10gearSerialNumberB\0\x12A\n\
-    \x1cplayer_class_identifier_hash\x18\x02\x20\x01(\x05R\x19playerClassIde\
-    ntifierHashB\0\x12$\n\rfriend_net_id\x18\x03\x20\x01(\tR\x0bfriendNetIdB\
-    \0:\0\"u\n\x1cOakCustomizationSaveGameData\x12\x17\n\x06is_new\x18\x01\
-    \x20\x01(\x08R\x05isNewB\0\x12:\n\x18customization_asset_path\x18\x02\
-    \x20\x01(\tR\x16customizationAssetPathB\0:\0\"x\n!OakInventoryCustomizat\
-    ionPartInfo\x128\n\x17customization_part_hash\x18\x01\x20\x01(\rR\x15cus\
-    tomizationPartHashB\0\x12\x17\n\x06is_new\x18\x02\x20\x01(\x08R\x05isNew\
-    B\0:\0\"o\n\x1eGuardianRankRewardSaveGameData\x12\x1f\n\nnum_tokens\x18\
-    \x01\x20\x01(\x05R\tnumTokensB\0\x12*\n\x10reward_data_path\x18\x02\x20\
-    \x01(\tR\x0erewardDataPathB\0:\0\"\xeb\x02\n\x17GuardianRankProfileData\
-    \x12+\n\x10available_tokens\x18\x01\x20\x01(\x05R\x0favailableTokensB\0\
-    \x12L\n\x0crank_rewards\x18\x02\x20\x03(\x0b2'.OakSave.GuardianRankRewar\
-    dSaveGameDataR\x0brankRewardsB\0\x12%\n\rguardian_rank\x18\x03\x20\x01(\
-    \x05R\x0cguardianRankB\0\x121\n\x13guardian_experience\x18\x04\x20\x01(\
-    \x05R\x12guardianExperienceB\0\x12?\n\x1bguardian_reward_random_seed\x18\
-    \x05\x20\x01(\x05R\x18guardianRewardRandomSeedB\0\x128\n\x17new_guardian\
-    _experience\x18\x06\x20\x01(\x03R\x15newGuardianExperienceB\0:\0\"\x82\
-    \x01\n&CrewQuartersDecorationItemSaveGameData\x12\x17\n\x06is_new\x18\
-    \x01\x20\x01(\x08R\x05isNewB\0\x12=\n\x1adecoration_item_asset_path\x18\
-    \x02\x20\x01(\tR\x17decorationItemAssetPathB\0:\0\"p\n\x20CrewQuartersRo\
-    omItemSaveGameData\x12\x17\n\x06is_new\x18\x01\x20\x01(\x08R\x05isNewB\0\
-    \x121\n\x14room_item_asset_path\x18\x02\x20\x01(\tR\x11roomItemAssetPath\
-    B\0:\0\"\xf8\x02\n\x15VaultCardSaveGameData\x12:\n\x19last_active_vault_\
-    card_id\x18\x02\x20\x01(\rR\x15lastActiveVaultCardIdB\0\x12*\n\x10curren\
-    t_day_seed\x18\x03\x20\x01(\x05R\x0ecurrentDaySeedB\0\x12,\n\x11current_\
-    week_seed\x18\x04\x20\x01(\x05R\x0fcurrentWeekSeedB\0\x12j\n\x1evault_ca\
-    rd_previous_challenges\x18\x05\x20\x03(\x0b2#.OakSave.VaultCardPreviousC\
-    hallengeR\x1bvaultCardPreviousChallengesB\0\x12[\n\x1avault_card_claimed\
-    _rewards\x18\x06\x20\x03(\x0b2\x1c.OakSave.VaultCardRewardListR\x17vault\
-    CardClaimedRewardsB\0:\0\"W\n\x0fVaultCardReward\x12#\n\x0ccolumn_index\
-    \x18\x01\x20\x01(\x05R\x0bcolumnIndexB\0\x12\x1d\n\trow_index\x18\x02\
-    \x20\x01(\x05R\x08rowIndexB\0:\0\"e\n\x13VaultCardGearReward\x12\x1f\n\n\
-    gear_index\x18\x01\x20\x01(\x05R\tgearIndexB\0\x12+\n\x10repurchase_coun\
-    t\x18\x02\x20\x01(\rR\x0frepurchaseCountB\0:\0\"\xf0\x03\n\x13VaultCardR\
-    ewardList\x12$\n\rvault_card_id\x18\x01\x20\x01(\rR\x0bvaultCardIdB\0\
-    \x124\n\x15vault_card_experience\x18\x02\x20\x01(\x03R\x13vaultCardExper\
-    ienceB\0\x12L\n\x14unlocked_reward_list\x18\x04\x20\x03(\x0b2\x18.OakSav\
-    e.VaultCardRewardR\x12unlockedRewardListB\0\x12L\n\x14redeemed_reward_li\
-    st\x18\x05\x20\x03(\x0b2\x18.OakSave.VaultCardRewardR\x12redeemedRewardL\
-    istB\0\x12,\n\x11vault_card_chests\x18\x07\x20\x01(\rR\x0fvaultCardChest\
-    sB\0\x129\n\x18vault_card_chests_opened\x18\x08\x20\x01(\rR\x15vaultCard\
-    ChestsOpenedB\0\x123\n\x15vault_card_keys_spent\x18\t\x20\x01(\rR\x12vau\
-    ltCardKeysSpentB\0\x12A\n\x0cgear_rewards\x18\n\x20\x03(\x0b2\x1c.OakSav\
-    e.VaultCardGearRewardR\x0bgearRewardsB\0:\0\"\x8e\x01\n\x1aVaultCardPrev\
-    iousChallenge\x128\n\x17previous_challenge_seed\x18\x01\x20\x01(\x05R\
-    \x15previousChallengeSeedB\0\x124\n\x15previous_challenge_id\x18\x02\x20\
-    \x01(\rR\x13previousChallengeIdB\0:\0\"\xad\x01\n\x11RecentlyMetPlayer\
-    \x12(\n\x0fshift_player_id\x18\x01\x20\x01(\tR\rshiftPlayerIdB\0\x123\n\
-    \x15first_party_player_id\x18\x02\x20\x01(\tR\x12firstPartyPlayerIdB\0\
-    \x127\n\x17show_shift_player_entry\x18\x03\x20\x01(\x08R\x14showShiftPla\
-    yerEntryB\0:\0\"\x9a`\n\x07Profile\x12,\n\x11enable_aim_assist\x18\x01\
-    \x20\x01(\x08R\x0fenableAimAssistB\0\x120\n\x13gamepad_invert_look\x18\
-    \x02\x20\x01(\x08R\x11gamepadInvertLookB\0\x120\n\x13gamepad_invert_turn\
-    \x18\x03\x20\x01(\x08R\x11gamepadInvertTurnB\0\x120\n\x13gamepad_invert_\
-    move\x18\x04\x20\x01(\x08R\x11gamepadInvertMoveB\0\x124\n\x15gamepad_inv\
-    ert_strafe\x18\x05\x20\x01(\x08R\x13gamepadInvertStrafeB\0\x12+\n\x10ena\
-    ble_vibration\x18\x06\x20\x01(\x08R\x0fenableVibrationB\0\x12.\n\x12inve\
-    rt_mouse_pitch\x18\x07\x20\x01(\x08R\x10invertMousePitchB\0\x126\n\x16en\
-    able_mouse_smoothing\x18\x08\x20\x01(\x08R\x14enableMouseSmoothingB\0\
-    \x12!\n\x0bmouse_scale\x18\t\x20\x01(\x02R\nmouseScaleB\0\x120\n\x13show\
-    _damage_numbers\x18\n\x20\x01(\x08R\x11showDamageNumbersB\0\x129\n\x18sh\
-    ow_damage_number_icons\x18\x0b\x20\x01(\x08R\x15showDamageNumberIconsB\0\
-    \x12:\n\x18enable_training_messages\x18\x0c\x20\x01(\x08R\x16enableTrain\
-    ingMessagesB\0\x12&\n\x0eshow_text_chat\x18\r\x20\x01(\x08R\x0cshowTextC\
-    hatB\0\x12+\n\x10center_crosshair\x18\x0e\x20\x01(\x08R\x0fcenterCrossha\
-    irB\0\x12%\n\rtoggle_sprint\x18\x0f\x20\x01(\x08R\x0ctoggleSprintB\0\x12\
-    %\n\rtoggle_crouch\x18\x10\x20\x01(\x08R\x0ctoggleCrouchB\0\x12'\n\x0ece\
-    nsor_content\x18\x11\x20\x01(\x08R\rcensorContentB\0\x12#\n\x0cmusic_vol\
-    ume\x18\x12\x20\x01(\x02R\x0bmusicVolumeB\0\x122\n\x14sound_effects_volu\
-    me\x18\x13\x20\x01(\x02R\x12soundEffectsVolumeB\0\x12\x1d\n\tvo_volume\
-    \x18\x14\x20\x01(\x02R\x08voVolumeB\0\x12#\n\x0cvoice_volume\x18\x15\x20\
-    \x01(\x02R\x0bvoiceVolumeB\0\x12.\n\x12enable_optional_vo\x18\x16\x20\
-    \x01(\x08R\x10enableOptionalVoB\0\x12\"\n\x0cpush_to_talk\x18\x17\x20\
-    \x01(\x08R\npushToTalkB\0\x128\n\x17enable_controller_audio\x18\x18\x20\
-    \x01(\x08R\x15enableControllerAudioB\0\x120\n\x13speaker_angle_front\x18\
-    \x19\x20\x01(\x02R\x11speakerAngleFrontB\0\x12.\n\x12speaker_angle_side\
-    \x18\x1a\x20\x01(\x02R\x10speakerAngleSideB\0\x12.\n\x12speaker_angle_ba\
-    ck\x18\x1b\x20\x01(\x02R\x10speakerAngleBackB\0\x12%\n\rspeaker_setup\
-    \x18\x1c\x20\x01(\rR\x0cspeakerSetupB\0\x128\n\x18mute_audio_on_focus_lo\
-    ss\x18\x1d\x20\x01(\x08R\x14muteAudioOnFocusLossB\0\x12>\n\x1bhide_stric\
-    t_nat_help_dialog\x18\"\x20\x01(\x08R\x17hideStrictNatHelpDialogB\0\x12R\
-    \n\x15player_input_bindings\x18#\x20\x01(\x0b2\x1c.OakSave.PlayerInputBi\
-    ndingsR\x13playerInputBindingsB\0\x12!\n\x0bnews_hashes\x18$\x20\x03(\rR\
-    \nnewsHashesB\0\x123\n\x15last_used_savegame_id\x18%\x20\x01(\rR\x12last\
-    UsedSavegameIdB\0\x12C\n\x1dgamepad_hip_sensitivity_level\x18&\x20\x01(\
-    \x05R\x1agamepadHipSensitivityLevelB\0\x12I\n\x20gamepad_zoomed_sensitiv\
-    ity_level\x18'\x20\x01(\x05R\x1dgamepadZoomedSensitivityLevelB\0\x12K\n!\
-    gamepad_vehicle_sensitivity_level\x18(\x20\x01(\x05R\x1egamepadVehicleSe\
-    nsitivityLevelB\0\x12@\n\x1cgamepad_movement_dead_zone_x\x18)\x20\x01(\
-    \x02R\x18gamepadMovementDeadZoneXB\0\x12@\n\x1cgamepad_movement_dead_zon\
-    e_y\x18*\x20\x01(\x02R\x18gamepadMovementDeadZoneYB\0\x12C\n\x1egamepad_\
-    look_dead_zone_inner_x\x18+\x20\x01(\x02R\x19gamepadLookDeadZoneInnerXB\
-    \0\x12C\n\x1egamepad_look_dead_zone_outer_x\x18,\x20\x01(\x02R\x19gamepa\
-    dLookDeadZoneOuterXB\0\x12C\n\x1egamepad_look_dead_zone_inner_y\x18-\x20\
-    \x01(\x02R\x19gamepadLookDeadZoneInnerYB\0\x12C\n\x1egamepad_look_dead_z\
-    one_outer_y\x18.\x20\x01(\x02R\x19gamepadLookDeadZoneOuterYB\0\x12O\n$ga\
-    mepad_vehicle_movement_dead_zone_x\x18/\x20\x01(\x02R\x1fgamepadVehicleM\
-    ovementDeadZoneXB\0\x12O\n$gamepad_vehicle_movement_dead_zone_y\x180\x20\
-    \x01(\x02R\x1fgamepadVehicleMovementDeadZoneYB\0\x12R\n&gamepad_vehicle_\
-    look_dead_zone_inner_x\x181\x20\x01(\x02R\x20gamepadVehicleLookDeadZoneI\
-    nnerXB\0\x12R\n&gamepad_vehicle_look_dead_zone_outer_x\x182\x20\x01(\x02\
-    R\x20gamepadVehicleLookDeadZoneOuterXB\0\x12R\n&gamepad_vehicle_look_dea\
-    d_zone_inner_y\x183\x20\x01(\x02R\x20gamepadVehicleLookDeadZoneInnerYB\0\
-    \x12R\n&gamepad_vehicle_look_dead_zone_outer_y\x184\x20\x01(\x02R\x20gam\
-    epadVehicleLookDeadZoneOuterYB\0\x12@\n\x1cgamepad_left_dead_zone_inner\
-    \x185\x20\x01(\x02R\x18gamepadLeftDeadZoneInnerB\0\x12@\n\x1cgamepad_lef\
-    t_dead_zone_outer\x186\x20\x01(\x02R\x18gamepadLeftDeadZoneOuterB\0\x12B\
-    \n\x1dgamepad_right_dead_zone_inner\x187\x20\x01(\x02R\x19gamepadRightDe\
-    adZoneInnerB\0\x12B\n\x1dgamepad_right_dead_zone_outer\x188\x20\x01(\x02\
-    R\x19gamepadRightDeadZoneOuterB\0\x12K\n\"gamepad_look_axial_dead_zone_s\
-    cale\x189\x20\x01(\x02R\x1dgamepadLookAxialDeadZoneScaleB\0\x12K\n\"game\
-    pad_move_axial_dead_zone_scale\x18:\x20\x01(\x02R\x1dgamepadMoveAxialDea\
-    dZoneScaleB\0\x12Q\n%gamepad_use_advanced_hip_aim_settings\x18;\x20\x01(\
-    \x08R\x20gamepadUseAdvancedHipAimSettingsB\0\x12W\n(gamepad_use_advanced\
-    _zoomed_aim_settings\x18<\x20\x01(\x08R#gamepadUseAdvancedZoomedAimSetti\
-    ngsB\0\x12Y\n)gamepad_use_advanced_vehicle_aim_settings\x18=\x20\x01(\
-    \x08R$gamepadUseAdvancedVehicleAimSettingsB\0\x121\n\x14gamepad_hip_yaw_\
-    rate\x18>\x20\x01(\x02R\x11gamepadHipYawRateB\0\x125\n\x16gamepad_hip_pi\
-    tch_rate\x18?\x20\x01(\x02R\x13gamepadHipPitchRateB\0\x123\n\x15gamepad_\
-    hip_extra_yaw\x18@\x20\x01(\x02R\x12gamepadHipExtraYawB\0\x127\n\x17game\
-    pad_hip_extra_pitch\x18A\x20\x01(\x02R\x14gamepadHipExtraPitchB\0\x128\n\
-    \x18gamepad_hip_ramp_up_time\x18B\x20\x01(\x02R\x14gamepadHipRampUpTimeB\
-    \0\x12:\n\x19gamepad_hip_ramp_up_delay\x18C\x20\x01(\x02R\x15gamepadHipR\
-    ampUpDelayB\0\x127\n\x17gamepad_zoomed_yaw_rate\x18D\x20\x01(\x02R\x14ga\
-    mepadZoomedYawRateB\0\x12;\n\x19gamepad_zoomed_pitch_rate\x18E\x20\x01(\
-    \x02R\x16gamepadZoomedPitchRateB\0\x129\n\x18gamepad_zoomed_extra_yaw\
-    \x18F\x20\x01(\x02R\x15gamepadZoomedExtraYawB\0\x12=\n\x1agamepad_zoomed\
-    _extra_pitch\x18G\x20\x01(\x02R\x17gamepadZoomedExtraPitchB\0\x12>\n\x1b\
-    gamepad_zoomed_ramp_up_time\x18H\x20\x01(\x02R\x17gamepadZoomedRampUpTim\
-    eB\0\x12@\n\x1cgamepad_zoomed_ramp_up_delay\x18I\x20\x01(\x02R\x18gamepa\
-    dZoomedRampUpDelayB\0\x129\n\x18gamepad_vehicle_yaw_rate\x18J\x20\x01(\
-    \x02R\x15gamepadVehicleYawRateB\0\x12=\n\x1agamepad_vehicle_pitch_rate\
-    \x18K\x20\x01(\x02R\x17gamepadVehiclePitchRateB\0\x12;\n\x19gamepad_vehi\
-    cle_extra_yaw\x18L\x20\x01(\x02R\x16gamepadVehicleExtraYawB\0\x12?\n\x1b\
-    gamepad_vehicle_extra_pitch\x18M\x20\x01(\x02R\x18gamepadVehicleExtraPit\
-    chB\0\x12@\n\x1cgamepad_vehicle_ramp_up_time\x18N\x20\x01(\x02R\x18gamep\
-    adVehicleRampUpTimeB\0\x12B\n\x1dgamepad_vehicle_ramp_up_delay\x18O\x20\
-    \x01(\x02R\x19gamepadVehicleRampUpDelayB\0\x122\n\x14ironsight_aim_assis\
-    t\x18P\x20\x01(\x08R\x12ironsightAimAssistB\0\x128\n\x17walking_joystick\
-    _scheme\x18Q\x20\x01(\rR\x15walkingJoystickSchemeB\0\x128\n\x17driving_j\
-    oystick_scheme\x18R\x20\x01(\rR\x15drivingJoystickSchemeB\0\x12(\n\x0fmo\
-    use_ads_scale\x18S\x20\x01(\x02R\rmouseAdsScaleB\0\x120\n\x13mouse_vehic\
-    le_scale\x18T\x20\x01(\x02R\x11mouseVehicleScaleB\0\x12=\n\x1amouse_iron\
-    sight_aim_assist\x18U\x20\x01(\x08R\x17mouseIronsightAimAssistB\0\x12.\n\
-    \x12vehicle_input_mode\x18V\x20\x01(\rR\x10vehicleInputModeB\0\x12,\n\
-    \x11weapon_aim_toggle\x18W\x20\x01(\x08R\x0fweaponAimToggleB\0\x126\n\
-    \x16mantle_requires_button\x18X\x20\x01(\x08R\x14mantleRequiresButtonB\0\
-    \x126\n\x16fixed_minimap_rotation\x18Y\x20\x01(\x08R\x14fixedMinimapRota\
-    tionB\0\x12*\n\x10map_invert_pitch\x18Z\x20\x01(\x08R\x0emapInvertPitchB\
-    \0\x12&\n\x0emap_invert_yaw\x18[\x20\x01(\x08R\x0cmapInvertYawB\0\x12\
-    \x20\n\ndifficulty\x18\\\x20\x01(\rR\ndifficultyB\0\x129\n\x18swap_dual_\
-    wield_controls\x18]\x20\x01(\x08R\x15swapDualWieldControlsB\0\x12\x1b\n\
-    \x08base_fov\x18^\x20\x01(\x02R\x07baseFovB\0\x12C\n\x1dcrosshair_neutra\
-    l_color_frame\x18_\x20\x01(\rR\x1acrosshairNeutralColorFrameB\0\x12?\n\
-    \x1bcrosshair_enemy_color_frame\x18`\x20\x01(\rR\x18crosshairEnemyColorF\
-    rameB\0\x12=\n\x1acrosshair_ally_color_frame\x18a\x20\x01(\rR\x17crossha\
-    irAllyColorFrameB\0\x12+\n\x10enable_subtitles\x18b\x20\x01(\x08R\x0fena\
-    bleSubtitlesB\0\x126\n\x16enable_closed_captions\x18c\x20\x01(\x08R\x14e\
-    nableClosedCaptionsB\0\x123\n\x15last_status_menu_page\x18d\x20\x01(\tR\
-    \x12lastStatusMenuPageB\0\x12m\n\x1cinventory_screen_last_filter\x18e\
-    \x20\x03(\x0b2*.OakSave.OakProfileLastInventoryFilterInfoR\x19inventoryS\
-    creenLastFilterB\0\x12J\n\rtutorial_info\x18f\x20\x01(\x0b2#.OakSave.Oak\
-    ProfileMenuTutorialInfoR\x0ctutorialInfoB\0\x122\n\x14default_network_ty\
-    pe\x18g\x20\x01(\rR\x12defaultNetworkTypeB\0\x120\n\x13default_invite_ty\
-    pe\x18h\x20\x01(\rR\x11defaultInviteTypeB\0\x12/\n\x12matchmaking_region\
-    \x18i\x20\x01(\tR\x11matchmakingRegionB\0\x12-\n\x11streaming_service\
-    \x18j\x20\x01(\rR\x10streamingServiceB\0\x129\n\x18max_cached_friend_eve\
-    nts\x18k\x20\x01(\x05R\x15maxCachedFriendEventsB\0\x12=\n\x1amax_cached_\
-    friend_statuses\x18l\x20\x01(\x05R\x17maxCachedFriendStatusesB\0\x12%\n\
-    \rfriend_events\x18m\x20\x03(\tR\x0cfriendEventsB\0\x12)\n\x0ffriend_sta\
-    tuses\x18n\x20\x03(\tR\x0efriendStatusesB\0\x12D\n\x1elast_whisper_fetch\
-    _events_time\x18o\x20\x01(\x03R\x1alastWhisperFetchEventsTimeB\0\x12H\n\
-    \x20last_whisper_fetch_statuses_time\x18p\x20\x01(\x03R\x1clastWhisperFe\
-    tchStatusesTimeB\0\x128\n\x17desired_crossplay_state\x18q\x20\x01(\rR\
-    \x15desiredCrossplayStateB\0\x12V\n\x11friend_encounters\x18\x85\x01\x20\
-    \x03(\x0b2&.OakSave.Profile.FriendEncountersEntryR\x10friendEncountersB\
-    \0\x12<\n\x19max_friend_encounter_size\x18\x86\x01\x20\x01(\x05R\x16maxF\
-    riendEncounterSizeB\0\x12N\n\x12profile_stats_data\x18\x87\x01\x20\x03(\
-    \x0b2\x1d.OakSave.GameStatSaveGameDataR\x10profileStatsDataB\0\x12f\n\
-    \x1cbank_inventory_category_list\x18\x88\x01\x20\x03(\x0b2\".OakSave.Inv\
-    entoryCategorySaveDataR\x19bankInventoryCategoryListB\0\x121\n\x13bank_i\
-    nventory_list\x18\x89\x01\x20\x03(\x0cR\x11bankInventoryListB\0\x12:\n\
-    \x18lost_loot_inventory_list\x18\x8a\x01\x20\x03(\x0cR\x15lostLootInvent\
-    oryListB\0\x12=\n\x0enpc_mail_items\x18\x8b\x01\x20\x03(\x0b2\x14.OakSav\
-    e.OakMailItemR\x0cnpcMailItemsB\0\x12\x20\n\nmail_guids\x18\x8c\x01\x20\
-    \x03(\tR\tmailGuidsB\0\x12-\n\x11unread_mail_guids\x18\x8d\x01\x20\x03(\
-    \tR\x0funreadMailGuidsB\0\x12Q\n\x14gear_sold_by_friends\x18\x8e\x01\x20\
-    \x03(\x0b2\x1d.OakSave.GearSoldByFriendDataR\x11gearSoldByFriendsB\0\x12\
-    H\n\x10profile_sdu_list\x18\x8f\x01\x20\x03(\x0b2\x1b.OakSave.OakSDUSave\
-    GameDataR\x0eprofileSduListB\0\x12a\n\x17unlocked_customizations\x18\x90\
-    \x01\x20\x03(\x0b2%.OakSave.OakCustomizationSaveGameDataR\x16unlockedCus\
-    tomizationsB\0\x12\x82\x01\n&unlocked_inventory_customization_parts\x18\
-    \x91\x01\x20\x03(\x0b2*.OakSave.OakInventoryCustomizationPartInfoR#unloc\
-    kedInventoryCustomizationPartsB\0\x12H\n\rguardian_rank\x18\x92\x01\x20\
-    \x01(\x0b2\x20.OakSave.GuardianRankProfileDataR\x0cguardianRankB\0\x12\
-    \x7f\n\"unlocked_crew_quarters_decorations\x18\x93\x01\x20\x03(\x0b2/.Oa\
-    kSave.CrewQuartersDecorationItemSaveGameDataR\x1funlockedCrewQuartersDec\
-    orationsB\0\x12m\n\x1cunlocked_crew_quarters_rooms\x18\x94\x01\x20\x03(\
-    \x0b2).OakSave.CrewQuartersRoomItemSaveGameDataR\x19unlockedCrewQuarters\
-    RoomsB\0\x12=\n\x19enable_mouse_acceleration\x18\x96\x01\x20\x01(\x08R\
-    \x17enableMouseAccelerationB\0\x123\n\x14enable_gamepad_input\x18\x97\
-    \x01\x20\x01(\x08R\x12enableGamepadInputB\0\x12<\n\x19use_classic_gamepa\
-    d_input\x18\x98\x01\x20\x01(\x08R\x16useClassicGamepadInputB\0\x12&\n\rm\
-    aster_volume\x18\x99\x01\x20\x01(\x02R\x0cmasterVolumeB\0\x123\n\x14moni\
-    tor_display_type\x18\x9a\x01\x20\x01(\rR\x12monitorDisplayTypeB\0\x12&\n\
-    \rgraphics_mode\x18\x9b\x01\x20\x01(\rR\x0cgraphicsModeB\0\x12+\n\x10fra\
-    me_rate_limit\x18\x9c\x01\x20\x01(\rR\x0eframeRateLimitB\0\x12+\n\x10bas\
-    e_vehicle_fov\x18\x9d\x01\x20\x01(\x02R\x0ebaseVehicleFovB\0\x12,\n\x10g\
-    raphics_quality\x18\x9e\x01\x20\x01(\rR\x0fgraphicsQualityB\0\x126\n\x15\
-    anisotropic_filtering\x18\x9f\x01\x20\x01(\rR\x14anisotropicFilteringB\0\
-    \x12(\n\x0eshadow_quality\x18\xa0\x01\x20\x01(\rR\rshadowQualityB\0\x12=\
-    \n\x19display_performance_stats\x18\xa1\x01\x20\x01(\rR\x17displayPerfor\
-    manceStatsB\0\x12(\n\x0etexture_detail\x18\xa2\x01\x20\x01(\rR\rtextureD\
-    etailB\0\x12&\n\rdraw_distance\x18\xa3\x01\x20\x01(\rR\x0cdrawDistanceB\
-    \0\x12\x1b\n\x07clutter\x18\xa4\x01\x20\x01(\rR\x07clutterB\0\x12%\n\x0c\
-    tessellation\x18\xa5\x01\x20\x01(\rR\x0ctessellationB\0\x12\x1b\n\x07fol\
-    iage\x18\xa6\x01\x20\x01(\rR\x07foliageB\0\x12*\n\x0ffoliage_shadows\x18\
-    \xa7\x01\x20\x01(\x08R\x0efoliageShadowsB\0\x120\n\x12planar_reflections\
-    \x18\xa8\x01\x20\x01(\x08R\x11planarReflectionsB\0\x12(\n\x0evolumetric_\
-    fog\x18\xa9\x01\x20\x01(\rR\rvolumetricFogB\0\x12;\n\x18screen_space_ref\
-    lections\x18\xaa\x01\x20\x01(\rR\x16screenSpaceReflectionsB\0\x12;\n\x18\
-    character_texture_detail\x18\xab\x01\x20\x01(\rR\x16characterTextureDeta\
-    ilB\0\x12,\n\x10character_detail\x18\xac\x01\x20\x01(\rR\x0fcharacterDet\
-    ailB\0\x12=\n\x19ambient_occlusion_quality\x18\xad\x01\x20\x01(\rR\x17am\
-    bientOcclusionQualityB\0\x12/\n\x12object_motion_blur\x18\xae\x01\x20\
-    \x01(\x08R\x10objectMotionBlurB\0\x12\x20\n\nlens_flare\x18\xaf\x01\x20\
-    \x01(\x08R\tlensFlareB\0\x12<\n\x19combat_number_long_format\x18\xb0\x01\
-    \x20\x01(\x08R\x16combatNumberLongFormatB\0\x12;\n\x18show_minimap_legen\
-    daries\x18\xb1\x01\x20\x01(\x08R\x16showMinimapLegendariesB\0\x121\n\x13\
-    use_player_callouts\x18\xb2\x01\x20\x01(\x08R\x11usePlayerCalloutsB\0\
-    \x12N\n\"friend_event_notification_lifetime\x18\xb3\x01\x20\x01(\rR\x1ff\
-    riendEventNotificationLifetimeB\0\x12P\n#friend_event_notification_frequ\
-    ency\x18\xb4\x01\x20\x01(\rR\x20friendEventNotificationFrequencyB\0\x12B\
-    \n\x1ctrade_request_reception_type\x18\xb5\x01\x20\x01(\rR\x19tradeReque\
-    stReceptionTypeB\0\x12'\n\x0ehead_bob_scale\x18\xb6\x01\x20\x01(\x02R\
-    \x0cheadBobScaleB\0\x120\n\x13has_seen_first_boot\x18\xb8\x01\x20\x01(\
-    \x08R\x10hasSeenFirstBootB\0\x12#\n\x0csubs_cc_size\x18\xbd\x01\x20\x01(\
-    \x02R\nsubsCcSizeB\0\x12>\n\x1acc_subs_background_opacity\x18\xbe\x01\
-    \x20\x01(\x02R\x17ccSubsBackgroundOpacityB\0\x125\n\x15walking_button_sc\
-    heme\x18\xbf\x01\x20\x01(\rR\x13walkingButtonSchemeB\0\x125\n\x15driving\
-    _button_scheme\x18\xc0\x01\x20\x01(\rR\x13drivingButtonSchemeB\0\x12\x20\
-    \n\nglyph_mode\x18\xc1\x01\x20\x01(\rR\tglyphModeB\0\x12\x1a\n\x07use_MP\
-    H\x18\xc2\x01\x20\x01(\x08R\x06useMPHB\0\x12\x80\x01\n$registered_downlo\
-    adable_entitlements\x18\xc3\x01\x20\x03(\x0b2+.OakSave.RegisteredDownloa\
-    dableEntitlementsR\"registeredDownloadableEntitlementsB\0\x12)\n\x0fseen\
-    _news_items\x18\xc4\x01\x20\x03(\tR\rseenNewsItemsB\0\x127\n\x16auto_cen\
-    tering_enabled\x18\xc5\x01\x20\x01(\x08R\x14autoCenteringEnabledB\0\x12J\
-    \n\x20increased_chance_for_subscribers\x18\xc6\x01\x20\x01(\x08R\x1dincr\
-    easedChanceForSubscribersB\0\x12:\n\x18rare_chest_event_enabled\x18\xc7\
-    \x01\x20\x01(\x08R\x15rareChestEventEnabledB\0\x123\n\x14badass_event_en\
-    abled\x18\xc8\x01\x20\x01(\x08R\x12badassEventEnabledB\0\x123\n\x14pinat\
-    a_event_enabled\x18\xc9\x01\x20\x01(\x08R\x12pinataEventEnabledB\0\x12E\
-    \n\x1emin_time_between_badass_events\x18\xca\x01\x20\x01(\x05R\x1aminTim\
-    eBetweenBadassEventsB\0\x123\n\x14hud_scale_multiplier\x18\xcb\x01\x20\
-    \x01(\x02R\x12hudScaleMultiplierB\0\x125\n\x15disable_spatial_audio\x18\
-    \xcc\x01\x20\x01(\x08R\x13disableSpatialAudioB\0\x127\n\x16total_playtim\
-    e_seconds\x18\xcd\x01\x20\x01(\x05R\x14totalPlaytimeSecondsB\0\x12>\n\
-    \x1amoxxis_drink_event_enabled\x18\xce\x01\x20\x01(\x08R\x17moxxisDrinkE\
-    ventEnabledB\0\x12L\n\"moxxis_drink_event_bits_product_id\x18\xcf\x01\
-    \x20\x01(\x05R\x1dmoxxisDrinkEventBitsProductIdB\0\x12H\n\x0echallenge_d\
-    ata\x18\xd0\x01\x20\x03(\x0b2\x1e.OakSave.ChallengeSaveGameDataR\rchalle\
-    ngeDataB\0\x12I\n\x1eCitizenScienceLevelProgression\x18\xd1\x01\x20\x03(\
-    \x05R\x1eCitizenScienceLevelProgressionB\0\x12G\n\x1fdefault_dead_zone_i\
-    nner_updated\x18\xd2\x01\x20\x01(\x08R\x1bdefaultDeadZoneInnerUpdatedB\0\
-    \x125\n\x15disable_event_content\x18\xd3\x01\x20\x01(\x08R\x13disableEve\
-    ntContentB\0\x12<\n\x19desired_friend_sync_state\x18\xd4\x01\x20\x01(\rR\
-    \x16desiredFriendSyncStateB\0\x126\n\x16needs_shift_first_boot\x18\xd5\
-    \x01\x20\x01(\x08R\x13needsShiftFirstBootB\0\x12O\n\x14recently_met_play\
-    ers\x18\xd6\x01\x20\x03(\x0b2\x1a.OakSave.RecentlyMetPlayerR\x12recently\
-    MetPlayersB\0\x12M\n\x20CitizenScienceActiveBoosterIndex\x18\xd7\x01\x20\
+    EncounterB\0:\0\"\xb1\x01\n\x14GearSoldByFriendData\x12.\n\x12gear_seria\
+    l_number\x18\x01\x20\x01(\tR\x10gearSerialNumberB\0\x12A\n\x1cplayer_cla\
+    ss_identifier_hash\x18\x02\x20\x01(\x05R\x19playerClassIdentifierHashB\0\
+    \x12$\n\rfriend_net_id\x18\x03\x20\x01(\tR\x0bfriendNetIdB\0:\0\"o\n\x1e\
+    GuardianRankRewardSaveGameData\x12\x1f\n\nnum_tokens\x18\x01\x20\x01(\
+    \x05R\tnumTokensB\0\x12*\n\x10reward_data_path\x18\x02\x20\x01(\tR\x0ere\
+    wardDataPathB\0:\0\"\xeb\x02\n\x17GuardianRankProfileData\x12+\n\x10avai\
+    lable_tokens\x18\x01\x20\x01(\x05R\x0favailableTokensB\0\x12L\n\x0crank_\
+    rewards\x18\x02\x20\x03(\x0b2'.OakSave.GuardianRankRewardSaveGameDataR\
+    \x0brankRewardsB\0\x12%\n\rguardian_rank\x18\x03\x20\x01(\x05R\x0cguardi\
+    anRankB\0\x121\n\x13guardian_experience\x18\x04\x20\x01(\x05R\x12guardia\
+    nExperienceB\0\x12?\n\x1bguardian_reward_random_seed\x18\x05\x20\x01(\
+    \x05R\x18guardianRewardRandomSeedB\0\x128\n\x17new_guardian_experience\
+    \x18\x06\x20\x01(\x03R\x15newGuardianExperienceB\0:\0\"\xad\x01\n\x11Rec\
+    entlyMetPlayer\x12(\n\x0fshift_player_id\x18\x01\x20\x01(\tR\rshiftPlaye\
+    rIdB\0\x123\n\x15first_party_player_id\x18\x02\x20\x01(\tR\x12firstParty\
+    PlayerIdB\0\x127\n\x17show_shift_player_entry\x18\x03\x20\x01(\x08R\x14s\
+    howShiftPlayerEntryB\0:\0\"\x84b\n\x07Profile\x12,\n\x11enable_aim_assis\
+    t\x18\x01\x20\x01(\x08R\x0fenableAimAssistB\0\x120\n\x13gamepad_invert_l\
+    ook\x18\x02\x20\x01(\x08R\x11gamepadInvertLookB\0\x120\n\x13gamepad_inve\
+    rt_turn\x18\x03\x20\x01(\x08R\x11gamepadInvertTurnB\0\x120\n\x13gamepad_\
+    invert_move\x18\x04\x20\x01(\x08R\x11gamepadInvertMoveB\0\x124\n\x15game\
+    pad_invert_strafe\x18\x05\x20\x01(\x08R\x13gamepadInvertStrafeB\0\x12+\n\
+    \x10enable_vibration\x18\x06\x20\x01(\x08R\x0fenableVibrationB\0\x12.\n\
+    \x12invert_mouse_pitch\x18\x07\x20\x01(\x08R\x10invertMousePitchB\0\x126\
+    \n\x16enable_mouse_smoothing\x18\x08\x20\x01(\x08R\x14enableMouseSmoothi\
+    ngB\0\x12!\n\x0bmouse_scale\x18\t\x20\x01(\x02R\nmouseScaleB\0\x120\n\
+    \x13show_damage_numbers\x18\n\x20\x01(\x08R\x11showDamageNumbersB\0\x129\
+    \n\x18show_damage_number_icons\x18\x0b\x20\x01(\x08R\x15showDamageNumber\
+    IconsB\0\x12:\n\x18enable_training_messages\x18\x0c\x20\x01(\x08R\x16ena\
+    bleTrainingMessagesB\0\x12&\n\x0eshow_text_chat\x18\r\x20\x01(\x08R\x0cs\
+    howTextChatB\0\x12+\n\x10center_crosshair\x18\x0e\x20\x01(\x08R\x0fcente\
+    rCrosshairB\0\x12%\n\rtoggle_sprint\x18\x0f\x20\x01(\x08R\x0ctoggleSprin\
+    tB\0\x12%\n\rtoggle_crouch\x18\x10\x20\x01(\x08R\x0ctoggleCrouchB\0\x12'\
+    \n\x0ecensor_content\x18\x11\x20\x01(\x08R\rcensorContentB\0\x12#\n\x0cm\
+    usic_volume\x18\x12\x20\x01(\x02R\x0bmusicVolumeB\0\x122\n\x14sound_effe\
+    cts_volume\x18\x13\x20\x01(\x02R\x12soundEffectsVolumeB\0\x12\x1d\n\tvo_\
+    volume\x18\x14\x20\x01(\x02R\x08voVolumeB\0\x12#\n\x0cvoice_volume\x18\
+    \x15\x20\x01(\x02R\x0bvoiceVolumeB\0\x12.\n\x12enable_optional_vo\x18\
+    \x16\x20\x01(\x08R\x10enableOptionalVoB\0\x12\"\n\x0cpush_to_talk\x18\
+    \x17\x20\x01(\x08R\npushToTalkB\0\x128\n\x17enable_controller_audio\x18\
+    \x18\x20\x01(\x08R\x15enableControllerAudioB\0\x120\n\x13speaker_angle_f\
+    ront\x18\x19\x20\x01(\x02R\x11speakerAngleFrontB\0\x12.\n\x12speaker_ang\
+    le_side\x18\x1a\x20\x01(\x02R\x10speakerAngleSideB\0\x12.\n\x12speaker_a\
+    ngle_back\x18\x1b\x20\x01(\x02R\x10speakerAngleBackB\0\x12%\n\rspeaker_s\
+    etup\x18\x1c\x20\x01(\rR\x0cspeakerSetupB\0\x128\n\x18mute_audio_on_focu\
+    s_loss\x18\x1d\x20\x01(\x08R\x14muteAudioOnFocusLossB\0\x12>\n\x1bhide_s\
+    trict_nat_help_dialog\x18\"\x20\x01(\x08R\x17hideStrictNatHelpDialogB\0\
+    \x12R\n\x15player_input_bindings\x18#\x20\x01(\x0b2\x1c.OakSave.PlayerIn\
+    putBindingsR\x13playerInputBindingsB\0\x12!\n\x0bnews_hashes\x18$\x20\
+    \x03(\rR\nnewsHashesB\0\x123\n\x15last_used_savegame_id\x18%\x20\x01(\rR\
+    \x12lastUsedSavegameIdB\0\x12C\n\x1dgamepad_hip_sensitivity_level\x18&\
+    \x20\x01(\x05R\x1agamepadHipSensitivityLevelB\0\x12I\n\x20gamepad_zoomed\
+    _sensitivity_level\x18'\x20\x01(\x05R\x1dgamepadZoomedSensitivityLevelB\
+    \0\x12K\n!gamepad_vehicle_sensitivity_level\x18(\x20\x01(\x05R\x1egamepa\
+    dVehicleSensitivityLevelB\0\x12@\n\x1cgamepad_movement_dead_zone_x\x18)\
+    \x20\x01(\x02R\x18gamepadMovementDeadZoneXB\0\x12@\n\x1cgamepad_movement\
+    _dead_zone_y\x18*\x20\x01(\x02R\x18gamepadMovementDeadZoneYB\0\x12C\n\
+    \x1egamepad_look_dead_zone_inner_x\x18+\x20\x01(\x02R\x19gamepadLookDead\
+    ZoneInnerXB\0\x12C\n\x1egamepad_look_dead_zone_outer_x\x18,\x20\x01(\x02\
+    R\x19gamepadLookDeadZoneOuterXB\0\x12C\n\x1egamepad_look_dead_zone_inner\
+    _y\x18-\x20\x01(\x02R\x19gamepadLookDeadZoneInnerYB\0\x12C\n\x1egamepad_\
+    look_dead_zone_outer_y\x18.\x20\x01(\x02R\x19gamepadLookDeadZoneOuterYB\
+    \0\x12O\n$gamepad_vehicle_movement_dead_zone_x\x18/\x20\x01(\x02R\x1fgam\
+    epadVehicleMovementDeadZoneXB\0\x12O\n$gamepad_vehicle_movement_dead_zon\
+    e_y\x180\x20\x01(\x02R\x1fgamepadVehicleMovementDeadZoneYB\0\x12R\n&game\
+    pad_vehicle_look_dead_zone_inner_x\x181\x20\x01(\x02R\x20gamepadVehicleL\
+    ookDeadZoneInnerXB\0\x12R\n&gamepad_vehicle_look_dead_zone_outer_x\x182\
+    \x20\x01(\x02R\x20gamepadVehicleLookDeadZoneOuterXB\0\x12R\n&gamepad_veh\
+    icle_look_dead_zone_inner_y\x183\x20\x01(\x02R\x20gamepadVehicleLookDead\
+    ZoneInnerYB\0\x12R\n&gamepad_vehicle_look_dead_zone_outer_y\x184\x20\x01\
+    (\x02R\x20gamepadVehicleLookDeadZoneOuterYB\0\x12@\n\x1cgamepad_left_dea\
+    d_zone_inner\x185\x20\x01(\x02R\x18gamepadLeftDeadZoneInnerB\0\x12@\n\
+    \x1cgamepad_left_dead_zone_outer\x186\x20\x01(\x02R\x18gamepadLeftDeadZo\
+    neOuterB\0\x12B\n\x1dgamepad_right_dead_zone_inner\x187\x20\x01(\x02R\
+    \x19gamepadRightDeadZoneInnerB\0\x12B\n\x1dgamepad_right_dead_zone_outer\
+    \x188\x20\x01(\x02R\x19gamepadRightDeadZoneOuterB\0\x12K\n\"gamepad_look\
+    _axial_dead_zone_scale\x189\x20\x01(\x02R\x1dgamepadLookAxialDeadZoneSca\
+    leB\0\x12K\n\"gamepad_move_axial_dead_zone_scale\x18:\x20\x01(\x02R\x1dg\
+    amepadMoveAxialDeadZoneScaleB\0\x12Q\n%gamepad_use_advanced_hip_aim_sett\
+    ings\x18;\x20\x01(\x08R\x20gamepadUseAdvancedHipAimSettingsB\0\x12W\n(ga\
+    mepad_use_advanced_zoomed_aim_settings\x18<\x20\x01(\x08R#gamepadUseAdva\
+    ncedZoomedAimSettingsB\0\x12Y\n)gamepad_use_advanced_vehicle_aim_setting\
+    s\x18=\x20\x01(\x08R$gamepadUseAdvancedVehicleAimSettingsB\0\x121\n\x14g\
+    amepad_hip_yaw_rate\x18>\x20\x01(\x02R\x11gamepadHipYawRateB\0\x125\n\
+    \x16gamepad_hip_pitch_rate\x18?\x20\x01(\x02R\x13gamepadHipPitchRateB\0\
+    \x123\n\x15gamepad_hip_extra_yaw\x18@\x20\x01(\x02R\x12gamepadHipExtraYa\
+    wB\0\x127\n\x17gamepad_hip_extra_pitch\x18A\x20\x01(\x02R\x14gamepadHipE\
+    xtraPitchB\0\x128\n\x18gamepad_hip_ramp_up_time\x18B\x20\x01(\x02R\x14ga\
+    mepadHipRampUpTimeB\0\x12:\n\x19gamepad_hip_ramp_up_delay\x18C\x20\x01(\
+    \x02R\x15gamepadHipRampUpDelayB\0\x127\n\x17gamepad_zoomed_yaw_rate\x18D\
+    \x20\x01(\x02R\x14gamepadZoomedYawRateB\0\x12;\n\x19gamepad_zoomed_pitch\
+    _rate\x18E\x20\x01(\x02R\x16gamepadZoomedPitchRateB\0\x129\n\x18gamepad_\
+    zoomed_extra_yaw\x18F\x20\x01(\x02R\x15gamepadZoomedExtraYawB\0\x12=\n\
+    \x1agamepad_zoomed_extra_pitch\x18G\x20\x01(\x02R\x17gamepadZoomedExtraP\
+    itchB\0\x12>\n\x1bgamepad_zoomed_ramp_up_time\x18H\x20\x01(\x02R\x17game\
+    padZoomedRampUpTimeB\0\x12@\n\x1cgamepad_zoomed_ramp_up_delay\x18I\x20\
+    \x01(\x02R\x18gamepadZoomedRampUpDelayB\0\x129\n\x18gamepad_vehicle_yaw_\
+    rate\x18J\x20\x01(\x02R\x15gamepadVehicleYawRateB\0\x12=\n\x1agamepad_ve\
+    hicle_pitch_rate\x18K\x20\x01(\x02R\x17gamepadVehiclePitchRateB\0\x12;\n\
+    \x19gamepad_vehicle_extra_yaw\x18L\x20\x01(\x02R\x16gamepadVehicleExtraY\
+    awB\0\x12?\n\x1bgamepad_vehicle_extra_pitch\x18M\x20\x01(\x02R\x18gamepa\
+    dVehicleExtraPitchB\0\x12@\n\x1cgamepad_vehicle_ramp_up_time\x18N\x20\
+    \x01(\x02R\x18gamepadVehicleRampUpTimeB\0\x12B\n\x1dgamepad_vehicle_ramp\
+    _up_delay\x18O\x20\x01(\x02R\x19gamepadVehicleRampUpDelayB\0\x122\n\x14i\
+    ronsight_aim_assist\x18P\x20\x01(\x08R\x12ironsightAimAssistB\0\x128\n\
+    \x17walking_joystick_scheme\x18Q\x20\x01(\rR\x15walkingJoystickSchemeB\0\
+    \x128\n\x17driving_joystick_scheme\x18R\x20\x01(\rR\x15drivingJoystickSc\
+    hemeB\0\x12(\n\x0fmouse_ads_scale\x18S\x20\x01(\x02R\rmouseAdsScaleB\0\
+    \x120\n\x13mouse_vehicle_scale\x18T\x20\x01(\x02R\x11mouseVehicleScaleB\
+    \0\x12=\n\x1amouse_ironsight_aim_assist\x18U\x20\x01(\x08R\x17mouseIrons\
+    ightAimAssistB\0\x12.\n\x12vehicle_input_mode\x18V\x20\x01(\rR\x10vehicl\
+    eInputModeB\0\x12,\n\x11weapon_aim_toggle\x18W\x20\x01(\x08R\x0fweaponAi\
+    mToggleB\0\x126\n\x16mantle_requires_button\x18X\x20\x01(\x08R\x14mantle\
+    RequiresButtonB\0\x126\n\x16fixed_minimap_rotation\x18Y\x20\x01(\x08R\
+    \x14fixedMinimapRotationB\0\x12*\n\x10map_invert_pitch\x18Z\x20\x01(\x08\
+    R\x0emapInvertPitchB\0\x12&\n\x0emap_invert_yaw\x18[\x20\x01(\x08R\x0cma\
+    pInvertYawB\0\x12\x20\n\ndifficulty\x18\\\x20\x01(\rR\ndifficultyB\0\x12\
+    9\n\x18swap_dual_wield_controls\x18]\x20\x01(\x08R\x15swapDualWieldContr\
+    olsB\0\x12\x1b\n\x08base_fov\x18^\x20\x01(\x02R\x07baseFovB\0\x12C\n\x1d\
+    crosshair_neutral_color_frame\x18_\x20\x01(\rR\x1acrosshairNeutralColorF\
+    rameB\0\x12?\n\x1bcrosshair_enemy_color_frame\x18`\x20\x01(\rR\x18crossh\
+    airEnemyColorFrameB\0\x12=\n\x1acrosshair_ally_color_frame\x18a\x20\x01(\
+    \rR\x17crosshairAllyColorFrameB\0\x12+\n\x10enable_subtitles\x18b\x20\
+    \x01(\x08R\x0fenableSubtitlesB\0\x126\n\x16enable_closed_captions\x18c\
+    \x20\x01(\x08R\x14enableClosedCaptionsB\0\x123\n\x15last_status_menu_pag\
+    e\x18d\x20\x01(\tR\x12lastStatusMenuPageB\0\x12m\n\x1cinventory_screen_l\
+    ast_filter\x18e\x20\x03(\x0b2*.OakSave.OakProfileLastInventoryFilterInfo\
+    R\x19inventoryScreenLastFilterB\0\x12J\n\rtutorial_info\x18f\x20\x01(\
+    \x0b2#.OakSave.OakProfileMenuTutorialInfoR\x0ctutorialInfoB\0\x122\n\x14\
+    default_network_type\x18g\x20\x01(\rR\x12defaultNetworkTypeB\0\x120\n\
+    \x13default_invite_type\x18h\x20\x01(\rR\x11defaultInviteTypeB\0\x12/\n\
+    \x12matchmaking_region\x18i\x20\x01(\tR\x11matchmakingRegionB\0\x12-\n\
+    \x11streaming_service\x18j\x20\x01(\rR\x10streamingServiceB\0\x129\n\x18\
+    max_cached_friend_events\x18k\x20\x01(\x05R\x15maxCachedFriendEventsB\0\
+    \x12=\n\x1amax_cached_friend_statuses\x18l\x20\x01(\x05R\x17maxCachedFri\
+    endStatusesB\0\x12%\n\rfriend_events\x18m\x20\x03(\tR\x0cfriendEventsB\0\
+    \x12)\n\x0ffriend_statuses\x18n\x20\x03(\tR\x0efriendStatusesB\0\x12D\n\
+    \x1elast_whisper_fetch_events_time\x18o\x20\x01(\x03R\x1alastWhisperFetc\
+    hEventsTimeB\0\x12H\n\x20last_whisper_fetch_statuses_time\x18p\x20\x01(\
+    \x03R\x1clastWhisperFetchStatusesTimeB\0\x128\n\x17desired_crossplay_sta\
+    te\x18q\x20\x01(\rR\x15desiredCrossplayStateB\0\x12V\n\x11friend_encount\
+    ers\x18\x85\x01\x20\x03(\x0b2&.OakSave.Profile.FriendEncountersEntryR\
+    \x10friendEncountersB\0\x12<\n\x19max_friend_encounter_size\x18\x86\x01\
+    \x20\x01(\x05R\x16maxFriendEncounterSizeB\0\x12N\n\x12profile_stats_data\
+    \x18\x87\x01\x20\x03(\x0b2\x1d.OakSave.GameStatSaveGameDataR\x10profileS\
+    tatsDataB\0\x12f\n\x1cbank_inventory_category_list\x18\x88\x01\x20\x03(\
+    \x0b2\".OakSave.InventoryCategorySaveDataR\x19bankInventoryCategoryListB\
+    \0\x121\n\x13bank_inventory_list\x18\x89\x01\x20\x03(\x0cR\x11bankInvent\
+    oryListB\0\x12:\n\x18lost_loot_inventory_list\x18\x8a\x01\x20\x03(\x0cR\
+    \x15lostLootInventoryListB\0\x12=\n\x0enpc_mail_items\x18\x8b\x01\x20\
+    \x03(\x0b2\x14.OakSave.OakMailItemR\x0cnpcMailItemsB\0\x12\x20\n\nmail_g\
+    uids\x18\x8c\x01\x20\x03(\tR\tmailGuidsB\0\x12-\n\x11unread_mail_guids\
+    \x18\x8d\x01\x20\x03(\tR\x0funreadMailGuidsB\0\x12Q\n\x14gear_sold_by_fr\
+    iends\x18\x8e\x01\x20\x03(\x0b2\x1d.OakSave.GearSoldByFriendDataR\x11gea\
+    rSoldByFriendsB\0\x12H\n\x10profile_sdu_list\x18\x8f\x01\x20\x03(\x0b2\
+    \x1b.OakSave.OakSDUSaveGameDataR\x0eprofileSduListB\0\x12a\n\x17unlocked\
+    _customizations\x18\x90\x01\x20\x03(\x0b2%.OakSave.OakCustomizationSaveG\
+    ameDataR\x16unlockedCustomizationsB\0\x12\x82\x01\n&unlocked_inventory_c\
+    ustomization_parts\x18\x91\x01\x20\x03(\x0b2*.OakSave.OakInventoryCustom\
+    izationPartInfoR#unlockedInventoryCustomizationPartsB\0\x12H\n\rguardian\
+    _rank\x18\x92\x01\x20\x01(\x0b2\x20.OakSave.GuardianRankProfileDataR\x0c\
+    guardianRankB\0\x12\x7f\n\"unlocked_crew_quarters_decorations\x18\x93\
+    \x01\x20\x03(\x0b2/.OakSave.CrewQuartersDecorationItemSaveGameDataR\x1fu\
+    nlockedCrewQuartersDecorationsB\0\x12m\n\x1cunlocked_crew_quarters_rooms\
+    \x18\x94\x01\x20\x03(\x0b2).OakSave.CrewQuartersRoomItemSaveGameDataR\
+    \x19unlockedCrewQuartersRoomsB\0\x12=\n\x19enable_mouse_acceleration\x18\
+    \x96\x01\x20\x01(\x08R\x17enableMouseAccelerationB\0\x123\n\x14enable_ga\
+    mepad_input\x18\x97\x01\x20\x01(\x08R\x12enableGamepadInputB\0\x12<\n\
+    \x19use_classic_gamepad_input\x18\x98\x01\x20\x01(\x08R\x16useClassicGam\
+    epadInputB\0\x12&\n\rmaster_volume\x18\x99\x01\x20\x01(\x02R\x0cmasterVo\
+    lumeB\0\x123\n\x14monitor_display_type\x18\x9a\x01\x20\x01(\rR\x12monito\
+    rDisplayTypeB\0\x12&\n\rgraphics_mode\x18\x9b\x01\x20\x01(\rR\x0cgraphic\
+    sModeB\0\x12+\n\x10frame_rate_limit\x18\x9c\x01\x20\x01(\rR\x0eframeRate\
+    LimitB\0\x12+\n\x10base_vehicle_fov\x18\x9d\x01\x20\x01(\x02R\x0ebaseVeh\
+    icleFovB\0\x12,\n\x10graphics_quality\x18\x9e\x01\x20\x01(\rR\x0fgraphic\
+    sQualityB\0\x126\n\x15anisotropic_filtering\x18\x9f\x01\x20\x01(\rR\x14a\
+    nisotropicFilteringB\0\x12(\n\x0eshadow_quality\x18\xa0\x01\x20\x01(\rR\
+    \rshadowQualityB\0\x12=\n\x19display_performance_stats\x18\xa1\x01\x20\
+    \x01(\rR\x17displayPerformanceStatsB\0\x12(\n\x0etexture_detail\x18\xa2\
+    \x01\x20\x01(\rR\rtextureDetailB\0\x12&\n\rdraw_distance\x18\xa3\x01\x20\
+    \x01(\rR\x0cdrawDistanceB\0\x12\x1b\n\x07clutter\x18\xa4\x01\x20\x01(\rR\
+    \x07clutterB\0\x12%\n\x0ctessellation\x18\xa5\x01\x20\x01(\rR\x0ctessell\
+    ationB\0\x12\x1b\n\x07foliage\x18\xa6\x01\x20\x01(\rR\x07foliageB\0\x12*\
+    \n\x0ffoliage_shadows\x18\xa7\x01\x20\x01(\x08R\x0efoliageShadowsB\0\x12\
+    0\n\x12planar_reflections\x18\xa8\x01\x20\x01(\x08R\x11planarReflections\
+    B\0\x12(\n\x0evolumetric_fog\x18\xa9\x01\x20\x01(\rR\rvolumetricFogB\0\
+    \x12;\n\x18screen_space_reflections\x18\xaa\x01\x20\x01(\rR\x16screenSpa\
+    ceReflectionsB\0\x12;\n\x18character_texture_detail\x18\xab\x01\x20\x01(\
+    \rR\x16characterTextureDetailB\0\x12,\n\x10character_detail\x18\xac\x01\
+    \x20\x01(\rR\x0fcharacterDetailB\0\x12=\n\x19ambient_occlusion_quality\
+    \x18\xad\x01\x20\x01(\rR\x17ambientOcclusionQualityB\0\x12/\n\x12object_\
+    motion_blur\x18\xae\x01\x20\x01(\x08R\x10objectMotionBlurB\0\x12\x20\n\n\
+    lens_flare\x18\xaf\x01\x20\x01(\x08R\tlensFlareB\0\x12<\n\x19combat_numb\
+    er_long_format\x18\xb0\x01\x20\x01(\x08R\x16combatNumberLongFormatB\0\
+    \x12;\n\x18show_minimap_legendaries\x18\xb1\x01\x20\x01(\x08R\x16showMin\
+    imapLegendariesB\0\x121\n\x13use_player_callouts\x18\xb2\x01\x20\x01(\
+    \x08R\x11usePlayerCalloutsB\0\x12N\n\"friend_event_notification_lifetime\
+    \x18\xb3\x01\x20\x01(\rR\x1ffriendEventNotificationLifetimeB\0\x12P\n#fr\
+    iend_event_notification_frequency\x18\xb4\x01\x20\x01(\rR\x20friendEvent\
+    NotificationFrequencyB\0\x12B\n\x1ctrade_request_reception_type\x18\xb5\
+    \x01\x20\x01(\rR\x19tradeRequestReceptionTypeB\0\x12'\n\x0ehead_bob_scal\
+    e\x18\xb6\x01\x20\x01(\x02R\x0cheadBobScaleB\0\x120\n\x13has_seen_first_\
+    boot\x18\xb8\x01\x20\x01(\x08R\x10hasSeenFirstBootB\0\x12#\n\x0csubs_cc_\
+    size\x18\xbd\x01\x20\x01(\x02R\nsubsCcSizeB\0\x12>\n\x1acc_subs_backgrou\
+    nd_opacity\x18\xbe\x01\x20\x01(\x02R\x17ccSubsBackgroundOpacityB\0\x125\
+    \n\x15walking_button_scheme\x18\xbf\x01\x20\x01(\rR\x13walkingButtonSche\
+    meB\0\x125\n\x15driving_button_scheme\x18\xc0\x01\x20\x01(\rR\x13driving\
+    ButtonSchemeB\0\x12\x20\n\nglyph_mode\x18\xc1\x01\x20\x01(\rR\tglyphMode\
+    B\0\x12\x1a\n\x07use_MPH\x18\xc2\x01\x20\x01(\x08R\x06useMPHB\0\x12\x80\
+    \x01\n$registered_downloadable_entitlements\x18\xc3\x01\x20\x03(\x0b2+.O\
+    akSave.RegisteredDownloadableEntitlementsR\"registeredDownloadableEntitl\
+    ementsB\0\x12)\n\x0fseen_news_items\x18\xc4\x01\x20\x03(\tR\rseenNewsIte\
+    msB\0\x127\n\x16auto_centering_enabled\x18\xc5\x01\x20\x01(\x08R\x14auto\
+    CenteringEnabledB\0\x12J\n\x20increased_chance_for_subscribers\x18\xc6\
+    \x01\x20\x01(\x08R\x1dincreasedChanceForSubscribersB\0\x12:\n\x18rare_ch\
+    est_event_enabled\x18\xc7\x01\x20\x01(\x08R\x15rareChestEventEnabledB\0\
+    \x123\n\x14badass_event_enabled\x18\xc8\x01\x20\x01(\x08R\x12badassEvent\
+    EnabledB\0\x123\n\x14pinata_event_enabled\x18\xc9\x01\x20\x01(\x08R\x12p\
+    inataEventEnabledB\0\x12E\n\x1emin_time_between_badass_events\x18\xca\
+    \x01\x20\x01(\x05R\x1aminTimeBetweenBadassEventsB\0\x123\n\x14hud_scale_\
+    multiplier\x18\xcb\x01\x20\x01(\x02R\x12hudScaleMultiplierB\0\x12d\n0dis\
+    able_spatial_audio__or__has_reset_console_fov\x18\xcc\x01\x20\x01(\x08R'\
+    disableSpatialAudioOrHasResetConsoleFovB\0\x127\n\x16total_playtime_seco\
+    nds\x18\xcd\x01\x20\x01(\x05R\x14totalPlaytimeSecondsB\0\x12>\n\x1amoxxi\
+    s_drink_event_enabled\x18\xce\x01\x20\x01(\x08R\x17moxxisDrinkEventEnabl\
+    edB\0\x12L\n\"moxxis_drink_event_bits_product_id\x18\xcf\x01\x20\x01(\
+    \x05R\x1dmoxxisDrinkEventBitsProductIdB\0\x12H\n\x0echallenge_data\x18\
+    \xd0\x01\x20\x03(\x0b2\x1e.OakSave.ChallengeSaveGameDataR\rchallengeData\
+    B\0\x12I\n\x1eCitizenScienceLevelProgression\x18\xd1\x01\x20\x03(\x05R\
+    \x1eCitizenScienceLevelProgressionB\0\x12G\n\x1fdefault_dead_zone_inner_\
+    updated\x18\xd2\x01\x20\x01(\x08R\x1bdefaultDeadZoneInnerUpdatedB\0\x125\
+    \n\x15disable_event_content\x18\xd3\x01\x20\x01(\x08R\x13disableEventCon\
+    tentB\0\x12<\n\x19desired_friend_sync_state\x18\xd4\x01\x20\x01(\rR\x16d\
+    esiredFriendSyncStateB\0\x126\n\x16needs_shift_first_boot\x18\xd5\x01\
+    \x20\x01(\x08R\x13needsShiftFirstBootB\0\x12O\n\x14recently_met_players\
+    \x18\xd6\x01\x20\x03(\x0b2\x1a.OakSave.RecentlyMetPlayerR\x12recentlyMet\
+    PlayersB\0\x12M\n\x20CitizenScienceActiveBoosterIndex\x18\xd7\x01\x20\
     \x01(\x05R\x20CitizenScienceActiveBoosterIndexB\0\x12]\n(CitizenScienceA\
     ctiveBoosterRemainingTime\x18\xd8\x01\x20\x01(\x02R(CitizenScienceActive\
     BoosterRemainingTimeB\0\x12U\n$CitizenScienceActiveBoosterTotalTime\x18\
@@ -13334,13 +10798,17 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     Amount\x18\xe2\x01\x20\x01(\x05R\x1bCitizenScienceCSBucksAmountB\0\x12M\
     \n\x20bCitizenScienceHasSeenIntroVideo\x18\xe3\x01\x20\x01(\x08R\x20bCit\
     izenScienceHasSeenIntroVideoB\0\x12C\n\x1bbCitizenScienceTutorialDone\
-    \x18\xe4\x01\x20\x01(\x08R\x1bbCitizenScienceTutorialDoneB\0\x12F\n\x1ef\
-    ixed_initial_zonemap_rotation\x18\xe6\x01\x20\x01(\x08R\x1bfixedInitialZ\
-    onemapRotationB\0\x12@\n\nvault_card\x18\xe7\x01\x20\x01(\x0b2\x1e.OakSa\
-    ve.VaultCardSaveGameDataR\tvaultCardB\0\x1af\n\x15FriendEncountersEntry\
-    \x12\x12\n\x03key\x18\x01\x20\x01(\tR\x03keyB\0\x127\n\x05value\x18\x02\
-    \x20\x01(\x0b2\x1f.OakSave.OakFriendEncounterDataR\x05valueB\0:\0:\0B\0b\
-    \x06proto3\
+    \x18\xe4\x01\x20\x01(\x08R\x1bbCitizenScienceTutorialDoneB\0\x129\n\x17e\
+    nable_trigger_feedback\x18\xe5\x01\x20\x01(\x08R\x15enableTriggerFeedbac\
+    kB\0\x12F\n\x1efixed_initial_zonemap_rotation\x18\xe6\x01\x20\x01(\x08R\
+    \x1bfixedInitialZonemapRotationB\0\x12@\n\nvault_card\x18\xe7\x01\x20\
+    \x01(\x0b2\x1e.OakSave.VaultCardSaveGameDataR\tvaultCardB\0\x127\n\x16pl\
+    ayer_selected_league\x18\xe8\x01\x20\x01(\rR\x14playerSelectedLeagueB\0\
+    \x12E\n\x1eneeds_shift_first_boot_primary\x18\xe9\x01\x20\x01(\x08R\x1an\
+    eedsShiftFirstBootPrimaryB\0\x1af\n\x15FriendEncountersEntry\x12\x12\n\
+    \x03key\x18\x01\x20\x01(\tR\x03keyB\0\x127\n\x05value\x18\x02\x20\x01(\
+    \x0b2\x1f.OakSave.OakFriendEncounterDataR\x05valueB\0:\0:\0B\0b\x06proto\
+    3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

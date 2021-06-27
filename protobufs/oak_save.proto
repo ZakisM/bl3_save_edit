@@ -239,6 +239,25 @@ message GbxZoneMapFODSavedLevelData {
 message GbxZoneMapFODSaveGameData {
   repeated GbxZoneMapFODSavedLevelData level_data = 1;
 }
+message OakProfileCloudData {
+  repeated GameStatSaveGameData profile_stats_data = 1;
+  repeated bytes bank_inventory_list = 2;
+  repeated bytes lost_loot_inventory_list = 3;
+  repeated OakMailItem npc_mail_items = 4;
+  repeated OakSDUSaveGameData profile_sdu_list = 5;
+  repeated OakCustomizationSaveGameData unlocked_customizations = 6;
+  repeated OakInventoryCustomizationPartInfo unlocked_inventory_customization_parts = 7;
+  int64 guardian_experience = 8;
+  repeated CrewQuartersDecorationItemSaveGameData unlocked_crew_quarters_decorations = 9;
+  repeated CrewQuartersRoomItemSaveGameData unlocked_crew_quarters_rooms = 10;
+  repeated ChallengeSaveGameData challenge_data = 11;
+  repeated string mail_guids = 12;
+  repeated int32 CitizenScienceLevelProgression = 13;
+  int32 CitizenScienceCSBucksAmount = 14;
+  VaultCardSaveGameData vault_card = 15;
+  bool bCitizenScienceHasSeenIntroVideo = 25;
+  bool bCitizenScienceTutorialDone = 26;
+}
 message Character {
   message NicknameMappingsEntry {
     string key = 1;
@@ -308,4 +327,5 @@ message Character {
   uint32 last_active_league_instance = 61;
   repeated ActiveLeagueInstanceForEventEntry active_league_instance_for_event = 62;
   bool levelled_save_vehicle_part_rewards_fixup_applied = 63;
+  OakProfileCloudData profile_cloud_data = 64;
 }

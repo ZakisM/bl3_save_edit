@@ -45,3 +45,60 @@ message ChallengeSaveGameData {
   string challenge_class_path = 7;
   repeated OakChallengeRewardSaveGameData challenge_reward_info = 8;
 }
+message OakMailItem {
+  uint32 mail_item_type = 1;
+  string sender_display_name = 2;
+  string subject = 3;
+  string body = 4;
+  string gear_serial_number = 5;
+  string mail_guid = 6;
+  int64 date_sent = 7;
+  int64 expiration_date = 8;
+  string from_player_id = 9;
+  bool has_been_read = 10;
+}
+message OakCustomizationSaveGameData {
+  bool is_new = 1;
+  string customization_asset_path = 2;
+}
+message OakInventoryCustomizationPartInfo {
+  uint32 customization_part_hash = 1;
+  bool is_new = 2;
+}
+message CrewQuartersDecorationItemSaveGameData {
+  bool is_new = 1;
+  string decoration_item_asset_path = 2;
+}
+message CrewQuartersRoomItemSaveGameData {
+  bool is_new = 1;
+  string room_item_asset_path = 2;
+}
+message VaultCardSaveGameData {
+  uint32 last_active_vault_card_id = 2;
+  int32 current_day_seed = 3;
+  int32 current_week_seed = 4;
+  repeated VaultCardPreviousChallenge vault_card_previous_challenges = 5;
+  repeated VaultCardRewardList vault_card_claimed_rewards = 6;
+}
+message VaultCardReward {
+  int32 column_index = 1;
+  int32 row_index = 2;
+}
+message VaultCardGearReward {
+  int32 gear_index = 1;
+  uint32 repurchase_count = 2;
+}
+message VaultCardRewardList {
+  uint32 vault_card_id = 1;
+  int64 vault_card_experience = 2;
+  repeated VaultCardReward unlocked_reward_list = 4;
+  repeated VaultCardReward redeemed_reward_list = 5;
+  int32 vault_card_chests = 7;
+  uint32 vault_card_chests_opened = 8;
+  uint32 vault_card_keys_spent = 9;
+  repeated VaultCardGearReward gear_rewards = 10;
+}
+message VaultCardPreviousChallenge {
+  int32 previous_challenge_seed = 1;
+  uint32 previous_challenge_id = 2;
+}

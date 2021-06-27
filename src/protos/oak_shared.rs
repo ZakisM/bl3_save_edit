@@ -2103,6 +2103,2604 @@ impl ::protobuf::reflect::ProtobufValue for ChallengeSaveGameData {
     }
 }
 
+#[derive(PartialEq, Clone, Default)]
+pub struct OakMailItem {
+    // message fields
+    pub mail_item_type: u32,
+    pub sender_display_name: ::std::string::String,
+    pub subject: ::std::string::String,
+    pub body: ::std::string::String,
+    pub gear_serial_number: ::std::string::String,
+    pub mail_guid: ::std::string::String,
+    pub date_sent: i64,
+    pub expiration_date: i64,
+    pub from_player_id: ::std::string::String,
+    pub has_been_read: bool,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a OakMailItem {
+    fn default() -> &'a OakMailItem {
+        <OakMailItem as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl OakMailItem {
+    pub fn new() -> OakMailItem {
+        ::std::default::Default::default()
+    }
+
+    // uint32 mail_item_type = 1;
+
+
+    pub fn get_mail_item_type(&self) -> u32 {
+        self.mail_item_type
+    }
+    pub fn clear_mail_item_type(&mut self) {
+        self.mail_item_type = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_mail_item_type(&mut self, v: u32) {
+        self.mail_item_type = v;
+    }
+
+    // string sender_display_name = 2;
+
+
+    pub fn get_sender_display_name(&self) -> &str {
+        &self.sender_display_name
+    }
+    pub fn clear_sender_display_name(&mut self) {
+        self.sender_display_name.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_sender_display_name(&mut self, v: ::std::string::String) {
+        self.sender_display_name = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_sender_display_name(&mut self) -> &mut ::std::string::String {
+        &mut self.sender_display_name
+    }
+
+    // Take field
+    pub fn take_sender_display_name(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.sender_display_name, ::std::string::String::new())
+    }
+
+    // string subject = 3;
+
+
+    pub fn get_subject(&self) -> &str {
+        &self.subject
+    }
+    pub fn clear_subject(&mut self) {
+        self.subject.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_subject(&mut self, v: ::std::string::String) {
+        self.subject = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_subject(&mut self) -> &mut ::std::string::String {
+        &mut self.subject
+    }
+
+    // Take field
+    pub fn take_subject(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.subject, ::std::string::String::new())
+    }
+
+    // string body = 4;
+
+
+    pub fn get_body(&self) -> &str {
+        &self.body
+    }
+    pub fn clear_body(&mut self) {
+        self.body.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_body(&mut self, v: ::std::string::String) {
+        self.body = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_body(&mut self) -> &mut ::std::string::String {
+        &mut self.body
+    }
+
+    // Take field
+    pub fn take_body(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.body, ::std::string::String::new())
+    }
+
+    // string gear_serial_number = 5;
+
+
+    pub fn get_gear_serial_number(&self) -> &str {
+        &self.gear_serial_number
+    }
+    pub fn clear_gear_serial_number(&mut self) {
+        self.gear_serial_number.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gear_serial_number(&mut self, v: ::std::string::String) {
+        self.gear_serial_number = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_gear_serial_number(&mut self) -> &mut ::std::string::String {
+        &mut self.gear_serial_number
+    }
+
+    // Take field
+    pub fn take_gear_serial_number(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.gear_serial_number, ::std::string::String::new())
+    }
+
+    // string mail_guid = 6;
+
+
+    pub fn get_mail_guid(&self) -> &str {
+        &self.mail_guid
+    }
+    pub fn clear_mail_guid(&mut self) {
+        self.mail_guid.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_mail_guid(&mut self, v: ::std::string::String) {
+        self.mail_guid = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_mail_guid(&mut self) -> &mut ::std::string::String {
+        &mut self.mail_guid
+    }
+
+    // Take field
+    pub fn take_mail_guid(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.mail_guid, ::std::string::String::new())
+    }
+
+    // int64 date_sent = 7;
+
+
+    pub fn get_date_sent(&self) -> i64 {
+        self.date_sent
+    }
+    pub fn clear_date_sent(&mut self) {
+        self.date_sent = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_date_sent(&mut self, v: i64) {
+        self.date_sent = v;
+    }
+
+    // int64 expiration_date = 8;
+
+
+    pub fn get_expiration_date(&self) -> i64 {
+        self.expiration_date
+    }
+    pub fn clear_expiration_date(&mut self) {
+        self.expiration_date = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_expiration_date(&mut self, v: i64) {
+        self.expiration_date = v;
+    }
+
+    // string from_player_id = 9;
+
+
+    pub fn get_from_player_id(&self) -> &str {
+        &self.from_player_id
+    }
+    pub fn clear_from_player_id(&mut self) {
+        self.from_player_id.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_from_player_id(&mut self, v: ::std::string::String) {
+        self.from_player_id = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_from_player_id(&mut self) -> &mut ::std::string::String {
+        &mut self.from_player_id
+    }
+
+    // Take field
+    pub fn take_from_player_id(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.from_player_id, ::std::string::String::new())
+    }
+
+    // bool has_been_read = 10;
+
+
+    pub fn get_has_been_read(&self) -> bool {
+        self.has_been_read
+    }
+    pub fn clear_has_been_read(&mut self) {
+        self.has_been_read = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_has_been_read(&mut self, v: bool) {
+        self.has_been_read = v;
+    }
+}
+
+impl ::protobuf::Message for OakMailItem {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.mail_item_type = tmp;
+                }
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.sender_display_name)?;
+                }
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.subject)?;
+                }
+                4 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.body)?;
+                }
+                5 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.gear_serial_number)?;
+                }
+                6 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.mail_guid)?;
+                }
+                7 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.date_sent = tmp;
+                }
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.expiration_date = tmp;
+                }
+                9 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.from_player_id)?;
+                }
+                10 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.has_been_read = tmp;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.mail_item_type != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.mail_item_type, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.sender_display_name.is_empty() {
+            my_size += ::protobuf::rt::string_size(2, &self.sender_display_name);
+        }
+        if !self.subject.is_empty() {
+            my_size += ::protobuf::rt::string_size(3, &self.subject);
+        }
+        if !self.body.is_empty() {
+            my_size += ::protobuf::rt::string_size(4, &self.body);
+        }
+        if !self.gear_serial_number.is_empty() {
+            my_size += ::protobuf::rt::string_size(5, &self.gear_serial_number);
+        }
+        if !self.mail_guid.is_empty() {
+            my_size += ::protobuf::rt::string_size(6, &self.mail_guid);
+        }
+        if self.date_sent != 0 {
+            my_size += ::protobuf::rt::value_size(7, self.date_sent, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.expiration_date != 0 {
+            my_size += ::protobuf::rt::value_size(8, self.expiration_date, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.from_player_id.is_empty() {
+            my_size += ::protobuf::rt::string_size(9, &self.from_player_id);
+        }
+        if self.has_been_read != false {
+            my_size += 2;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.mail_item_type != 0 {
+            os.write_uint32(1, self.mail_item_type)?;
+        }
+        if !self.sender_display_name.is_empty() {
+            os.write_string(2, &self.sender_display_name)?;
+        }
+        if !self.subject.is_empty() {
+            os.write_string(3, &self.subject)?;
+        }
+        if !self.body.is_empty() {
+            os.write_string(4, &self.body)?;
+        }
+        if !self.gear_serial_number.is_empty() {
+            os.write_string(5, &self.gear_serial_number)?;
+        }
+        if !self.mail_guid.is_empty() {
+            os.write_string(6, &self.mail_guid)?;
+        }
+        if self.date_sent != 0 {
+            os.write_int64(7, self.date_sent)?;
+        }
+        if self.expiration_date != 0 {
+            os.write_int64(8, self.expiration_date)?;
+        }
+        if !self.from_player_id.is_empty() {
+            os.write_string(9, &self.from_player_id)?;
+        }
+        if self.has_been_read != false {
+            os.write_bool(10, self.has_been_read)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> OakMailItem {
+        OakMailItem::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "mail_item_type",
+                |m: &OakMailItem| { &m.mail_item_type },
+                |m: &mut OakMailItem| { &mut m.mail_item_type },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "sender_display_name",
+                |m: &OakMailItem| { &m.sender_display_name },
+                |m: &mut OakMailItem| { &mut m.sender_display_name },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "subject",
+                |m: &OakMailItem| { &m.subject },
+                |m: &mut OakMailItem| { &mut m.subject },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "body",
+                |m: &OakMailItem| { &m.body },
+                |m: &mut OakMailItem| { &mut m.body },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "gear_serial_number",
+                |m: &OakMailItem| { &m.gear_serial_number },
+                |m: &mut OakMailItem| { &mut m.gear_serial_number },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "mail_guid",
+                |m: &OakMailItem| { &m.mail_guid },
+                |m: &mut OakMailItem| { &mut m.mail_guid },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                "date_sent",
+                |m: &OakMailItem| { &m.date_sent },
+                |m: &mut OakMailItem| { &mut m.date_sent },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                "expiration_date",
+                |m: &OakMailItem| { &m.expiration_date },
+                |m: &mut OakMailItem| { &mut m.expiration_date },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "from_player_id",
+                |m: &OakMailItem| { &m.from_player_id },
+                |m: &mut OakMailItem| { &mut m.from_player_id },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "has_been_read",
+                |m: &OakMailItem| { &m.has_been_read },
+                |m: &mut OakMailItem| { &mut m.has_been_read },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakMailItem>(
+                "OakMailItem",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static OakMailItem {
+        static instance: ::protobuf::rt::LazyV2<OakMailItem> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(OakMailItem::new)
+    }
+}
+
+impl ::protobuf::Clear for OakMailItem {
+    fn clear(&mut self) {
+        self.mail_item_type = 0;
+        self.sender_display_name.clear();
+        self.subject.clear();
+        self.body.clear();
+        self.gear_serial_number.clear();
+        self.mail_guid.clear();
+        self.date_sent = 0;
+        self.expiration_date = 0;
+        self.from_player_id.clear();
+        self.has_been_read = false;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for OakMailItem {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for OakMailItem {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
+pub struct OakCustomizationSaveGameData {
+    // message fields
+    pub is_new: bool,
+    pub customization_asset_path: ::std::string::String,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a OakCustomizationSaveGameData {
+    fn default() -> &'a OakCustomizationSaveGameData {
+        <OakCustomizationSaveGameData as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl OakCustomizationSaveGameData {
+    pub fn new() -> OakCustomizationSaveGameData {
+        ::std::default::Default::default()
+    }
+
+    // bool is_new = 1;
+
+
+    pub fn get_is_new(&self) -> bool {
+        self.is_new
+    }
+    pub fn clear_is_new(&mut self) {
+        self.is_new = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_is_new(&mut self, v: bool) {
+        self.is_new = v;
+    }
+
+    // string customization_asset_path = 2;
+
+
+    pub fn get_customization_asset_path(&self) -> &str {
+        &self.customization_asset_path
+    }
+    pub fn clear_customization_asset_path(&mut self) {
+        self.customization_asset_path.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_customization_asset_path(&mut self, v: ::std::string::String) {
+        self.customization_asset_path = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_customization_asset_path(&mut self) -> &mut ::std::string::String {
+        &mut self.customization_asset_path
+    }
+
+    // Take field
+    pub fn take_customization_asset_path(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.customization_asset_path, ::std::string::String::new())
+    }
+}
+
+impl ::protobuf::Message for OakCustomizationSaveGameData {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.is_new = tmp;
+                }
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.customization_asset_path)?;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.is_new != false {
+            my_size += 2;
+        }
+        if !self.customization_asset_path.is_empty() {
+            my_size += ::protobuf::rt::string_size(2, &self.customization_asset_path);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.is_new != false {
+            os.write_bool(1, self.is_new)?;
+        }
+        if !self.customization_asset_path.is_empty() {
+            os.write_string(2, &self.customization_asset_path)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> OakCustomizationSaveGameData {
+        OakCustomizationSaveGameData::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "is_new",
+                |m: &OakCustomizationSaveGameData| { &m.is_new },
+                |m: &mut OakCustomizationSaveGameData| { &mut m.is_new },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "customization_asset_path",
+                |m: &OakCustomizationSaveGameData| { &m.customization_asset_path },
+                |m: &mut OakCustomizationSaveGameData| { &mut m.customization_asset_path },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakCustomizationSaveGameData>(
+                "OakCustomizationSaveGameData",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static OakCustomizationSaveGameData {
+        static instance: ::protobuf::rt::LazyV2<OakCustomizationSaveGameData> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(OakCustomizationSaveGameData::new)
+    }
+}
+
+impl ::protobuf::Clear for OakCustomizationSaveGameData {
+    fn clear(&mut self) {
+        self.is_new = false;
+        self.customization_asset_path.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for OakCustomizationSaveGameData {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for OakCustomizationSaveGameData {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
+pub struct OakInventoryCustomizationPartInfo {
+    // message fields
+    pub customization_part_hash: u32,
+    pub is_new: bool,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a OakInventoryCustomizationPartInfo {
+    fn default() -> &'a OakInventoryCustomizationPartInfo {
+        <OakInventoryCustomizationPartInfo as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl OakInventoryCustomizationPartInfo {
+    pub fn new() -> OakInventoryCustomizationPartInfo {
+        ::std::default::Default::default()
+    }
+
+    // uint32 customization_part_hash = 1;
+
+
+    pub fn get_customization_part_hash(&self) -> u32 {
+        self.customization_part_hash
+    }
+    pub fn clear_customization_part_hash(&mut self) {
+        self.customization_part_hash = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_customization_part_hash(&mut self, v: u32) {
+        self.customization_part_hash = v;
+    }
+
+    // bool is_new = 2;
+
+
+    pub fn get_is_new(&self) -> bool {
+        self.is_new
+    }
+    pub fn clear_is_new(&mut self) {
+        self.is_new = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_is_new(&mut self, v: bool) {
+        self.is_new = v;
+    }
+}
+
+impl ::protobuf::Message for OakInventoryCustomizationPartInfo {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.customization_part_hash = tmp;
+                }
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.is_new = tmp;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.customization_part_hash != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.customization_part_hash, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.is_new != false {
+            my_size += 2;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.customization_part_hash != 0 {
+            os.write_uint32(1, self.customization_part_hash)?;
+        }
+        if self.is_new != false {
+            os.write_bool(2, self.is_new)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> OakInventoryCustomizationPartInfo {
+        OakInventoryCustomizationPartInfo::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "customization_part_hash",
+                |m: &OakInventoryCustomizationPartInfo| { &m.customization_part_hash },
+                |m: &mut OakInventoryCustomizationPartInfo| { &mut m.customization_part_hash },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "is_new",
+                |m: &OakInventoryCustomizationPartInfo| { &m.is_new },
+                |m: &mut OakInventoryCustomizationPartInfo| { &mut m.is_new },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakInventoryCustomizationPartInfo>(
+                "OakInventoryCustomizationPartInfo",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static OakInventoryCustomizationPartInfo {
+        static instance: ::protobuf::rt::LazyV2<OakInventoryCustomizationPartInfo> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(OakInventoryCustomizationPartInfo::new)
+    }
+}
+
+impl ::protobuf::Clear for OakInventoryCustomizationPartInfo {
+    fn clear(&mut self) {
+        self.customization_part_hash = 0;
+        self.is_new = false;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for OakInventoryCustomizationPartInfo {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for OakInventoryCustomizationPartInfo {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
+pub struct CrewQuartersDecorationItemSaveGameData {
+    // message fields
+    pub is_new: bool,
+    pub decoration_item_asset_path: ::std::string::String,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a CrewQuartersDecorationItemSaveGameData {
+    fn default() -> &'a CrewQuartersDecorationItemSaveGameData {
+        <CrewQuartersDecorationItemSaveGameData as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl CrewQuartersDecorationItemSaveGameData {
+    pub fn new() -> CrewQuartersDecorationItemSaveGameData {
+        ::std::default::Default::default()
+    }
+
+    // bool is_new = 1;
+
+
+    pub fn get_is_new(&self) -> bool {
+        self.is_new
+    }
+    pub fn clear_is_new(&mut self) {
+        self.is_new = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_is_new(&mut self, v: bool) {
+        self.is_new = v;
+    }
+
+    // string decoration_item_asset_path = 2;
+
+
+    pub fn get_decoration_item_asset_path(&self) -> &str {
+        &self.decoration_item_asset_path
+    }
+    pub fn clear_decoration_item_asset_path(&mut self) {
+        self.decoration_item_asset_path.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_decoration_item_asset_path(&mut self, v: ::std::string::String) {
+        self.decoration_item_asset_path = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_decoration_item_asset_path(&mut self) -> &mut ::std::string::String {
+        &mut self.decoration_item_asset_path
+    }
+
+    // Take field
+    pub fn take_decoration_item_asset_path(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.decoration_item_asset_path, ::std::string::String::new())
+    }
+}
+
+impl ::protobuf::Message for CrewQuartersDecorationItemSaveGameData {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.is_new = tmp;
+                }
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.decoration_item_asset_path)?;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.is_new != false {
+            my_size += 2;
+        }
+        if !self.decoration_item_asset_path.is_empty() {
+            my_size += ::protobuf::rt::string_size(2, &self.decoration_item_asset_path);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.is_new != false {
+            os.write_bool(1, self.is_new)?;
+        }
+        if !self.decoration_item_asset_path.is_empty() {
+            os.write_string(2, &self.decoration_item_asset_path)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> CrewQuartersDecorationItemSaveGameData {
+        CrewQuartersDecorationItemSaveGameData::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "is_new",
+                |m: &CrewQuartersDecorationItemSaveGameData| { &m.is_new },
+                |m: &mut CrewQuartersDecorationItemSaveGameData| { &mut m.is_new },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "decoration_item_asset_path",
+                |m: &CrewQuartersDecorationItemSaveGameData| { &m.decoration_item_asset_path },
+                |m: &mut CrewQuartersDecorationItemSaveGameData| { &mut m.decoration_item_asset_path },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersDecorationItemSaveGameData>(
+                "CrewQuartersDecorationItemSaveGameData",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static CrewQuartersDecorationItemSaveGameData {
+        static instance: ::protobuf::rt::LazyV2<CrewQuartersDecorationItemSaveGameData> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(CrewQuartersDecorationItemSaveGameData::new)
+    }
+}
+
+impl ::protobuf::Clear for CrewQuartersDecorationItemSaveGameData {
+    fn clear(&mut self) {
+        self.is_new = false;
+        self.decoration_item_asset_path.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for CrewQuartersDecorationItemSaveGameData {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for CrewQuartersDecorationItemSaveGameData {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
+pub struct CrewQuartersRoomItemSaveGameData {
+    // message fields
+    pub is_new: bool,
+    pub room_item_asset_path: ::std::string::String,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a CrewQuartersRoomItemSaveGameData {
+    fn default() -> &'a CrewQuartersRoomItemSaveGameData {
+        <CrewQuartersRoomItemSaveGameData as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl CrewQuartersRoomItemSaveGameData {
+    pub fn new() -> CrewQuartersRoomItemSaveGameData {
+        ::std::default::Default::default()
+    }
+
+    // bool is_new = 1;
+
+
+    pub fn get_is_new(&self) -> bool {
+        self.is_new
+    }
+    pub fn clear_is_new(&mut self) {
+        self.is_new = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_is_new(&mut self, v: bool) {
+        self.is_new = v;
+    }
+
+    // string room_item_asset_path = 2;
+
+
+    pub fn get_room_item_asset_path(&self) -> &str {
+        &self.room_item_asset_path
+    }
+    pub fn clear_room_item_asset_path(&mut self) {
+        self.room_item_asset_path.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_room_item_asset_path(&mut self, v: ::std::string::String) {
+        self.room_item_asset_path = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_room_item_asset_path(&mut self) -> &mut ::std::string::String {
+        &mut self.room_item_asset_path
+    }
+
+    // Take field
+    pub fn take_room_item_asset_path(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.room_item_asset_path, ::std::string::String::new())
+    }
+}
+
+impl ::protobuf::Message for CrewQuartersRoomItemSaveGameData {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.is_new = tmp;
+                }
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.room_item_asset_path)?;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.is_new != false {
+            my_size += 2;
+        }
+        if !self.room_item_asset_path.is_empty() {
+            my_size += ::protobuf::rt::string_size(2, &self.room_item_asset_path);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.is_new != false {
+            os.write_bool(1, self.is_new)?;
+        }
+        if !self.room_item_asset_path.is_empty() {
+            os.write_string(2, &self.room_item_asset_path)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> CrewQuartersRoomItemSaveGameData {
+        CrewQuartersRoomItemSaveGameData::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "is_new",
+                |m: &CrewQuartersRoomItemSaveGameData| { &m.is_new },
+                |m: &mut CrewQuartersRoomItemSaveGameData| { &mut m.is_new },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "room_item_asset_path",
+                |m: &CrewQuartersRoomItemSaveGameData| { &m.room_item_asset_path },
+                |m: &mut CrewQuartersRoomItemSaveGameData| { &mut m.room_item_asset_path },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersRoomItemSaveGameData>(
+                "CrewQuartersRoomItemSaveGameData",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static CrewQuartersRoomItemSaveGameData {
+        static instance: ::protobuf::rt::LazyV2<CrewQuartersRoomItemSaveGameData> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(CrewQuartersRoomItemSaveGameData::new)
+    }
+}
+
+impl ::protobuf::Clear for CrewQuartersRoomItemSaveGameData {
+    fn clear(&mut self) {
+        self.is_new = false;
+        self.room_item_asset_path.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for CrewQuartersRoomItemSaveGameData {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for CrewQuartersRoomItemSaveGameData {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
+pub struct VaultCardSaveGameData {
+    // message fields
+    pub last_active_vault_card_id: u32,
+    pub current_day_seed: i32,
+    pub current_week_seed: i32,
+    pub vault_card_previous_challenges: ::protobuf::RepeatedField<VaultCardPreviousChallenge>,
+    pub vault_card_claimed_rewards: ::protobuf::RepeatedField<VaultCardRewardList>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a VaultCardSaveGameData {
+    fn default() -> &'a VaultCardSaveGameData {
+        <VaultCardSaveGameData as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl VaultCardSaveGameData {
+    pub fn new() -> VaultCardSaveGameData {
+        ::std::default::Default::default()
+    }
+
+    // uint32 last_active_vault_card_id = 2;
+
+
+    pub fn get_last_active_vault_card_id(&self) -> u32 {
+        self.last_active_vault_card_id
+    }
+    pub fn clear_last_active_vault_card_id(&mut self) {
+        self.last_active_vault_card_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_last_active_vault_card_id(&mut self, v: u32) {
+        self.last_active_vault_card_id = v;
+    }
+
+    // int32 current_day_seed = 3;
+
+
+    pub fn get_current_day_seed(&self) -> i32 {
+        self.current_day_seed
+    }
+    pub fn clear_current_day_seed(&mut self) {
+        self.current_day_seed = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_current_day_seed(&mut self, v: i32) {
+        self.current_day_seed = v;
+    }
+
+    // int32 current_week_seed = 4;
+
+
+    pub fn get_current_week_seed(&self) -> i32 {
+        self.current_week_seed
+    }
+    pub fn clear_current_week_seed(&mut self) {
+        self.current_week_seed = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_current_week_seed(&mut self, v: i32) {
+        self.current_week_seed = v;
+    }
+
+    // repeated .OakSave.VaultCardPreviousChallenge vault_card_previous_challenges = 5;
+
+
+    pub fn get_vault_card_previous_challenges(&self) -> &[VaultCardPreviousChallenge] {
+        &self.vault_card_previous_challenges
+    }
+    pub fn clear_vault_card_previous_challenges(&mut self) {
+        self.vault_card_previous_challenges.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vault_card_previous_challenges(&mut self, v: ::protobuf::RepeatedField<VaultCardPreviousChallenge>) {
+        self.vault_card_previous_challenges = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_vault_card_previous_challenges(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardPreviousChallenge> {
+        &mut self.vault_card_previous_challenges
+    }
+
+    // Take field
+    pub fn take_vault_card_previous_challenges(&mut self) -> ::protobuf::RepeatedField<VaultCardPreviousChallenge> {
+        ::std::mem::replace(&mut self.vault_card_previous_challenges, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated .OakSave.VaultCardRewardList vault_card_claimed_rewards = 6;
+
+
+    pub fn get_vault_card_claimed_rewards(&self) -> &[VaultCardRewardList] {
+        &self.vault_card_claimed_rewards
+    }
+    pub fn clear_vault_card_claimed_rewards(&mut self) {
+        self.vault_card_claimed_rewards.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vault_card_claimed_rewards(&mut self, v: ::protobuf::RepeatedField<VaultCardRewardList>) {
+        self.vault_card_claimed_rewards = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_vault_card_claimed_rewards(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardRewardList> {
+        &mut self.vault_card_claimed_rewards
+    }
+
+    // Take field
+    pub fn take_vault_card_claimed_rewards(&mut self) -> ::protobuf::RepeatedField<VaultCardRewardList> {
+        ::std::mem::replace(&mut self.vault_card_claimed_rewards, ::protobuf::RepeatedField::new())
+    }
+}
+
+impl ::protobuf::Message for VaultCardSaveGameData {
+    fn is_initialized(&self) -> bool {
+        for v in &self.vault_card_previous_challenges {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.vault_card_claimed_rewards {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.last_active_vault_card_id = tmp;
+                }
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int32()?;
+                    self.current_day_seed = tmp;
+                }
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int32()?;
+                    self.current_week_seed = tmp;
+                }
+                5 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.vault_card_previous_challenges)?;
+                }
+                6 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.vault_card_claimed_rewards)?;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.last_active_vault_card_id != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.last_active_vault_card_id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.current_day_seed != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.current_day_seed, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.current_week_seed != 0 {
+            my_size += ::protobuf::rt::value_size(4, self.current_week_seed, ::protobuf::wire_format::WireTypeVarint);
+        }
+        for value in &self.vault_card_previous_challenges {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        for value in &self.vault_card_claimed_rewards {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.last_active_vault_card_id != 0 {
+            os.write_uint32(2, self.last_active_vault_card_id)?;
+        }
+        if self.current_day_seed != 0 {
+            os.write_int32(3, self.current_day_seed)?;
+        }
+        if self.current_week_seed != 0 {
+            os.write_int32(4, self.current_week_seed)?;
+        }
+        for v in &self.vault_card_previous_challenges {
+            os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        for v in &self.vault_card_claimed_rewards {
+            os.write_tag(6, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> VaultCardSaveGameData {
+        VaultCardSaveGameData::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "last_active_vault_card_id",
+                |m: &VaultCardSaveGameData| { &m.last_active_vault_card_id },
+                |m: &mut VaultCardSaveGameData| { &mut m.last_active_vault_card_id },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                "current_day_seed",
+                |m: &VaultCardSaveGameData| { &m.current_day_seed },
+                |m: &mut VaultCardSaveGameData| { &mut m.current_day_seed },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                "current_week_seed",
+                |m: &VaultCardSaveGameData| { &m.current_week_seed },
+                |m: &mut VaultCardSaveGameData| { &mut m.current_week_seed },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardPreviousChallenge>>(
+                "vault_card_previous_challenges",
+                |m: &VaultCardSaveGameData| { &m.vault_card_previous_challenges },
+                |m: &mut VaultCardSaveGameData| { &mut m.vault_card_previous_challenges },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardRewardList>>(
+                "vault_card_claimed_rewards",
+                |m: &VaultCardSaveGameData| { &m.vault_card_claimed_rewards },
+                |m: &mut VaultCardSaveGameData| { &mut m.vault_card_claimed_rewards },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardSaveGameData>(
+                "VaultCardSaveGameData",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static VaultCardSaveGameData {
+        static instance: ::protobuf::rt::LazyV2<VaultCardSaveGameData> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(VaultCardSaveGameData::new)
+    }
+}
+
+impl ::protobuf::Clear for VaultCardSaveGameData {
+    fn clear(&mut self) {
+        self.last_active_vault_card_id = 0;
+        self.current_day_seed = 0;
+        self.current_week_seed = 0;
+        self.vault_card_previous_challenges.clear();
+        self.vault_card_claimed_rewards.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for VaultCardSaveGameData {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for VaultCardSaveGameData {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
+pub struct VaultCardReward {
+    // message fields
+    pub column_index: i32,
+    pub row_index: i32,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a VaultCardReward {
+    fn default() -> &'a VaultCardReward {
+        <VaultCardReward as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl VaultCardReward {
+    pub fn new() -> VaultCardReward {
+        ::std::default::Default::default()
+    }
+
+    // int32 column_index = 1;
+
+
+    pub fn get_column_index(&self) -> i32 {
+        self.column_index
+    }
+    pub fn clear_column_index(&mut self) {
+        self.column_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_column_index(&mut self, v: i32) {
+        self.column_index = v;
+    }
+
+    // int32 row_index = 2;
+
+
+    pub fn get_row_index(&self) -> i32 {
+        self.row_index
+    }
+    pub fn clear_row_index(&mut self) {
+        self.row_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_row_index(&mut self, v: i32) {
+        self.row_index = v;
+    }
+}
+
+impl ::protobuf::Message for VaultCardReward {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int32()?;
+                    self.column_index = tmp;
+                }
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int32()?;
+                    self.row_index = tmp;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.column_index != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.column_index, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.row_index != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.row_index, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.column_index != 0 {
+            os.write_int32(1, self.column_index)?;
+        }
+        if self.row_index != 0 {
+            os.write_int32(2, self.row_index)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> VaultCardReward {
+        VaultCardReward::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                "column_index",
+                |m: &VaultCardReward| { &m.column_index },
+                |m: &mut VaultCardReward| { &mut m.column_index },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                "row_index",
+                |m: &VaultCardReward| { &m.row_index },
+                |m: &mut VaultCardReward| { &mut m.row_index },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardReward>(
+                "VaultCardReward",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static VaultCardReward {
+        static instance: ::protobuf::rt::LazyV2<VaultCardReward> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(VaultCardReward::new)
+    }
+}
+
+impl ::protobuf::Clear for VaultCardReward {
+    fn clear(&mut self) {
+        self.column_index = 0;
+        self.row_index = 0;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for VaultCardReward {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for VaultCardReward {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
+pub struct VaultCardGearReward {
+    // message fields
+    pub gear_index: i32,
+    pub repurchase_count: u32,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a VaultCardGearReward {
+    fn default() -> &'a VaultCardGearReward {
+        <VaultCardGearReward as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl VaultCardGearReward {
+    pub fn new() -> VaultCardGearReward {
+        ::std::default::Default::default()
+    }
+
+    // int32 gear_index = 1;
+
+
+    pub fn get_gear_index(&self) -> i32 {
+        self.gear_index
+    }
+    pub fn clear_gear_index(&mut self) {
+        self.gear_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gear_index(&mut self, v: i32) {
+        self.gear_index = v;
+    }
+
+    // uint32 repurchase_count = 2;
+
+
+    pub fn get_repurchase_count(&self) -> u32 {
+        self.repurchase_count
+    }
+    pub fn clear_repurchase_count(&mut self) {
+        self.repurchase_count = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_repurchase_count(&mut self, v: u32) {
+        self.repurchase_count = v;
+    }
+}
+
+impl ::protobuf::Message for VaultCardGearReward {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int32()?;
+                    self.gear_index = tmp;
+                }
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.repurchase_count = tmp;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.gear_index != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.gear_index, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.repurchase_count != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.repurchase_count, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.gear_index != 0 {
+            os.write_int32(1, self.gear_index)?;
+        }
+        if self.repurchase_count != 0 {
+            os.write_uint32(2, self.repurchase_count)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> VaultCardGearReward {
+        VaultCardGearReward::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                "gear_index",
+                |m: &VaultCardGearReward| { &m.gear_index },
+                |m: &mut VaultCardGearReward| { &mut m.gear_index },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "repurchase_count",
+                |m: &VaultCardGearReward| { &m.repurchase_count },
+                |m: &mut VaultCardGearReward| { &mut m.repurchase_count },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardGearReward>(
+                "VaultCardGearReward",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static VaultCardGearReward {
+        static instance: ::protobuf::rt::LazyV2<VaultCardGearReward> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(VaultCardGearReward::new)
+    }
+}
+
+impl ::protobuf::Clear for VaultCardGearReward {
+    fn clear(&mut self) {
+        self.gear_index = 0;
+        self.repurchase_count = 0;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for VaultCardGearReward {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for VaultCardGearReward {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
+pub struct VaultCardRewardList {
+    // message fields
+    pub vault_card_id: u32,
+    pub vault_card_experience: i64,
+    pub unlocked_reward_list: ::protobuf::RepeatedField<VaultCardReward>,
+    pub redeemed_reward_list: ::protobuf::RepeatedField<VaultCardReward>,
+    pub vault_card_chests: i32,
+    pub vault_card_chests_opened: u32,
+    pub vault_card_keys_spent: u32,
+    pub gear_rewards: ::protobuf::RepeatedField<VaultCardGearReward>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a VaultCardRewardList {
+    fn default() -> &'a VaultCardRewardList {
+        <VaultCardRewardList as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl VaultCardRewardList {
+    pub fn new() -> VaultCardRewardList {
+        ::std::default::Default::default()
+    }
+
+    // uint32 vault_card_id = 1;
+
+
+    pub fn get_vault_card_id(&self) -> u32 {
+        self.vault_card_id
+    }
+    pub fn clear_vault_card_id(&mut self) {
+        self.vault_card_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vault_card_id(&mut self, v: u32) {
+        self.vault_card_id = v;
+    }
+
+    // int64 vault_card_experience = 2;
+
+
+    pub fn get_vault_card_experience(&self) -> i64 {
+        self.vault_card_experience
+    }
+    pub fn clear_vault_card_experience(&mut self) {
+        self.vault_card_experience = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vault_card_experience(&mut self, v: i64) {
+        self.vault_card_experience = v;
+    }
+
+    // repeated .OakSave.VaultCardReward unlocked_reward_list = 4;
+
+
+    pub fn get_unlocked_reward_list(&self) -> &[VaultCardReward] {
+        &self.unlocked_reward_list
+    }
+    pub fn clear_unlocked_reward_list(&mut self) {
+        self.unlocked_reward_list.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_unlocked_reward_list(&mut self, v: ::protobuf::RepeatedField<VaultCardReward>) {
+        self.unlocked_reward_list = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_unlocked_reward_list(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardReward> {
+        &mut self.unlocked_reward_list
+    }
+
+    // Take field
+    pub fn take_unlocked_reward_list(&mut self) -> ::protobuf::RepeatedField<VaultCardReward> {
+        ::std::mem::replace(&mut self.unlocked_reward_list, ::protobuf::RepeatedField::new())
+    }
+
+    // repeated .OakSave.VaultCardReward redeemed_reward_list = 5;
+
+
+    pub fn get_redeemed_reward_list(&self) -> &[VaultCardReward] {
+        &self.redeemed_reward_list
+    }
+    pub fn clear_redeemed_reward_list(&mut self) {
+        self.redeemed_reward_list.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_redeemed_reward_list(&mut self, v: ::protobuf::RepeatedField<VaultCardReward>) {
+        self.redeemed_reward_list = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_redeemed_reward_list(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardReward> {
+        &mut self.redeemed_reward_list
+    }
+
+    // Take field
+    pub fn take_redeemed_reward_list(&mut self) -> ::protobuf::RepeatedField<VaultCardReward> {
+        ::std::mem::replace(&mut self.redeemed_reward_list, ::protobuf::RepeatedField::new())
+    }
+
+    // int32 vault_card_chests = 7;
+
+
+    pub fn get_vault_card_chests(&self) -> i32 {
+        self.vault_card_chests
+    }
+    pub fn clear_vault_card_chests(&mut self) {
+        self.vault_card_chests = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vault_card_chests(&mut self, v: i32) {
+        self.vault_card_chests = v;
+    }
+
+    // uint32 vault_card_chests_opened = 8;
+
+
+    pub fn get_vault_card_chests_opened(&self) -> u32 {
+        self.vault_card_chests_opened
+    }
+    pub fn clear_vault_card_chests_opened(&mut self) {
+        self.vault_card_chests_opened = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vault_card_chests_opened(&mut self, v: u32) {
+        self.vault_card_chests_opened = v;
+    }
+
+    // uint32 vault_card_keys_spent = 9;
+
+
+    pub fn get_vault_card_keys_spent(&self) -> u32 {
+        self.vault_card_keys_spent
+    }
+    pub fn clear_vault_card_keys_spent(&mut self) {
+        self.vault_card_keys_spent = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vault_card_keys_spent(&mut self, v: u32) {
+        self.vault_card_keys_spent = v;
+    }
+
+    // repeated .OakSave.VaultCardGearReward gear_rewards = 10;
+
+
+    pub fn get_gear_rewards(&self) -> &[VaultCardGearReward] {
+        &self.gear_rewards
+    }
+    pub fn clear_gear_rewards(&mut self) {
+        self.gear_rewards.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gear_rewards(&mut self, v: ::protobuf::RepeatedField<VaultCardGearReward>) {
+        self.gear_rewards = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_gear_rewards(&mut self) -> &mut ::protobuf::RepeatedField<VaultCardGearReward> {
+        &mut self.gear_rewards
+    }
+
+    // Take field
+    pub fn take_gear_rewards(&mut self) -> ::protobuf::RepeatedField<VaultCardGearReward> {
+        ::std::mem::replace(&mut self.gear_rewards, ::protobuf::RepeatedField::new())
+    }
+}
+
+impl ::protobuf::Message for VaultCardRewardList {
+    fn is_initialized(&self) -> bool {
+        for v in &self.unlocked_reward_list {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.redeemed_reward_list {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.gear_rewards {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.vault_card_id = tmp;
+                }
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.vault_card_experience = tmp;
+                }
+                4 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_reward_list)?;
+                }
+                5 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.redeemed_reward_list)?;
+                }
+                7 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int32()?;
+                    self.vault_card_chests = tmp;
+                }
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.vault_card_chests_opened = tmp;
+                }
+                9 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.vault_card_keys_spent = tmp;
+                }
+                10 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.gear_rewards)?;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.vault_card_id != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.vault_card_id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.vault_card_experience != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.vault_card_experience, ::protobuf::wire_format::WireTypeVarint);
+        }
+        for value in &self.unlocked_reward_list {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        for value in &self.redeemed_reward_list {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        if self.vault_card_chests != 0 {
+            my_size += ::protobuf::rt::value_size(7, self.vault_card_chests, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.vault_card_chests_opened != 0 {
+            my_size += ::protobuf::rt::value_size(8, self.vault_card_chests_opened, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.vault_card_keys_spent != 0 {
+            my_size += ::protobuf::rt::value_size(9, self.vault_card_keys_spent, ::protobuf::wire_format::WireTypeVarint);
+        }
+        for value in &self.gear_rewards {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.vault_card_id != 0 {
+            os.write_uint32(1, self.vault_card_id)?;
+        }
+        if self.vault_card_experience != 0 {
+            os.write_int64(2, self.vault_card_experience)?;
+        }
+        for v in &self.unlocked_reward_list {
+            os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        for v in &self.redeemed_reward_list {
+            os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        if self.vault_card_chests != 0 {
+            os.write_int32(7, self.vault_card_chests)?;
+        }
+        if self.vault_card_chests_opened != 0 {
+            os.write_uint32(8, self.vault_card_chests_opened)?;
+        }
+        if self.vault_card_keys_spent != 0 {
+            os.write_uint32(9, self.vault_card_keys_spent)?;
+        }
+        for v in &self.gear_rewards {
+            os.write_tag(10, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> VaultCardRewardList {
+        VaultCardRewardList::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "vault_card_id",
+                |m: &VaultCardRewardList| { &m.vault_card_id },
+                |m: &mut VaultCardRewardList| { &mut m.vault_card_id },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                "vault_card_experience",
+                |m: &VaultCardRewardList| { &m.vault_card_experience },
+                |m: &mut VaultCardRewardList| { &mut m.vault_card_experience },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardReward>>(
+                "unlocked_reward_list",
+                |m: &VaultCardRewardList| { &m.unlocked_reward_list },
+                |m: &mut VaultCardRewardList| { &mut m.unlocked_reward_list },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardReward>>(
+                "redeemed_reward_list",
+                |m: &VaultCardRewardList| { &m.redeemed_reward_list },
+                |m: &mut VaultCardRewardList| { &mut m.redeemed_reward_list },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                "vault_card_chests",
+                |m: &VaultCardRewardList| { &m.vault_card_chests },
+                |m: &mut VaultCardRewardList| { &mut m.vault_card_chests },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "vault_card_chests_opened",
+                |m: &VaultCardRewardList| { &m.vault_card_chests_opened },
+                |m: &mut VaultCardRewardList| { &mut m.vault_card_chests_opened },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "vault_card_keys_spent",
+                |m: &VaultCardRewardList| { &m.vault_card_keys_spent },
+                |m: &mut VaultCardRewardList| { &mut m.vault_card_keys_spent },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<VaultCardGearReward>>(
+                "gear_rewards",
+                |m: &VaultCardRewardList| { &m.gear_rewards },
+                |m: &mut VaultCardRewardList| { &mut m.gear_rewards },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardRewardList>(
+                "VaultCardRewardList",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static VaultCardRewardList {
+        static instance: ::protobuf::rt::LazyV2<VaultCardRewardList> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(VaultCardRewardList::new)
+    }
+}
+
+impl ::protobuf::Clear for VaultCardRewardList {
+    fn clear(&mut self) {
+        self.vault_card_id = 0;
+        self.vault_card_experience = 0;
+        self.unlocked_reward_list.clear();
+        self.redeemed_reward_list.clear();
+        self.vault_card_chests = 0;
+        self.vault_card_chests_opened = 0;
+        self.vault_card_keys_spent = 0;
+        self.gear_rewards.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for VaultCardRewardList {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for VaultCardRewardList {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq, Clone, Default)]
+pub struct VaultCardPreviousChallenge {
+    // message fields
+    pub previous_challenge_seed: i32,
+    pub previous_challenge_id: u32,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a VaultCardPreviousChallenge {
+    fn default() -> &'a VaultCardPreviousChallenge {
+        <VaultCardPreviousChallenge as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl VaultCardPreviousChallenge {
+    pub fn new() -> VaultCardPreviousChallenge {
+        ::std::default::Default::default()
+    }
+
+    // int32 previous_challenge_seed = 1;
+
+
+    pub fn get_previous_challenge_seed(&self) -> i32 {
+        self.previous_challenge_seed
+    }
+    pub fn clear_previous_challenge_seed(&mut self) {
+        self.previous_challenge_seed = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_previous_challenge_seed(&mut self, v: i32) {
+        self.previous_challenge_seed = v;
+    }
+
+    // uint32 previous_challenge_id = 2;
+
+
+    pub fn get_previous_challenge_id(&self) -> u32 {
+        self.previous_challenge_id
+    }
+    pub fn clear_previous_challenge_id(&mut self) {
+        self.previous_challenge_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_previous_challenge_id(&mut self, v: u32) {
+        self.previous_challenge_id = v;
+    }
+}
+
+impl ::protobuf::Message for VaultCardPreviousChallenge {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int32()?;
+                    self.previous_challenge_seed = tmp;
+                }
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.previous_challenge_id = tmp;
+                }
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                }
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.previous_challenge_seed != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.previous_challenge_seed, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.previous_challenge_id != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.previous_challenge_id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.previous_challenge_seed != 0 {
+            os.write_int32(1, self.previous_challenge_seed)?;
+        }
+        if self.previous_challenge_id != 0 {
+            os.write_uint32(2, self.previous_challenge_id)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> VaultCardPreviousChallenge {
+        VaultCardPreviousChallenge::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                "previous_challenge_seed",
+                |m: &VaultCardPreviousChallenge| { &m.previous_challenge_seed },
+                |m: &mut VaultCardPreviousChallenge| { &mut m.previous_challenge_seed },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "previous_challenge_id",
+                |m: &VaultCardPreviousChallenge| { &m.previous_challenge_id },
+                |m: &mut VaultCardPreviousChallenge| { &mut m.previous_challenge_id },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardPreviousChallenge>(
+                "VaultCardPreviousChallenge",
+                fields,
+                file_descriptor_proto(),
+            )
+        })
+    }
+
+    fn default_instance() -> &'static VaultCardPreviousChallenge {
+        static instance: ::protobuf::rt::LazyV2<VaultCardPreviousChallenge> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(VaultCardPreviousChallenge::new)
+    }
+}
+
+impl ::protobuf::Clear for VaultCardPreviousChallenge {
+    fn clear(&mut self) {
+        self.previous_challenge_seed = 0;
+        self.previous_challenge_id = 0;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for VaultCardPreviousChallenge {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for VaultCardPreviousChallenge {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n\x10oak_shared.proto\x12\x07OakSave\"8\n\x04Vec3\x12\x0e\n\x01x\x18\
     \x01\x20\x01(\x02R\x01xB\0\x12\x0e\n\x01y\x18\x02\x20\x01(\x02R\x01yB\0\
@@ -2136,7 +4734,51 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     tatInstanceStateB\0\x122\n\x14challenge_class_path\x18\x07\x20\x01(\tR\
     \x12challengeClassPathB\0\x12]\n\x15challenge_reward_info\x18\x08\x20\
     \x03(\x0b2'.OakSave.OakChallengeRewardSaveGameDataR\x13challengeRewardIn\
-    foB\0:\0B\0b\x06proto3\
+    foB\0:\0\"\x82\x03\n\x0bOakMailItem\x12&\n\x0email_item_type\x18\x01\x20\
+    \x01(\rR\x0cmailItemTypeB\0\x120\n\x13sender_display_name\x18\x02\x20\
+    \x01(\tR\x11senderDisplayNameB\0\x12\x1a\n\x07subject\x18\x03\x20\x01(\t\
+    R\x07subjectB\0\x12\x14\n\x04body\x18\x04\x20\x01(\tR\x04bodyB\0\x12.\n\
+    \x12gear_serial_number\x18\x05\x20\x01(\tR\x10gearSerialNumberB\0\x12\
+    \x1d\n\tmail_guid\x18\x06\x20\x01(\tR\x08mailGuidB\0\x12\x1d\n\tdate_sen\
+    t\x18\x07\x20\x01(\x03R\x08dateSentB\0\x12)\n\x0fexpiration_date\x18\x08\
+    \x20\x01(\x03R\x0eexpirationDateB\0\x12&\n\x0efrom_player_id\x18\t\x20\
+    \x01(\tR\x0cfromPlayerIdB\0\x12$\n\rhas_been_read\x18\n\x20\x01(\x08R\
+    \x0bhasBeenReadB\0:\0\"u\n\x1cOakCustomizationSaveGameData\x12\x17\n\x06\
+    is_new\x18\x01\x20\x01(\x08R\x05isNewB\0\x12:\n\x18customization_asset_p\
+    ath\x18\x02\x20\x01(\tR\x16customizationAssetPathB\0:\0\"x\n!OakInventor\
+    yCustomizationPartInfo\x128\n\x17customization_part_hash\x18\x01\x20\x01\
+    (\rR\x15customizationPartHashB\0\x12\x17\n\x06is_new\x18\x02\x20\x01(\
+    \x08R\x05isNewB\0:\0\"\x82\x01\n&CrewQuartersDecorationItemSaveGameData\
+    \x12\x17\n\x06is_new\x18\x01\x20\x01(\x08R\x05isNewB\0\x12=\n\x1adecorat\
+    ion_item_asset_path\x18\x02\x20\x01(\tR\x17decorationItemAssetPathB\0:\0\
+    \"p\n\x20CrewQuartersRoomItemSaveGameData\x12\x17\n\x06is_new\x18\x01\
+    \x20\x01(\x08R\x05isNewB\0\x121\n\x14room_item_asset_path\x18\x02\x20\
+    \x01(\tR\x11roomItemAssetPathB\0:\0\"\xf8\x02\n\x15VaultCardSaveGameData\
+    \x12:\n\x19last_active_vault_card_id\x18\x02\x20\x01(\rR\x15lastActiveVa\
+    ultCardIdB\0\x12*\n\x10current_day_seed\x18\x03\x20\x01(\x05R\x0ecurrent\
+    DaySeedB\0\x12,\n\x11current_week_seed\x18\x04\x20\x01(\x05R\x0fcurrentW\
+    eekSeedB\0\x12j\n\x1evault_card_previous_challenges\x18\x05\x20\x03(\x0b\
+    2#.OakSave.VaultCardPreviousChallengeR\x1bvaultCardPreviousChallengesB\0\
+    \x12[\n\x1avault_card_claimed_rewards\x18\x06\x20\x03(\x0b2\x1c.OakSave.\
+    VaultCardRewardListR\x17vaultCardClaimedRewardsB\0:\0\"W\n\x0fVaultCardR\
+    eward\x12#\n\x0ccolumn_index\x18\x01\x20\x01(\x05R\x0bcolumnIndexB\0\x12\
+    \x1d\n\trow_index\x18\x02\x20\x01(\x05R\x08rowIndexB\0:\0\"e\n\x13VaultC\
+    ardGearReward\x12\x1f\n\ngear_index\x18\x01\x20\x01(\x05R\tgearIndexB\0\
+    \x12+\n\x10repurchase_count\x18\x02\x20\x01(\rR\x0frepurchaseCountB\0:\0\
+    \"\xf0\x03\n\x13VaultCardRewardList\x12$\n\rvault_card_id\x18\x01\x20\
+    \x01(\rR\x0bvaultCardIdB\0\x124\n\x15vault_card_experience\x18\x02\x20\
+    \x01(\x03R\x13vaultCardExperienceB\0\x12L\n\x14unlocked_reward_list\x18\
+    \x04\x20\x03(\x0b2\x18.OakSave.VaultCardRewardR\x12unlockedRewardListB\0\
+    \x12L\n\x14redeemed_reward_list\x18\x05\x20\x03(\x0b2\x18.OakSave.VaultC\
+    ardRewardR\x12redeemedRewardListB\0\x12,\n\x11vault_card_chests\x18\x07\
+    \x20\x01(\x05R\x0fvaultCardChestsB\0\x129\n\x18vault_card_chests_opened\
+    \x18\x08\x20\x01(\rR\x15vaultCardChestsOpenedB\0\x123\n\x15vault_card_ke\
+    ys_spent\x18\t\x20\x01(\rR\x12vaultCardKeysSpentB\0\x12A\n\x0cgear_rewar\
+    ds\x18\n\x20\x03(\x0b2\x1c.OakSave.VaultCardGearRewardR\x0bgearRewardsB\
+    \0:\0\"\x8e\x01\n\x1aVaultCardPreviousChallenge\x128\n\x17previous_chall\
+    enge_seed\x18\x01\x20\x01(\x05R\x15previousChallengeSeedB\0\x124\n\x15pr\
+    evious_challenge_id\x18\x02\x20\x01(\rR\x13previousChallengeIdB\0:\0B\0b\
+    \x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
