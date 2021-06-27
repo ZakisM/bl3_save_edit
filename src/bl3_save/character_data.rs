@@ -5,17 +5,16 @@ use anyhow::{Context, Result};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
-use crate::bl3_save::challenge_data::ChallengeData;
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};
+use crate::bl3_save::models::{ChallengeData, Currency, Playthrough, VehicleStats};
 use crate::bl3_save::player_class::PlayerClass;
 use crate::bl3_save::sdu::{SduSlot, SduSlotData};
-use crate::bl3_save::util::{currency_amount_from_character, experience_to_level, read_playthroughs, Currency, IMPORTANT_CHALLENGES};
+use crate::bl3_save::util::{currency_amount_from_character, experience_to_level, read_playthroughs, IMPORTANT_CHALLENGES};
 use crate::game_data::{
     VEHICLE_CHASSIS_CYCLONE, VEHICLE_CHASSIS_JETBEAST, VEHICLE_CHASSIS_OUTRUNNER, VEHICLE_CHASSIS_TECHNICAL, VEHICLE_PARTS_CYCLONE,
     VEHICLE_PARTS_JETBEAST, VEHICLE_PARTS_OUTRUNNER, VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST, VEHICLE_SKINS_OUTRUNNER,
     VEHICLE_SKINS_TECHNICAL,
 };
-use crate::models::vehicle_stats::VehicleStats;
 use crate::protos::oak_save::Character;
 
 #[derive(Debug)]
@@ -210,14 +209,4 @@ impl CharacterData {
             vehicle_stats,
         })
     }
-}
-
-#[derive(Debug)]
-pub struct Playthrough {
-    pub mayhem_level: i32,
-    pub mayhem_random_seed: i32,
-    pub current_map: String,
-    pub active_missions: Vec<String>,
-    pub missions_completed: Vec<String>,
-    pub mission_milestones: Vec<String>,
 }

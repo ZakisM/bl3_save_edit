@@ -1,27 +1,23 @@
 use std::fmt;
 use std::fmt::Formatter;
 
-use anyhow::{bail, Result};
-use nom::Finish;
+use anyhow::Result;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use crate::bl3_save::character_data::CharacterData;
 use crate::bl3_save::inventory_slot::InventorySlot;
-use crate::parser::{decrypt, read_custom_format_data, read_header, read_int, read_short, read_str};
+use crate::file_helper;
+use crate::file_helper::FileData;
+use crate::models::CustomFormatData;
+use crate::parser::{decrypt, FileType};
 
 mod ammo;
-mod challenge_data;
 mod character_data;
 mod inventory_slot;
+mod models;
 mod player_class;
 mod sdu;
 mod util;
-
-#[derive(Debug)]
-pub struct CustomFormatData {
-    pub guid: String,
-    pub entry: u32,
-}
 
 #[derive(Debug)]
 pub struct Bl3Save {
@@ -41,34 +37,27 @@ pub struct Bl3Save {
 
 impl Bl3Save {
     pub fn from_data(data: &mut [u8]) -> Result<Self> {
-        let (r, _) = read_header(data).finish()?;
-        let (r, save_game_version) = read_int(r).finish()?;
-        let (r, package_version) = read_int(r).finish()?;
-        let (r, engine_major) = read_short(r).finish()?;
-        let (r, engine_minor) = read_short(r).finish()?;
-        let (r, engine_patch) = read_short(r).finish()?;
-        let (r, engine_build) = read_int(r).finish()?;
-        let (r, build_id) = read_str(r).finish()?;
-        let (r, custom_format_version) = read_int(r).finish()?;
-        let (r, custom_format_data_count) = read_int(r).finish()?;
-        let (r, custom_format_data) = read_custom_format_data(r, custom_format_data_count).finish()?;
-        let (r, save_game_type) = read_str(r).finish()?;
-        let (r, remaining_data_len) = read_int(r).finish()?;
+        let FileData {
+            file_version,
+            package_version,
+            engine_major,
+            engine_minor,
+            engine_patch,
+            engine_build,
+            build_id,
+            custom_format_version,
+            custom_format_data_count,
+            custom_format_data,
+            save_game_type,
+            remaining_data,
+        } = file_helper::read_file(data)?;
 
-        let data_read = data.len() - r.len();
-
-        let mut remaining_data = &mut data[data_read..];
-
-        if remaining_data.len() != remaining_data_len as usize {
-            bail!("failed to parse the remaining save file data - failed to parse the first part of the save file");
-        }
-
-        let character = decrypt(&mut remaining_data)?;
+        let character = decrypt(remaining_data, FileType::PcSave)?;
 
         let character_data = CharacterData::from_character(character)?;
 
         Ok(Self {
-            save_game_version,
+            save_game_version: file_version,
             package_version,
             engine_major,
             engine_minor,

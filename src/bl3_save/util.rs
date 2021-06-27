@@ -2,7 +2,7 @@ use anyhow::{Context, Result};
 use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
 use rayon::slice::ParallelSliceMut;
 
-use crate::bl3_save::character_data::Playthrough;
+use crate::bl3_save::models::{Currency, Playthrough};
 use crate::game_data::GameDataExt;
 use crate::game_data::FAST_TRAVEL;
 use crate::game_data::MISSION;
@@ -135,12 +135,6 @@ pub const IMPORTANT_CHALLENGES: [[&str; 2]; 8] = [
         "Siren Class Mod Slot",
     ],
 ];
-
-#[derive(Debug)]
-pub enum Currency {
-    Money,
-    Eridium,
-}
 
 pub fn currency_amount_from_character(character: &Character, currency: &Currency) -> i32 {
     character
