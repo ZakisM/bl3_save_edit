@@ -45,8 +45,8 @@ impl CharacterData {
         )?;
         let player_level = experience_to_level(&character.experience_points)?;
         let guardian_rank = character.guardian_rank_character_data.as_ref().map(|g| g.guardian_rank).unwrap_or(0);
-        let money = currency_amount_from_character(&character, &Currency::Money)?;
-        let eridium = currency_amount_from_character(&character, &Currency::Eridium)?;
+        let money = currency_amount_from_character(&character, &Currency::Money);
+        let eridium = currency_amount_from_character(&character, &Currency::Eridium);
         let playthroughs = read_playthroughs(&character)?;
         let unlockable_inventory_slots = character
             .equipped_inventory_list
@@ -117,31 +117,16 @@ impl CharacterData {
         let cyclone_chassis_c = AtomicUsize::new(0);
 
         character.vehicles_unlocked_data.par_iter().for_each(|vu| {
-            if VEHICLE_CHASSIS_OUTRUNNER
-                .par_iter()
-                .find_first(|vk| vu.asset_path.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                outrunner_chassis_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_CHASSIS_JETBEAST
-                .par_iter()
-                .find_first(|vk| vu.asset_path.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                jetbeast_chassis_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_CHASSIS_TECHNICAL
-                .par_iter()
-                .find_first(|vk| vu.asset_path.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                technical_chassis_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_CHASSIS_CYCLONE
-                .par_iter()
-                .find_first(|vk| vu.asset_path.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                cyclone_chassis_c.fetch_add(1, Ordering::Release);
-            }
+            let vu = vu.asset_path.to_lowercase();
+            let vu = &vu.as_str();
+
+            match vu {
+                vu if VEHICLE_CHASSIS_OUTRUNNER.contains(vu) => outrunner_chassis_c.fetch_add(1, Ordering::Release),
+                vu if VEHICLE_CHASSIS_JETBEAST.contains(vu) => jetbeast_chassis_c.fetch_add(1, Ordering::Release),
+                vu if VEHICLE_CHASSIS_TECHNICAL.contains(vu) => technical_chassis_c.fetch_add(1, Ordering::Release),
+                vu if VEHICLE_CHASSIS_CYCLONE.contains(vu) => cyclone_chassis_c.fetch_add(1, Ordering::Release),
+                _ => 0,
+            };
         });
 
         let outrunner_parts_c = AtomicUsize::new(0);
@@ -155,55 +140,20 @@ impl CharacterData {
         let cyclone_skins_c = AtomicUsize::new(0);
 
         character.vehicle_parts_unlocked.par_iter().for_each(|vp| {
-            if VEHICLE_PARTS_OUTRUNNER
-                .par_iter()
-                .find_first(|vk| vp.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                outrunner_parts_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_PARTS_JETBEAST
-                .par_iter()
-                .find_first(|vk| vp.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                jetbeast_parts_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_PARTS_TECHNICAL
-                .par_iter()
-                .find_first(|vk| vp.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                technical_parts_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_PARTS_CYCLONE
-                .par_iter()
-                .find_first(|vk| vp.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                cyclone_parts_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_SKINS_OUTRUNNER
-                .par_iter()
-                .find_first(|vk| vp.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                outrunner_skins_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_SKINS_JETBEAST
-                .par_iter()
-                .find_first(|vk| vp.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                jetbeast_skins_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_SKINS_TECHNICAL
-                .par_iter()
-                .find_first(|vk| vp.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                technical_skins_c.fetch_add(1, Ordering::Release);
-            } else if VEHICLE_SKINS_CYCLONE
-                .par_iter()
-                .find_first(|vk| vp.to_lowercase().as_str() == **vk)
-                .is_some()
-            {
-                cyclone_skins_c.fetch_add(1, Ordering::Release);
-            }
+            let vp = vp.to_lowercase();
+            let vp = &vp.as_str();
+
+            match vp {
+                vp if VEHICLE_PARTS_OUTRUNNER.contains(vp) => outrunner_parts_c.fetch_add(1, Ordering::Release),
+                vp if VEHICLE_PARTS_JETBEAST.contains(vp) => jetbeast_parts_c.fetch_add(1, Ordering::Release),
+                vp if VEHICLE_PARTS_TECHNICAL.contains(vp) => technical_parts_c.fetch_add(1, Ordering::Release),
+                vp if VEHICLE_PARTS_CYCLONE.contains(vp) => cyclone_parts_c.fetch_add(1, Ordering::Release),
+                vp if VEHICLE_SKINS_OUTRUNNER.contains(vp) => outrunner_skins_c.fetch_add(1, Ordering::Release),
+                vp if VEHICLE_SKINS_JETBEAST.contains(vp) => jetbeast_skins_c.fetch_add(1, Ordering::Release),
+                vp if VEHICLE_SKINS_TECHNICAL.contains(vp) => technical_skins_c.fetch_add(1, Ordering::Release),
+                vp if VEHICLE_SKINS_CYCLONE.contains(vp) => cyclone_skins_c.fetch_add(1, Ordering::Release),
+                _ => 0,
+            };
         });
 
         let vehicle_stats = vec![

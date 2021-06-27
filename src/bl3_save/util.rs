@@ -142,7 +142,7 @@ pub enum Currency {
     Eridium,
 }
 
-pub fn currency_amount_from_character(character: &Character, currency: &Currency) -> Result<i32> {
+pub fn currency_amount_from_character(character: &Character, currency: &Currency) -> i32 {
     character
         .inventory_category_list
         .par_iter()
@@ -154,7 +154,7 @@ pub fn currency_amount_from_character(character: &Character, currency: &Currency
                 }
         })
         .map(|i| i.quantity)
-        .context("could not find currency amount")
+        .unwrap_or(0)
 }
 
 pub fn experience_to_level(experience: &i32) -> Result<i32> {
@@ -167,55 +167,55 @@ pub fn experience_to_level(experience: &i32) -> Result<i32> {
 }
 
 pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
-    let mut playthroughs = Vec::with_capacity(character.game_state_save_data_for_playthrough.len());
-    let mut last_active_travel_station = character.last_active_travel_station_for_playthrough.iter();
-    let mut mission_playthroughs_data = character.mission_playthroughs_data.iter();
+    let playthroughs = character
+        .game_state_save_data_for_playthrough
+        .par_iter()
+        .enumerate()
+        .map(|(i, playthrough)| {
+            let mayhem_level = playthrough.mayhem_level;
+            let mayhem_random_seed = playthrough.mayhem_random_seed;
+            let current_map = character
+                .last_active_travel_station_for_playthrough
+                .iter()
+                .nth(i)
+                .and_then(|m| FAST_TRAVEL.get_value_by_key(&m.to_lowercase()).ok())
+                .map(|m| m.to_string())
+                .context("failed to read current_map")?;
 
-    for playthrough in character.game_state_save_data_for_playthrough.iter() {
-        let mayhem_level = playthrough.mayhem_level;
-        let mayhem_random_seed = playthrough.mayhem_random_seed;
-        let current_map = last_active_travel_station
-            .next()
-            .map::<Result<String>, _>(|m| {
-                Ok(FAST_TRAVEL
-                    .get_value_by_key(&m.to_lowercase())
-                    .context("failed to get current_map readable name")?
-                    .to_string())
+            let mission_playthrough_data = character
+                .mission_playthroughs_data
+                .iter()
+                .nth(i)
+                .context("failed to read active_missions")?;
+
+            let mut active_missions =
+                get_filtered_mission_list(MISSION, mission_playthrough_data, MissionStatusPlayerSaveGameData_MissionState::MS_Active);
+
+            let mut missions_completed = get_filtered_mission_list(
+                MISSION,
+                mission_playthrough_data,
+                MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
+            );
+
+            active_missions.par_sort_unstable();
+            missions_completed.par_sort_unstable();
+
+            let mission_milestones = IMPORTANT_MISSIONS
+                .par_iter()
+                .filter(|[k, _]| missions_completed.par_iter().any(|m| *k == m))
+                .map(|[_k, v]| v.to_string())
+                .collect::<Vec<_>>();
+
+            Ok(Playthrough {
+                mayhem_level,
+                mayhem_random_seed,
+                current_map,
+                active_missions,
+                missions_completed,
+                mission_milestones,
             })
-            .context("failed to read current_map")??;
-
-        let current_missions_playthrough_data = mission_playthroughs_data.next().context("failed to read active_missions")?;
-
-        let mut active_missions = get_filtered_mission_list(
-            MISSION,
-            &current_missions_playthrough_data,
-            MissionStatusPlayerSaveGameData_MissionState::MS_Active,
-        );
-
-        let mut missions_completed = get_filtered_mission_list(
-            MISSION,
-            &current_missions_playthrough_data,
-            MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
-        );
-
-        active_missions.par_sort();
-        missions_completed.par_sort();
-
-        let mission_milestones = IMPORTANT_MISSIONS
-            .par_iter()
-            .filter(|[k, _]| missions_completed.par_iter().any(|m| *k == m))
-            .map(|[_k, v]| v.to_string())
-            .collect::<Vec<_>>();
-
-        playthroughs.push(Playthrough {
-            mayhem_level,
-            mayhem_random_seed,
-            current_map,
-            active_missions,
-            missions_completed,
-            mission_milestones,
-        });
-    }
+        })
+        .collect::<Result<Vec<_>>>()?;
 
     Ok(playthroughs)
 }
