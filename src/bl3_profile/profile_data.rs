@@ -1,25 +1,37 @@
-use std::str::FromStr;
-use std::sync::atomic::{AtomicUsize, Ordering};
+use anyhow::Result;
 
-use anyhow::{Context, Result};
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-
-use crate::game_data::{
-    VEHICLE_CHASSIS_CYCLONE, VEHICLE_CHASSIS_JETBEAST, VEHICLE_CHASSIS_OUTRUNNER, VEHICLE_CHASSIS_TECHNICAL, VEHICLE_PARTS_CYCLONE,
-    VEHICLE_PARTS_JETBEAST, VEHICLE_PARTS_OUTRUNNER, VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST, VEHICLE_SKINS_OUTRUNNER,
-    VEHICLE_SKINS_TECHNICAL,
-};
+use crate::bl3_profile::profile_currency::ProfileCurrency;
 use crate::protos::oak_profile::Profile;
 
 #[derive(Debug)]
 pub struct ProfileData {
     pub profile: Profile,
+    pub golden_keys: i32,
+    pub diamond_keys: i32,
+    pub vault_card_1_keys: i32,
 }
 
 impl ProfileData {
     pub fn from_profile(profile: Profile) -> Result<Self> {
-        dbg!(&profile);
+        let golden_keys = ProfileCurrency::GoldenKey
+            .get_profile_currency(&profile.bank_inventory_category_list)
+            .unwrap_or(0);
+        let diamond_keys = ProfileCurrency::DiamondKey
+            .get_profile_currency(&profile.bank_inventory_category_list)
+            .unwrap_or(0);
+        let vault_card_1_keys = ProfileCurrency::VaultCardOneId
+            .get_profile_currency(&profile.bank_inventory_category_list)
+            .unwrap_or(0);
 
-        Ok(Self { profile })
+        dbg!(&golden_keys);
+        dbg!(&diamond_keys);
+        dbg!(&vault_card_1_keys);
+
+        Ok(Self {
+            profile,
+            golden_keys,
+            diamond_keys,
+            vault_card_1_keys,
+        })
     }
 }

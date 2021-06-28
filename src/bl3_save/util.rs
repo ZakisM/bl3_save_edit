@@ -157,7 +157,7 @@ pub fn experience_to_level(experience: &i32) -> Result<i32> {
         .rev()
         .find_first(|[xp, _]| experience >= xp)
         .map(|[_, level]| *level)
-        .context("could not calculate level based off of experience")
+        .with_context(|| format!("could not calculate level based off of experience: {}", experience))
 }
 
 pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
@@ -174,13 +174,13 @@ pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
                 .nth(i)
                 .and_then(|m| FAST_TRAVEL.get_value_by_key(&m.to_lowercase()).ok())
                 .map(|m| m.to_string())
-                .context("failed to read current_map")?;
+                .context("failed to read character current map")?;
 
             let mission_playthrough_data = character
                 .mission_playthroughs_data
                 .iter()
                 .nth(i)
-                .context("failed to read active_missions")?;
+                .context("failed to read character active missions")?;
 
             let mut active_missions =
                 get_filtered_mission_list(MISSION, mission_playthrough_data, MissionStatusPlayerSaveGameData_MissionState::MS_Active);

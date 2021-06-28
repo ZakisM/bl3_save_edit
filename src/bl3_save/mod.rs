@@ -36,7 +36,9 @@ pub struct Bl3Save {
 }
 
 impl Bl3Save {
-    pub fn from_data(data: &mut [u8], file_type: FileType) -> Result<Self> {
+    pub fn from_data(data: Vec<u8>, file_type: FileType) -> Result<Self> {
+        let mut data = data;
+
         let FileData {
             file_version,
             package_version,
@@ -50,7 +52,7 @@ impl Bl3Save {
             custom_format_data,
             save_game_type,
             remaining_data,
-        } = file_helper::read_file(data)?;
+        } = file_helper::read_file(&mut data)?;
 
         let character = decrypt(remaining_data, file_type)?;
 

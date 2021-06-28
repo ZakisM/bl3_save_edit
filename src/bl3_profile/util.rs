@@ -1,8 +1,5 @@
 use anyhow::{Context, Result};
-use encoding_rs::mem::{encode_latin1_lossy, Latin1Bidi};
-use encoding_rs::Encoder;
-use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
-use rayon::slice::ParallelSliceMut;
+use encoding_rs::mem::encode_latin1_lossy;
 
 const CHECKSUM_TABLE: [usize; 256] = [
     0x00000000, 0x04C11DB7, 0x09823B6E, 0x0D4326D9, 0x130476DC, 0x17C56B6B, 0x1A864DB2, 0x1E475005, 0x2608EDB8, 0x22C9F00F, 0x2F8AD6D6, 0x2B4BCB61,
@@ -31,23 +28,29 @@ const CHECKSUM_TABLE: [usize; 256] = [
 
 //Golden keys: 4031389239
 
-pub fn get_checksum_hash(key: &str) -> usize {
+pub fn get_checksum_hash(key: &str) -> Result<usize> {
     let mut key = key.to_uppercase();
 
     if !key.contains('.') {
-        key = format!("{}.{}", key, key.rsplit('/').next().unwrap())
+        key = format!(
+            "{}.{}",
+            key,
+            key.rsplit('/')
+                .next()
+                .with_context(|| format!("failed to read checksum hash for: {}", key))?
+        )
     }
 
     let key_as_latin_1 = encode_latin1_lossy(key.as_str());
 
-    let mut crc32: usize = 0;
+    let mut hash: usize = 0;
 
     for char in key_as_latin_1.iter() {
         let char = *char as usize;
 
-        crc32 = (CHECKSUM_TABLE[(crc32 ^ char) & 0xFF] ^ (crc32 >> 8)) & 0xFFFFFFFF;
-        crc32 = (CHECKSUM_TABLE[(crc32 ^ (char >> 8)) & 0xFF] ^ (crc32 >> 8)) & 0xFFFFFFFF;
+        hash = (CHECKSUM_TABLE[(hash ^ char) & 0xFF] ^ (hash >> 8)) & 0xFFFFFFFF;
+        hash = (CHECKSUM_TABLE[(hash ^ (char >> 8)) & 0xFF] ^ (hash >> 8)) & 0xFFFFFFFF;
     }
 
-    crc32
+    Ok(hash)
 }

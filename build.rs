@@ -139,9 +139,9 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
 
 impl<const LENGTH: usize> GameDataExt for [[&'static str; 2]; LENGTH] {{
     fn get_value_by_key(&self, key: &str) -> Result<&str> {{
-        self.par_iter().find_first(|[k, _]| key == *k).map(|[_, v]| *v).context("Failed to find game_data value")
+        self.par_iter().find_first(|[k, _]| key == *k).map(|[_, v]| *v).with_context(|| format!("failed to find game data value for: {{}}", key))
     }}
-}}"#
+}}"#,
     )?;
 
     Ok(())

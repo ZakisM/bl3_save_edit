@@ -1438,6 +1438,6 @@ impl<const LENGTH: usize> GameDataExt for [[&'static str; 2]; LENGTH] {
         self.par_iter()
             .find_first(|[k, _]| key == *k)
             .map(|[_, v]| *v)
-            .context("Failed to find game_data value")
+            .with_context(|| format!("failed to find game data value for: {}", key))
     }
 }

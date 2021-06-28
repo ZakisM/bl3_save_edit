@@ -40,7 +40,7 @@ impl CharacterData {
                 .player_class_data
                 .as_ref()
                 .map(|p| p.player_class_path.as_str())
-                .context("failed to read player_class")?,
+                .context("failed to read player class")?,
         )?;
         let player_level = experience_to_level(&character.experience_points)?;
         let guardian_rank = character.guardian_rank_character_data.as_ref().map(|g| g.guardian_rank).unwrap_or(0);
@@ -101,7 +101,7 @@ impl CharacterData {
                     .par_iter()
                     .find_first(|cd| cd.challenge_class_path.to_lowercase().contains(&k.to_lowercase()))
                     .map(|cd| cd.currently_completed)
-                    .context("failed to read challenge_milestones")?;
+                    .context("failed to read challenge milestones")?;
 
                 Ok(ChallengeData {
                     challenge: v.to_string(),

@@ -109,14 +109,14 @@ pub fn decrypt<T: protobuf::Message>(data: &mut [u8], file_type: FileType) -> Re
         let b = if i < 32 {
             prefix_magic
                 .get(i)
-                .context("failed to decrypt save file, could not read PREFIX_MAGIC index")?
+                .with_context(|| format!("failed to decrypt save file, could not read PREFIX_MAGIC index for: {:?}", file_type))?
         } else {
             &data[i - 32]
         };
 
         data[i] ^= b ^ xor_magic
             .get(i % 32)
-            .context("failed to decrypt save file, could not read XOR_MAGIC index")?;
+            .with_context(|| format!("failed to decrypt save file, could not read XOR_MAGIC index for: {:?}", file_type))?;
     }
 
     let result: T = protobuf::Message::parse_from_bytes(data)?;
