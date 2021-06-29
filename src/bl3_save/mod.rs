@@ -92,21 +92,41 @@ impl fmt::Display for Bl3Save {
         //     self.custom_format_data_count
         // )?;
         // writeln!(f, "Savegame type: {}", self.save_game_type)
-        writeln!(f, "Character: {}", self.character_data.character.preferred_character_name)?;
-        writeln!(f, "Savegame ID: {}", self.character_data.character.save_game_id)?;
-        writeln!(f, "Savegame GUID: {}", self.character_data.character.save_game_guid)?;
+        writeln!(
+            f,
+            "Character: {}",
+            self.character_data.character.preferred_character_name
+        )?;
+        writeln!(
+            f,
+            "Savegame ID: {}",
+            self.character_data.character.save_game_id
+        )?;
+        writeln!(
+            f,
+            "Savegame GUID: {}",
+            self.character_data.character.save_game_guid
+        )?;
         writeln!(f, "Player Class: {}", self.character_data.player_class)?;
         writeln!(f, "XP: {}", self.character_data.character.experience_points)?;
         writeln!(f, "Level: {}", self.character_data.player_level)?;
         writeln!(f, "Guardian Rank: {}", self.character_data.guardian_rank)?;
         writeln!(f, "Money: {}", self.character_data.money)?;
         writeln!(f, "Eridium: {}", self.character_data.eridium)?;
-        writeln!(f, "Playthroughs Completed: {}", self.character_data.character.playthroughs_completed)?;
+        writeln!(
+            f,
+            "Playthroughs Completed: {}",
+            self.character_data.character.playthroughs_completed
+        )?;
 
         for (i, pt) in self.character_data.playthroughs.iter().enumerate() {
             writeln!(f, "Playthrough {} Info:", i + 1)?;
             writeln!(f, "{:>1}- Mayhem Level: {}", " ", pt.mayhem_level)?;
-            writeln!(f, "{:>1}- Mayhem Random Seed: {}", " ", pt.mayhem_random_seed)?;
+            writeln!(
+                f,
+                "{:>1}- Mayhem Random Seed: {}",
+                " ", pt.mayhem_random_seed
+            )?;
             writeln!(f, "{:>1}- In Map: {}", " ", pt.current_map)?;
 
             if !pt.active_missions.is_empty() {
@@ -117,7 +137,12 @@ impl fmt::Display for Bl3Save {
             }
 
             if !pt.missions_completed.is_empty() {
-                writeln!(f, "{:>1}- Missions Completed: {}", " ", pt.missions_completed.len())?;
+                writeln!(
+                    f,
+                    "{:>1}- Missions Completed: {}",
+                    " ",
+                    pt.missions_completed.len()
+                )?;
 
                 if !pt.mission_milestones.is_empty() {
                     writeln!(f, "{:>1}- Mission Milestones:", " ")?;
@@ -137,7 +162,12 @@ impl fmt::Display for Bl3Save {
             InventorySlot::ClassMod,
             InventorySlot::Artifact,
         ] {
-            if let Some(slot) = self.character_data.unlockable_inventory_slots.par_iter().find_first(|is| is.slot == i) {
+            if let Some(slot) = self
+                .character_data
+                .unlockable_inventory_slots
+                .par_iter()
+                .find_first(|is| is.slot == i)
+            {
                 writeln!(f, "{:>1}- {}: {}", " ", slot.slot, slot.unlocked)?;
             }
         }
@@ -145,7 +175,11 @@ impl fmt::Display for Bl3Save {
         writeln!(f, "SDUs:")?;
 
         for slot in &self.character_data.sdu_slots {
-            writeln!(f, "{:>1}- {}: {}/{}", " ", slot.slot, slot.current, slot.max)?;
+            writeln!(
+                f,
+                "{:>1}- {}: {}/{}",
+                " ", slot.slot, slot.current, slot.max
+            )?;
         }
 
         writeln!(f, "Ammo Pools:")?;
@@ -157,7 +191,11 @@ impl fmt::Display for Bl3Save {
         writeln!(f, "Challenge Milestones:")?;
 
         for challenge in &self.character_data.challenge_milestones {
-            writeln!(f, "{:>1}- {}: {}", " ", challenge.challenge, challenge.unlocked)?;
+            writeln!(
+                f,
+                "{:>1}- {}: {}",
+                " ", challenge.challenge, challenge.unlocked
+            )?;
         }
 
         writeln!(f, "Unlocked Vehicle Parts:")?;

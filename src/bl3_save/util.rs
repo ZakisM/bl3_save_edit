@@ -6,7 +6,9 @@ use crate::bl3_save::models::{Currency, Playthrough};
 use crate::game_data::GameDataExt;
 use crate::game_data::FAST_TRAVEL;
 use crate::game_data::MISSION;
-use crate::protos::oak_save::{Character, MissionPlaythroughSaveGameData, MissionStatusPlayerSaveGameData_MissionState};
+use crate::protos::oak_save::{
+    Character, MissionPlaythroughSaveGameData, MissionStatusPlayerSaveGameData_MissionState,
+};
 
 const REQUIRED_XP_LIST: [[i32; 2]; 80] = [
     [0, 1],
@@ -93,12 +95,21 @@ const REQUIRED_XP_LIST: [[i32; 2]; 80] = [
 
 pub const IMPORTANT_MISSIONS: [[&str; 2]; 7] = [
     ["Divine Retribution", "Main Game"],
-    ["All Bets Off", "DLC1 - Moxxi's Heist of the Handsome Jackpot"],
+    [
+        "All Bets Off",
+        "DLC1 - Moxxi's Heist of the Handsome Jackpot",
+    ],
     ["The Call of Gythian", "DLC2 - Guns, Love, and Tentacles"],
     ["Riding to Ruin", "DLC3 - Bounty of Blood"],
-    ["Locus of Rage", "DLC4 - Psycho Krieg and the Fantastic Fustercluck"],
+    [
+        "Locus of Rage",
+        "DLC4 - Psycho Krieg and the Fantastic Fustercluck",
+    ],
     ["Arms Race", "DLC5 - Designer's Cut"],
-    ["Mysteriouslier: Horror at Scryer's Crypt", "DLC6 - Director's Cut"],
+    [
+        "Mysteriouslier: Horror at Scryer's Crypt",
+        "DLC6 - Director's Cut",
+    ],
 ];
 
 pub const IMPORTANT_CHALLENGES: [[&str; 2]; 8] = [
@@ -157,7 +168,12 @@ pub fn experience_to_level(experience: &i32) -> Result<i32> {
         .rev()
         .find_first(|[xp, _]| experience >= xp)
         .map(|[_, level]| *level)
-        .with_context(|| format!("could not calculate level based off of experience: {}", experience))
+        .with_context(|| {
+            format!(
+                "could not calculate level based off of experience: {}",
+                experience
+            )
+        })
 }
 
 pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
@@ -182,8 +198,11 @@ pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
                 .nth(i)
                 .context("failed to read character active missions")?;
 
-            let mut active_missions =
-                get_filtered_mission_list(MISSION, mission_playthrough_data, MissionStatusPlayerSaveGameData_MissionState::MS_Active);
+            let mut active_missions = get_filtered_mission_list(
+                MISSION,
+                mission_playthrough_data,
+                MissionStatusPlayerSaveGameData_MissionState::MS_Active,
+            );
 
             let mut missions_completed = get_filtered_mission_list(
                 MISSION,

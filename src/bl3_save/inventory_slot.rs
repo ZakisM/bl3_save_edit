@@ -28,7 +28,10 @@ pub enum InventorySlot {
         to_string = "Weapon 4"
     )]
     Weapon4,
-    #[strum(serialize = "/Game/Gear/Shields/_Design/A_Data/BPInvSlot_Shield.BPInvSlot_Shield", to_string = "Shield")]
+    #[strum(
+        serialize = "/Game/Gear/Shields/_Design/A_Data/BPInvSlot_Shield.BPInvSlot_Shield",
+        to_string = "Shield"
+    )]
     Shield,
     #[strum(
         serialize = "/Game/Gear/GrenadeMods/_Design/A_Data/BPInvSlot_GrenadeMod.BPInvSlot_GrenadeMod",

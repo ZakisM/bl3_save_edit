@@ -16,15 +16,15 @@ mod parser;
 mod protos;
 
 fn main() -> Result<()> {
-    let profile_file_data = fs::read("./test_files/1prof.sav")?;
+    let profile_file_data = fs::read("./test_files/profile.sav")?;
     let bl3_profile = Bl3Profile::from_data(profile_file_data, FileType::PcProfile)?;
 
     println!("{}", bl3_profile);
 
-    let save_file_data = fs::read("./test_files/1.sav")?;
-    let bl3_save = Bl3Save::from_data(save_file_data, FileType::PcSave)?;
+    // let save_file_data = fs::read("./test_files/19.sav")?;
+    // let bl3_save = Bl3Save::from_data(save_file_data, FileType::PcSave)?;
 
-    println!("{}", bl3_save);
+    // println!("{}", bl3_save);
 
     Ok(())
 }

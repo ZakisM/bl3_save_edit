@@ -9,8 +9,18 @@ use serde::Deserialize;
 type Result<T> = std::result::Result<T, Box<dyn Error>>;
 
 fn main() {
-    let proto_inputs = ["protobufs/oak_profile.proto", "protobufs/oak_save.proto", "protobufs/oak_shared.proto"];
-    let game_data_inputs_kv = vec!["game_data/FAST_TRAVEL.csv", "game_data/MISSION.csv"];
+    let proto_inputs = [
+        "protobufs/oak_profile.proto",
+        "protobufs/oak_save.proto",
+        "protobufs/oak_shared.proto",
+    ];
+    let game_data_inputs_kv = vec![
+        "game_data/FAST_TRAVEL.csv",
+        "game_data/MISSION.csv",
+        "game_data/PROFILE_ROOM_DECORATIONS.csv",
+        "game_data/PROFILE_WEAPON_SKINS.csv",
+        "game_data/PROFILE_WEAPON_TRINKETS.csv",
+    ];
     let game_data_inputs_array = vec![
         "game_data/VEHICLE_CHASSIS_OUTRUNNER.csv",
         "game_data/VEHICLE_CHASSIS_TECHNICAL.csv",
@@ -24,6 +34,14 @@ fn main() {
         "game_data/VEHICLE_SKINS_TECHNICAL.csv",
         "game_data/VEHICLE_SKINS_CYCLONE.csv",
         "game_data/VEHICLE_SKINS_JETBEAST.csv",
+        "game_data/PROFILE_ECHO_THEMES.csv",
+        "game_data/PROFILE_ECHO_THEMES_DEFAULTS.csv",
+        "game_data/PROFILE_EMOTES.csv",
+        "game_data/PROFILE_EMOTES_DEFAULTS.csv",
+        "game_data/PROFILE_HEADS.csv",
+        "game_data/PROFILE_HEADS_DEFAULTS.csv",
+        "game_data/PROFILE_SKINS.csv",
+        "game_data/PROFILE_SKINS_DEFAULTS.csv",
     ];
 
     for input in proto_inputs {
@@ -71,7 +89,9 @@ struct GameDataRecord {
 fn gen_game_data_kv(input_name: &str) -> Result<String> {
     let input_array_name = input_name.replace("game_data/", "").replace(".csv", "");
 
-    let mut rdr = csv::ReaderBuilder::new().has_headers(false).from_path(input_name)?;
+    let mut rdr = csv::ReaderBuilder::new()
+        .has_headers(false)
+        .from_path(input_name)?;
 
     let mut output = String::new();
 
@@ -83,10 +103,19 @@ fn gen_game_data_kv(input_name: &str) -> Result<String> {
         })
         .collect::<Result<Vec<_>>>()?;
 
-    writeln!(output, "pub const {}: [[&str; 2]; {}] = [", input_array_name, records.len())?;
+    writeln!(
+        output,
+        "pub const {}: [[&str; 2]; {}] = [",
+        input_array_name,
+        records.len()
+    )?;
 
     for record in records {
-        writeln!(output, r#"{:>4}["{}", "{}"],"#, " ", record.key, record.value)?;
+        writeln!(
+            output,
+            r#"{:>4}["{}", "{}"],"#,
+            " ", record.key, record.value
+        )?;
     }
 
     writeln!(output, "];")?;
@@ -97,7 +126,9 @@ fn gen_game_data_kv(input_name: &str) -> Result<String> {
 fn gen_game_data_array(input_name: &str) -> Result<String> {
     let input_array_name = input_name.replace("game_data/", "").replace(".csv", "");
 
-    let mut rdr = csv::ReaderBuilder::new().has_headers(false).from_path(input_name)?;
+    let mut rdr = csv::ReaderBuilder::new()
+        .has_headers(false)
+        .from_path(input_name)?;
 
     let mut output = String::new();
 
@@ -110,7 +141,12 @@ fn gen_game_data_array(input_name: &str) -> Result<String> {
         })
         .collect::<Result<Vec<_>>>()?;
 
-    writeln!(output, "pub const {}: [&str; {}] = [", input_array_name, records.len())?;
+    writeln!(
+        output,
+        "pub const {}: [&str; {}] = [",
+        input_array_name,
+        records.len()
+    )?;
 
     for key in records {
         writeln!(output, r#"{:>4}"{}","#, " ", key)?;
@@ -122,10 +158,17 @@ fn gen_game_data_array(input_name: &str) -> Result<String> {
 }
 
 fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
-    let mut output = OpenOptions::new().create(true).write(true).truncate(true).open("src/game_data/mod.rs")?;
+    let mut output = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .open("src/game_data/mod.rs")?;
 
     writeln!(output, "use anyhow::{{Context, Result}};")?;
-    writeln!(output, "use rayon::iter::{{IntoParallelRefIterator, ParallelIterator}};\n")?;
+    writeln!(
+        output,
+        "use rayon::iter::{{IntoParallelRefIterator, ParallelIterator}};\n"
+    )?;
 
     for input in input_data {
         writeln!(output, "{}", input)?;

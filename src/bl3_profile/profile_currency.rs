@@ -8,16 +8,25 @@ use crate::protos::oak_shared::InventoryCategorySaveData;
 
 #[derive(Debug, Display)]
 pub enum ProfileCurrency {
-    #[strum(to_string = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey")]
+    #[strum(
+        to_string = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey"
+    )]
     GoldenKey,
-    #[strum(to_string = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_DiamondKey")]
+    #[strum(
+        to_string = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_DiamondKey"
+    )]
     DiamondKey,
-    #[strum(to_string = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard1Key")]
+    #[strum(
+        to_string = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard1Key"
+    )]
     VaultCardOneId,
 }
 
 impl ProfileCurrency {
-    pub fn get_profile_currency(&self, bicl: &RepeatedField<InventoryCategorySaveData>) -> Result<i32> {
+    pub fn get_profile_currency(
+        &self,
+        bicl: &RepeatedField<InventoryCategorySaveData>,
+    ) -> Result<i32> {
         let hash = get_checksum_hash(&self.to_string())?;
 
         let amount = bicl

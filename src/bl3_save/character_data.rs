@@ -8,12 +8,15 @@ use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};
 use crate::bl3_save::models::{ChallengeData, Currency, Playthrough, VehicleStats};
 use crate::bl3_save::player_class::PlayerClass;
-use crate::bl3_save::sdu::{SduSlot, SduSlotData};
-use crate::bl3_save::util::{currency_amount_from_character, experience_to_level, read_playthroughs, IMPORTANT_CHALLENGES};
+use crate::bl3_save::sdu::{SaveSduSlot, SaveSduSlotData};
+use crate::bl3_save::util::{
+    currency_amount_from_character, experience_to_level, read_playthroughs, IMPORTANT_CHALLENGES,
+};
 use crate::game_data::{
-    VEHICLE_CHASSIS_CYCLONE, VEHICLE_CHASSIS_JETBEAST, VEHICLE_CHASSIS_OUTRUNNER, VEHICLE_CHASSIS_TECHNICAL, VEHICLE_PARTS_CYCLONE,
-    VEHICLE_PARTS_JETBEAST, VEHICLE_PARTS_OUTRUNNER, VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST, VEHICLE_SKINS_OUTRUNNER,
-    VEHICLE_SKINS_TECHNICAL,
+    VEHICLE_CHASSIS_CYCLONE, VEHICLE_CHASSIS_JETBEAST, VEHICLE_CHASSIS_OUTRUNNER,
+    VEHICLE_CHASSIS_TECHNICAL, VEHICLE_PARTS_CYCLONE, VEHICLE_PARTS_JETBEAST,
+    VEHICLE_PARTS_OUTRUNNER, VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE,
+    VEHICLE_SKINS_JETBEAST, VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
 use crate::protos::oak_save::Character;
 
@@ -27,7 +30,7 @@ pub struct CharacterData {
     pub eridium: i32,
     pub playthroughs: Vec<Playthrough>,
     pub unlockable_inventory_slots: Vec<InventorySlotData>,
-    pub sdu_slots: Vec<SduSlotData>,
+    pub sdu_slots: Vec<SaveSduSlotData>,
     pub ammo_pools: Vec<AmmoPoolData>,
     pub challenge_milestones: Vec<ChallengeData>,
     pub vehicle_stats: Vec<VehicleStats>,
@@ -43,7 +46,11 @@ impl CharacterData {
                 .context("failed to read player class")?,
         )?;
         let player_level = experience_to_level(&character.experience_points)?;
-        let guardian_rank = character.guardian_rank_character_data.as_ref().map(|g| g.guardian_rank).unwrap_or(0);
+        let guardian_rank = character
+            .guardian_rank_character_data
+            .as_ref()
+            .map(|g| g.guardian_rank)
+            .unwrap_or(0);
         let money = currency_amount_from_character(&character, &Currency::Money);
         let eridium = currency_amount_from_character(&character, &Currency::Eridium);
         let playthroughs = read_playthroughs(&character)?;
@@ -62,10 +69,10 @@ impl CharacterData {
             .sdu_list
             .par_iter()
             .map(|s| {
-                let slot = SduSlot::from_str(&s.sdu_data_path)?;
+                let slot = SaveSduSlot::from_str(&s.sdu_data_path)?;
                 let max = slot.maximum();
 
-                Ok(SduSlotData {
+                Ok(SaveSduSlotData {
                     slot,
                     current: s.sdu_level,
                     max,
@@ -80,7 +87,10 @@ impl CharacterData {
             .map(|rp| {
                 let ammo = Ammo::from_str(&rp.resource_path)?;
 
-                Ok(AmmoPoolData { ammo, current: rp.amount })
+                Ok(AmmoPoolData {
+                    ammo,
+                    current: rp.amount,
+                })
             })
             .collect::<Result<Vec<_>>>()?;
 
@@ -99,7 +109,11 @@ impl CharacterData {
                 let unlocked = character
                     .challenge_data
                     .par_iter()
-                    .find_first(|cd| cd.challenge_class_path.to_lowercase().contains(&k.to_lowercase()))
+                    .find_first(|cd| {
+                        cd.challenge_class_path
+                            .to_lowercase()
+                            .contains(&k.to_lowercase())
+                    })
                     .map(|cd| cd.currently_completed)
                     .context("failed to read challenge milestones")?;
 
@@ -110,86 +124,110 @@ impl CharacterData {
             })
             .collect::<Result<Vec<_>>>()?;
 
-        let outrunner_chassis_c = AtomicUsize::new(0);
-        let jetbeast_chassis_c = AtomicUsize::new(0);
-        let technical_chassis_c = AtomicUsize::new(0);
-        let cyclone_chassis_c = AtomicUsize::new(0);
+        let mut outrunner_chassis = 0;
+        let mut jetbeast_chassis = 0;
+        let mut technical_chassis = 0;
+        let mut cyclone_chassis = 0;
 
-        character.vehicles_unlocked_data.par_iter().for_each(|vu| {
+        character.vehicles_unlocked_data.iter().for_each(|vu| {
             let vu = vu.asset_path.to_lowercase();
             let vu = &vu.as_str();
 
             match vu {
-                vu if VEHICLE_CHASSIS_OUTRUNNER.contains(vu) => outrunner_chassis_c.fetch_add(1, Ordering::Release),
-                vu if VEHICLE_CHASSIS_JETBEAST.contains(vu) => jetbeast_chassis_c.fetch_add(1, Ordering::Release),
-                vu if VEHICLE_CHASSIS_TECHNICAL.contains(vu) => technical_chassis_c.fetch_add(1, Ordering::Release),
-                vu if VEHICLE_CHASSIS_CYCLONE.contains(vu) => cyclone_chassis_c.fetch_add(1, Ordering::Release),
-                _ => 0,
+                vu if VEHICLE_CHASSIS_OUTRUNNER.contains(vu) => {
+                    outrunner_chassis += 1;
+                }
+                vu if VEHICLE_CHASSIS_JETBEAST.contains(vu) => {
+                    jetbeast_chassis += 1;
+                }
+                vu if VEHICLE_CHASSIS_TECHNICAL.contains(vu) => {
+                    technical_chassis += 1;
+                }
+                vu if VEHICLE_CHASSIS_CYCLONE.contains(vu) => {
+                    cyclone_chassis += 1;
+                }
+                _ => (),
             };
         });
 
-        let outrunner_parts_c = AtomicUsize::new(0);
-        let jetbeast_parts_c = AtomicUsize::new(0);
-        let technical_parts_c = AtomicUsize::new(0);
-        let cyclone_parts_c = AtomicUsize::new(0);
+        let mut outrunner_parts = 0;
+        let mut jetbeast_parts = 0;
+        let mut technical_parts = 0;
+        let mut cyclone_parts = 0;
 
-        let outrunner_skins_c = AtomicUsize::new(0);
-        let jetbeast_skins_c = AtomicUsize::new(0);
-        let technical_skins_c = AtomicUsize::new(0);
-        let cyclone_skins_c = AtomicUsize::new(0);
+        let mut outrunner_skins = 0;
+        let mut jetbeast_skins = 0;
+        let mut technical_skins = 0;
+        let mut cyclone_skins = 0;
 
-        character.vehicle_parts_unlocked.par_iter().for_each(|vp| {
+        character.vehicle_parts_unlocked.iter().for_each(|vp| {
             let vp = vp.to_lowercase();
             let vp = &vp.as_str();
 
             match vp {
-                vp if VEHICLE_PARTS_OUTRUNNER.contains(vp) => outrunner_parts_c.fetch_add(1, Ordering::Release),
-                vp if VEHICLE_PARTS_JETBEAST.contains(vp) => jetbeast_parts_c.fetch_add(1, Ordering::Release),
-                vp if VEHICLE_PARTS_TECHNICAL.contains(vp) => technical_parts_c.fetch_add(1, Ordering::Release),
-                vp if VEHICLE_PARTS_CYCLONE.contains(vp) => cyclone_parts_c.fetch_add(1, Ordering::Release),
-                vp if VEHICLE_SKINS_OUTRUNNER.contains(vp) => outrunner_skins_c.fetch_add(1, Ordering::Release),
-                vp if VEHICLE_SKINS_JETBEAST.contains(vp) => jetbeast_skins_c.fetch_add(1, Ordering::Release),
-                vp if VEHICLE_SKINS_TECHNICAL.contains(vp) => technical_skins_c.fetch_add(1, Ordering::Release),
-                vp if VEHICLE_SKINS_CYCLONE.contains(vp) => cyclone_skins_c.fetch_add(1, Ordering::Release),
-                _ => 0,
+                vp if VEHICLE_PARTS_OUTRUNNER.contains(vp) => {
+                    outrunner_parts += 1;
+                }
+                vp if VEHICLE_PARTS_JETBEAST.contains(vp) => {
+                    jetbeast_parts += 1;
+                }
+                vp if VEHICLE_PARTS_TECHNICAL.contains(vp) => {
+                    technical_parts += 1;
+                }
+                vp if VEHICLE_PARTS_CYCLONE.contains(vp) => {
+                    cyclone_parts += 1;
+                }
+                vp if VEHICLE_SKINS_OUTRUNNER.contains(vp) => {
+                    outrunner_skins += 1;
+                }
+                vp if VEHICLE_SKINS_JETBEAST.contains(vp) => {
+                    jetbeast_skins += 1;
+                }
+                vp if VEHICLE_SKINS_TECHNICAL.contains(vp) => {
+                    technical_skins += 1;
+                }
+                vp if VEHICLE_SKINS_CYCLONE.contains(vp) => {
+                    cyclone_skins += 1;
+                }
+                _ => (),
             };
         });
 
         let vehicle_stats = vec![
             VehicleStats {
                 name: "Outrunner".to_string(),
-                chassis_count: outrunner_chassis_c.load(Ordering::Acquire),
+                chassis_count: outrunner_chassis,
                 total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                parts_count: outrunner_parts_c.load(Ordering::Acquire),
+                parts_count: outrunner_parts,
                 total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                skins_count: outrunner_skins_c.load(Ordering::Acquire),
+                skins_count: outrunner_skins,
                 total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
             },
             VehicleStats {
                 name: "Jetbeast".to_string(),
-                chassis_count: jetbeast_chassis_c.load(Ordering::Acquire),
+                chassis_count: jetbeast_chassis,
                 total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                parts_count: jetbeast_parts_c.load(Ordering::Acquire),
+                parts_count: jetbeast_parts,
                 total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                skins_count: jetbeast_skins_c.load(Ordering::Acquire),
+                skins_count: jetbeast_skins,
                 total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
             },
             VehicleStats {
                 name: "Technical".to_string(),
-                chassis_count: technical_chassis_c.load(Ordering::Acquire),
+                chassis_count: technical_chassis,
                 total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                parts_count: technical_parts_c.load(Ordering::Acquire),
+                parts_count: technical_parts,
                 total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                skins_count: technical_skins_c.load(Ordering::Acquire),
+                skins_count: technical_skins,
                 total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
             },
             VehicleStats {
                 name: "Cyclone".to_string(),
-                chassis_count: cyclone_chassis_c.load(Ordering::Acquire),
+                chassis_count: cyclone_chassis,
                 total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                parts_count: cyclone_parts_c.load(Ordering::Acquire),
+                parts_count: cyclone_parts,
                 total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                skins_count: cyclone_skins_c.load(Ordering::Acquire),
+                skins_count: cyclone_skins,
                 total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
             },
         ];
