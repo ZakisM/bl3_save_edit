@@ -186,16 +186,14 @@ pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
             let mayhem_random_seed = playthrough.mayhem_random_seed;
             let current_map = character
                 .last_active_travel_station_for_playthrough
-                .iter()
-                .nth(i)
+                .get(i)
                 .and_then(|m| FAST_TRAVEL.get_value_by_key(&m.to_lowercase()).ok())
                 .map(|m| m.to_string())
                 .context("failed to read character current map")?;
 
             let mission_playthrough_data = character
                 .mission_playthroughs_data
-                .iter()
-                .nth(i)
+                .get(i)
                 .context("failed to read character active missions")?;
 
             let mut active_missions = get_filtered_mission_list(

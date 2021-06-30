@@ -1,10 +1,5 @@
 use anyhow::{bail, Context, Result};
-use protobuf::RepeatedField;
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use strum::Display;
-
-use crate::bl3_profile::util::get_checksum_hash;
-use crate::protos::oak_shared::InventoryCategorySaveData;
 
 #[derive(Debug)]
 pub struct BorderlandsScienceInfo {
@@ -13,7 +8,7 @@ pub struct BorderlandsScienceInfo {
     pub tokens: i32,
 }
 
-#[derive(Copy, Clone, Debug, Display)]
+#[derive(Copy, Clone, Debug, Display, Eq, PartialEq)]
 #[strum(serialize_all = "title_case")]
 pub enum ScienceLevel {
     Claptrap,

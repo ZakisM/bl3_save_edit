@@ -197,3 +197,114 @@ impl fmt::Display for Bl3Profile {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::fs;
+
+    use crate::bl3_profile::science_levels::ScienceLevel;
+    use crate::bl3_profile::sdu::{ProfSduSlot, ProfSduSlotData};
+
+    use super::*;
+
+    #[test]
+    fn test_from_data_pc_1() {
+        let profile_file_data =
+            fs::read("./test_files/2profps4.sav").expect("failed to read test_file");
+        let bl3_profile = Bl3Profile::from_data(profile_file_data, FileType::Ps4Profile)
+            .expect("failed to read test profile");
+
+        assert_eq!(bl3_profile.profile_data.golden_keys, 69420);
+        assert_eq!(bl3_profile.profile_data.diamond_keys, 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_keys, 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_chests, 0);
+        assert_eq!(bl3_profile.profile_data.guardian_rank, 69420);
+        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens, 99999999);
+        assert_eq!(
+            bl3_profile
+                .profile_data
+                .borderlands_science_info
+                .science_level,
+            ScienceLevel::Unknown
+        );
+        assert_eq!(bl3_profile.profile_data.borderlands_science_info.solves, 0);
+        assert_eq!(
+            bl3_profile.profile_data.borderlands_science_info.tokens,
+            69420
+        );
+        assert_eq!(
+            bl3_profile.profile_data.sdu_slots,
+            vec![
+                ProfSduSlotData {
+                    slot: ProfSduSlot::Bank,
+                    current: 23,
+                    max: 23,
+                },
+                ProfSduSlotData {
+                    slot: ProfSduSlot::LostLoot,
+                    current: 8,
+                    max: 10,
+                }
+            ]
+        );
+
+        assert_eq!(bl3_profile.profile_data.bank_items.len(), 2000);
+        assert_eq!(bl3_profile.profile_data.lost_loot_items.len(), 0);
+        assert_eq!(bl3_profile.profile_data.character_skins_unlocked, 212);
+        assert_eq!(bl3_profile.profile_data.character_heads_unlocked, 144);
+        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked, 57);
+        assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked, 64);
+        assert_eq!(bl3_profile.profile_data.room_decorations_unlocked, 94);
+        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked, 27);
+        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked, 68);
+    }
+
+    #[test]
+    fn test_from_data_pc_2() {
+        let profile_file_data =
+            fs::read("./test_files/profile.sav").expect("failed to read test_file");
+        let bl3_profile = Bl3Profile::from_data(profile_file_data, FileType::PcProfile)
+            .expect("failed to read test profile");
+
+        assert_eq!(bl3_profile.profile_data.golden_keys, 1);
+        assert_eq!(bl3_profile.profile_data.diamond_keys, 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_keys, 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_chests, 0);
+        assert_eq!(bl3_profile.profile_data.guardian_rank, 200);
+        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens, 0);
+        assert_eq!(
+            bl3_profile
+                .profile_data
+                .borderlands_science_info
+                .science_level,
+            ScienceLevel::Unknown
+        );
+        assert_eq!(bl3_profile.profile_data.borderlands_science_info.solves, 0);
+        assert_eq!(bl3_profile.profile_data.borderlands_science_info.tokens, 0);
+        assert_eq!(
+            bl3_profile.profile_data.sdu_slots,
+            vec![
+                ProfSduSlotData {
+                    slot: ProfSduSlot::Bank,
+                    current: 8,
+                    max: 23,
+                },
+                ProfSduSlotData {
+                    slot: ProfSduSlot::LostLoot,
+                    current: 8,
+                    max: 10,
+                }
+            ]
+        );
+
+        assert_eq!(bl3_profile.profile_data.bank_items.len(), 0);
+        assert_eq!(bl3_profile.profile_data.lost_loot_items.len(), 13);
+        assert_eq!(bl3_profile.profile_data.character_skins_unlocked, 27);
+        assert_eq!(bl3_profile.profile_data.character_heads_unlocked, 22);
+        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked, 17);
+        assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked, 17);
+        assert_eq!(bl3_profile.profile_data.room_decorations_unlocked, 26);
+        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked, 7);
+        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked, 8);
+    }
+}

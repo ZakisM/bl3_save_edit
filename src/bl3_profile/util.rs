@@ -36,19 +36,6 @@ const CHECKSUM_TABLE: [usize; 256] = [
     0xAFB010B1, 0xAB710D06, 0xA6322BDF, 0xA2F33668, 0xBCB4666D, 0xB8757BDA, 0xB5365D03, 0xB1F740B4,
 ];
 
-pub const BORDERLANDS_SCIENCE_LEVELS: [(i32, &str); 10] = [
-    (0, "True Tannis"),
-    (5, "Claptrap"),
-    (10, "Brick"),
-    (15, "Mordecai"),
-    (20, "Torgue"),
-    (25, "Marcus"),
-    (30, "Ellie"),
-    (35, "Lilith"),
-    (40, "Mad Moxxi"),
-    (50, "Tannis"),
-];
-
 pub fn get_checksum_hash(key: &str) -> Result<usize> {
     let mut key = key.to_uppercase();
 

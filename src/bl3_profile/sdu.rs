@@ -1,13 +1,13 @@
 use strum::{Display, EnumString};
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub struct ProfSduSlotData {
     pub slot: ProfSduSlot,
     pub current: i32,
     pub max: i32,
 }
 
-#[derive(Debug, Display, EnumString)]
+#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd)]
 pub enum ProfSduSlot {
     #[strum(serialize = "/Game/Pickups/SDU/SDU_Bank.SDU_Bank", to_string = "Bank")]
     Bank,

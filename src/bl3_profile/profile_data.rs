@@ -1,8 +1,8 @@
 use std::str::FromStr;
-use std::sync::atomic::{AtomicUsize, Ordering};
 
-use anyhow::{Error, Result};
+use anyhow::Result;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use rayon::prelude::ParallelSliceMut;
 
 use crate::bl3_profile::profile_currency::ProfileCurrency;
 use crate::bl3_profile::science_levels::{BorderlandsScienceInfo, ScienceLevel};
@@ -87,7 +87,7 @@ impl ProfileData {
             }
         };
 
-        let sdu_slots = profile
+        let mut sdu_slots = profile
             .profile_sdu_list
             .par_iter()
             .map(|s| {
@@ -101,6 +101,8 @@ impl ProfileData {
                 })
             })
             .collect::<Result<Vec<_>>>()?;
+
+        sdu_slots.par_sort();
 
         let bank_items = profile
             .bank_inventory_list

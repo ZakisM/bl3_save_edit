@@ -1,12 +1,14 @@
 use std::str::FromStr;
-use std::sync::atomic::{AtomicUsize, Ordering};
 
 use anyhow::{Context, Result};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use rayon::prelude::ParallelSliceMut;
 
 use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
+use crate::bl3_save::challenge_data::Challenge;
+use crate::bl3_save::challenge_data::ChallengeData;
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};
-use crate::bl3_save::models::{ChallengeData, Currency, Playthrough, VehicleStats};
+use crate::bl3_save::models::{Currency, Playthrough};
 use crate::bl3_save::player_class::PlayerClass;
 use crate::bl3_save::sdu::{SaveSduSlot, SaveSduSlotData};
 use crate::bl3_save::util::{
@@ -19,6 +21,7 @@ use crate::game_data::{
     VEHICLE_SKINS_JETBEAST, VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
 use crate::protos::oak_save::Character;
+use crate::vehicle_data::{VehicleName, VehicleStats};
 
 #[derive(Debug)]
 pub struct CharacterData {
@@ -54,7 +57,7 @@ impl CharacterData {
         let money = currency_amount_from_character(&character, &Currency::Money);
         let eridium = currency_amount_from_character(&character, &Currency::Eridium);
         let playthroughs = read_playthroughs(&character)?;
-        let unlockable_inventory_slots = character
+        let mut unlockable_inventory_slots = character
             .equipped_inventory_list
             .par_iter()
             .map(|i| {
@@ -65,7 +68,9 @@ impl CharacterData {
             })
             .collect::<Result<Vec<_>>>()?;
 
-        let sdu_slots = character
+        unlockable_inventory_slots.par_sort();
+
+        let mut sdu_slots = character
             .sdu_list
             .par_iter()
             .map(|s| {
@@ -80,7 +85,9 @@ impl CharacterData {
             })
             .collect::<Result<Vec<_>>>()?;
 
-        let ammo_pools = character
+        sdu_slots.par_sort();
+
+        let mut ammo_pools = character
             .resource_pools
             .par_iter()
             .filter(|rp| !rp.resource_path.to_lowercase().contains("eridium"))
@@ -89,12 +96,14 @@ impl CharacterData {
 
                 Ok(AmmoPoolData {
                     ammo,
-                    current: rp.amount,
+                    current: rp.amount as usize,
                 })
             })
             .collect::<Result<Vec<_>>>()?;
 
-        let challenge_milestones = IMPORTANT_CHALLENGES
+        ammo_pools.par_sort();
+
+        let mut challenge_milestones = IMPORTANT_CHALLENGES
             .par_iter()
             .filter(|[k, _]| {
                 let k = k.to_lowercase();
@@ -118,11 +127,13 @@ impl CharacterData {
                     .context("failed to read challenge milestones")?;
 
                 Ok(ChallengeData {
-                    challenge: v.to_string(),
+                    challenge: Challenge::from_str(v)?,
                     unlocked,
                 })
             })
             .collect::<Result<Vec<_>>>()?;
+
+        challenge_milestones.par_sort();
 
         let mut outrunner_chassis = 0;
         let mut jetbeast_chassis = 0;
@@ -195,7 +206,7 @@ impl CharacterData {
 
         let vehicle_stats = vec![
             VehicleStats {
-                name: "Outrunner".to_string(),
+                name: VehicleName::Outrunner,
                 chassis_count: outrunner_chassis,
                 total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
                 parts_count: outrunner_parts,
@@ -204,7 +215,7 @@ impl CharacterData {
                 total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
             },
             VehicleStats {
-                name: "Jetbeast".to_string(),
+                name: VehicleName::Jetbeast,
                 chassis_count: jetbeast_chassis,
                 total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
                 parts_count: jetbeast_parts,
@@ -213,7 +224,7 @@ impl CharacterData {
                 total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
             },
             VehicleStats {
-                name: "Technical".to_string(),
+                name: VehicleName::Technical,
                 chassis_count: technical_chassis,
                 total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
                 parts_count: technical_parts,
@@ -222,7 +233,7 @@ impl CharacterData {
                 total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
             },
             VehicleStats {
-                name: "Cyclone".to_string(),
+                name: VehicleName::Cyclone,
                 chassis_count: cyclone_chassis,
                 total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
                 parts_count: cyclone_parts,
