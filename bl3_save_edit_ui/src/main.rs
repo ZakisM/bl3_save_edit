@@ -13,7 +13,7 @@ use crate::bl3_ui::Bl3Ui;
 
 mod bl3_ui;
 mod bl3_ui_style;
-mod fonts;
+mod resources;
 mod views;
 
 fn main() {

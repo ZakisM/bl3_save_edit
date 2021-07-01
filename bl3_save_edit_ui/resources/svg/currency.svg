@@ -1,0 +1,58 @@
+<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'
+        'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg enable-background="new 0 0 64 64" id="Layer_1" version="1.1" viewBox="0 0 64 64" xml:space="preserve"
+     xmlns="http://www.w3.org/2000/svg"><path d="M12.1,38L7.7,16.6c-0.4-2.2,1-4.3,3.2-4.7l39.3-7.4c2.2-0.4,4.3,1,4.7,3.2l3.5,18.7c0.2,1.1-0.8,3.3-1.3,4.1  c0,0-0.3,0.6-0.8,0.6s-42.7,7.6-42.7,7.6L12.1,38z" fill="#7ABE90"/>
+    <path d="M13.5,23.8c-4.1,0-7.5,1-7.5,2.2v24c0,1.2,3.3,2.2,7.5,2.2s7.5-1,7.5-2.2V26C20.9,24.8,17.6,23.8,13.5,23.8z  "
+          fill="#F8B319"/>
+    <ellipse cx="13.5" cy="26" fill="none" rx="7.5" ry="2.2" stroke="#2C3E50" stroke-linecap="round"
+             stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M20.9,30c0,1.2-3.3,2.2-7.5,2.2S6,31.2,6,30" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M20.9,34c0,1.2-3.3,2.2-7.5,2.2S6,35.2,6,34" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M20.9,38c0,1.2-3.3,2.2-7.5,2.2S6,39.2,6,38" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M20.9,42c0,1.2-3.3,2.2-7.5,2.2S6,43.2,6,42" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M20.9,46c0,1.2-3.3,2.2-7.5,2.2S6,47.2,6,46" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M20.9,26v24c0,1.2-3.3,2.2-7.5,2.2S6,51.2,6,50V26" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="M51.7,31.8c-3.7,0-7.5,1-7.5,2.2v24c0,1.2,3.3,2.2,7.5,2.2c4.1,0,7.5-1,7.5-2.2V34  C59.1,32.4,55.3,31.7,51.7,31.8z"
+          fill="#F8B319"/>
+    <path d="  M59.2,34c0.1,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2s3.7-2.2,7.5-2.2C55.3,31.7,59.1,32.4,59.2,34z" fill="none"
+          stroke="#2C3E50" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M59.2,38c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M59.2,42c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M59.2,46c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M59.2,50c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M59.2,54c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M59.2,34v24c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2V34" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="M32,40.9c-4.1,0-7.5,1-7.5,2.2v16c0,1.2,3.3,2.2,7.5,2.2s7.5-1,7.5-2.2v-16C39.5,41.9,36.1,40.9,32,40.9z"
+          fill="#FFD766"/>
+    <ellipse cx="32" cy="43.1" fill="none" rx="7.5" ry="2.2" stroke="#2C3E50" stroke-linecap="round"
+             stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M39.5,47.1c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M39.5,51.1c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M39.5,55.1c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2" fill="none" stroke="#2C3E50" stroke-linecap="round"
+          stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M39.5,43.1v16.1v-0.1c0,1.2-3.3,2.2-7.5,2.2s-7.5-1-7.5-2.2v0.1V43.1" fill="none" stroke="#2C3E50"
+          stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path d="  M8.6,21.5l-0.9-4.9c-0.4-2.2,1-4.3,3.2-4.7l39.3-7.4c2.2-0.4,4.3,1,4.7,3.2l3.5,18.7c0.2,1.1-0.1,2.2-0.6,3"
+          fill="none" stroke="#2C3E50" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+          stroke-width="2"/>
+    <line fill="none" stroke="#2C3E50" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+          stroke-width="2" x1="41" x2="24.1" y1="33.7" y2="36.9"/>
+    <path d="  M37.4,16.3c0,0-0.9-2.1-5.6-1.2c-3.6,0.7-4.8,2.9-4.5,4.7c0.3,1.7,2.6,2.6,5.7,2c4-0.8,5.4,0.4,5.7,2c0.4,2.2-1.8,4.1-4.5,4.7  c-2.7,0.5-5.1-0.6-5.6-1.2"
+          fill="none" stroke="#2C3E50" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+          stroke-width="2"/>
+    <line fill="none" stroke="#2C3E50" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+          stroke-width="2" x1="31.3" x2="34.7" y1="12.5" y2="30.5"/></svg>

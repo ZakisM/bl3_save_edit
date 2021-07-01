@@ -23,5 +23,5 @@ features = ["derive"]
 
 [dependencies.iced]
 git = "https://github.com/hecrj/iced"
-rev = "1b6cf05"
-features = ["tokio"]
+rev = "4994d34"
+features = ["tokio", "svg"]
