@@ -1,10 +1,14 @@
 use anyhow::{bail, Result};
 use nom::Finish;
 
+use crate::bl3_profile::Bl3Profile;
+use crate::bl3_save::Bl3Save;
 use crate::models::CustomFormatData;
-use crate::parser::{read_custom_format_data, read_header, read_int, read_short, read_str};
+use crate::parser::{
+    read_custom_format_data, read_header, read_int, read_short, read_str, HeaderType,
+};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct FileData<'a> {
     pub file_version: u32,
     pub package_version: u32,
@@ -17,10 +21,10 @@ pub struct FileData<'a> {
     pub custom_format_data_count: u32,
     pub custom_format_data: Vec<CustomFormatData>,
     pub save_game_type: String,
-    pub remaining_data: &'a mut [u8],
+    pub remaining_data: &'a [u8],
 }
 
-pub fn read_file(data: &mut [u8]) -> Result<FileData> {
+pub fn read_bytes(data: &[u8]) -> Result<FileData> {
     let (r, _) = read_header(data).finish()?;
     let (r, file_version) = read_int(r).finish()?;
     let (r, package_version) = read_int(r).finish()?;
@@ -37,7 +41,7 @@ pub fn read_file(data: &mut [u8]) -> Result<FileData> {
 
     let data_read = data.len() - r.len();
 
-    let remaining_data = &mut data[data_read..];
+    let remaining_data = &data[data_read..];
 
     if remaining_data.len() != remaining_data_len as usize {
         bail!("failed to parse the first part of the file");
@@ -57,4 +61,32 @@ pub fn read_file(data: &mut [u8]) -> Result<FileData> {
         save_game_type,
         remaining_data,
     })
+}
+
+#[derive(Debug)]
+pub enum Bl3FileType {
+    PcSave(Bl3Save),
+    PcProfile(Bl3Profile),
+    Ps4Save(Bl3Save),
+    Ps4Profile(Bl3Profile),
+}
+
+impl Bl3FileType {
+    pub fn from_unknown_data(data: &[u8]) -> Result<Bl3FileType> {
+        let file_data = read_bytes(&data)?;
+
+        if let Ok(save) = Bl3Save::from_file_data(file_data.clone(), HeaderType::PcSave) {
+            Ok(Bl3FileType::PcSave(save))
+        } else if let Ok(profile) =
+            Bl3Profile::from_file_data(file_data.clone(), HeaderType::PcProfile)
+        {
+            Ok(Bl3FileType::PcProfile(profile))
+        } else if let Ok(save) = Bl3Save::from_file_data(file_data.clone(), HeaderType::Ps4Save) {
+            Ok(Bl3FileType::Ps4Save(save))
+        } else if let Ok(profile) = Bl3Profile::from_file_data(file_data, HeaderType::Ps4Profile) {
+            Ok(Bl3FileType::Ps4Profile(profile))
+        } else {
+            bail!("lol")
+        }
+    }
 }

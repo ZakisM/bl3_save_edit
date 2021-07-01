@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Check" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-    <option name="command" value="clippy" />
+  <configuration default="false" name="Check bl3_save_edit_ui" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="command" value="clippy --package bl3_save_edit_ui --bin bl3_save_edit_ui" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$" />
     <option name="channel" value="DEFAULT" />
     <option name="requiredFeatures" value="true" />

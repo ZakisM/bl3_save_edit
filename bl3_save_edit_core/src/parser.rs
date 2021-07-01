@@ -5,7 +5,7 @@ use crate::error::ErrorExt;
 use crate::models::CustomFormatData;
 
 #[derive(Debug)]
-pub enum FileType {
+pub enum HeaderType {
     PcSave,
     PcProfile,
     Ps4Save,
@@ -100,20 +100,24 @@ pub fn read_guid(i: &[u8]) -> nom::IResult<&[u8], &[u8], BL3ParserError<String>>
     nom::bytes::complete::take(16_u32)(i)
 }
 
-pub fn decrypt<T: protobuf::Message>(data: &mut [u8], file_type: FileType) -> Result<T> {
-    let (prefix_magic, xor_magic) = match file_type {
-        FileType::PcSave => (PC_SAVE_PREFIX_MAGIC, PC_SAVE_XOR_MAGIC),
-        FileType::PcProfile => (PC_PROFILE_PREFIX_MAGIC, PC_PROFILE_XOR_MAGIC),
-        FileType::Ps4Save => (PS4_SAVE_PREFIX_MAGIC, PS4_SAVE_XOR_MAGIC),
-        FileType::Ps4Profile => (PS4_PROFILE_PREFIX_MAGIC, PS4_PROFILE_XOR_MAGIC),
+pub fn decrypt<T: protobuf::Message>(data: &[u8], header_type: HeaderType) -> Result<T> {
+    let (prefix_magic, xor_magic) = match header_type {
+        HeaderType::PcSave => (PC_SAVE_PREFIX_MAGIC, PC_SAVE_XOR_MAGIC),
+        HeaderType::PcProfile => (PC_PROFILE_PREFIX_MAGIC, PC_PROFILE_XOR_MAGIC),
+        HeaderType::Ps4Save => (PS4_SAVE_PREFIX_MAGIC, PS4_SAVE_XOR_MAGIC),
+        HeaderType::Ps4Profile => (PS4_PROFILE_PREFIX_MAGIC, PS4_PROFILE_XOR_MAGIC),
     };
+
+    // Clone data so we can decrypt multiple times
+    let mut data = data.to_vec();
+    let data = data.as_mut_slice();
 
     for i in (0..data.len()).rev() {
         let b = if i < 32 {
             prefix_magic.get(i).with_context(|| {
                 format!(
                     "failed to decrypt save file, could not read PREFIX_MAGIC index for: {:?}",
-                    file_type
+                    header_type
                 )
             })?
         } else {
@@ -123,7 +127,7 @@ pub fn decrypt<T: protobuf::Message>(data: &mut [u8], file_type: FileType) -> Re
         data[i] ^= b ^ xor_magic.get(i % 32).with_context(|| {
             format!(
                 "failed to decrypt save file, could not read XOR_MAGIC index for: {:?}",
-                file_type
+                header_type
             )
         })?;
     }

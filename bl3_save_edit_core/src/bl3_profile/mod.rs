@@ -12,7 +12,7 @@ use crate::game_data::{
     PROFILE_SKINS_DEFAULTS, PROFILE_WEAPON_SKINS, PROFILE_WEAPON_TRINKETS,
 };
 use crate::models::CustomFormatData;
-use crate::parser::{decrypt, FileType};
+use crate::parser::{decrypt, HeaderType};
 use crate::protos::oak_profile::Profile;
 
 mod profile_currency;
@@ -38,9 +38,7 @@ pub struct Bl3Profile {
 }
 
 impl Bl3Profile {
-    pub fn from_data(data: Vec<u8>, file_type: FileType) -> Result<Self> {
-        let mut data = data;
-
+    pub fn from_file_data(file_data: FileData, header_type: HeaderType) -> Result<Self> {
         let FileData {
             file_version,
             package_version,
@@ -54,9 +52,9 @@ impl Bl3Profile {
             custom_format_data,
             save_game_type,
             remaining_data,
-        } = file_helper::read_file(&mut data)?;
+        } = file_data;
 
-        let profile: Profile = decrypt(remaining_data, file_type)?;
+        let profile: Profile = decrypt(&remaining_data, header_type)?;
 
         let profile_data = ProfileData::from_profile(profile)?;
 
@@ -74,6 +72,12 @@ impl Bl3Profile {
             save_game_type,
             profile_data,
         })
+    }
+
+    pub fn from_bytes(data: &[u8], header_type: HeaderType) -> Result<Self> {
+        let file_data = file_helper::read_bytes(&data)?;
+
+        Self::from_file_data(file_data, header_type)
     }
 }
 
@@ -209,9 +213,10 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_1() {
-        let profile_file_data =
+        let mut profile_file_data =
             fs::read("./test_files/1prof.sav").expect("failed to read test_file");
-        let bl3_profile = Bl3Profile::from_data(profile_file_data, FileType::PcProfile)
+
+        let bl3_profile = Bl3Profile::from_bytes(&mut profile_file_data, HeaderType::PcProfile)
             .expect("failed to read test profile");
 
         assert_eq!(bl3_profile.profile_data.golden_keys, 23);
@@ -258,9 +263,9 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_2() {
-        let profile_file_data =
+        let mut profile_file_data =
             fs::read("./test_files/profile.sav").expect("failed to read test_file");
-        let bl3_profile = Bl3Profile::from_data(profile_file_data, FileType::PcProfile)
+        let bl3_profile = Bl3Profile::from_bytes(&mut profile_file_data, HeaderType::PcProfile)
             .expect("failed to read test profile");
 
         assert_eq!(bl3_profile.profile_data.golden_keys, 1);
@@ -307,9 +312,9 @@ mod tests {
 
     #[test]
     fn test_from_data_ps4_1() {
-        let profile_file_data =
+        let mut profile_file_data =
             fs::read("./test_files/2profps4.sav").expect("failed to read test_file");
-        let bl3_profile = Bl3Profile::from_data(profile_file_data, FileType::Ps4Profile)
+        let bl3_profile = Bl3Profile::from_bytes(&mut profile_file_data, HeaderType::Ps4Profile)
             .expect("failed to read test profile");
 
         assert_eq!(bl3_profile.profile_data.golden_keys, 69420);
