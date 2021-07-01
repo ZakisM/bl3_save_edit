@@ -4,12 +4,22 @@ use iced::{
     Text, VerticalAlignment,
 };
 
-use crate::bl3_ui::{Message, SaveSelectionMessage};
+use crate::bl3_ui::Message;
 use crate::fonts::COMPACTA;
 
-struct SaveSelectionContainerStyle;
+#[derive(Debug, Default)]
+pub struct SaveSelectionState {
+    pub save_selection_button_state: button::State,
+}
 
-impl container::StyleSheet for SaveSelectionContainerStyle {
+#[derive(Debug, Clone)]
+pub enum SaveSelectionMessage {
+    SavePressed,
+}
+
+struct SaveSelectionMenuBarStyle;
+
+impl container::StyleSheet for SaveSelectionMenuBarStyle {
     fn style(&self) -> container::Style {
         container::Style {
             background: Some(Color::from_rgb8(26, 89, 150).into()),
@@ -77,7 +87,7 @@ pub fn view(save_selection_button_state: &mut button::State) -> Container<Messag
     )
     .align_x(Align::Center)
     .width(Length::Fill)
-    .style(SaveSelectionContainerStyle);
+    .style(SaveSelectionMenuBarStyle);
 
     let selection_card_1 = Button::new(
         save_selection_button_state,
@@ -98,9 +108,7 @@ pub fn view(save_selection_button_state: &mut button::State) -> Container<Messag
             )
             .width(Length::Fill),
     )
-    .on_press(Message::SaveSelectionMessage(
-        SaveSelectionMessage::SavePressed,
-    ))
+    .on_press(Message::SaveSelection(SaveSelectionMessage::SavePressed))
     .width(Length::Fill)
     .padding(10)
     .style(SaveSelectionStyle);

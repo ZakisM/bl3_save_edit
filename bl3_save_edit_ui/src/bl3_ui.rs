@@ -5,33 +5,28 @@ use iced::{
 
 use crate::bl3_ui_style::{Bl3UiStyle, PRIMARY_COLOR};
 use crate::fonts::COMPACTA;
+use crate::views::manage_save::main::{MainMessage, MainTabBarView};
+use crate::views::manage_save::{ManageSaveMessage, ManageSaveState, ManageSaveView};
+use crate::views::save_selection_from_dir::{SaveSelectionMessage, SaveSelectionState};
 use crate::views::{manage_save, save_selection_from_dir};
 
 #[derive(Debug)]
 pub struct Bl3Ui {
     view_state: ViewState,
     save_selection_state: SaveSelectionState,
+    manage_save_state: ManageSaveState,
 }
 
 #[derive(Debug, Clone)]
 pub enum Message {
-    SaveSelectionMessage(SaveSelectionMessage),
-}
-
-#[derive(Debug, Clone)]
-pub enum SaveSelectionMessage {
-    SavePressed,
-}
-
-#[derive(Debug, Default)]
-struct SaveSelectionState {
-    save_selection_button_state: button::State,
+    SaveSelection(SaveSelectionMessage),
+    ManageSave(ManageSaveMessage),
 }
 
 #[derive(Debug, PartialEq)]
 enum ViewState {
     SaveSelectionFromDir,
-    ManageSaveMain,
+    ManageSave(ManageSaveView),
 }
 
 impl Application for Bl3Ui {
@@ -42,8 +37,9 @@ impl Application for Bl3Ui {
     fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
         (
             Bl3Ui {
-                view_state: ViewState::ManageSaveMain,
+                view_state: ViewState::ManageSave(ManageSaveView::TabBar(MainTabBarView::General)),
                 save_selection_state: SaveSelectionState::default(),
+                manage_save_state: ManageSaveState::default(),
             },
             Command::none(),
         )
@@ -59,8 +55,23 @@ impl Application for Bl3Ui {
         _clipboard: &mut Clipboard,
     ) -> Command<Self::Message> {
         match message {
-            Message::SaveSelectionMessage(msg) => match msg {
-                SaveSelectionMessage::SavePressed => self.view_state = ViewState::ManageSaveMain,
+            Message::SaveSelection(msg) => match msg {
+                SaveSelectionMessage::SavePressed => {
+                    self.view_state =
+                        ViewState::ManageSave(ManageSaveView::TabBar(MainTabBarView::General))
+                }
+            },
+            Message::ManageSave(manage_save_msg) => match manage_save_msg {
+                ManageSaveMessage::Main(main_msg) => match main_msg {
+                    MainMessage::TabBarGeneralPressed => {
+                        self.view_state =
+                            ViewState::ManageSave(ManageSaveView::TabBar(MainTabBarView::General))
+                    }
+                    MainMessage::TabBarCharacterPressed => {
+                        self.view_state =
+                            ViewState::ManageSave(ManageSaveView::TabBar(MainTabBarView::Character))
+                    }
+                },
             },
         };
 
@@ -89,11 +100,22 @@ impl Application for Bl3Ui {
         // .width(Length::Fill)
         // .style(MenuRowStyle);
 
-        let content = match self.view_state {
+        let content = match &self.view_state {
             ViewState::SaveSelectionFromDir => save_selection_from_dir::view(
                 &mut self.save_selection_state.save_selection_button_state,
             ),
-            ViewState::ManageSaveMain => manage_save::main::view(),
+            ViewState::ManageSave(manage_save_view) => match manage_save_view {
+                ManageSaveView::TabBar(main_tab_bar_view) => match main_tab_bar_view {
+                    MainTabBarView::General => manage_save::main::view(
+                        &mut self.manage_save_state,
+                        MainTabBarView::General,
+                    ),
+                    MainTabBarView::Character => manage_save::main::view(
+                        &mut self.manage_save_state,
+                        MainTabBarView::Character,
+                    ),
+                },
+            },
         };
 
         // let all_content = Column::new().push(title_bar).push(content);

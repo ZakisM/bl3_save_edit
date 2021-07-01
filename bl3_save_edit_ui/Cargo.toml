@@ -17,6 +17,10 @@ futures = "0.3"
 version = "1"
 features = ["fs", "rt-multi-thread", "rt"]
 
+[dependencies.strum]
+version = "0.21"
+features = ["derive"]
+
 [dependencies.iced]
 git = "https://github.com/hecrj/iced"
 rev = "1b6cf05"

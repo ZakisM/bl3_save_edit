@@ -132,6 +132,7 @@ dependencies = [
  "native-dialog",
  "rayon",
  "rusttype",
+ "strum",
  "tokio",
  "tokio-rayon",
 ]
