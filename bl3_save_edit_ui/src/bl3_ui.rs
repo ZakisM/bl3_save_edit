@@ -19,6 +19,7 @@ pub struct Bl3Ui {
 #[derive(Debug, Clone)]
 pub enum Message {
     ManageSave(ManageSaveMessage),
+    Ignore,
 }
 
 #[derive(Debug, PartialEq)]
@@ -84,6 +85,7 @@ impl Application for Bl3Ui {
                     }
                 },
             },
+            Message::Ignore => (),
         };
 
         Command::none()

@@ -51,7 +51,7 @@ struct ManageSaveMenuBarStyle;
 impl container::StyleSheet for ManageSaveMenuBarStyle {
     fn style(&self) -> container::Style {
         container::Style {
-            background: Some(Color::from_rgb8(30, 30, 30).into()),
+            background: Some(Color::from_rgb8(23, 23, 23).into()),
             border_width: 1.5,
             border_color: Color::from_rgb8(20, 20, 20),
             ..container::Style::default()
@@ -64,7 +64,7 @@ struct ManageSaveTabBarActiveStyle;
 impl button::StyleSheet for ManageSaveTabBarActiveStyle {
     fn active(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(17, 0, 17).into()),
+            background: Some(Color::from_rgb8(20, 20, 20).into()),
             text_color: Color::from_rgb8(242, 203, 5),
             ..button::Style::default()
         }
@@ -72,7 +72,7 @@ impl button::StyleSheet for ManageSaveTabBarActiveStyle {
 
     fn hovered(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(17, 0, 17).into()),
+            background: Some(Color::from_rgb8(20, 20, 20).into()),
             text_color: Color::from_rgb8(255, 199, 38),
             ..button::Style::default()
         }
@@ -80,7 +80,7 @@ impl button::StyleSheet for ManageSaveTabBarActiveStyle {
 
     fn pressed(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(17, 0, 17).into()),
+            background: Some(Color::from_rgb8(20, 20, 20).into()),
             text_color: Color::from_rgb8(255, 199, 38),
             ..button::Style::default()
         }
@@ -131,7 +131,7 @@ struct ManageSaveStyle;
 impl container::StyleSheet for ManageSaveStyle {
     fn style(&self) -> container::Style {
         container::Style {
-            background: Some(Color::from_rgb8(17, 0, 17).into()),
+            background: Some(Color::from_rgb8(20, 20, 20).into()),
             ..container::Style::default()
         }
     }
@@ -215,7 +215,7 @@ pub fn view<'a>(
         &tab_bar_view,
         MainMessage::TabBarFastTravelPressed,
         svg::Handle::from_memory(FAST_TRAVEL),
-        130,
+        127,
     );
 
     let tab_bar = Container::new(
@@ -255,8 +255,8 @@ fn tab_bar_button<'a>(
     length: u16,
 ) -> Button<'a, Message> {
     let icon = Svg::new(icon_handle)
-        .height(Length::Units(20))
-        .width(Length::Units(20));
+        .height(Length::Units(17))
+        .width(Length::Units(17));
 
     let button = Button::new(
         state,
@@ -276,7 +276,7 @@ fn tab_bar_button<'a>(
     .on_press(Message::ManageSave(ManageSaveMessage::Main(
         on_press_message,
     )))
-    .padding(10);
+    .padding(5);
 
     if tab_bar_view == *current_tab_bar_view {
         button.style(ManageSaveTabBarActiveStyle)

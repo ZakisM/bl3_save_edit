@@ -8,14 +8,14 @@ use crate::views::manage_save::ManageSaveMessage;
 pub struct GeneralState {
     pub guid_input: String,
     pub guid_input_state: text_input::State,
-    pub slot_input: String,
+    pub slot_input: usize,
     pub slot_state: text_input::State,
 }
 
 #[derive(Debug, Clone)]
 pub enum GeneralMessage {
     GuidInputChanged(String),
-    SlotInputChanged(String),
+    SlotInputChanged(usize),
 }
 
 pub struct GeneralStyle;
@@ -24,9 +24,9 @@ impl container::StyleSheet for GeneralStyle {
     fn style(&self) -> container::Style {
         container::Style {
             background: Color::from_rgb8(25, 25, 25).into(),
-            border_width: 1.0,
-            border_radius: 5.0,
-            border_color: Color::from_rgb8(242, 203, 5),
+            // border_width: 1.0,
+            // border_radius: 2.5,
+            // border_color: Color::from_rgb8(128, 106, 0),
             ..container::Style::default()
         }
     }
@@ -36,18 +36,20 @@ impl text_input::StyleSheet for GeneralStyle {
     fn active(&self) -> text_input::Style {
         text_input::Style {
             background: Color::from_rgb8(25, 25, 25).into(),
-            border_width: 1.0,
-            border_radius: 5.0,
-            border_color: Color::from_rgb8(242, 203, 5),
+            // border_width: 1.0,
+            // border_radius: 2.5,
+            // border_color: Color::from_rgb8(128, 106, 0),
+            ..text_input::Style::default()
         }
     }
 
     fn focused(&self) -> text_input::Style {
         text_input::Style {
             background: Color::from_rgb8(25, 25, 25).into(),
-            border_width: 1.0,
-            border_radius: 5.0,
-            border_color: Color::from_rgb8(242, 203, 5),
+            // border_width: 1.0,
+            // border_radius: 2.5,
+            // border_color: Color::from_rgb8(161, 134, 2),
+            ..text_input::Style::default()
         }
     }
 
@@ -69,12 +71,13 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
         Row::new()
             .push(
                 Container::new(
-                    Text::new("Save GUID")
+                    Text::new("Save GUID:")
                         .font(JETBRAINS_MONO_BOLD)
+                        .size(17)
                         .color(Color::from_rgb8(242, 203, 5)),
                 )
                 .align_x(Align::End)
-                .width(Length::Units(100)),
+                .width(Length::Units(85)),
             )
             .push(
                 TextInput::new(
@@ -88,14 +91,14 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                     },
                 )
                 .font(JETBRAINS_MONO)
-                .padding(15)
-                .size(20)
+                .padding(10)
+                .size(17)
                 .style(GeneralStyle),
             )
             .spacing(15)
             .align_items(Align::Center)
             .width(Length::Fill)
-            .height(Length::Units(50)),
+            .height(Length::Units(40)),
     )
     .style(GeneralStyle);
 
@@ -103,33 +106,42 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
         Row::new()
             .push(
                 Container::new(
-                    Text::new("Save Slot")
+                    Text::new("Save Slot:")
                         .font(JETBRAINS_MONO_BOLD)
+                        .size(17)
                         .color(Color::from_rgb8(242, 203, 5)),
                 )
                 .align_x(Align::End)
-                .width(Length::Units(100)),
+                .width(Length::Units(85)),
             )
             .push(
                 TextInput::new(
                     &mut general_state.slot_state,
                     "25",
-                    &general_state.slot_input,
+                    &general_state.slot_input.to_string().replace("0", ""),
                     |s| {
-                        Message::ManageSave(ManageSaveMessage::General(
-                            GeneralMessage::SlotInputChanged(s),
-                        ))
+                        if s.is_empty() {
+                            Message::ManageSave(ManageSaveMessage::General(
+                                GeneralMessage::SlotInputChanged(0),
+                            ))
+                        } else if let Ok(s) = s.parse::<usize>() {
+                            Message::ManageSave(ManageSaveMessage::General(
+                                GeneralMessage::SlotInputChanged(s),
+                            ))
+                        } else {
+                            Message::Ignore
+                        }
                     },
                 )
                 .font(JETBRAINS_MONO)
-                .padding(15)
-                .size(20)
+                .padding(10)
+                .size(17)
                 .style(GeneralStyle),
             )
             .spacing(15)
             .align_items(Align::Center)
             .width(Length::Fill)
-            .height(Length::Units(50)),
+            .height(Length::Units(40)),
     )
     .style(GeneralStyle);
 
