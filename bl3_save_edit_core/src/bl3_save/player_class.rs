@@ -1,6 +1,6 @@
 use strum::{Display, EnumString};
 
-#[derive(Debug, Display, EnumString, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Display, EnumString, Eq, PartialEq)]
 pub enum PlayerClass {
     #[strum(
         serialize = "/Game/PlayerCharacters/Beastmaster/PlayerClassId_Beastmaster.PlayerClassId_Beastmaster",
@@ -22,4 +22,19 @@ pub enum PlayerClass {
         to_string = "Siren"
     )]
     Siren,
+}
+
+impl Default for PlayerClass {
+    fn default() -> Self {
+        Self::BeastMaster
+    }
+}
+
+impl PlayerClass {
+    pub const ALL: [PlayerClass; 4] = [
+        PlayerClass::BeastMaster,
+        PlayerClass::Gunner,
+        PlayerClass::Operative,
+        PlayerClass::Siren,
+    ];
 }

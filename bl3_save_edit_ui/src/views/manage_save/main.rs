@@ -9,13 +9,15 @@ use crate::bl3_ui::Message;
 use crate::bl3_ui::Message::ManageSave;
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::resources::svgs::{CHARACTER, CURRENCY, FAST_TRAVEL, SETTINGS, VEHICLE};
+use crate::views::manage_save::character::CharacterState;
 use crate::views::manage_save::general::GeneralState;
-use crate::views::manage_save::{general, ManageSaveMessage, ManageSaveState};
+use crate::views::manage_save::{character, general, ManageSaveMessage, ManageSaveState};
 
 #[derive(Debug, Default)]
 pub struct MainState {
     tab_bar_state: TabBarState,
     pub general_state: GeneralState,
+    pub character_state: CharacterState,
 }
 
 #[derive(Debug, Default)]
@@ -51,9 +53,9 @@ struct ManageSaveMenuBarStyle;
 impl container::StyleSheet for ManageSaveMenuBarStyle {
     fn style(&self) -> container::Style {
         container::Style {
-            background: Some(Color::from_rgb8(23, 23, 23).into()),
+            background: Some(Color::from_rgb8(35, 35, 35).into()),
             border_width: 1.5,
-            border_color: Color::from_rgb8(20, 20, 20),
+            border_color: Color::from_rgb8(25, 25, 25),
             ..container::Style::default()
         }
     }
@@ -64,7 +66,7 @@ struct ManageSaveTabBarActiveStyle;
 impl button::StyleSheet for ManageSaveTabBarActiveStyle {
     fn active(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(20, 20, 20).into()),
+            background: Some(Color::from_rgb8(25, 25, 25).into()),
             text_color: Color::from_rgb8(242, 203, 5),
             ..button::Style::default()
         }
@@ -72,7 +74,7 @@ impl button::StyleSheet for ManageSaveTabBarActiveStyle {
 
     fn hovered(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(20, 20, 20).into()),
+            background: Some(Color::from_rgb8(25, 25, 25).into()),
             text_color: Color::from_rgb8(255, 199, 38),
             ..button::Style::default()
         }
@@ -80,7 +82,7 @@ impl button::StyleSheet for ManageSaveTabBarActiveStyle {
 
     fn pressed(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(20, 20, 20).into()),
+            background: Some(Color::from_rgb8(25, 25, 25).into()),
             text_color: Color::from_rgb8(255, 199, 38),
             ..button::Style::default()
         }
@@ -92,9 +94,9 @@ struct ManageSaveTabBarStyle;
 impl container::StyleSheet for ManageSaveTabBarStyle {
     fn style(&self) -> container::Style {
         container::Style {
-            background: Some(Color::from_rgb8(25, 25, 25).into()),
+            background: Some(Color::from_rgb8(30, 30, 30).into()),
             border_width: 1.0,
-            border_color: Color::from_rgb8(20, 20, 20),
+            border_color: Color::from_rgb8(25, 25, 25),
             ..container::Style::default()
         }
     }
@@ -103,7 +105,7 @@ impl container::StyleSheet for ManageSaveTabBarStyle {
 impl button::StyleSheet for ManageSaveTabBarStyle {
     fn active(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(25, 25, 25).into()),
+            background: Some(Color::from_rgb8(30, 30, 30).into()),
             text_color: Color::from_rgb8(210, 210, 210),
             ..button::Style::default()
         }
@@ -131,7 +133,7 @@ struct ManageSaveStyle;
 impl container::StyleSheet for ManageSaveStyle {
     fn style(&self) -> container::Style {
         container::Style {
-            background: Some(Color::from_rgb8(20, 20, 20).into()),
+            background: Some(Color::from_rgb8(25, 25, 25).into()),
             ..container::Style::default()
         }
     }
@@ -230,7 +232,8 @@ pub fn view<'a>(
     .style(ManageSaveTabBarStyle);
 
     let tab_content = match tab_bar_view {
-        _ => general::view(&mut manage_save_state.main_state.general_state),
+        MainTabBarView::General => general::view(&mut manage_save_state.main_state.general_state),
+        _ => character::view(&mut manage_save_state.main_state.character_state),
         // MainTabBarView::General => general::view(&mut manage_save_state.main_state.general_state),
         // MainTabBarView::Character => general::view(),
         // MainTabBarView::Vehicle => general::view(),

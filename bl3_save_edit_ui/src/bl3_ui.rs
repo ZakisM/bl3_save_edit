@@ -3,9 +3,9 @@ use iced::{
     HorizontalAlignment, Length, Row, Text,
 };
 
-use crate::bl3_ui_style::{Bl3UiStyle, PRIMARY_COLOR};
 use crate::resources::fonts::COMPACTA;
 use crate::views::manage_save;
+use crate::views::manage_save::character::CharacterMessage;
 use crate::views::manage_save::general::GeneralMessage;
 use crate::views::manage_save::main::{MainMessage, MainTabBarView};
 use crate::views::manage_save::{ManageSaveMessage, ManageSaveState, ManageSaveView};
@@ -35,7 +35,9 @@ impl Application for Bl3Ui {
     fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
         (
             Bl3Ui {
-                view_state: ViewState::ManageSave(ManageSaveView::TabBar(MainTabBarView::General)),
+                view_state: ViewState::ManageSave(ManageSaveView::TabBar(
+                    MainTabBarView::Character,
+                )),
                 manage_save_state: ManageSaveState::default(),
             },
             Command::none(),
@@ -84,6 +86,17 @@ impl Application for Bl3Ui {
                         self.manage_save_state.main_state.general_state.slot_input = slot_input;
                     }
                 },
+                ManageSaveMessage::Character(character_msg) => match character_msg {
+                    CharacterMessage::CharacterNameInputChanged(name_input) => {
+                        self.manage_save_state.main_state.character_state.name_input = name_input;
+                    }
+                    CharacterMessage::PlayerClassSelected(selected) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .player_class_selected_class = selected;
+                    }
+                },
             },
             Message::Ignore => (),
         };
@@ -105,7 +118,6 @@ impl Application for Bl3Ui {
         Container::new(all_content)
             .width(Length::Fill)
             .height(Length::Fill)
-            .style(Bl3UiStyle)
             .into()
     }
 }

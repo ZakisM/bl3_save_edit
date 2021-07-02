@@ -15,6 +15,7 @@ mod bl3_ui;
 mod bl3_ui_style;
 mod resources;
 mod views;
+mod widgets;
 
 fn main() {
     // let dialog = OpenSingleDir { dir: None };
@@ -49,7 +50,7 @@ fn main() {
     // })
     // .await;
 
-    let mut settings = Settings {
+    let settings = Settings {
         window: window::Settings {
             size: (1000, 800),
             ..window::Settings::default()

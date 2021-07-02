@@ -11,14 +11,14 @@ use crate::file_helper::FileData;
 use crate::models::CustomFormatData;
 use crate::parser::{decrypt, HeaderType};
 
-mod ammo;
-mod challenge_data;
-mod character_data;
-mod inventory_slot;
-mod models;
-mod player_class;
-mod sdu;
-mod util;
+pub mod ammo;
+pub mod challenge_data;
+pub mod character_data;
+pub mod inventory_slot;
+pub mod models;
+pub mod player_class;
+pub mod sdu;
+pub mod util;
 
 #[derive(Debug)]
 pub struct Bl3Save {

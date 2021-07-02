@@ -15,11 +15,11 @@ use crate::models::CustomFormatData;
 use crate::parser::{decrypt, HeaderType};
 use crate::protos::oak_profile::Profile;
 
-mod profile_currency;
-mod profile_data;
-mod science_levels;
-mod sdu;
-mod util;
+pub mod profile_currency;
+pub mod profile_data;
+pub mod science_levels;
+pub mod sdu;
+pub mod util;
 
 #[derive(Debug)]
 pub struct Bl3Profile {
