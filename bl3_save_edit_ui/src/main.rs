@@ -52,6 +52,7 @@ fn main() {
 
     let settings = Settings {
         window: window::Settings {
+            min_size: Some((900, 400)),
             size: (1000, 800),
             ..window::Settings::default()
         },

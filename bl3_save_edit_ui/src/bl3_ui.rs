@@ -96,6 +96,18 @@ impl Application for Bl3Ui {
                             .character_state
                             .player_class_selected_class = selected;
                     }
+                    CharacterMessage::XpLevelInputChanged(xp) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .xp_level_input = xp;
+                    }
+                    CharacterMessage::XpPointsInputChanged(xp) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .xp_points_input = xp;
+                    }
                 },
             },
             Message::Ignore => (),
