@@ -1,14 +1,14 @@
 use std::ops::Deref;
 
 use iced::{
-    container, pick_list, text_input, Align, Color, Column, Container, HorizontalAlignment, Length,
-    PickList, Row, Text, TextInput,
+    container, pick_list, text_input, tooltip, Align, Color, Column, Container,
+    HorizontalAlignment, Length, PickList, Row, Text, TextInput, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
 use bl3_save_edit_core::bl3_save::util::REQUIRED_XP_LIST;
 
-use crate::bl3_ui::Message;
+use crate::bl3_ui::{Bl3Ui, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::ManageSaveMessage;
@@ -35,6 +35,20 @@ pub enum CharacterMessage {
     PlayerClassSelected(PlayerClass),
     XpLevelInputChanged(usize),
     XpPointsInputChanged(usize),
+}
+
+struct TooltipStyle;
+
+impl container::StyleSheet for TooltipStyle {
+    fn style(&self) -> container::Style {
+        container::Style {
+            text_color: Some(Color::from_rgb8(220, 220, 220)),
+            background: Color::from_rgb8(35, 35, 35).into(),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(45, 45, 45),
+        }
+    }
 }
 
 pub fn view(character_state: &mut CharacterState) -> Container<Message> {
@@ -119,22 +133,31 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     .width(Length::Units(55)),
             )
             .push(
-                NumberInput::new(
-                    &mut character_state.xp_level_input_state,
-                    "1",
-                    character_state.xp_level_input,
-                    Some(MAX_CHARACTER_LEVEL),
-                    |v| {
-                        Message::ManageSave(ManageSaveMessage::Character(
-                            CharacterMessage::XpLevelInputChanged(v),
-                        ))
-                    },
+                Tooltip::new(
+                    NumberInput::new(
+                        &mut character_state.xp_level_input_state,
+                        "1",
+                        character_state.xp_level_input,
+                        Some(MAX_CHARACTER_LEVEL),
+                        |v| {
+                            Message::ManageSave(ManageSaveMessage::Character(
+                                CharacterMessage::XpLevelInputChanged(v),
+                            ))
+                        },
+                    )
+                    .0
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle),
+                    "Level must be between 1 and 72",
+                    tooltip::Position::Bottom,
                 )
-                .0
-                .font(JETBRAINS_MONO)
+                .gap(10)
                 .padding(10)
+                .font(JETBRAINS_MONO)
                 .size(17)
-                .style(Bl3UiStyle),
+                .style(TooltipStyle),
             )
             .spacing(15)
             .align_items(Align::Center),
@@ -154,22 +177,31 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     .width(Length::Units(120)),
             )
             .push(
-                NumberInput::new(
-                    &mut character_state.xp_points_input_state,
-                    "0",
-                    character_state.xp_points_input,
-                    Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0] as usize),
-                    |v| {
-                        Message::ManageSave(ManageSaveMessage::Character(
-                            CharacterMessage::XpPointsInputChanged(v),
-                        ))
-                    },
+                Tooltip::new(
+                    NumberInput::new(
+                        &mut character_state.xp_points_input_state,
+                        "0",
+                        character_state.xp_points_input,
+                        Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0] as usize),
+                        |v| {
+                            Message::ManageSave(ManageSaveMessage::Character(
+                                CharacterMessage::XpPointsInputChanged(v),
+                            ))
+                        },
+                    )
+                    .0
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle),
+                    "Experience must be between 0 and 9,520,932",
+                    tooltip::Position::Bottom,
                 )
-                .0
-                .font(JETBRAINS_MONO)
+                .gap(10)
                 .padding(10)
+                .font(JETBRAINS_MONO)
                 .size(17)
-                .style(Bl3UiStyle),
+                .style(TooltipStyle),
             )
             .spacing(15)
             .align_items(Align::Center),
