@@ -48,7 +48,7 @@ impl CharacterData {
                 .map(|p| p.player_class_path.as_str())
                 .context("failed to read player class")?,
         )?;
-        let player_level = experience_to_level(&character.experience_points)?;
+        let player_level = experience_to_level(character.experience_points)?;
         let guardian_rank = character
             .guardian_rank_character_data
             .as_ref()

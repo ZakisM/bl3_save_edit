@@ -6,6 +6,7 @@ use iced::{
 };
 
 use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
+use bl3_save_edit_core::bl3_save::util::REQUIRED_XP_LIST;
 
 use crate::bl3_ui::Message;
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -13,6 +14,8 @@ use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::ManageSaveMessage;
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
+
+pub const MAX_CHARACTER_LEVEL: usize = 72;
 
 #[derive(Debug, Default)]
 pub struct CharacterState {
@@ -108,18 +111,19 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
     let xp_level = Container::new(
         Row::new()
             .push(
-                TextMargin::new("XP Level", 2)
+                TextMargin::new("Level", 2)
                     .0
                     .font(JETBRAINS_MONO)
                     .size(17)
                     .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(80)),
+                    .width(Length::Units(55)),
             )
             .push(
                 NumberInput::new(
                     &mut character_state.xp_level_input_state,
-                    "0",
+                    "1",
                     character_state.xp_level_input,
+                    Some(MAX_CHARACTER_LEVEL),
                     |v| {
                         Message::ManageSave(ManageSaveMessage::Character(
                             CharacterMessage::XpLevelInputChanged(v),
@@ -142,18 +146,19 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
     let xp_points = Container::new(
         Row::new()
             .push(
-                TextMargin::new("XP Points", 2)
+                TextMargin::new("Experience", 2)
                     .0
                     .font(JETBRAINS_MONO)
                     .size(17)
                     .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(85)),
+                    .width(Length::Units(120)),
             )
             .push(
                 NumberInput::new(
                     &mut character_state.xp_points_input_state,
                     "0",
                     character_state.xp_points_input,
+                    Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0] as usize),
                     |v| {
                         Message::ManageSave(ManageSaveMessage::Character(
                             CharacterMessage::XpPointsInputChanged(v),

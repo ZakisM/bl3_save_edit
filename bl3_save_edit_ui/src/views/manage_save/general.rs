@@ -70,6 +70,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                     &mut general_state.slot_state,
                     "25",
                     general_state.slot_input,
+                    None,
                     |v| {
                         Message::ManageSave(ManageSaveMessage::General(
                             GeneralMessage::SlotInputChanged(v),

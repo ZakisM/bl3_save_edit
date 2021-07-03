@@ -10,7 +10,7 @@ use crate::protos::oak_save::{
     Character, MissionPlaythroughSaveGameData, MissionStatusPlayerSaveGameData_MissionState,
 };
 
-const REQUIRED_XP_LIST: [[i32; 2]; 80] = [
+pub const REQUIRED_XP_LIST: [[i32; 2]; 80] = [
     [0, 1],
     [358, 2],
     [1241, 3],
@@ -162,11 +162,11 @@ pub fn currency_amount_from_character(character: &Character, currency: &Currency
         .unwrap_or(0)
 }
 
-pub fn experience_to_level(experience: &i32) -> Result<i32> {
+pub fn experience_to_level(experience: i32) -> Result<i32> {
     REQUIRED_XP_LIST
-        .par_iter()
+        .iter()
         .rev()
-        .find_first(|[xp, _]| experience >= xp)
+        .find(|[xp, _]| experience >= *xp)
         .map(|[_, level]| *level)
         .with_context(|| {
             format!(

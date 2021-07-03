@@ -11,6 +11,7 @@ impl<'a> NumberInput<'a> {
         state: &'a mut text_input::State,
         placeholder: &str,
         value: usize,
+        max_value: Option<usize>,
         on_change: F,
     ) -> Self
     where
@@ -25,7 +26,15 @@ impl<'a> NumberInput<'a> {
                 let v = if s.is_empty() {
                     0
                 } else if let Ok(s) = s.parse::<usize>() {
-                    s
+                    if let Some(max_value) = max_value {
+                        if s <= max_value {
+                            s
+                        } else {
+                            return Message::Ignore;
+                        }
+                    } else {
+                        s
+                    }
                 } else {
                     return Message::Ignore;
                 };

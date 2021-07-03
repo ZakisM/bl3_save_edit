@@ -3,6 +3,8 @@ use iced::{
     HorizontalAlignment, Length, Row, Text,
 };
 
+use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
+
 use crate::resources::fonts::COMPACTA;
 use crate::views::manage_save;
 use crate::views::manage_save::character::CharacterMessage;
@@ -96,17 +98,35 @@ impl Application for Bl3Ui {
                             .character_state
                             .player_class_selected_class = selected;
                     }
-                    CharacterMessage::XpLevelInputChanged(xp) => {
+                    CharacterMessage::XpLevelInputChanged(level) => {
+                        let xp_points = if level > 0 {
+                            REQUIRED_XP_LIST[level - 1][0] as usize
+                        } else {
+                            0
+                        };
+
                         self.manage_save_state
                             .main_state
                             .character_state
-                            .xp_level_input = xp;
+                            .xp_level_input = level;
+
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .xp_points_input = xp_points;
                     }
                     CharacterMessage::XpPointsInputChanged(xp) => {
+                        let level = experience_to_level(xp as i32).unwrap_or(0) as usize;
+
                         self.manage_save_state
                             .main_state
                             .character_state
                             .xp_points_input = xp;
+
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .xp_level_input = level;
                     }
                 },
             },
