@@ -68,7 +68,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
             .push(
                 NumberInput::new(
                     &mut general_state.slot_state,
-                    "25",
+                    "1",
                     general_state.slot_input,
                     None,
                     |v| {

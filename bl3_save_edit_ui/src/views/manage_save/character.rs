@@ -174,7 +174,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     .font(JETBRAINS_MONO)
                     .size(17)
                     .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(120)),
+                    .width(Length::Units(95)),
             )
             .push(
                 Tooltip::new(
