@@ -20,6 +20,14 @@ fn main() {
         "game_data/PROFILE_ROOM_DECORATIONS.csv",
         "game_data/PROFILE_WEAPON_SKINS.csv",
         "game_data/PROFILE_WEAPON_TRINKETS.csv",
+        "game_data/PROFILE_ECHO_THEMES.csv",
+        "game_data/PROFILE_ECHO_THEMES_DEFAULTS.csv",
+        "game_data/PROFILE_EMOTES.csv",
+        "game_data/PROFILE_EMOTES_DEFAULTS.csv",
+        "game_data/PROFILE_HEADS.csv",
+        "game_data/PROFILE_HEADS_DEFAULTS.csv",
+        "game_data/PROFILE_SKINS.csv",
+        "game_data/PROFILE_SKINS_DEFAULTS.csv",
     ];
     let game_data_inputs_array = vec![
         "game_data/VEHICLE_CHASSIS_OUTRUNNER.csv",
@@ -34,14 +42,6 @@ fn main() {
         "game_data/VEHICLE_SKINS_TECHNICAL.csv",
         "game_data/VEHICLE_SKINS_CYCLONE.csv",
         "game_data/VEHICLE_SKINS_JETBEAST.csv",
-        "game_data/PROFILE_ECHO_THEMES.csv",
-        "game_data/PROFILE_ECHO_THEMES_DEFAULTS.csv",
-        "game_data/PROFILE_EMOTES.csv",
-        "game_data/PROFILE_EMOTES_DEFAULTS.csv",
-        "game_data/PROFILE_HEADS.csv",
-        "game_data/PROFILE_HEADS_DEFAULTS.csv",
-        "game_data/PROFILE_SKINS.csv",
-        "game_data/PROFILE_SKINS_DEFAULTS.csv",
     ];
 
     for input in proto_inputs {

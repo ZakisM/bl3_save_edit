@@ -1,5 +1,5 @@
 use iced::pick_list::Menu;
-use iced::{button, container, pick_list, text_input, Color};
+use iced::{button, checkbox, container, pick_list, text_input, Color};
 
 pub struct Bl3UiStyle;
 
@@ -81,6 +81,28 @@ impl pick_list::StyleSheet for Bl3UiStyle {
             border_color: Color::from_rgb8(45, 45, 45),
             icon_size: 0.5,
             ..pick_list::Style::default()
+        }
+    }
+}
+
+impl checkbox::StyleSheet for Bl3UiStyle {
+    fn active(&self, _: bool) -> checkbox::Style {
+        checkbox::Style {
+            background: Color::from_rgb8(35, 35, 35).into(),
+            checkmark_color: Color::from_rgb8(220, 220, 220),
+            border_radius: 0.0,
+            border_width: 0.0,
+            border_color: Default::default(),
+        }
+    }
+
+    fn hovered(&self, _: bool) -> checkbox::Style {
+        checkbox::Style {
+            background: Color::from_rgb8(35, 35, 35).into(),
+            checkmark_color: Color::from_rgb8(220, 220, 220),
+            border_radius: 1.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(45, 45, 45),
         }
     }
 }

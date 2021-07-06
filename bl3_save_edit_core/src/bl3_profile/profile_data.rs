@@ -126,16 +126,16 @@ impl ProfileData {
             let uc = &uc.as_str();
 
             match uc {
-                uc if PROFILE_SKINS.contains(uc) => {
+                uc if PROFILE_SKINS.iter().any(|[k, _]| k == uc) => {
                     character_skins_unlocked += 1;
                 }
-                uc if PROFILE_HEADS.contains(uc) => {
+                uc if PROFILE_HEADS.iter().any(|[k, _]| k == uc) => {
                     character_heads_unlocked += 1;
                 }
-                uc if PROFILE_ECHO_THEMES.contains(uc) => {
+                uc if PROFILE_ECHO_THEMES.iter().any(|[k, _]| k == uc) => {
                     echo_themes_unlocked += 1;
                 }
-                uc if PROFILE_EMOTES.contains(uc) => {
+                uc if PROFILE_EMOTES.iter().any(|[k, _]| k == uc) => {
                     profile_emotes_unlocked += 1;
                 }
                 _ => (),

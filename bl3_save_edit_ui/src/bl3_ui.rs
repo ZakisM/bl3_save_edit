@@ -128,6 +128,54 @@ impl Application for Bl3Ui {
                             .character_state
                             .xp_level_input = level;
                     }
+                    CharacterMessage::UnlockGrenadeSlot(b) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .unlock_grenade_slot = b;
+                    }
+                    CharacterMessage::UnlockShieldSlot(b) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .unlock_shield_slot = b;
+                    }
+                    CharacterMessage::UnlockWeapon1Slot(b) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .unlock_weapon_1_slot = b;
+                    }
+                    CharacterMessage::UnlockWeapon2Slot(b) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .unlock_weapon_2_slot = b;
+                    }
+                    CharacterMessage::UnlockWeapon3Slot(b) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .unlock_weapon_3_slot = b;
+                    }
+                    CharacterMessage::UnlockWeapon4Slot(b) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .unlock_weapon_4_slot = b;
+                    }
+                    CharacterMessage::UnlockArtifactSlot(b) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .unlock_artifact_slot = b;
+                    }
+                    CharacterMessage::UnlockClassModSlot(b) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .unlock_class_mod_slot = b;
+                    }
                 },
             },
             Message::Ignore => (),
