@@ -1,13 +1,4 @@
-use std::fs;
-use std::path::Path;
-
-use futures::stream::{self, StreamExt};
 use iced::{window, Application, Settings};
-use native_dialog::{Dialog, OpenSingleDir};
-use rayon::iter::{ParallelBridge, ParallelIterator};
-use rayon::prelude::IntoParallelRefIterator;
-
-use bl3_save_edit_core::file_helper::Bl3FileType;
 
 use crate::bl3_ui::Bl3Ui;
 

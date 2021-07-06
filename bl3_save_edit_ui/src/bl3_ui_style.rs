@@ -1,5 +1,5 @@
 use iced::pick_list::Menu;
-use iced::{button, checkbox, container, pick_list, text_input, Color};
+use iced::{checkbox, container, pick_list, text_input, Color};
 
 pub struct Bl3UiStyle;
 
@@ -56,7 +56,6 @@ impl pick_list::StyleSheet for Bl3UiStyle {
             border_color: Color::from_rgb8(35, 35, 35),
             selected_background: Color::from_rgb8(35, 35, 35).into(),
             selected_text_color: Color::from_rgb8(220, 220, 220),
-            ..Menu::default()
         }
     }
 
@@ -68,7 +67,6 @@ impl pick_list::StyleSheet for Bl3UiStyle {
             border_radius: 1.0,
             border_color: Color::from_rgb8(35, 35, 35),
             icon_size: 0.5,
-            ..pick_list::Style::default()
         }
     }
 
@@ -80,7 +78,6 @@ impl pick_list::StyleSheet for Bl3UiStyle {
             border_radius: 1.0,
             border_color: Color::from_rgb8(45, 45, 45),
             icon_size: 0.5,
-            ..pick_list::Style::default()
         }
     }
 }

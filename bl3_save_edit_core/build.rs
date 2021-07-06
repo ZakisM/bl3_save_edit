@@ -105,7 +105,7 @@ fn gen_game_data_kv(input_name: &str) -> Result<String> {
 
     writeln!(
         output,
-        "pub const {}: [[&str; 2]; {}] = [",
+        "pub const {}: [GameDataKv; {}] = [",
         input_array_name,
         records.len()
     )?;
@@ -113,7 +113,7 @@ fn gen_game_data_kv(input_name: &str) -> Result<String> {
     for record in records {
         writeln!(
             output,
-            r#"{:>4}["{}", "{}"],"#,
+            r#"{:>4}GameDataKv(("{}", "{}")),"#,
             " ", record.key, record.value
         )?;
     }
@@ -169,6 +169,7 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
         output,
         "use rayon::iter::{{IntoParallelRefIterator, ParallelIterator}};\n"
     )?;
+    writeln!(output, "use std::fmt::Formatter;")?;
 
     for input in input_data {
         writeln!(output, "{}", input)?;
@@ -180,11 +181,32 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
     fn get_value_by_key(&self, key: &str) -> Result<&str>;
 }}
 
-impl<const LENGTH: usize> GameDataExt for [[&'static str; 2]; LENGTH] {{
+impl<const LENGTH: usize> GameDataExt for [GameDataKv; LENGTH] {{
     fn get_value_by_key(&self, key: &str) -> Result<&str> {{
-        self.par_iter().find_first(|[k, _]| key == *k).map(|[_, v]| *v).with_context(|| format!("failed to find game data value for: {{}}", key))
+        self.par_iter().find_first(|gd| key == gd.0 .0).map(|gd| gd.0 .1).with_context(|| format!("failed to find game data value for: {{}}", key))
     }}
-}}"#,
+}}
+
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct GameDataKv(pub (&'static str, &'static str));
+
+impl std::fmt::Display for GameDataKv {{
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {{
+        write!(f, "{{}}", self.0.1)
+    }}
+}}
+
+impl std::cmp::Ord for GameDataKv {{
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {{
+        self.0.1.cmp(&other.0.1)
+    }}
+}}
+
+impl std::cmp::PartialOrd for GameDataKv {{
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {{
+        Some(self.cmp(other))
+    }}
+}} "#,
     )?;
 
     Ok(())

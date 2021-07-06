@@ -1,8 +1,6 @@
 use iced::{text_input, TextInput};
 
 use crate::bl3_ui::Message;
-use crate::views::manage_save::character::CharacterMessage;
-use crate::views::manage_save::ManageSaveMessage;
 
 pub struct NumberInput<'a>(pub TextInput<'a, Message>);
 

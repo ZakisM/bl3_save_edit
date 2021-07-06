@@ -3,9 +3,9 @@ use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIter
 use rayon::slice::ParallelSliceMut;
 
 use crate::bl3_save::models::{Currency, Playthrough};
-use crate::game_data::GameDataExt;
 use crate::game_data::FAST_TRAVEL;
 use crate::game_data::MISSION;
+use crate::game_data::{GameDataExt, GameDataKv};
 use crate::protos::oak_save::{
     Character, MissionPlaythroughSaveGameData, MissionStatusPlayerSaveGameData_MissionState,
 };
@@ -232,7 +232,7 @@ pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
 }
 
 fn get_filtered_mission_list<const LENGTH: usize>(
-    all_missions: [[&'static str; 2]; LENGTH],
+    all_missions: [GameDataKv; LENGTH],
     m: &MissionPlaythroughSaveGameData,
     status: MissionStatusPlayerSaveGameData_MissionState,
 ) -> Vec<String> {
@@ -241,9 +241,9 @@ fn get_filtered_mission_list<const LENGTH: usize>(
         .filter(|ms| ms.status == status)
         .map(|ms| {
             all_missions
-                .par_iter()
-                .find_first(|[k, _]| ms.mission_class_path.to_lowercase().contains(k))
-                .map(|[_, v]| v.to_string())
+                .iter()
+                .find(|gd| ms.mission_class_path.to_lowercase().contains(gd.0 .0))
+                .map(|gd| gd.0 .1.to_string())
                 .unwrap_or_else(|| ms.mission_class_path.to_owned())
         })
         .collect()

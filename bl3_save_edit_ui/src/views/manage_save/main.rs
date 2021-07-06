@@ -1,13 +1,11 @@
-use iced::image::viewer::Renderer;
 use iced::{
-    button, container, svg, text_input, Align, Button, Color, Column, Container,
-    HorizontalAlignment, Length, Row, Svg, Text, VerticalAlignment,
+    button, container, svg, Align, Button, Color, Column, Container, HorizontalAlignment, Length,
+    Row, Svg, Text,
 };
 use strum::Display;
 
 use crate::bl3_ui::Message;
-use crate::bl3_ui::Message::ManageSave;
-use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO_BOLD};
 use crate::resources::svgs::{CHARACTER, CURRENCY, FAST_TRAVEL, SETTINGS, VEHICLE};
 use crate::views::manage_save::character::CharacterState;
 use crate::views::manage_save::general::GeneralState;

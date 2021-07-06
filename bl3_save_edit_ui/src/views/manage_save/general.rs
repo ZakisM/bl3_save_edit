@@ -1,8 +1,8 @@
-use iced::{container, text_input, Align, Color, Column, Container, Length, Row, Text, TextInput};
+use iced::{text_input, Align, Color, Column, Container, Length, Row, TextInput};
 
 use crate::bl3_ui::Message;
 use crate::bl3_ui_style::Bl3UiStyle;
-use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_save::ManageSaveMessage;
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
