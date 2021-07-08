@@ -76,15 +76,15 @@ impl Application for Bl3Ui {
     ) -> Command<Self::Message> {
         match message {
             Message::InteractionMessage(interaction_msg) => match interaction_msg {
-                InteractionMessage::ChooseSaveInteraction(choose_save_msg) => match choose_save_msg
-                {
-                    ChooseSaveInteractionMessage::ChooseDirPressed => {
-                        return Command::perform(
-                            interaction::choose_save_directory::choose(),
-                            |r| Message::ChooseSave(ChooseSaveMessage::ChooseDirCompleted(r)),
-                        );
+                InteractionMessage::ChooseSaveInteraction(choose_save_msg) => {
+                    return match choose_save_msg {
+                        ChooseSaveInteractionMessage::ChooseDirPressed => {
+                            Command::perform(interaction::choose_save_directory::choose(), |r| {
+                                Message::ChooseSave(ChooseSaveMessage::ChooseDirCompleted(r))
+                            })
+                        }
                     }
-                },
+                }
                 InteractionMessage::ManageSaveInteraction(manage_save_msg) => match manage_save_msg
                 {
                     ManageSaveInteractionMessage::Main(main_msg) => match main_msg {

@@ -35,7 +35,7 @@ pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Conta
         ChooseSaveInteractionMessage::ChooseDirPressed,
     ))
     .padding(5)
-    .into_interaction_element();
+    .into_element();
 
     let contents = Column::new()
         .push(dir_button_text)

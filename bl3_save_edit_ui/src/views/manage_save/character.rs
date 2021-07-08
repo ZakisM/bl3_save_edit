@@ -169,7 +169,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 .padding(10)
                 .size(17)
                 .style(Bl3UiStyle)
-                .into_interaction_element(),
+                .into_element(),
             )
             .align_items(Align::Center),
     )
@@ -245,7 +245,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     .padding(10)
                     .size(17)
                     .style(Bl3UiStyle)
-                    .into_interaction_element(),
+                    .into_element(),
                     "Level must be between 1 and 72",
                     tooltip::Position::Top,
                 )
@@ -292,7 +292,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     .padding(10)
                     .size(17)
                     .style(Bl3UiStyle)
-                    .into_interaction_element(),
+                    .into_element(),
                     "Experience must be between 0 and 9,520,932",
                     tooltip::Position::Top,
                 )
@@ -777,7 +777,7 @@ macro_rules! generate_sdu_input {
                         .padding(10)
                         .size(17)
                         .style(Bl3UiStyle)
-                        .into_interaction_element(),
+                        .into_element(),
                         format!("Level must be between 0 and {}", maximum),
                         tooltip::Position::Top,
                     )

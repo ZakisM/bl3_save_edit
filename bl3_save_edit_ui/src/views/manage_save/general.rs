@@ -50,7 +50,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                 .padding(10)
                 .size(17)
                 .style(Bl3UiStyle)
-                .into_interaction_element(),
+                .into_element(),
             )
             .spacing(15)
             .align_items(Align::Center),
@@ -88,7 +88,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                 .padding(10)
                 .size(17)
                 .style(Bl3UiStyle)
-                .into_interaction_element(),
+                .into_element(),
             )
             .spacing(15)
             .align_items(Align::Center),

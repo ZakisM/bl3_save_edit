@@ -241,12 +241,8 @@ fn tab_bar_button<'a>(
     .padding(5);
 
     if tab_bar_view == *current_tab_bar_view {
-        button
-            .style(ManageSaveTabBarActiveStyle)
-            .into_interaction_element()
+        button.style(ManageSaveTabBarActiveStyle).into_element()
     } else {
-        button
-            .style(ManageSaveTabBarStyle)
-            .into_interaction_element()
+        button.style(ManageSaveTabBarStyle).into_element()
     }
 }
