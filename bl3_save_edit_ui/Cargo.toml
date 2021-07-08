@@ -12,6 +12,7 @@ native-dialog = "0.4"
 rayon = "1.5"
 tokio-rayon = "2.1"
 futures = "0.3"
+anyhow = "1.0"
 
 [dependencies.tokio]
 version = "1"

@@ -150,6 +150,7 @@ dependencies = [
 name = "bl3_save_edit_ui"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "bl3_save_edit_core",
  "futures",
  "iced",

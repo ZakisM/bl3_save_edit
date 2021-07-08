@@ -103,3 +103,27 @@ impl checkbox::StyleSheet for Bl3UiStyle {
         }
     }
 }
+
+pub struct Bl3UiMenuBarStyle;
+
+impl container::StyleSheet for Bl3UiMenuBarStyle {
+    fn style(&self) -> container::Style {
+        container::Style {
+            background: Some(Color::from_rgb8(35, 35, 35).into()),
+            border_width: 1.5,
+            border_color: Color::from_rgb8(25, 25, 25),
+            ..container::Style::default()
+        }
+    }
+}
+
+pub struct Bl3UiContentStyle;
+
+impl container::StyleSheet for Bl3UiContentStyle {
+    fn style(&self) -> container::Style {
+        container::Style {
+            background: Some(Color::from_rgb8(25, 25, 25).into()),
+            ..container::Style::default()
+        }
+    }
+}

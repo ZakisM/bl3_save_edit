@@ -1,9 +1,10 @@
 use iced::{text_input, Align, Color, Column, Container, Length, Row, TextInput};
 
-use crate::bl3_ui::Message;
+use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
+use crate::interaction::InteractionExt;
 use crate::resources::fonts::JETBRAINS_MONO;
-use crate::views::manage_save::ManageSaveMessage;
+use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
 
@@ -16,7 +17,7 @@ pub struct GeneralState {
 }
 
 #[derive(Debug, Clone)]
-pub enum GeneralMessage {
+pub enum GeneralInteractionMessage {
     GuidInputChanged(String),
     SlotInputChanged(usize),
 }
@@ -38,15 +39,18 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                     "00000000-0000-0000-0000-000000000000",
                     &general_state.guid_input,
                     |s| {
-                        Message::ManageSave(ManageSaveMessage::General(
-                            GeneralMessage::GuidInputChanged(s),
-                        ))
+                        InteractionMessage::ManageSaveInteraction(
+                            ManageSaveInteractionMessage::General(
+                                GeneralInteractionMessage::GuidInputChanged(s),
+                            ),
+                        )
                     },
                 )
                 .font(JETBRAINS_MONO)
                 .padding(10)
                 .size(17)
-                .style(Bl3UiStyle),
+                .style(Bl3UiStyle)
+                .into_interaction_element(),
             )
             .spacing(15)
             .align_items(Align::Center),
@@ -72,16 +76,19 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                     general_state.slot_input,
                     None,
                     |v| {
-                        Message::ManageSave(ManageSaveMessage::General(
-                            GeneralMessage::SlotInputChanged(v),
-                        ))
+                        InteractionMessage::ManageSaveInteraction(
+                            ManageSaveInteractionMessage::General(
+                                GeneralInteractionMessage::SlotInputChanged(v),
+                            ),
+                        )
                     },
                 )
                 .0
                 .font(JETBRAINS_MONO)
                 .padding(10)
                 .size(17)
-                .style(Bl3UiStyle),
+                .style(Bl3UiStyle)
+                .into_interaction_element(),
             )
             .spacing(15)
             .align_items(Align::Center),

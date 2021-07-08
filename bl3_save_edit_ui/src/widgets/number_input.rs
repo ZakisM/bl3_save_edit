@@ -1,8 +1,8 @@
 use iced::{text_input, TextInput};
 
-use crate::bl3_ui::Message;
+use crate::bl3_ui::InteractionMessage;
 
-pub struct NumberInput<'a>(pub TextInput<'a, Message>);
+pub struct NumberInput<'a>(pub TextInput<'a, InteractionMessage>);
 
 impl<'a> NumberInput<'a> {
     pub fn new<F>(
@@ -13,8 +13,7 @@ impl<'a> NumberInput<'a> {
         on_change: F,
     ) -> Self
     where
-        Message: Clone,
-        F: 'static + Fn(usize) -> Message,
+        F: 'static + Fn(usize) -> InteractionMessage,
     {
         let input = TextInput::new(
             state,
@@ -28,13 +27,13 @@ impl<'a> NumberInput<'a> {
                         if s <= max_value {
                             s
                         } else {
-                            return Message::Ignore;
+                            return InteractionMessage::Ignore;
                         }
                     } else {
                         s
                     }
                 } else {
-                    return Message::Ignore;
+                    return InteractionMessage::Ignore;
                 };
 
                 on_change(v)

@@ -75,18 +75,16 @@ impl Bl3FileType {
     pub fn from_unknown_data(data: &[u8]) -> Result<Bl3FileType> {
         let file_data = read_bytes(&data)?;
 
-        if let Ok(save) = Bl3Save::from_file_data(file_data.clone(), HeaderType::PcSave) {
+        if let Ok(save) = Bl3Save::from_file_data(&file_data, HeaderType::PcSave) {
             Ok(Bl3FileType::PcSave(save))
-        } else if let Ok(profile) =
-            Bl3Profile::from_file_data(file_data.clone(), HeaderType::PcProfile)
-        {
+        } else if let Ok(profile) = Bl3Profile::from_file_data(&file_data, HeaderType::PcProfile) {
             Ok(Bl3FileType::PcProfile(profile))
-        } else if let Ok(save) = Bl3Save::from_file_data(file_data.clone(), HeaderType::Ps4Save) {
+        } else if let Ok(save) = Bl3Save::from_file_data(&file_data, HeaderType::Ps4Save) {
             Ok(Bl3FileType::Ps4Save(save))
-        } else if let Ok(profile) = Bl3Profile::from_file_data(file_data, HeaderType::Ps4Profile) {
+        } else if let Ok(profile) = Bl3Profile::from_file_data(&file_data, HeaderType::Ps4Profile) {
             Ok(Bl3FileType::Ps4Profile(profile))
         } else {
-            bail!("lol")
+            bail!("could not recognize file type")
         }
     }
 }

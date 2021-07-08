@@ -1,6 +1,6 @@
-use crate::views::manage_save::character::CharacterMessage;
-use crate::views::manage_save::general::GeneralMessage;
-use crate::views::manage_save::main::{MainMessage, MainState, MainTabBarView};
+use crate::views::manage_save::character::{CharacterInteractionMessage, CharacterMessage};
+use crate::views::manage_save::general::GeneralInteractionMessage;
+use crate::views::manage_save::main::{MainInteractionMessage, MainState, MainTabBarView};
 
 pub mod character;
 pub mod general;
@@ -11,11 +11,16 @@ pub struct ManageSaveState {
     pub main_state: MainState,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum ManageSaveMessage {
-    Main(MainMessage),
-    General(GeneralMessage),
     Character(CharacterMessage),
+}
+
+#[derive(Debug, Clone)]
+pub enum ManageSaveInteractionMessage {
+    Main(MainInteractionMessage),
+    General(GeneralInteractionMessage),
+    Character(CharacterInteractionMessage),
 }
 
 #[derive(Debug, PartialEq)]

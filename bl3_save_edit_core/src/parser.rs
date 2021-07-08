@@ -108,7 +108,7 @@ pub fn decrypt<T: protobuf::Message>(data: &[u8], header_type: HeaderType) -> Re
         HeaderType::Ps4Profile => (PS4_PROFILE_PREFIX_MAGIC, PS4_PROFILE_XOR_MAGIC),
     };
 
-    // Clone data so we can decrypt multiple times
+    // Clone data so we can decrypt multiple times (when we don't know save type)
     let mut data = data.to_vec();
     let data = data.as_mut_slice();
 

@@ -38,7 +38,13 @@ pub struct Bl3Profile {
 }
 
 impl Bl3Profile {
-    pub fn from_file_data(file_data: FileData, header_type: HeaderType) -> Result<Self> {
+    pub fn from_file_data(file_data: &FileData, header_type: HeaderType) -> Result<Self> {
+        let remaining_data = file_data.remaining_data;
+
+        let profile: Profile = decrypt(remaining_data, header_type)?;
+
+        let profile_data = ProfileData::from_profile(profile)?;
+
         let FileData {
             file_version,
             package_version,
@@ -51,12 +57,8 @@ impl Bl3Profile {
             custom_format_data_count,
             custom_format_data,
             save_game_type,
-            remaining_data,
-        } = file_data;
-
-        let profile: Profile = decrypt(&remaining_data, header_type)?;
-
-        let profile_data = ProfileData::from_profile(profile)?;
+            ..
+        } = file_data.clone();
 
         Ok(Self {
             profile_version: file_version,
@@ -74,30 +76,30 @@ impl Bl3Profile {
         })
     }
 
-    pub fn from_bytes(data: &[u8], header_type: HeaderType) -> Result<Self> {
-        let file_data = file_helper::read_bytes(&data)?;
+    pub fn from_bytes(data: &mut [u8], header_type: HeaderType) -> Result<Self> {
+        let file_data = file_helper::read_bytes(data)?;
 
-        Self::from_file_data(file_data, header_type)
+        Self::from_file_data(&file_data, header_type)
     }
 }
 
 impl fmt::Display for Bl3Profile {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        // writeln!(f, "Profile version: {}", self.profile_version)?;
-        // writeln!(f, "Package version: {}", self.package_version)?;
-        // writeln!(
-        //     f,
-        //     "Engine version: {}.{}.{}.{}",
-        //     self.engine_major, self.engine_minor, self.engine_patch, self.engine_build
-        // )?;
-        // writeln!(f, "Build ID: {}", self.build_id)?;
-        // writeln!(f, "Custom Format Version: {}", self.custom_format_version)?;
-        // writeln!(
-        //     f,
-        //     "Custom Format Data Count: {}",
-        //     self.custom_format_data_count
-        // )?;
-        // writeln!(f, "Savegame type: {}", self.save_game_type)?;
+        writeln!(f, "Profile version: {}", self.profile_version)?;
+        writeln!(f, "Package version: {}", self.package_version)?;
+        writeln!(
+            f,
+            "Engine version: {}.{}.{}.{}",
+            self.engine_major, self.engine_minor, self.engine_patch, self.engine_build
+        )?;
+        writeln!(f, "Build ID: {}", self.build_id)?;
+        writeln!(f, "Custom Format Version: {}", self.custom_format_version)?;
+        writeln!(
+            f,
+            "Custom Format Data Count: {}",
+            self.custom_format_data_count
+        )?;
+        writeln!(f, "Savegame type: {}", self.save_game_type)?;
 
         writeln!(f, "Keys:")?;
         writeln!(

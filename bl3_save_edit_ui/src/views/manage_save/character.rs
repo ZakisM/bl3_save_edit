@@ -11,10 +11,11 @@ use bl3_save_edit_core::game_data::{
     PROFILE_HEADS_DEFAULTS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS,
 };
 
-use crate::bl3_ui::Message;
+use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
+use crate::interaction::InteractionExt;
 use crate::resources::fonts::JETBRAINS_MONO;
-use crate::views::manage_save::ManageSaveMessage;
+use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveMessage};
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
 use crate::{generate_sdu_input, generate_skin_pick_list};
@@ -78,25 +79,21 @@ pub struct CharacterSduState {
     pub heavy_input_state: text_input::State,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum CharacterMessage {
-    NameInputChanged(String),
     PlayerClassSelected(PlayerClass),
-    XpLevelInputChanged(usize),
-    XpPointsInputChanged(usize),
     SkinMessage(CharacterSkinMessage),
     GearMessage(CharacterGearMessage),
-    SduMessage(CharacterSduMessage),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum CharacterSkinMessage {
     HeadSkinSelected(GameDataKv),
     CharacterSkinSelected(GameDataKv),
     EchoThemeSelected(GameDataKv),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum CharacterGearMessage {
     UnlockGrenadeSlot(bool),
     UnlockShieldSlot(bool),
@@ -109,7 +106,15 @@ pub enum CharacterGearMessage {
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterSduMessage {
+pub enum CharacterInteractionMessage {
+    NameInputChanged(String),
+    XpLevelInputChanged(usize),
+    XpPointsInputChanged(usize),
+    SduMessage(CharacterInteractionSduMessage),
+}
+
+#[derive(Debug, Clone)]
+pub enum CharacterInteractionSduMessage {
     BackpackInputChanged(usize),
     SniperInputChanged(usize),
     ShotgunInputChanged(usize),
@@ -153,15 +158,18 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     "FL4K",
                     &character_state.name_input,
                     |s| {
-                        Message::ManageSave(ManageSaveMessage::Character(
-                            CharacterMessage::NameInputChanged(s),
-                        ))
+                        InteractionMessage::ManageSaveInteraction(
+                            ManageSaveInteractionMessage::Character(
+                                CharacterInteractionMessage::NameInputChanged(s),
+                            ),
+                        )
                     },
                 )
                 .font(JETBRAINS_MONO)
                 .padding(10)
                 .size(17)
-                .style(Bl3UiStyle),
+                .style(Bl3UiStyle)
+                .into_interaction_element(),
             )
             .align_items(Align::Center),
     )
@@ -225,16 +233,19 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                         character_state.xp_level_input,
                         Some(MAX_CHARACTER_LEVEL),
                         |v| {
-                            Message::ManageSave(ManageSaveMessage::Character(
-                                CharacterMessage::XpLevelInputChanged(v),
-                            ))
+                            InteractionMessage::ManageSaveInteraction(
+                                ManageSaveInteractionMessage::Character(
+                                    CharacterInteractionMessage::XpLevelInputChanged(v),
+                                ),
+                            )
                         },
                     )
                     .0
                     .font(JETBRAINS_MONO)
                     .padding(10)
                     .size(17)
-                    .style(Bl3UiStyle),
+                    .style(Bl3UiStyle)
+                    .into_interaction_element(),
                     "Level must be between 1 and 72",
                     tooltip::Position::Top,
                 )
@@ -269,16 +280,19 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                         character_state.xp_points_input,
                         Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0] as usize),
                         |v| {
-                            Message::ManageSave(ManageSaveMessage::Character(
-                                CharacterMessage::XpPointsInputChanged(v),
-                            ))
+                            InteractionMessage::ManageSaveInteraction(
+                                ManageSaveInteractionMessage::Character(
+                                    CharacterInteractionMessage::XpPointsInputChanged(v),
+                                ),
+                            )
                         },
                     )
                     .0
                     .font(JETBRAINS_MONO)
                     .padding(10)
                     .size(17)
-                    .style(Bl3UiStyle),
+                    .style(Bl3UiStyle)
+                    .into_interaction_element(),
                     "Experience must be between 0 and 9,520,932",
                     tooltip::Position::Top,
                 )
@@ -537,7 +551,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     backpack_input,
                                     backpack_input_state,
-                                    CharacterSduMessage::BackpackInputChanged
+                                    CharacterInteractionSduMessage::BackpackInputChanged
                                 ))
                                 .push(generate_sdu_input!(
                                     "Sniper",
@@ -546,7 +560,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     sniper_input,
                                     sniper_input_state,
-                                    CharacterSduMessage::SniperInputChanged
+                                    CharacterInteractionSduMessage::SniperInputChanged
                                 )),
                         )
                         .push(
@@ -558,7 +572,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     shotgun_input,
                                     shotgun_input_state,
-                                    CharacterSduMessage::ShotgunInputChanged
+                                    CharacterInteractionSduMessage::ShotgunInputChanged
                                 ))
                                 .push(generate_sdu_input!(
                                     "Pistol",
@@ -567,7 +581,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     pistol_input,
                                     pistol_input_state,
-                                    CharacterSduMessage::PistolInputChanged
+                                    CharacterInteractionSduMessage::PistolInputChanged
                                 )),
                         )
                         .push(
@@ -579,7 +593,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     grenade_input,
                                     grenade_input_state,
-                                    CharacterSduMessage::GrenadeInputChanged
+                                    CharacterInteractionSduMessage::GrenadeInputChanged
                                 ))
                                 .push(generate_sdu_input!(
                                     "SMG",
@@ -588,7 +602,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     smg_input,
                                     smg_input_state,
-                                    CharacterSduMessage::SmgInputChanged
+                                    CharacterInteractionSduMessage::SmgInputChanged
                                 )),
                         )
                         .push(
@@ -600,7 +614,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     assault_rifle_input,
                                     assault_rifle_input_state,
-                                    CharacterSduMessage::AssaultRifleInputChanged
+                                    CharacterInteractionSduMessage::AssaultRifleInputChanged
                                 ))
                                 .push(generate_sdu_input!(
                                     "Heavy",
@@ -609,7 +623,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     heavy_input,
                                     heavy_input_state,
-                                    CharacterSduMessage::HeavyInputChanged
+                                    CharacterInteractionSduMessage::HeavyInputChanged
                                 )),
                         )
                         .spacing(15),
@@ -750,9 +764,11 @@ macro_rules! generate_sdu_input {
                             $character_state.sdu_state.$input_value,
                             Some(maximum as usize),
                             |v| {
-                                Message::ManageSave(ManageSaveMessage::Character(
-                                    CharacterMessage::SduMessage($input_message(v)),
-                                ))
+                                InteractionMessage::ManageSaveInteraction(
+                                    ManageSaveInteractionMessage::Character(
+                                        CharacterInteractionMessage::SduMessage($input_message(v)),
+                                    ),
+                                )
                             },
                         )
                         .0
@@ -760,7 +776,8 @@ macro_rules! generate_sdu_input {
                         .font(JETBRAINS_MONO)
                         .padding(10)
                         .size(17)
-                        .style(Bl3UiStyle),
+                        .style(Bl3UiStyle)
+                        .into_interaction_element(),
                         format!("Level must be between 0 and {}", maximum),
                         tooltip::Position::Top,
                     )
