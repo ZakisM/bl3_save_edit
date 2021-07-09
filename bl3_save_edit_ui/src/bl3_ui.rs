@@ -57,7 +57,7 @@ impl Application for Bl3Ui {
     fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
         (
             Bl3Ui {
-                view_state: ViewState::ManageSave(ManageSaveView::TabBar(MainTabBarView::General)),
+                view_state: ViewState::ChooseSaveDirectory,
                 choose_save_directory_state: ChooseSaveDirectoryState::default(),
                 manage_save_state: ManageSaveState::default(),
             },
@@ -79,6 +79,8 @@ impl Application for Bl3Ui {
                 InteractionMessage::ChooseSaveInteraction(choose_save_msg) => {
                     return match choose_save_msg {
                         ChooseSaveInteractionMessage::ChooseDirPressed => {
+                            self.choose_save_directory_state.choose_dir_window_open = true;
+
                             Command::perform(interaction::choose_save_directory::choose(), |r| {
                                 Message::ChooseSave(ChooseSaveMessage::ChooseDirCompleted(r))
                             })
@@ -221,6 +223,7 @@ impl Application for Bl3Ui {
             },
             Message::ChooseSave(choose_save_msg) => match choose_save_msg {
                 ChooseSaveMessage::ChooseDirCompleted(dir) => {
+                    self.choose_save_directory_state.choose_dir_window_open = false;
                     dbg!(&dir);
                 }
             },

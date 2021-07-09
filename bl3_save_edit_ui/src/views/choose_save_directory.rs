@@ -10,6 +10,7 @@ use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 #[derive(Debug, Default)]
 pub struct ChooseSaveDirectoryState {
     choose_dir_button_state: button::State,
+    pub choose_dir_window_open: bool,
 }
 
 #[derive(Debug)]
@@ -24,22 +25,24 @@ pub enum ChooseSaveInteractionMessage {
 
 pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Container<Message> {
     let dir_button_text = Text::new("Select Borderlands 3 Profile/Save File directory");
-    let dir_button = Button::new(
+    let mut dir_button = Button::new(
         &mut choose_save_directory_state.choose_dir_button_state,
         Text::new("Select...")
             .horizontal_alignment(HorizontalAlignment::Center)
             .font(JETBRAINS_MONO_BOLD)
             .size(18),
     )
-    .on_press(InteractionMessage::ChooseSaveInteraction(
-        ChooseSaveInteractionMessage::ChooseDirPressed,
-    ))
-    .padding(5)
-    .into_element();
+    .padding(5);
+
+    if !choose_save_directory_state.choose_dir_window_open {
+        dir_button = dir_button.on_press(InteractionMessage::ChooseSaveInteraction(
+            ChooseSaveInteractionMessage::ChooseDirPressed,
+        ));
+    }
 
     let contents = Column::new()
         .push(dir_button_text)
-        .push(dir_button)
+        .push(dir_button.into_element())
         .spacing(20);
 
     Container::new(contents)
