@@ -25,6 +25,8 @@ pub async fn choose() -> Result<PathBuf> {
 }
 
 pub async fn load_files_in_directory(dir: Arc<PathBuf>) -> Result<()> {
+    let start_time = tokio::time::Instant::now();
+
     let mut dirs = tokio::fs::read_dir(&*dir).await?;
 
     let mut all_data = vec![];
@@ -48,8 +50,6 @@ pub async fn load_files_in_directory(dir: Arc<PathBuf>) -> Result<()> {
             break;
         }
     }
-
-    let start_time = tokio::time::Instant::now();
 
     let all_files: Vec<Bl3FileType> = tokio_rayon::spawn(move || {
         all_data
