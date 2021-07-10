@@ -8,12 +8,19 @@ edition = "2018"
 [dependencies]
 bl3_save_edit_core = { path = "../bl3_save_edit_core" }
 rusttype = "0.9"
-native-dialog = "0.5"
 dirs = "3.0"
 rayon = "1.5"
 tokio-rayon = "2.1"
 futures = "0.3"
 anyhow = "1.0"
+
+# Version 0.5.5 is not working on MacOS for some reason but 0.4.4 works.
+# Can't use 0.4.4 on Windows as default_dir not working hence diff versions
+# for each platform should be used
+[target.'cfg(not(target_os = "macos"))'.dependencies.native-dialog]
+version = "0.5.5"
+[target.'cfg(target_os = "macos")'.dependencies.native-dialog]
+version = "0.4.4"
 
 [dependencies.tokio]
 version = "1"

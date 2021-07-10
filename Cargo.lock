@@ -155,7 +155,8 @@ dependencies = [
  "dirs",
  "futures",
  "iced",
- "native-dialog",
+ "native-dialog 0.4.4",
+ "native-dialog 0.5.5",
  "rayon",
  "rusttype",
  "strum",
@@ -1778,6 +1779,20 @@ dependencies = [
 
 [[package]]
 name = "native-dialog"
+version = "0.4.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e5b69bf2d8a7adddb64521426df8c3125d27ca8da25db97efc7425d8b07c92f3"
+dependencies = [
+ "osascript",
+ "serde",
+ "thiserror",
+ "wfd",
+ "which",
+ "winapi",
+]
+
+[[package]]
+name = "native-dialog"
 version = "0.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d689b01017db3e350e0e9798d233cca9ad3bf810e7c02b9b55ec06b9ee7dbd8a"
@@ -1979,6 +1994,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6dea6388d3d5498ec651701f14edbaf463c924b5d8829fb2848ccf0bcc7b3c69"
 dependencies = [
  "num-traits",
+]
+
+[[package]]
+name = "osascript"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "38731fa859ef679f1aec66ca9562165926b442f298467f76f5990f431efe87dc"
+dependencies = [
+ "serde",
+ "serde_derive",
+ "serde_json",
 ]
 
 [[package]]
@@ -2460,6 +2486,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "serde_json"
+version = "1.0.64"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "799e97dc9fdae36a5c8b8f2cae9ce2ee9fdce2058c57a93e6099d919fd982f79"
+dependencies = [
+ "itoa",
+ "ryu",
+ "serde",
 ]
 
 [[package]]

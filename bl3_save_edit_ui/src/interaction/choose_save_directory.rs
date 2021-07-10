@@ -6,19 +6,18 @@ use anyhow::{Context, Result};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
-use native_dialog::FileDialog;
 
+#[cfg(not(target_os = "macos"))]
 pub async fn choose() -> Result<PathBuf> {
-    let home_dir = dirs::home_dir().context("failed to read home dir")?;
+    use native_dialog::FileDialog;
+
+    let home_dir = dirs::home_dir().unwrap_or_default();
 
     #[cfg(target_os = "windows")]
     let default_dir = home_dir.join("Documents/My Games/Borderlands 3/Saved/SaveGames/");
 
-    #[cfg(target_os = "macos")]
-    let default_dir = "";
-
     #[cfg(target_os = "linux")]
-    let default_dir = "/home/zak/IdeaProjects/bl3_save_edit/bl3_save_edit_core/test_files/";
+    let default_dir = home_dir.join("IdeaProjects/bl3_save_edit/bl3_save_edit_core/test_files/");
 
     let mut file_dialog = FileDialog::new();
 
@@ -29,6 +28,31 @@ pub async fn choose() -> Result<PathBuf> {
     let res = file_dialog
         .show_open_single_dir()?
         .context("no directory was selected")?;
+
+    Ok(res)
+}
+
+#[cfg(target_os = "macos")]
+pub async fn choose() -> Result<PathBuf> {
+    use native_dialog::{Dialog, OpenSingleDir};
+
+    let home_dir = dirs::home_dir()
+        .unwrap_or_default()
+        .join("Library/Application Support/GearboxSoftware/OakGame/Saved/SaveGames");
+
+    let mut default_dir = None;
+
+    if home_dir.exists() {
+        let home_dir_str = home_dir.to_str().unwrap_or("");
+
+        if !home_dir_str.is_empty() {
+            default_dir = Some(home_dir_str);
+        }
+    }
+
+    let dialog = OpenSingleDir { dir: default_dir };
+
+    let res = dialog.show()?.context("no directory was selected")?;
 
     Ok(res)
 }
