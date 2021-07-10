@@ -8,7 +8,8 @@ edition = "2018"
 [dependencies]
 bl3_save_edit_core = { path = "../bl3_save_edit_core" }
 rusttype = "0.9"
-native-dialog = "0.4"
+native-dialog = "0.5"
+dirs = "3.0"
 rayon = "1.5"
 tokio-rayon = "2.1"
 futures = "0.3"

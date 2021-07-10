@@ -3,23 +3,32 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use anyhow::{Context, Result};
-use native_dialog::{Dialog, OpenSingleDir};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
+use native_dialog::FileDialog;
 
 pub async fn choose() -> Result<PathBuf> {
+    let home_dir = dirs::home_dir().context("failed to read home dir")?;
+
     #[cfg(target_os = "windows")]
-    let default_dir = None;
+    let default_dir = home_dir.join("Documents/My Games/Borderlands 3/Saved/SaveGames/");
 
     #[cfg(target_os = "macos")]
-    let default_dir = None;
+    let default_dir = "";
 
     #[cfg(target_os = "linux")]
-    let default_dir = Some("/home/zak/IdeaProjects/bl3_save_edit/bl3_save_edit_core/test_files/");
+    let default_dir = "/home/zak/IdeaProjects/bl3_save_edit/bl3_save_edit_core/test_files/";
 
-    let dialog = OpenSingleDir { dir: default_dir };
-    let res = dialog.show()?.context("no directory was selected")?;
+    let mut file_dialog = FileDialog::new();
+
+    if default_dir.exists() {
+        file_dialog = file_dialog.set_location(&default_dir);
+    }
+
+    let res = file_dialog
+        .show_open_single_dir()?
+        .context("no directory was selected")?;
 
     Ok(res)
 }
