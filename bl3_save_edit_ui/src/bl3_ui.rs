@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use iced::{
     Align, Application, Clipboard, Color, Column, Command, Container, Element, HorizontalAlignment,
     Length, Row, Text,
@@ -224,7 +226,21 @@ impl Application for Bl3Ui {
             Message::ChooseSave(choose_save_msg) => match choose_save_msg {
                 ChooseSaveMessage::ChooseDirCompleted(dir) => {
                     self.choose_save_directory_state.choose_dir_window_open = false;
-                    dbg!(&dir);
+                    match dir {
+                        Ok(dir) => {
+                            let dir = Arc::new(dir);
+
+                            return Command::perform(
+                                interaction::choose_save_directory::load_files_in_directory(
+                                    dir.clone(),
+                                ),
+                                |_| Message::InteractionMessage(InteractionMessage::Ignore),
+                            );
+                        }
+                        Err(e) => {
+                            eprintln!("{}", e);
+                        }
+                    }
                 }
             },
             Message::ManageSave(manage_save_msg) => match manage_save_msg {

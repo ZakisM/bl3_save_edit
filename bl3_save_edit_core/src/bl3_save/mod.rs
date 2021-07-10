@@ -22,21 +22,19 @@ pub mod util;
 
 #[derive(Debug)]
 pub struct Bl3Save {
-    save_game_version: u32,
-    package_version: u32,
-    engine_major: u16,
-    engine_minor: u16,
-    engine_patch: u16,
-    engine_build: u32,
-    build_id: String,
-    custom_format_version: u32,
-    custom_format_data_count: u32,
-    custom_format_data: Vec<CustomFormatData>,
-    save_game_type: String,
-    character_data: CharacterData,
+    pub save_game_version: u32,
+    pub package_version: u32,
+    pub engine_major: u16,
+    pub engine_minor: u16,
+    pub engine_patch: u16,
+    pub engine_build: u32,
+    pub build_id: String,
+    pub custom_format_version: u32,
+    pub custom_format_data_count: u32,
+    pub custom_format_data: Vec<CustomFormatData>,
+    pub save_game_type: String,
+    pub character_data: CharacterData,
 }
-
-//TODO: Make a method that doesn't need to calculate all character_data, only level
 
 impl Bl3Save {
     pub fn from_file_data(file_data: &FileData, header_type: HeaderType) -> Result<Self> {

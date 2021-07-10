@@ -1,5 +1,5 @@
 use iced::pick_list::Menu;
-use iced::{checkbox, container, pick_list, text_input, Color};
+use iced::{button, checkbox, container, pick_list, text_input, Color};
 
 pub struct Bl3UiStyle;
 
@@ -100,6 +100,41 @@ impl checkbox::StyleSheet for Bl3UiStyle {
             border_radius: 1.0,
             border_width: 1.0,
             border_color: Color::from_rgb8(45, 45, 45),
+        }
+    }
+}
+
+impl button::StyleSheet for Bl3UiStyle {
+    fn active(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(30, 30, 30).into()),
+            text_color: Color::from_rgb8(210, 210, 210),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(35, 35, 35),
+            ..button::Style::default()
+        }
+    }
+
+    fn hovered(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(35, 35, 35).into()),
+            text_color: Color::from_rgb8(210, 210, 210),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(45, 45, 45),
+            ..button::Style::default()
+        }
+    }
+
+    fn pressed(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(32, 32, 32).into()),
+            text_color: Color::from_rgb8(210, 210, 210),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(45, 45, 45),
+            ..button::Style::default()
         }
     }
 }
