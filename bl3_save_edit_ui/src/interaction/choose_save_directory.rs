@@ -109,7 +109,10 @@ pub async fn load_files_in_directory(dir: Arc<PathBuf>) -> Result<()> {
                 f.character_data.player_level
             ),
             Bl3FileType::PcProfile(f) | Bl3FileType::Ps4Profile(f) => {
-                println!("Profile: Golden Keys {}", f.profile_data.golden_keys);
+                println!(
+                    "Profile: Golden Keys: {}/Guardian Rank: {}",
+                    f.profile_data.golden_keys, f.profile_data.guardian_rank
+                );
             }
         }
     }
