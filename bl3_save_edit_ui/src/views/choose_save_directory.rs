@@ -14,12 +14,13 @@ use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 pub struct ChooseSaveDirectoryState {
     choose_dir_button_state: button::State,
     pub choose_dir_window_open: bool,
+    pub saves_dir: PathBuf,
 }
 
 #[derive(Debug)]
 pub enum ChooseSaveMessage {
     ChooseDirCompleted(Result<PathBuf>),
-    FilesLoaded(Result<Vec<Bl3FileType>>),
+    LoadedFiles(Result<Vec<Bl3FileType>>),
 }
 
 #[derive(Debug, Clone)]

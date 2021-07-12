@@ -1,6 +1,6 @@
 use iced::{
-    Align, Application, Clipboard, Color, Column, Command, Container, Element, HorizontalAlignment,
-    Length, Row, Text,
+    button, Align, Application, Button, Clipboard, Color, Column, Command, Container, Element,
+    HorizontalAlignment, Length, Row, Text,
 };
 
 use bl3_save_edit_core::bl3_save::inventory_slot::InventorySlot;
@@ -8,9 +8,10 @@ use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
-use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle};
+use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::interaction;
-use crate::resources::fonts::COMPACTA;
+use crate::interaction::InteractionExt;
+use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO_BOLD};
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -25,12 +26,13 @@ use crate::views::manage_save::{
 };
 use crate::views::{choose_save_directory, manage_save};
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Bl3Ui {
     view_state: ViewState,
     choose_save_directory_state: ChooseSaveDirectoryState,
     manage_save_state: ManageSaveState,
     loaded_files: Vec<Bl3FileType>,
+    save_file_button_state: button::State,
 }
 
 #[derive(Debug)]
@@ -38,12 +40,14 @@ pub enum Message {
     InteractionMessage(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
     ManageSave(ManageSaveMessage),
+    SaveFileCompleted(std::result::Result<(), std::io::Error>),
 }
 
 #[derive(Debug, Clone)]
 pub enum InteractionMessage {
     ChooseSaveInteraction(ChooseSaveInteractionMessage),
     ManageSaveInteraction(ManageSaveInteractionMessage),
+    SaveFilePressed,
     Ignore,
 }
 
@@ -51,6 +55,12 @@ pub enum InteractionMessage {
 enum ViewState {
     ChooseSaveDirectory,
     ManageSave(ManageSaveView),
+}
+
+impl std::default::Default for ViewState {
+    fn default() -> Self {
+        Self::ChooseSaveDirectory
+    }
 }
 
 impl Application for Bl3Ui {
@@ -62,9 +72,7 @@ impl Application for Bl3Ui {
         (
             Bl3Ui {
                 view_state: ViewState::ChooseSaveDirectory,
-                choose_save_directory_state: ChooseSaveDirectoryState::default(),
-                manage_save_state: ManageSaveState::default(),
-                loaded_files: Vec::new(),
+                ..Bl3Ui::default()
             },
             Command::none(),
         )
@@ -224,6 +232,33 @@ impl Application for Bl3Ui {
                         },
                     },
                 },
+                InteractionMessage::SaveFilePressed => {
+                    let mut current_file = self.manage_save_state.current_file.clone();
+
+                    current_file.character_data.set_head_skin_selected(
+                        &self
+                            .manage_save_state
+                            .main_state
+                            .character_state
+                            .skin_state
+                            .head_skin_selected,
+                    );
+
+                    let output_file = self
+                        .choose_save_directory_state
+                        .saves_dir
+                        .join("test_file_zak.sav");
+
+                    match current_file.to_bytes() {
+                        Ok(output) => {
+                            return Command::perform(
+                                tokio::fs::write(output_file, output),
+                                Message::SaveFileCompleted,
+                            );
+                        }
+                        Err(e) => eprintln!("{}", e),
+                    };
+                }
                 InteractionMessage::Ignore => {}
             },
             Message::ChooseSave(choose_save_msg) => match choose_save_msg {
@@ -231,10 +266,12 @@ impl Application for Bl3Ui {
                     self.choose_save_directory_state.choose_dir_window_open = false;
                     match dir {
                         Ok(dir) => {
+                            self.choose_save_directory_state.saves_dir = dir.clone();
+
                             return Command::perform(
                                 interaction::choose_save_directory::load_files_in_directory(dir),
                                 |files_loaded| {
-                                    Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
+                                    Message::ChooseSave(ChooseSaveMessage::LoadedFiles(
                                         files_loaded,
                                     ))
                                 },
@@ -243,7 +280,7 @@ impl Application for Bl3Ui {
                         Err(e) => eprintln!("{}", e),
                     }
                 }
-                ChooseSaveMessage::FilesLoaded(files_loaded) => match files_loaded {
+                ChooseSaveMessage::LoadedFiles(loaded_files) => match loaded_files {
                     Ok(files) => {
                         self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
                             MainTabBarView::Character,
@@ -258,7 +295,6 @@ impl Application for Bl3Ui {
 
                         match first_file {
                             Bl3FileType::PcSave(s) | Bl3FileType::Ps4Save(s) => {
-                                //TODO: Will this be used?
                                 self.manage_save_state.current_file = s.to_owned();
 
                                 self.manage_save_state.main_state.general_state.guid_input =
@@ -471,6 +507,10 @@ impl Application for Bl3Ui {
                     },
                 },
             },
+            Message::SaveFileCompleted(result) => match result {
+                Ok(_) => println!("Successfully saved file"),
+                Err(e) => eprintln!("{}", e),
+            },
         };
 
         Command::none()
@@ -484,9 +524,19 @@ impl Application for Bl3Ui {
             .width(Length::Fill)
             .horizontal_alignment(HorizontalAlignment::Left);
 
+        let save_button = Button::new(
+            &mut self.save_file_button_state,
+            Text::new("Save").font(JETBRAINS_MONO_BOLD).size(17),
+        )
+        .on_press(InteractionMessage::SaveFilePressed)
+        .padding(10)
+        .style(Bl3UiStyle)
+        .into_element();
+
         let menu_bar = Container::new(
             Row::new()
                 .push(title)
+                .push(save_button)
                 .spacing(25)
                 .align_items(Align::Center),
         )

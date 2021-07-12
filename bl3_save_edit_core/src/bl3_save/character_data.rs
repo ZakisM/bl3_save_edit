@@ -74,7 +74,7 @@ impl CharacterData {
                 character
                     .selected_customizations
                     .par_iter()
-                    .any(|cs| cs.to_lowercase().contains(s.0 .0))
+                    .any(|cs| cs.to_lowercase() == s.0 .0)
             })
             .unwrap_or(available_head_skins[0]);
 
@@ -92,7 +92,7 @@ impl CharacterData {
                 character
                     .selected_customizations
                     .par_iter()
-                    .any(|cs| cs.to_lowercase().contains(s.0 .0))
+                    .any(|cs| cs.to_lowercase() == s.0 .0)
             })
             .unwrap_or(available_character_skins[0]);
 
@@ -104,7 +104,7 @@ impl CharacterData {
                 character
                     .selected_customizations
                     .par_iter()
-                    .any(|cs| cs.to_lowercase().contains(s.0 .0))
+                    .any(|cs| cs.to_lowercase() == s.0 .0)
             })
             .unwrap_or(PROFILE_ECHO_THEMES_DEFAULTS[0]);
 
@@ -314,5 +314,23 @@ impl CharacterData {
             challenge_milestones,
             vehicle_stats,
         })
+    }
+
+    pub fn set_head_skin_selected(&mut self, head_skin_selected: &GameDataKv) {
+        let curr_head_skin_selected = self.head_skin_selected.0 .0;
+        let head_skin_selected_id = head_skin_selected.0 .0.to_owned();
+
+        if let Some(curr_head) = self
+            .character
+            .selected_customizations
+            .iter_mut()
+            .find(|curr| curr_head_skin_selected == curr.to_lowercase())
+        {
+            *curr_head = head_skin_selected_id;
+        } else {
+            self.character
+                .selected_customizations
+                .push(head_skin_selected_id)
+        }
     }
 }

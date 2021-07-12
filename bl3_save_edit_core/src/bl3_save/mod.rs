@@ -1,15 +1,15 @@
-use std::fmt;
-use std::fmt::Formatter;
+use std::io::Write;
 
 use anyhow::Result;
+use byteorder::{LittleEndian, WriteBytesExt};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use crate::bl3_save::character_data::CharacterData;
 use crate::bl3_save::inventory_slot::InventorySlot;
-use crate::file_helper;
 use crate::file_helper::FileData;
 use crate::models::CustomFormatData;
-use crate::parser::{decrypt, HeaderType};
+use crate::parser::{decrypt, encrypt, HeaderType};
+use crate::{file_helper, parser};
 
 pub mod ammo;
 pub mod challenge_data;
@@ -80,10 +80,41 @@ impl Bl3Save {
 
         Self::from_file_data(&file_data, header_type)
     }
+
+    pub fn to_bytes(&self) -> Result<Vec<u8>> {
+        let mut output = Vec::new();
+
+        output.write_all(b"GVAS")?;
+        output.write_u32::<LittleEndian>(self.save_game_version)?;
+        output.write_u32::<LittleEndian>(self.package_version)?;
+        output.write_u16::<LittleEndian>(self.engine_major)?;
+        output.write_u16::<LittleEndian>(self.engine_minor)?;
+        output.write_u16::<LittleEndian>(self.engine_patch)?;
+        output.write_u32::<LittleEndian>(self.engine_build)?;
+        parser::write_str(&mut output, &self.build_id)?;
+        output.write_u32::<LittleEndian>(self.custom_format_version)?;
+        output.write_u32::<LittleEndian>(self.custom_format_data_count)?;
+
+        for cfd in &self.custom_format_data {
+            output.write_all(&cfd.guid)?;
+            output.write_u32::<LittleEndian>(cfd.entry)?;
+        }
+
+        parser::write_str(&mut output, &self.save_game_type)?;
+
+        let mut data = protobuf::Message::write_to_bytes(&self.character_data.character)?;
+
+        encrypt(&mut data, HeaderType::PcSave)?;
+
+        output.write_u32::<LittleEndian>(data.len() as u32)?;
+        output.append(&mut data);
+
+        Ok(output)
+    }
 }
 
-impl fmt::Display for Bl3Save {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Bl3Save {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "Savegame version: {}", self.save_game_version)?;
         writeln!(f, "Package version: {}", self.package_version)?;
         writeln!(
@@ -523,7 +554,7 @@ mod tests {
     #[test]
     fn test_from_data_pc_2() {
         let mut save_file_data =
-            fs::read("./test_files/1.sav").expect("failed to read mut test_file");
+            fs::read("./test_files/test_file_zak.sav").expect("failed to read mut test_file");
         let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::PcSave)
             .expect("failed to read test save");
 

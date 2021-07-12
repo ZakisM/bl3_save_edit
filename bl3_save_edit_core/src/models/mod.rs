@@ -1,5 +1,5 @@
 #[derive(Debug, Clone)]
 pub struct CustomFormatData {
-    pub guid: String,
+    pub guid: Vec<u8>,
     pub entry: u32,
 }

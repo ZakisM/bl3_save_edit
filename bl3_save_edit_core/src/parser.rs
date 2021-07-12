@@ -1,4 +1,5 @@
 use anyhow::{Context, Result};
+use byteorder::{LittleEndian, WriteBytesExt};
 
 use crate::error::BL3ParserError;
 use crate::error::ErrorExt;
@@ -73,6 +74,20 @@ pub fn read_str(i: &[u8]) -> nom::IResult<&[u8], String, BL3ParserError<String>>
     Ok((i, res))
 }
 
+pub fn write_str<T: std::io::Write>(output: &mut T, s: &str) -> Result<()> {
+    let data_len = s.len();
+
+    if s.is_empty() {
+        output.write_u32::<LittleEndian>(1)?;
+    } else {
+        output.write_u32::<LittleEndian>((data_len + 1) as u32)?;
+        output.write_all(s.as_bytes())?;
+        output.write_all(b"\x00")?;
+    }
+
+    Ok(())
+}
+
 pub fn read_custom_format_data(
     i: &[u8],
     fmt_count: u32,
@@ -86,7 +101,7 @@ pub fn read_custom_format_data(
         let (r, entry) = read_int(r)?;
 
         custom_format_data.push(CustomFormatData {
-            guid: format!("{:x?}", guid),
+            guid: guid.to_vec(),
             entry,
         });
 
@@ -135,4 +150,35 @@ pub fn decrypt<T: protobuf::Message>(data: &[u8], header_type: HeaderType) -> Re
     let result: T = protobuf::Message::parse_from_bytes(data)?;
 
     Ok(result)
+}
+
+pub fn encrypt(data: &mut [u8], header_type: HeaderType) -> Result<()> {
+    let (prefix_magic, xor_magic) = match header_type {
+        HeaderType::PcSave => (PC_SAVE_PREFIX_MAGIC, PC_SAVE_XOR_MAGIC),
+        HeaderType::PcProfile => (PC_PROFILE_PREFIX_MAGIC, PC_PROFILE_XOR_MAGIC),
+        HeaderType::Ps4Save => (PS4_SAVE_PREFIX_MAGIC, PS4_SAVE_XOR_MAGIC),
+        HeaderType::Ps4Profile => (PS4_PROFILE_PREFIX_MAGIC, PS4_PROFILE_XOR_MAGIC),
+    };
+
+    for i in 0..data.len() {
+        let b = if i < 32 {
+            prefix_magic.get(i).with_context(|| {
+                format!(
+                    "failed to encrypt save file, could not read PREFIX_MAGIC index for: {:?}",
+                    header_type
+                )
+            })?
+        } else {
+            &data[i - 32]
+        };
+
+        data[i] ^= b ^ xor_magic.get(i % 32).with_context(|| {
+            format!(
+                "failed to encrypt save file, could not read XOR_MAGIC index for: {:?}",
+                header_type
+            )
+        })?;
+    }
+
+    Ok(())
 }

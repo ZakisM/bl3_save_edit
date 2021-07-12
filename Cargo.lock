@@ -135,6 +135,7 @@ name = "bl3_save_edit_core"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "byteorder",
  "csv",
  "encoding_rs",
  "nom",
