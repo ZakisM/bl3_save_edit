@@ -20,7 +20,7 @@ pub mod player_class;
 pub mod sdu;
 pub mod util;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Default)]
 pub struct Bl3Save {
     pub save_game_version: u32,
     pub package_version: u32,

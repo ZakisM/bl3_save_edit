@@ -1,7 +1,7 @@
 use anyhow::{bail, Context, Result};
 use strum::Display;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BorderlandsScienceInfo {
     pub science_level: ScienceLevel,
     pub solves: i32,

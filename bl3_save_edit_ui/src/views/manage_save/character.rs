@@ -28,9 +28,9 @@ pub struct CharacterState {
     pub name_input_state: text_input::State,
     pub player_class_selector: pick_list::State<PlayerClass>,
     pub player_class_selected_class: PlayerClass,
-    pub xp_level_input: usize,
+    pub xp_level_input: i32,
     pub xp_level_input_state: text_input::State,
-    pub xp_points_input: usize,
+    pub xp_points_input: i32,
     pub xp_points_input_state: text_input::State,
     pub skin_state: CharacterSkinState,
     pub gear_state: CharacterGearState,
@@ -61,21 +61,21 @@ pub struct CharacterGearState {
 
 #[derive(Debug, Default)]
 pub struct CharacterSduState {
-    pub backpack_input: usize,
+    pub backpack_input: i32,
     pub backpack_input_state: text_input::State,
-    pub sniper_input: usize,
+    pub sniper_input: i32,
     pub sniper_input_state: text_input::State,
-    pub shotgun_input: usize,
+    pub shotgun_input: i32,
     pub shotgun_input_state: text_input::State,
-    pub pistol_input: usize,
+    pub pistol_input: i32,
     pub pistol_input_state: text_input::State,
-    pub grenade_input: usize,
+    pub grenade_input: i32,
     pub grenade_input_state: text_input::State,
-    pub smg_input: usize,
+    pub smg_input: i32,
     pub smg_input_state: text_input::State,
-    pub assault_rifle_input: usize,
+    pub assault_rifle_input: i32,
     pub assault_rifle_input_state: text_input::State,
-    pub heavy_input: usize,
+    pub heavy_input: i32,
     pub heavy_input_state: text_input::State,
 }
 
@@ -108,21 +108,21 @@ pub enum CharacterGearMessage {
 #[derive(Debug, Clone)]
 pub enum CharacterInteractionMessage {
     NameInputChanged(String),
-    XpLevelInputChanged(usize),
-    XpPointsInputChanged(usize),
+    XpLevelInputChanged(i32),
+    XpPointsInputChanged(i32),
     SduMessage(CharacterInteractionSduMessage),
 }
 
 #[derive(Debug, Clone)]
 pub enum CharacterInteractionSduMessage {
-    BackpackInputChanged(usize),
-    SniperInputChanged(usize),
-    ShotgunInputChanged(usize),
-    PistolInputChanged(usize),
-    GrenadeInputChanged(usize),
-    SmgInputChanged(usize),
-    AssaultRifleInputChanged(usize),
-    HeavyInputChanged(usize),
+    BackpackInputChanged(i32),
+    SniperInputChanged(i32),
+    ShotgunInputChanged(i32),
+    PistolInputChanged(i32),
+    GrenadeInputChanged(i32),
+    SmgInputChanged(i32),
+    AssaultRifleInputChanged(i32),
+    HeavyInputChanged(i32),
 }
 
 struct TooltipStyle;
@@ -229,9 +229,9 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 Tooltip::new(
                     NumberInput::new(
                         &mut character_state.xp_level_input_state,
-                        "1",
                         character_state.xp_level_input,
-                        Some(MAX_CHARACTER_LEVEL),
+                        1,
+                        Some(MAX_CHARACTER_LEVEL as i32),
                         |v| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::Character(
@@ -276,9 +276,9 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 Tooltip::new(
                     NumberInput::new(
                         &mut character_state.xp_points_input_state,
-                        "0",
                         character_state.xp_points_input,
-                        Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0] as usize),
+                        0,
+                        Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0]),
                         |v| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::Character(
@@ -566,22 +566,22 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                         .push(
                             Row::new()
                                 .push(generate_sdu_input!(
-                                    "Shotgun",
+                                    "Heavy",
                                     1,
+                                    SaveSduSlot::Heavy,
+                                    character_state,
+                                    heavy_input,
+                                    heavy_input_state,
+                                    CharacterInteractionSduMessage::HeavyInputChanged
+                                ))
+                                .push(generate_sdu_input!(
+                                    "Shotgun",
+                                    3,
                                     SaveSduSlot::Shotgun,
                                     character_state,
                                     shotgun_input,
                                     shotgun_input_state,
                                     CharacterInteractionSduMessage::ShotgunInputChanged
-                                ))
-                                .push(generate_sdu_input!(
-                                    "Pistol",
-                                    3,
-                                    SaveSduSlot::Pistol,
-                                    character_state,
-                                    pistol_input,
-                                    pistol_input_state,
-                                    CharacterInteractionSduMessage::PistolInputChanged
                                 )),
                         )
                         .push(
@@ -617,13 +617,13 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     CharacterInteractionSduMessage::AssaultRifleInputChanged
                                 ))
                                 .push(generate_sdu_input!(
-                                    "Heavy",
+                                    "Pistol",
                                     3,
-                                    SaveSduSlot::Heavy,
+                                    SaveSduSlot::Pistol,
                                     character_state,
-                                    heavy_input,
-                                    heavy_input_state,
-                                    CharacterInteractionSduMessage::HeavyInputChanged
+                                    pistol_input,
+                                    pistol_input_state,
+                                    CharacterInteractionSduMessage::PistolInputChanged
                                 )),
                         )
                         .spacing(15),
@@ -754,15 +754,15 @@ macro_rules! generate_sdu_input {
                         .font(JETBRAINS_MONO)
                         .size(17)
                         .color(Color::from_rgb8(220, 220, 220))
-                        .width(Length::Units(70)),
+                        .width(Length::Units(120)),
                 )
                 .push(
                     Tooltip::new(
                         NumberInput::new(
                             &mut $character_state.sdu_state.$input_state,
-                            "0",
                             $character_state.sdu_state.$input_value,
-                            Some(maximum as usize),
+                            0,
+                            Some(maximum),
                             |v| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Character(

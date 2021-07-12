@@ -1,12 +1,12 @@
 use strum::{Display, EnumString};
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct ChallengeData {
     pub challenge: Challenge,
     pub unlocked: bool,
 }
 
-#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub enum Challenge {
     #[strum(serialize = "Artifact Slot")]
     ArtifactSlot,

@@ -44,7 +44,7 @@ pub fn read_bytes(data: &[u8]) -> Result<FileData> {
     let remaining_data = &data[data_read..];
 
     if remaining_data.len() != remaining_data_len as usize {
-        bail!("failed to parse the first part of the file");
+        bail!("failed to parse the first part of the file")
     }
 
     Ok(FileData {

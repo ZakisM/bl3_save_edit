@@ -12,14 +12,14 @@ use crate::widgets::text_margin::TextMargin;
 pub struct GeneralState {
     pub guid_input: String,
     pub guid_input_state: text_input::State,
-    pub slot_input: usize,
-    pub slot_state: text_input::State,
+    pub slot_input: u32,
+    pub slot_input_state: text_input::State,
 }
 
 #[derive(Debug, Clone)]
 pub enum GeneralInteractionMessage {
     GuidInputChanged(String),
-    SlotInputChanged(usize),
+    SlotInputChanged(u32),
 }
 
 pub fn view(general_state: &mut GeneralState) -> Container<Message> {
@@ -71,9 +71,9 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
             )
             .push(
                 NumberInput::new(
-                    &mut general_state.slot_state,
-                    "1",
+                    &mut general_state.slot_input_state,
                     general_state.slot_input,
+                    1,
                     None,
                     |v| {
                         InteractionMessage::ManageSaveInteraction(

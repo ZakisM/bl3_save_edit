@@ -3,6 +3,8 @@ use std::path::PathBuf;
 use anyhow::Result;
 use iced::{button, Align, Button, Color, Column, Container, HorizontalAlignment, Length, Text};
 
+use bl3_save_edit_core::file_helper::Bl3FileType;
+
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::interaction::InteractionExt;
@@ -17,6 +19,7 @@ pub struct ChooseSaveDirectoryState {
 #[derive(Debug)]
 pub enum ChooseSaveMessage {
     ChooseDirCompleted(Result<PathBuf>),
+    FilesLoaded(Result<Vec<Bl3FileType>>),
 }
 
 #[derive(Debug, Clone)]

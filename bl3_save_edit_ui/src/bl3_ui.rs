@@ -1,11 +1,12 @@
-use std::sync::Arc;
-
 use iced::{
     Align, Application, Clipboard, Color, Column, Command, Container, Element, HorizontalAlignment,
     Length, Row, Text,
 };
 
+use bl3_save_edit_core::bl3_save::inventory_slot::InventorySlot;
+use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
+use bl3_save_edit_core::file_helper::Bl3FileType;
 
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle};
 use crate::interaction;
@@ -29,6 +30,7 @@ pub struct Bl3Ui {
     view_state: ViewState,
     choose_save_directory_state: ChooseSaveDirectoryState,
     manage_save_state: ManageSaveState,
+    loaded_files: Vec<Bl3FileType>,
 }
 
 #[derive(Debug)]
@@ -62,6 +64,7 @@ impl Application for Bl3Ui {
                 view_state: ViewState::ChooseSaveDirectory,
                 choose_save_directory_state: ChooseSaveDirectoryState::default(),
                 manage_save_state: ManageSaveState::default(),
+                loaded_files: Vec::new(),
             },
             Command::none(),
         )
@@ -133,7 +136,7 @@ impl Application for Bl3Ui {
                         }
                         CharacterInteractionMessage::XpLevelInputChanged(level) => {
                             let xp_points = if level > 0 {
-                                REQUIRED_XP_LIST[level - 1][0] as usize
+                                REQUIRED_XP_LIST[level as usize - 1][0]
                             } else {
                                 0
                             };
@@ -149,7 +152,7 @@ impl Application for Bl3Ui {
                                 .xp_points_input = xp_points;
                         }
                         CharacterInteractionMessage::XpPointsInputChanged(xp) => {
-                            let level = experience_to_level(xp as i32).unwrap_or(0) as usize;
+                            let level = experience_to_level(xp as i32).unwrap_or(0);
 
                             self.manage_save_state
                                 .main_state
@@ -228,20 +231,154 @@ impl Application for Bl3Ui {
                     self.choose_save_directory_state.choose_dir_window_open = false;
                     match dir {
                         Ok(dir) => {
-                            let dir = Arc::new(dir);
-
                             return Command::perform(
-                                interaction::choose_save_directory::load_files_in_directory(
-                                    dir.clone(),
-                                ),
-                                |_| Message::InteractionMessage(InteractionMessage::Ignore),
+                                interaction::choose_save_directory::load_files_in_directory(dir),
+                                |files_loaded| {
+                                    Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
+                                        files_loaded,
+                                    ))
+                                },
                             );
                         }
-                        Err(e) => {
-                            eprintln!("{}", e);
-                        }
+                        Err(e) => eprintln!("{}", e),
                     }
                 }
+                ChooseSaveMessage::FilesLoaded(files_loaded) => match files_loaded {
+                    Ok(files) => {
+                        self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
+                            MainTabBarView::Character,
+                        ));
+
+                        self.loaded_files = files;
+
+                        let first_file = self
+                            .loaded_files
+                            .get(0)
+                            .expect("loaded_files list was empty");
+
+                        match first_file {
+                            Bl3FileType::PcSave(s) | Bl3FileType::Ps4Save(s) => {
+                                //TODO: Will this be used?
+                                self.manage_save_state.current_file = s.to_owned();
+
+                                self.manage_save_state.main_state.general_state.guid_input =
+                                    s.character_data.character.save_game_guid.clone();
+
+                                self.manage_save_state.main_state.general_state.slot_input =
+                                    s.character_data.character.save_game_id;
+
+                                self.manage_save_state.main_state.character_state.name_input =
+                                    s.character_data.character.preferred_character_name.clone();
+
+                                self.manage_save_state
+                                    .main_state
+                                    .character_state
+                                    .player_class_selected_class = s.character_data.player_class;
+
+                                self.manage_save_state
+                                    .main_state
+                                    .character_state
+                                    .xp_level_input = s.character_data.player_level;
+
+                                self.manage_save_state
+                                    .main_state
+                                    .character_state
+                                    .xp_points_input = s.character_data.character.experience_points;
+
+                                self.manage_save_state
+                                    .main_state
+                                    .character_state
+                                    .skin_state
+                                    .head_skin_selected = s.character_data.head_skin_selected;
+
+                                self.manage_save_state
+                                    .main_state
+                                    .character_state
+                                    .skin_state
+                                    .character_skin_selected =
+                                    s.character_data.character_skin_selected;
+
+                                self.manage_save_state
+                                    .main_state
+                                    .character_state
+                                    .skin_state
+                                    .echo_theme_selected = s.character_data.echo_theme_selected;
+
+                                let mut gear_state = std::mem::take(
+                                    &mut self
+                                        .manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .gear_state,
+                                );
+
+                                s.character_data
+                                    .unlockable_inventory_slots
+                                    .iter()
+                                    .for_each(|s| match s.slot {
+                                        InventorySlot::Weapon1 => {
+                                            gear_state.unlock_weapon_1_slot = true;
+                                        }
+                                        InventorySlot::Weapon2 => {
+                                            gear_state.unlock_weapon_2_slot = s.unlocked;
+                                        }
+                                        InventorySlot::Weapon3 => {
+                                            gear_state.unlock_weapon_3_slot = s.unlocked;
+                                        }
+                                        InventorySlot::Weapon4 => {
+                                            gear_state.unlock_weapon_4_slot = s.unlocked;
+                                        }
+                                        InventorySlot::Shield => {
+                                            gear_state.unlock_shield_slot = s.unlocked;
+                                        }
+                                        InventorySlot::Grenade => {
+                                            gear_state.unlock_grenade_slot = s.unlocked;
+                                        }
+                                        InventorySlot::ClassMod => {
+                                            gear_state.unlock_class_mod_slot = s.unlocked;
+                                        }
+                                        InventorySlot::Artifact => {
+                                            gear_state.unlock_artifact_slot = s.unlocked;
+                                        }
+                                    });
+
+                                self.manage_save_state.main_state.character_state.gear_state =
+                                    gear_state;
+
+                                let mut sdu_state = std::mem::take(
+                                    &mut self
+                                        .manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .sdu_state,
+                                );
+
+                                s.character_data
+                                    .sdu_slots
+                                    .iter()
+                                    .for_each(|s| match s.slot {
+                                        SaveSduSlot::Backpack => {
+                                            sdu_state.backpack_input = s.current
+                                        }
+                                        SaveSduSlot::Sniper => sdu_state.sniper_input = s.current,
+                                        SaveSduSlot::Shotgun => sdu_state.shotgun_input = s.current,
+                                        SaveSduSlot::Pistol => sdu_state.pistol_input = s.current,
+                                        SaveSduSlot::Grenade => sdu_state.grenade_input = s.current,
+                                        SaveSduSlot::Smg => sdu_state.smg_input = s.current,
+                                        SaveSduSlot::Ar => {
+                                            sdu_state.assault_rifle_input = s.current
+                                        }
+                                        SaveSduSlot::Heavy => sdu_state.heavy_input = s.current,
+                                    });
+
+                                self.manage_save_state.main_state.character_state.sdu_state =
+                                    sdu_state;
+                            }
+                            Bl3FileType::PcProfile(p) | Bl3FileType::Ps4Profile(p) => (),
+                        }
+                    }
+                    Err(e) => eprintln!("{}", e),
+                },
             },
             Message::ManageSave(manage_save_msg) => match manage_save_msg {
                 ManageSaveMessage::Character(character_msg) => match character_msg {

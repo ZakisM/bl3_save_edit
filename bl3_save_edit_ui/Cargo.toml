@@ -31,6 +31,6 @@ version = "0.21"
 features = ["derive"]
 
 [dependencies.iced]
-git = "https://github.com/hecrj/iced"
-rev = "4994d34"
+git = "https://github.com/ZakisM/iced"
+branch = "bl3_save_edit"
 features = ["tokio", "svg"]

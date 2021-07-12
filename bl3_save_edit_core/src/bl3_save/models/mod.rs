@@ -1,10 +1,10 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Currency {
     Money,
     Eridium,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Playthrough {
     pub mayhem_level: i32,
     pub mayhem_random_seed: i32,

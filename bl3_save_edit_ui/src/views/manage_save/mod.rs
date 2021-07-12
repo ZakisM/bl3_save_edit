@@ -1,3 +1,5 @@
+use bl3_save_edit_core::bl3_save::Bl3Save;
+
 use crate::views::manage_save::character::{CharacterInteractionMessage, CharacterMessage};
 use crate::views::manage_save::general::GeneralInteractionMessage;
 use crate::views::manage_save::main::{MainInteractionMessage, MainState, MainTabBarView};
@@ -9,6 +11,7 @@ pub mod main;
 #[derive(Debug, Default)]
 pub struct ManageSaveState {
     pub main_state: MainState,
+    pub current_file: Bl3Save,
 }
 
 #[derive(Debug)]

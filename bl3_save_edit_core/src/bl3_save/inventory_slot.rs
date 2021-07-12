@@ -1,12 +1,12 @@
 use strum::{Display, EnumString};
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct InventorySlotData {
     pub slot: InventorySlot,
     pub unlocked: bool,
 }
 
-#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub enum InventorySlot {
     #[strum(
         serialize = "/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon1.BPInvSlot_Weapon1",

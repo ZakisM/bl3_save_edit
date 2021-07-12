@@ -15,7 +15,7 @@ use crate::game_data::{
 };
 use crate::protos::oak_profile::Profile;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ProfileData {
     pub profile: Profile,
     pub golden_keys: i32,

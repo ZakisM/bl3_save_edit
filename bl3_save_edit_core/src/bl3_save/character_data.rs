@@ -15,20 +15,25 @@ use crate::bl3_save::util::{
     currency_amount_from_character, experience_to_level, read_playthroughs, IMPORTANT_CHALLENGES,
 };
 use crate::game_data::{
-    VEHICLE_CHASSIS_CYCLONE, VEHICLE_CHASSIS_JETBEAST, VEHICLE_CHASSIS_OUTRUNNER,
-    VEHICLE_CHASSIS_TECHNICAL, VEHICLE_PARTS_CYCLONE, VEHICLE_PARTS_JETBEAST,
-    VEHICLE_PARTS_OUTRUNNER, VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE,
-    VEHICLE_SKINS_JETBEAST, VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
+    GameDataKv, PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_HEADS,
+    PROFILE_HEADS_DEFAULTS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS, VEHICLE_CHASSIS_CYCLONE,
+    VEHICLE_CHASSIS_JETBEAST, VEHICLE_CHASSIS_OUTRUNNER, VEHICLE_CHASSIS_TECHNICAL,
+    VEHICLE_PARTS_CYCLONE, VEHICLE_PARTS_JETBEAST, VEHICLE_PARTS_OUTRUNNER,
+    VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST,
+    VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
 use crate::protos::oak_save::Character;
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Default)]
 pub struct CharacterData {
     pub character: Character,
     pub player_class: PlayerClass,
     pub player_level: i32,
     pub guardian_rank: i32,
+    pub head_skin_selected: GameDataKv,
+    pub character_skin_selected: GameDataKv,
+    pub echo_theme_selected: GameDataKv,
     pub money: i32,
     pub eridium: i32,
     pub playthroughs: Vec<Playthrough>,
@@ -54,6 +59,55 @@ impl CharacterData {
             .as_ref()
             .map(|g| g.guardian_rank)
             .unwrap_or(0);
+
+        let available_head_skins = PROFILE_HEADS_DEFAULTS
+            .par_iter()
+            .cloned()
+            .chain(PROFILE_HEADS)
+            .filter(|h| h.0 .0.contains(&player_class.to_string().to_lowercase()))
+            .collect::<Vec<_>>();
+
+        let head_skin_selected = available_head_skins
+            .par_iter()
+            .cloned()
+            .find_first(|s| {
+                character
+                    .selected_customizations
+                    .par_iter()
+                    .any(|cs| cs.to_lowercase().contains(s.0 .0))
+            })
+            .unwrap_or(available_head_skins[0]);
+
+        let available_character_skins = PROFILE_SKINS_DEFAULTS
+            .par_iter()
+            .cloned()
+            .chain(PROFILE_SKINS)
+            .filter(|h| h.0 .0.contains(&player_class.to_string().to_lowercase()))
+            .collect::<Vec<_>>();
+
+        let character_skin_selected = available_character_skins
+            .par_iter()
+            .cloned()
+            .find_first(|s| {
+                character
+                    .selected_customizations
+                    .par_iter()
+                    .any(|cs| cs.to_lowercase().contains(s.0 .0))
+            })
+            .unwrap_or(available_character_skins[0]);
+
+        let echo_theme_selected = PROFILE_ECHO_THEMES_DEFAULTS
+            .par_iter()
+            .cloned()
+            .chain(PROFILE_ECHO_THEMES)
+            .find_first(|s| {
+                character
+                    .selected_customizations
+                    .par_iter()
+                    .any(|cs| cs.to_lowercase().contains(s.0 .0))
+            })
+            .unwrap_or(PROFILE_ECHO_THEMES_DEFAULTS[0]);
+
         let money = currency_amount_from_character(&character, &Currency::Money);
         let eridium = currency_amount_from_character(&character, &Currency::Eridium);
         let playthroughs = read_playthroughs(&character)?;
@@ -248,6 +302,9 @@ impl CharacterData {
             player_class,
             player_level,
             guardian_rank,
+            head_skin_selected,
+            character_skin_selected,
+            echo_theme_selected,
             money,
             eridium,
             playthroughs,

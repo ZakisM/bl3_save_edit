@@ -1,13 +1,13 @@
 use strum::{Display, EnumString};
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct SaveSduSlotData {
     pub slot: SaveSduSlot,
     pub current: i32,
     pub max: i32,
 }
 
-#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub enum SaveSduSlot {
     #[strum(
         serialize = "/Game/Pickups/SDU/SDU_Backpack.SDU_Backpack",

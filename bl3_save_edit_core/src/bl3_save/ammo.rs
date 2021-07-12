@@ -1,12 +1,12 @@
 use strum::{Display, EnumString};
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct AmmoPoolData {
     pub ammo: Ammo,
     pub current: usize,
 }
 
-#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub enum Ammo {
     #[strum(
         serialize = "/Game/GameData/Weapons/Ammo/Resource_Ammo_Grenade.Resource_Ammo_Grenade",

@@ -1,8 +1,7 @@
 use std::ffi::OsStr;
 use std::path::PathBuf;
-use std::sync::Arc;
 
-use anyhow::{Context, Result};
+use anyhow::{bail, Context, Result};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
@@ -57,7 +56,7 @@ pub async fn choose() -> Result<PathBuf> {
     Ok(res)
 }
 
-pub async fn load_files_in_directory(dir: Arc<PathBuf>) -> Result<()> {
+pub async fn load_files_in_directory(dir: PathBuf) -> Result<Vec<Bl3FileType>> {
     let start_time = tokio::time::Instant::now();
 
     let mut dirs = tokio::fs::read_dir(&*dir).await?;
@@ -92,6 +91,10 @@ pub async fn load_files_in_directory(dir: Arc<PathBuf>) -> Result<()> {
     })
     .await;
 
+    if all_files.is_empty() {
+        bail!("no valid files were found")
+    }
+
     if let Some(end_time) = tokio::time::Instant::now().checked_duration_since(start_time) {
         println!(
             "Read {} files in {} milliseconds",
@@ -100,22 +103,22 @@ pub async fn load_files_in_directory(dir: Arc<PathBuf>) -> Result<()> {
         );
     }
 
-    for file in all_files {
-        match file {
-            Bl3FileType::PcSave(f) | Bl3FileType::Ps4Save(f) => println!(
-                "Save: {} ({}) - Level {}",
-                f.character_data.character.preferred_character_name,
-                f.character_data.player_class,
-                f.character_data.player_level
-            ),
-            Bl3FileType::PcProfile(f) | Bl3FileType::Ps4Profile(f) => {
-                println!(
-                    "Profile: Golden Keys: {}/Guardian Rank: {}",
-                    f.profile_data.golden_keys, f.profile_data.guardian_rank
-                );
-            }
-        }
-    }
+    // for file in all_files {
+    //     match file {
+    //         Bl3FileType::PcSave(f) | Bl3FileType::Ps4Save(f) => println!(
+    //             "Save: {} ({}) - Level {}",
+    //             f.character_data.character.preferred_character_name,
+    //             f.character_data.player_class,
+    //             f.character_data.player_level
+    //         ),
+    //         Bl3FileType::PcProfile(f) | Bl3FileType::Ps4Profile(f) => {
+    //             println!(
+    //                 "Profile: Golden Keys: {}/Guardian Rank: {}",
+    //                 f.profile_data.golden_keys, f.profile_data.guardian_rank
+    //             );
+    //         }
+    //     }
+    // }
 
-    Ok(())
+    Ok(all_files)
 }

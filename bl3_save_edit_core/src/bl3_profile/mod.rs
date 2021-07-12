@@ -21,7 +21,7 @@ pub mod science_levels;
 pub mod sdu;
 pub mod util;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Bl3Profile {
     pub profile_version: u32,
     pub package_version: u32,
