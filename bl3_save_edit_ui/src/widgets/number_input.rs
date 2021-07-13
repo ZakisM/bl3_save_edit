@@ -23,7 +23,7 @@ impl<'a> NumberInput<'a> {
 
         let input = TextInput::new(state, &minimum_value_s, &value.to_string(), move |s| {
             let value = if s.is_empty() {
-                return InteractionMessage::Ignore;
+                minimum_value
             } else if let Ok(v) = s.parse::<V>() {
                 if v < minimum_value {
                     return InteractionMessage::Ignore;

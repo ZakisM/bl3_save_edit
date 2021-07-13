@@ -1,7 +1,7 @@
 use bl3_save_edit_core::bl3_save::Bl3Save;
 
 use crate::views::manage_save::character::{CharacterInteractionMessage, CharacterMessage};
-use crate::views::manage_save::general::GeneralInteractionMessage;
+use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
 use crate::views::manage_save::main::{MainInteractionMessage, MainState, MainTabBarView};
 
 pub mod character;
@@ -16,6 +16,7 @@ pub struct ManageSaveState {
 
 #[derive(Debug)]
 pub enum ManageSaveMessage {
+    General(GeneralMessage),
     Character(CharacterMessage),
 }
 

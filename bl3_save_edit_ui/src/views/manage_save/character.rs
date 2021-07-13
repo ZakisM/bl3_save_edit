@@ -1,6 +1,6 @@
 use iced::{
-    container, pick_list, text_input, tooltip, Align, Checkbox, Color, Column, Container, Length,
-    PickList, Row, TextInput, Tooltip,
+    button, pick_list, text_input, tooltip, Align, Button, Checkbox, Color, Column, Container,
+    Length, PickList, Row, Text, TextInput, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
@@ -12,9 +12,9 @@ use bl3_save_edit_core::game_data::{
 };
 
 use crate::bl3_ui::{InteractionMessage, Message};
-use crate::bl3_ui_style::Bl3UiStyle;
+use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::interaction::InteractionExt;
-use crate::resources::fonts::JETBRAINS_MONO;
+use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveMessage};
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
@@ -35,6 +35,7 @@ pub struct CharacterState {
     pub skin_state: CharacterSkinState,
     pub gear_state: CharacterGearState,
     pub sdu_state: CharacterSduState,
+    pub max_sdu_slots_button_state: button::State,
 }
 
 #[derive(Debug, Default)]
@@ -111,6 +112,7 @@ pub enum CharacterInteractionMessage {
     XpLevelInputChanged(i32),
     XpPointsInputChanged(i32),
     SduMessage(CharacterInteractionSduMessage),
+    MaxSduSlotsPressed,
 }
 
 #[derive(Debug, Clone)]
@@ -123,20 +125,6 @@ pub enum CharacterInteractionSduMessage {
     SmgInputChanged(i32),
     AssaultRifleInputChanged(i32),
     HeavyInputChanged(i32),
-}
-
-struct TooltipStyle;
-
-impl container::StyleSheet for TooltipStyle {
-    fn style(&self) -> container::Style {
-        container::Style {
-            text_color: Some(Color::from_rgb8(220, 220, 220)),
-            background: Color::from_rgb8(35, 35, 35).into(),
-            border_width: 1.0,
-            border_radius: 1.0,
-            border_color: Color::from_rgb8(45, 45, 45),
-        }
-    }
 }
 
 pub fn view(character_state: &mut CharacterState) -> Container<Message> {
@@ -253,7 +241,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 .padding(10)
                 .font(JETBRAINS_MONO)
                 .size(17)
-                .style(TooltipStyle),
+                .style(Bl3UiTooltipStyle),
             )
             .spacing(15)
             .align_items(Align::Center),
@@ -300,7 +288,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 .padding(10)
                 .font(JETBRAINS_MONO)
                 .size(17)
-                .style(TooltipStyle),
+                .style(Bl3UiTooltipStyle),
             )
             .spacing(15)
             .align_items(Align::Center),
@@ -546,7 +534,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                             Row::new()
                                 .push(generate_sdu_input!(
                                     "Backpack",
-                                    1,
+                                    0,
                                     SaveSduSlot::Backpack,
                                     character_state,
                                     backpack_input,
@@ -555,7 +543,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 ))
                                 .push(generate_sdu_input!(
                                     "Sniper",
-                                    3,
+                                    4,
                                     SaveSduSlot::Sniper,
                                     character_state,
                                     sniper_input,
@@ -567,7 +555,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                             Row::new()
                                 .push(generate_sdu_input!(
                                     "Heavy",
-                                    1,
+                                    0,
                                     SaveSduSlot::Heavy,
                                     character_state,
                                     heavy_input,
@@ -576,7 +564,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 ))
                                 .push(generate_sdu_input!(
                                     "Shotgun",
-                                    3,
+                                    4,
                                     SaveSduSlot::Shotgun,
                                     character_state,
                                     shotgun_input,
@@ -588,7 +576,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                             Row::new()
                                 .push(generate_sdu_input!(
                                     "Grenade",
-                                    1,
+                                    0,
                                     SaveSduSlot::Grenade,
                                     character_state,
                                     grenade_input,
@@ -597,7 +585,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 ))
                                 .push(generate_sdu_input!(
                                     "SMG",
-                                    3,
+                                    4,
                                     SaveSduSlot::Smg,
                                     character_state,
                                     smg_input,
@@ -609,7 +597,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                             Row::new()
                                 .push(generate_sdu_input!(
                                     "AR",
-                                    1,
+                                    0,
                                     SaveSduSlot::Ar,
                                     character_state,
                                     assault_rifle_input,
@@ -618,7 +606,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 ))
                                 .push(generate_sdu_input!(
                                     "Pistol",
-                                    3,
+                                    4,
                                     SaveSduSlot::Pistol,
                                     character_state,
                                     pistol_input,
@@ -626,9 +614,29 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     CharacterInteractionSduMessage::PistolInputChanged
                                 )),
                         )
+                        .push(
+                            Container::new(
+                                Button::new(
+                                    &mut character_state.max_sdu_slots_button_state,
+                                    Text::new("Max All SDU Levels")
+                                        .font(JETBRAINS_MONO_BOLD)
+                                        .size(17),
+                                )
+                                .on_press(InteractionMessage::ManageSaveInteraction(
+                                    ManageSaveInteractionMessage::Character(
+                                        CharacterInteractionMessage::MaxSduSlotsPressed,
+                                    ),
+                                ))
+                                .padding(10)
+                                .style(Bl3UiStyle)
+                                .into_element(),
+                            )
+                            .padding(5),
+                        )
+                        .align_items(Align::Center)
                         .spacing(15),
                 )
-                .padding(15)
+                .padding(20)
                 .style(Bl3UiStyle),
             ),
     )
@@ -750,51 +758,48 @@ macro_rules! generate_sdu_input {
     ($name:literal, $text_margin:literal, $sdu_slot_type:path, $character_state:path, $input_value:ident, $input_state:ident, $input_message:path) => {{
         let maximum = $sdu_slot_type.maximum();
 
-        Container::new(
-            Row::new()
-                .push(
-                    TextMargin::new($name, $text_margin)
-                        .0
-                        .font(JETBRAINS_MONO)
-                        .size(17)
-                        .color(Color::from_rgb8(220, 220, 220))
-                        .width(Length::Units(120)),
-                )
-                .push(
-                    Tooltip::new(
-                        NumberInput::new(
-                            &mut $character_state.sdu_state.$input_state,
-                            $character_state.sdu_state.$input_value,
-                            0,
-                            Some(maximum),
-                            |v| {
-                                InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::Character(
-                                        CharacterInteractionMessage::SduMessage($input_message(v)),
-                                    ),
-                                )
-                            },
-                        )
-                        .0
-                        .width(Length::Fill)
-                        .font(JETBRAINS_MONO)
-                        .padding(10)
-                        .size(17)
-                        .style(Bl3UiStyle)
-                        .into_element(),
-                        format!("Level must be between 0 and {}", maximum),
-                        tooltip::Position::Top,
-                    )
-                    .gap(10)
-                    .padding(10)
+        Row::new()
+            .push(
+                TextMargin::new($name, $text_margin)
+                    .0
                     .font(JETBRAINS_MONO)
                     .size(17)
-                    .style(TooltipStyle),
+                    .color(Color::from_rgb8(220, 220, 220))
+                    .width(Length::FillPortion(8)),
+            )
+            .push(
+                Tooltip::new(
+                    NumberInput::new(
+                        &mut $character_state.sdu_state.$input_state,
+                        $character_state.sdu_state.$input_value,
+                        0,
+                        Some(maximum),
+                        |v| {
+                            InteractionMessage::ManageSaveInteraction(
+                                ManageSaveInteractionMessage::Character(
+                                    CharacterInteractionMessage::SduMessage($input_message(v)),
+                                ),
+                            )
+                        },
+                    )
+                    .0
+                    .width(Length::FillPortion(3))
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                    format!("Level must be between 0 and {}", maximum),
+                    tooltip::Position::Top,
                 )
-                .spacing(15)
-                .width(Length::Fill)
-                .align_items(Align::Center),
-        )
-        .width(Length::Fill)
+                .gap(10)
+                .padding(10)
+                .font(JETBRAINS_MONO)
+                .size(17)
+                .style(Bl3UiTooltipStyle),
+            )
+            // .spacing(15)
+            .width(Length::Fill)
+            .align_items(Align::Center)
     }};
 }

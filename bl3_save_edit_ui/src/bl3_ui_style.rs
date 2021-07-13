@@ -162,3 +162,17 @@ impl container::StyleSheet for Bl3UiContentStyle {
         }
     }
 }
+
+pub struct Bl3UiTooltipStyle;
+
+impl container::StyleSheet for Bl3UiTooltipStyle {
+    fn style(&self) -> container::Style {
+        container::Style {
+            text_color: Some(Color::from_rgb8(220, 220, 220)),
+            background: Color::from_rgb8(35, 35, 35).into(),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(45, 45, 45),
+        }
+    }
+}

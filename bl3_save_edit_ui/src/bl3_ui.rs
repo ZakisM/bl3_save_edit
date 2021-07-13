@@ -19,7 +19,7 @@ use crate::views::manage_save::character::{
     CharacterGearMessage, CharacterInteractionMessage, CharacterInteractionSduMessage,
     CharacterMessage, CharacterSkinMessage,
 };
-use crate::views::manage_save::general::GeneralInteractionMessage;
+use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
 use crate::views::manage_save::main::{MainInteractionMessage, MainTabBarView};
 use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
@@ -136,6 +136,16 @@ impl Application for Bl3Ui {
                         GeneralInteractionMessage::SlotInputChanged(slot_input) => {
                             self.manage_save_state.main_state.general_state.slot_input = slot_input;
                         }
+                        GeneralInteractionMessage::GenerateGuidPressed => {
+                            return Command::perform(
+                                interaction::manage_save::general::generate_random_guid(),
+                                |r| {
+                                    Message::ManageSave(ManageSaveMessage::General(
+                                        GeneralMessage::GenerateRandomGuidCompleted(r),
+                                    ))
+                                },
+                            );
+                        }
                     },
                     ManageSaveInteractionMessage::Character(character_msg) => match character_msg {
                         CharacterInteractionMessage::NameInputChanged(name_input) => {
@@ -230,6 +240,55 @@ impl Application for Bl3Ui {
                                     .heavy_input = level;
                             }
                         },
+                        CharacterInteractionMessage::MaxSduSlotsPressed => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .sdu_state
+                                .backpack_input = SaveSduSlot::Backpack.maximum();
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .sdu_state
+                                .sniper_input = SaveSduSlot::Sniper.maximum();
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .sdu_state
+                                .shotgun_input = SaveSduSlot::Shotgun.maximum();
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .sdu_state
+                                .pistol_input = SaveSduSlot::Pistol.maximum();
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .sdu_state
+                                .grenade_input = SaveSduSlot::Grenade.maximum();
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .sdu_state
+                                .smg_input = SaveSduSlot::Smg.maximum();
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .sdu_state
+                                .assault_rifle_input = SaveSduSlot::Ar.maximum();
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .sdu_state
+                                .heavy_input = SaveSduSlot::Heavy.maximum();
+                        }
                     },
                 },
                 InteractionMessage::SaveFilePressed => {
@@ -417,6 +476,11 @@ impl Application for Bl3Ui {
                 },
             },
             Message::ManageSave(manage_save_msg) => match manage_save_msg {
+                ManageSaveMessage::General(general_msg) => match general_msg {
+                    GeneralMessage::GenerateRandomGuidCompleted(guid) => {
+                        self.manage_save_state.main_state.general_state.guid_input = guid;
+                    }
+                },
                 ManageSaveMessage::Character(character_msg) => match character_msg {
                     CharacterMessage::PlayerClassSelected(player_class) => {
                         self.manage_save_state

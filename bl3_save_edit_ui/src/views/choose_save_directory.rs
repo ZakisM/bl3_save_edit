@@ -41,7 +41,7 @@ pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Conta
             .font(JETBRAINS_MONO_BOLD)
             .size(18),
     )
-    .padding(5)
+    .padding(10)
     .style(Bl3UiStyle);
 
     if !choose_save_directory_state.choose_dir_window_open {
