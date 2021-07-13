@@ -21,7 +21,13 @@ impl<'a> NumberInput<'a> {
     {
         let minimum_value_s = minimum_value.to_string();
 
-        let input = TextInput::new(state, &minimum_value_s, &value.to_string(), move |s| {
+        let value_s = if value < minimum_value {
+            minimum_value_s.clone()
+        } else {
+            value.to_string()
+        };
+
+        let input = TextInput::new(state, &minimum_value_s, &value_s, move |s| {
             let value = if s.is_empty() {
                 minimum_value
             } else if let Ok(v) = s.parse::<V>() {

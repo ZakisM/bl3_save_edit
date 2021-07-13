@@ -503,7 +503,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                             .text_size(17)
                             .style(Bl3UiStyle),
                         )
-                        .spacing(20),
+                        .spacing(15),
                 )
                 .width(Length::Fill)
                 .padding(15)
@@ -715,7 +715,7 @@ macro_rules! generate_skin_pick_list {
             {
                 Some(class_available_skins[0])
             }
-            k => Some(k),
+            current => Some(current),
         };
 
         Container::new(
@@ -798,7 +798,6 @@ macro_rules! generate_sdu_input {
                 .size(17)
                 .style(Bl3UiTooltipStyle),
             )
-            // .spacing(15)
             .width(Length::Fill)
             .align_items(Align::Center)
     }};

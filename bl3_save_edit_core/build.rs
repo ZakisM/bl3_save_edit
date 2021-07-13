@@ -188,7 +188,7 @@ impl<const LENGTH: usize> GameDataExt for [GameDataKv; LENGTH] {{
     }}
 }}
 
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq)]
 pub struct GameDataKv {{
     pub ident: &'static str,
     pub name: &'static str,
@@ -216,7 +216,13 @@ impl std::cmp::PartialOrd for GameDataKv {{
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {{
         Some(self.cmp(other))
     }}
-}} "#,
+}}
+
+impl std::cmp::PartialEq for GameDataKv {{
+    fn eq(&self, other: &Self) -> bool {{
+        self.name == other.name
+    }}
+}}"#,
     )?;
 
     Ok(())
