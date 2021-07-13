@@ -197,13 +197,13 @@ pub fn read_playthroughs(character: &Character) -> Result<Vec<Playthrough>> {
                 .context("failed to read character active missions")?;
 
             let mut active_missions = get_filtered_mission_list(
-                MISSION,
+                *MISSION,
                 mission_playthrough_data,
                 MissionStatusPlayerSaveGameData_MissionState::MS_Active,
             );
 
             let mut missions_completed = get_filtered_mission_list(
-                MISSION,
+                *MISSION,
                 mission_playthrough_data,
                 MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
             );
@@ -242,8 +242,8 @@ fn get_filtered_mission_list<const LENGTH: usize>(
         .map(|ms| {
             all_missions
                 .iter()
-                .find(|gd| ms.mission_class_path.contains(gd.0 .0))
-                .map(|gd| gd.0 .1.to_string())
+                .find(|gd| ms.mission_class_path.contains(gd.ident))
+                .map(|gd| gd.name.to_string())
                 .unwrap_or_else(|| ms.mission_class_path.to_owned())
         })
         .collect()

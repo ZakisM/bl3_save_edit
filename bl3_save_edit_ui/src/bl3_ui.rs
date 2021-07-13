@@ -533,16 +533,19 @@ impl Application for Bl3Ui {
         .style(Bl3UiStyle)
         .into_element();
 
-        let menu_bar = Container::new(
-            Row::new()
-                .push(title)
-                .push(save_button)
-                .spacing(25)
-                .align_items(Align::Center),
-        )
-        .padding(20)
-        .width(Length::Fill)
-        .style(Bl3UiMenuBarStyle);
+        let mut menu_bar_content = Row::new()
+            .push(title)
+            .spacing(25)
+            .align_items(Align::Center);
+
+        if self.view_state != ViewState::ChooseSaveDirectory {
+            menu_bar_content = menu_bar_content.push(save_button);
+        }
+
+        let menu_bar = Container::new(menu_bar_content)
+            .padding(20)
+            .width(Length::Fill)
+            .style(Bl3UiMenuBarStyle);
 
         let content = match &self.view_state {
             ViewState::ChooseSaveDirectory => {

@@ -105,7 +105,7 @@ fn gen_game_data_kv(input_name: &str) -> Result<String> {
 
     writeln!(
         output,
-        "pub const {}: [GameDataKv; {}] = [",
+        "pub static {}: Lazy<[GameDataKv; {}]> = Lazy::new(|| {{[",
         input_array_name,
         records.len()
     )?;
@@ -113,12 +113,12 @@ fn gen_game_data_kv(input_name: &str) -> Result<String> {
     for record in records {
         writeln!(
             output,
-            r#"{:>4}GameDataKv(("{}", "{}")),"#,
+            r#"{:>4}GameDataKv::new("{}", "{}"),"#,
             " ", record.key, record.value
         )?;
     }
 
-    writeln!(output, "];")?;
+    writeln!(output, "]}});")?;
 
     Ok(output)
 }
@@ -164,12 +164,13 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
         .truncate(true)
         .open("src/game_data/mod.rs")?;
 
+    writeln!(output, "use std::fmt::Formatter;\n")?;
     writeln!(output, "use anyhow::{{Context, Result}};")?;
+    writeln!(output, "use once_cell::sync::Lazy;")?;
     writeln!(
         output,
         "use rayon::iter::{{IntoParallelRefIterator, ParallelIterator}};\n"
     )?;
-    writeln!(output, "use std::fmt::Formatter;")?;
 
     for input in input_data {
         writeln!(output, "{}", input)?;
@@ -183,22 +184,31 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
 
 impl<const LENGTH: usize> GameDataExt for [GameDataKv; LENGTH] {{
     fn get_value_by_key(&self, key: &str) -> Result<&str> {{
-        self.par_iter().find_first(|gd| key == gd.0 .0).map(|gd| gd.0 .1).with_context(|| format!("failed to find game data value for: {{}}", key))
+        self.par_iter().find_first(|gd| key == gd.ident).map(|gd| gd.name).with_context(|| format!("failed to find game data value for: {{}}", key))
     }}
 }}
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct GameDataKv(pub (&'static str, &'static str));
+pub struct GameDataKv {{
+    pub ident: &'static str,
+    pub name: &'static str,
+}}
+
+impl GameDataKv {{
+    pub fn new(ident: &'static str, name: &'static str) -> Self {{
+        GameDataKv {{ ident, name }}
+    }}
+}}
 
 impl std::fmt::Display for GameDataKv {{
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {{
-        write!(f, "{{}}", self.0.1)
+        write!(f, "{{}}", self.name)
     }}
 }}
 
 impl std::cmp::Ord for GameDataKv {{
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {{
-        self.0.1.cmp(&other.0.1)
+        self.name.cmp(&other.name)
     }}
 }}
 

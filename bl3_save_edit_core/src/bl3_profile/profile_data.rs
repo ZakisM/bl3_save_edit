@@ -126,16 +126,16 @@ impl ProfileData {
             let uc = &uc.as_str();
 
             match uc {
-                uc if PROFILE_SKINS.iter().any(|gd| gd.0 .0 == *uc) => {
+                uc if PROFILE_SKINS.iter().any(|gd| gd.ident == *uc) => {
                     character_skins_unlocked += 1;
                 }
-                uc if PROFILE_HEADS.iter().any(|gd| gd.0 .0 == *uc) => {
+                uc if PROFILE_HEADS.iter().any(|gd| gd.ident == *uc) => {
                     character_heads_unlocked += 1;
                 }
-                uc if PROFILE_ECHO_THEMES.iter().any(|gd| gd.0 .0 == *uc) => {
+                uc if PROFILE_ECHO_THEMES.iter().any(|gd| gd.ident == *uc) => {
                     echo_themes_unlocked += 1;
                 }
-                uc if PROFILE_EMOTES.iter().any(|gd| gd.0 .0 == *uc) => {
+                uc if PROFILE_EMOTES.iter().any(|gd| gd.ident == *uc) => {
                     profile_emotes_unlocked += 1;
                 }
                 _ => (),
@@ -157,7 +157,7 @@ impl ProfileData {
                     uic_hash
                         if PROFILE_WEAPON_SKINS
                             .par_iter()
-                            .map(|gd| get_checksum_hash(gd.0 .0).unwrap_or(0))
+                            .map(|gd| get_checksum_hash(gd.ident).unwrap_or(0))
                             .any(|hash| hash == uic_hash as usize) =>
                     {
                         weapon_skins_unlocked += 1;
@@ -165,7 +165,7 @@ impl ProfileData {
                     uic_hash
                         if PROFILE_WEAPON_TRINKETS
                             .par_iter()
-                            .map(|gd| get_checksum_hash(gd.0 .0).unwrap_or(0))
+                            .map(|gd| get_checksum_hash(gd.ident).unwrap_or(0))
                             .any(|hash| hash == uic_hash as usize) =>
                     {
                         weapon_trinkets_unlocked += 1;

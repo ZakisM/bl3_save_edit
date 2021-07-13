@@ -62,10 +62,10 @@ impl CharacterData {
 
         let available_head_skins = PROFILE_HEADS_DEFAULTS
             .par_iter()
+            .chain(PROFILE_HEADS.par_iter())
             .cloned()
-            .chain(PROFILE_HEADS)
             .filter(|h| {
-                h.0 .0
+                h.ident
                     .to_lowercase()
                     .contains(&player_class.to_string().to_lowercase())
             })
@@ -78,16 +78,16 @@ impl CharacterData {
                 character
                     .selected_customizations
                     .par_iter()
-                    .any(|cs| cs == s.0 .0)
+                    .any(|cs| cs == s.ident)
             })
             .unwrap_or(available_head_skins[0]);
 
         let available_character_skins = PROFILE_SKINS_DEFAULTS
             .par_iter()
+            .chain(PROFILE_SKINS.par_iter())
             .cloned()
-            .chain(PROFILE_SKINS)
             .filter(|h| {
-                h.0 .0
+                h.ident
                     .to_lowercase()
                     .contains(&player_class.to_string().to_lowercase())
             })
@@ -100,19 +100,19 @@ impl CharacterData {
                 character
                     .selected_customizations
                     .par_iter()
-                    .any(|cs| cs == s.0 .0)
+                    .any(|cs| cs == s.ident)
             })
             .unwrap_or(available_character_skins[0]);
 
         let echo_theme_selected = PROFILE_ECHO_THEMES_DEFAULTS
             .par_iter()
+            .chain(PROFILE_ECHO_THEMES.par_iter())
             .cloned()
-            .chain(PROFILE_ECHO_THEMES)
             .find_first(|s| {
                 character
                     .selected_customizations
                     .par_iter()
-                    .any(|cs| cs == s.0 .0)
+                    .any(|cs| cs == s.ident)
             })
             .unwrap_or(PROFILE_ECHO_THEMES_DEFAULTS[0]);
 
@@ -327,8 +327,8 @@ impl CharacterData {
     }
 
     pub fn set_head_skin_selected(&mut self, head_skin_selected: &GameDataKv) {
-        let curr_head_skin_selected = self.head_skin_selected.0 .0;
-        let head_skin_selected_id = head_skin_selected.0 .0.to_owned();
+        let curr_head_skin_selected = self.head_skin_selected.ident;
+        let head_skin_selected_id = head_skin_selected.ident.to_owned();
 
         if let Some(curr_head) = self
             .character

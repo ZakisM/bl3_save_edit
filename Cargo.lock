@@ -139,6 +139,7 @@ dependencies = [
  "csv",
  "encoding_rs",
  "nom",
+ "once_cell",
  "protobuf",
  "protobuf-codegen-pure",
  "rayon",
@@ -163,6 +164,7 @@ dependencies = [
  "strum",
  "tokio",
  "tokio-rayon",
+ "uuid",
 ]
 
 [[package]]

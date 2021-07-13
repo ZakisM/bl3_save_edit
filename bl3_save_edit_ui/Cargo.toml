@@ -13,6 +13,7 @@ rayon = "1.5"
 tokio-rayon = "2.1"
 futures = "0.3"
 anyhow = "1.0"
+uuid = "0.8"
 
 # Version 0.5.5 is not working on MacOS for some reason but 0.4.4 works.
 # Can't use 0.4.4 on Windows as default_dir not working hence diff versions

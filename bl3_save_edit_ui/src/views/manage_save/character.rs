@@ -659,8 +659,8 @@ macro_rules! generate_skin_pick_list {
     ($name:literal, $name_width:literal, $character_state:path, $default_skin_list:path, $skin_list:path, $selector_state:ident, $selected_skin:ident, $message:path) => {{
         let class_available_skins = $default_skin_list
             .iter()
+            .chain($skin_list.iter())
             .cloned()
-            .chain($skin_list)
             .collect::<Vec<_>>();
 
         generate_skin_pick_list!(
@@ -676,10 +676,10 @@ macro_rules! generate_skin_pick_list {
     ($name:literal, $name_width:literal, $character_state:path, $selected_class:path, $default_skin_list:path, $skin_list:path, $selector_state:ident, $selected_skin:ident, $message:path) => {{
         let class_available_skins = $default_skin_list
             .iter()
+            .chain($skin_list.iter())
             .cloned()
-            .chain($skin_list)
             .filter(|h| {
-                h.0 .0
+                h.ident
                     .to_lowercase()
                     .contains(&$selected_class.to_string().to_lowercase())
             })
@@ -700,8 +700,8 @@ macro_rules! generate_skin_pick_list {
         class_available_skins.sort();
 
         let pre_selected_skin = match $character_state.skin_state.$selected_skin {
-            GameDataKv((k, _))
-                if k.is_empty()
+            GameDataKv { ident, name: _ }
+                if ident.is_empty()
                     || !class_available_skins
                         .contains(&$character_state.skin_state.$selected_skin) =>
             {
