@@ -678,7 +678,11 @@ macro_rules! generate_skin_pick_list {
             .iter()
             .cloned()
             .chain($skin_list)
-            .filter(|h| h.0 .0.contains(&$selected_class.to_string().to_lowercase()))
+            .filter(|h| {
+                h.0 .0
+                    .to_lowercase()
+                    .contains(&$selected_class.to_string().to_lowercase())
+            })
             .collect::<Vec<_>>();
 
         generate_skin_pick_list!(

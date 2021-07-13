@@ -10,6 +10,174 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/bl3_save_edit_core/game_data/MISSION.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_ECHO_THEMES.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_ECHO_THEMES_DEFAULTS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_EMOTES.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_EMOTES_DEFAULTS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_HEADS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_HEADS_DEFAULTS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_ROOM_DECORATIONS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_SKINS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_SKINS_DEFAULTS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_WEAPON_SKINS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/PROFILE_WEAPON_TRINKETS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_CHASSIS_CYCLONE.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_CHASSIS_JETBEAST.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_CHASSIS_OUTRUNNER.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_CHASSIS_TECHNICAL.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_PARTS_CYCLONE.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_PARTS_JETBEAST.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_PARTS_OUTRUNNER.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_PARTS_TECHNICAL.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_SKINS_CYCLONE.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_SKINS_JETBEAST.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_SKINS_OUTRUNNER.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/game_data/VEHICLE_SKINS_TECHNICAL.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\bl3_save_edit_core\game_data\PROFILE_ECHO_THEMES.csv">
           <value>
             <Attribute>

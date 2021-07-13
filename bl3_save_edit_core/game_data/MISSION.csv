@@ -1,208 +1,208 @@
-/game/missions/plot/mission_ep01_childrenofthevault,Children of the Vault
-/game/missions/plot/mission_ep02_sacrifice,From the Ground Up
-/game/missions/plot/mission_ep03_getvaultmap,Cult Following
-/game/missions/plot/mission_ep04_earnspaceship,Taking Flight
-/game/missions/plot/mission_ep05_overcomehqblockade,Hostile Takeover
-/game/missions/plot/mission_ep05_sanctuary,Sanctuary
-/game/missions/plot/mission_ep06_meetmaya,The Impending Storm
-/game/missions/plot/mission_ep08_orbitalplatform,Space-Laser Tag
-/game/missions/plot/mission_ep09_atlashq,"Atlas, At Last"
-/game/missions/plot/mission_ep10_cityvault,Beneath the Meridian
-/game/missions/plot/mission_ep11_prisonbreak,Hammerlocked
-/game/missions/plot/mission_ep12_grandtour,Lair of the Harpy
-/game/missions/plot/mission_ep13_jakobsrebellion,The Guns of Reliance
-/game/missions/plot/mission_ep13_watership,The Family Jewel
-/game/missions/plot/mission_ep15_marshfields,Going Rogue
-/game/missions/plot/mission_ep16_desertvault,The Great Vault
-/game/missions/plot/mission_ep16_siblingrivalry,Cold as the Grave
-/game/missions/plot/mission_ep17_bigchase,Blood Drive
-/game/missions/plot/mission_ep19_minerdetails,Angels and Speed Demons
-/game/missions/plot/mission_ep20_firstvaulthunter,The First Vault Hunter
-/game/missions/plot/mission_ep21_beachhead,Footsteps of Giants
-/game/missions/plot/mission_ep22_themachine,In the Shadow of Starlight
-/game/missions/plot/mission_ep23_tyreenfinalboss,Divine Retribution
-/game/missions/side/provinggrounds/provinggrounds1/mission_provinggrounds_mission01,Trial of Survival
-/game/missions/side/provinggrounds/provinggrounds1/mission_provinggroundsdiscovery_mission01,Discover the Trial of Survival
-/game/missions/side/provinggrounds/provinggrounds4/mission_provinggrounds_mission04,Trial of Fervor
-/game/missions/side/provinggrounds/provinggrounds4/mission_provinggroundsdiscovery_mission04,Discover the Trial of Fervor
-/game/missions/side/provinggrounds/provinggrounds5/mission_provinggrounds_mission05,Trial of Cunning
-/game/missions/side/provinggrounds/provinggrounds5/mission_provinggroundsdiscovery_mission05,Discover the Trial of Cunning
-/game/missions/side/provinggrounds/provinggrounds6/mission_provinggrounds_mission06,Trial of Supremacy
-/game/missions/side/provinggrounds/provinggrounds6/mission_provinggroundsdiscovery_mission06,Discover the Trial of Supremacy
-/game/missions/side/provinggrounds/provinggrounds7/mission_provinggrounds_mission07,Trial of Discipline
-/game/missions/side/provinggrounds/provinggrounds7/mission_provinggroundsdiscovery_mission07,Discover the Trial of Discipline
-/game/missions/side/provinggrounds/provinggrounds8/mission_provinggrounds_mission08,Trial of Instinct
-/game/missions/side/provinggrounds/provinggrounds8/mission_provinggroundsdiscovery_mission08,Discover the Trial of Instinct
-/game/missions/side/raid/raid/mission_raidonmaliwan,Raid On Maliwan
-/game/missions/side/rarespawn/mission_async_bormannates,Kill Borman Nates
-/game/missions/side/rarespawn/mission_async_captainthunkandsloth,Kill Captain Thunk and Sloth
-/game/missions/side/rarespawn/mission_async_demoskag,Kill Demoskaggon
-/game/missions/side/rarespawn/mission_async_dinklebot,Kill Dinklebot
-/game/missions/side/rarespawn/mission_async_eldragonjr,Kill El Dragón Jr
-/game/missions/side/rarespawn/mission_async_enforcerurist,Kill Urist McEnforcer
-/game/missions/side/rarespawn/mission_async_indotyrant,Kill IndoTyrant
-/game/missions/side/rarespawn/mission_async_maxitrillion,Kill Maxitrillion
-/game/missions/side/rarespawn/mission_async_powertroopers,Kill the Power Troopers
-/game/missions/side/rarespawn/mission_async_rakkman,Kill Rakkman
-/game/missions/side/rarespawn/mission_async_redjabber,Kill Red Jabber
-/game/missions/side/rarespawn/mission_async_roaddog,Kill Road Dog
-/game/missions/side/rarespawn/mission_async_tarantella,Kill Tarantella
-/game/missions/side/rarespawn/mission_async_theunstoppable,Kill The Unstoppable
-/game/missions/side/rarespawn/mission_async_threedragons,Kill the Grogans and Their Mother
-/game/missions/side/rarespawn/mission_async_vicandwarty,Kill Wick and Warty
-/game/missions/side/sanctuary3/mission_infestation,The Kevin Konundrum
-/game/missions/side/sanctuary3/mission_justaprick,Just A Prick
-/game/missions/side/slaughters/covslaughter/mission_covslaughter1,The Slaughter Shaft
-/game/missions/side/slaughters/creatureslaughter/mission_creatureslaughter,Cistern of Slaughter
-/game/missions/side/slaughters/techslaughter/mission_techslaughter1,Tech Slaughter
-/game/missions/side/slaughters/techslaughter/mission_techslaughterdiscovery,Welcome to Slaughterstar 3000
-/game/missions/side/zone_0/prologue/mission_badreception,Bad Reception
-/game/missions/side/zone_0/prologue/mission_finedining,Skag Dog Days
-/game/missions/side/zone_0/prologue/mission_scoopers_bully,Dump on Dumptruck
-/game/missions/side/zone_0/prologue/mission_underweartink,Under Taker
-/game/missions/side/zone_0/prologue/mission_vendingmachinerepair,Powerful Connections
-/game/missions/side/zone_0/sacrifice/mission_goldencalves,Golden Calves
-/game/missions/side/zone_0/sacrifice/mission_headcase,Head Case
-/game/missions/side/zone_0/sacrifice/mission_pandorasnexttopmouthpiece,Pandora's Next Top Mouthpiece
-/game/missions/side/zone_1/athenas/mission_invasionofprivacy,Invasion of Privacy
-/game/missions/side/zone_1/athenas/mission_monkmission,Holy Spirits
-/game/missions/side/zone_1/atlashq/mission_ratchetitup,Ratch'd Up
-/game/missions/side/zone_1/city/mission_bitterpilltoswallow,Healers and Dealers
-/game/missions/side/zone_1/city/mission_dynastydiner,Dynasty Diner
-/game/missions/side/zone_1/city/mission_pissingcontest,Maliwannabees
-/game/missions/side/zone_1/city/mission_riseandgrind,Rise and Grind
-/game/missions/side/zone_1/city/mission_wizardofnogs,Technical NOGout
-/game/missions/side/zone_1/orbitalplatform/oppositionresearch/mission_oppresearch,Opposition Research
-/game/missions/side/zone_1/towers/mission_killkillavolt,Kill Killavolt
-/game/missions/side/zone_1/towers/mission_lastkatagawa,Proof of Wife
-/game/missions/side/zone_1/towers/mission_porta-prison,Porta Prison
-/game/missions/side/zone_2/mansion/mission_aureliasskeletons,Sacked
-/game/missions/side/zone_2/mansion/mission_witchesbrew,Witch's Brew
-/game/missions/side/zone_2/marshfields/mission_rockonpandora,Raiders of the Lost Rock
-/game/missions/side/zone_2/marshfields/mission_suckerpunch,Sell Out
-/game/missions/side/zone_2/prison/mission_freehugs,On the Blood Path
-/game/missions/side/zone_2/prison/mission_malevolentpractice,Malevolent Practice
-/game/missions/side/zone_2/watership/mission_rumblejungle,Rumble In The Jungle
-/game/missions/side/zone_2/wetlands/mission_driveawaythepain,"Get Quick, Slick"
-/game/missions/side/zone_2/wetlands/mission_dudebro,Swamp Bro
-/game/missions/side/zone_2/wetlands/mission_dynastydash_wetlands,Dynasty Dash: Eden-6
-/game/missions/side/zone_2/wetlands/mission_dynastydash_wetlands_repeatable,Dynasty Dash: Floodmoor Basin
-/game/missions/side/zone_2/wetlands/mission_specialdelivery,Capture the Frag
-/game/missions/side/zone_2/wetlands/mission_thehangover,Irregular Customers
-/game/missions/side/zone_2/wetlands/mission_torturetruck,Don't Truck with Eden-6
-/game/missions/side/zone_3/desert/mission_babydancer,Baby Dancer
-/game/missions/side/zone_3/desert/mission_birthdaysurprise,Life of the Party
-/game/missions/side/zone_3/desert/mission_bufffilmbuff,Buff Film Buff
-/game/missions/side/zone_3/desert/mission_caringforelderly,The Feeble and the Furious
-/game/missions/side/zone_3/desert/mission_changeofheart,Sheega's All That
-/game/missions/side/zone_3/desert/mission_dynastydash_desert,Dynasty Dash: Pandora
-/game/missions/side/zone_3/desert/mission_dynastydash_desert_repeatable,Dynasty Dash: Devil's Razor
-/game/missions/side/zone_3/desert/mission_echonetneutrality,ECHOnet Neutrality
-/game/missions/side/zone_3/desert/mission_itscomplicated,Boom Boom Boomtown
-/game/missions/side/zone_3/mine/mission_bridgeinthedark,The Demon in the Dark
-/game/missions/side/zone_3/mine/mission_growingpains,Childhood's End
-/game/missions/side/zone_3/mine/mission_wildlifeconservation,Wildlife Conservation
-/game/missions/side/zone_3/motorcade/mission_gameshow,Let's Get It Vaughn
-/game/missions/side/zone_3/motorcade/mission_homestead_part1,The Homestead
-/game/missions/side/zone_3/motorcade/mission_homestead_part2,The Homestead (Part 2)
-/game/missions/side/zone_3/motorcade/mission_homestead_part3,The Homestead (Part 3)
-/game/missions/side/zone_3/motorcade/mission_just_desserts,Just Desserts
-/game/missions/side/zone_4/desolate/mission_bettertimes,Fire in the Sky
-/game/missions/side/zone_4/desolate/mission_bonedeep,Bad Vibrations
-/game/missions/side/zone_4/desolate/mission_canonization,Cannonization
-/game/missions/side/zone_4/desolate/mission_destroyerofworlds,Transaction-Packed
-/game/missions/side/zone_4/desolate/mission_homeopathological,Homeopathological
-/game/missions/side/zone_4/desolate/mission_itsalive2,It's Alive
-/game/patchdlc/alisma/missions/plot/ali_ep01,Enter the Psychoscape
-/game/patchdlc/alisma/missions/plot/ali_ep02,Siege of Castle Crimson
-/game/patchdlc/alisma/missions/plot/ali_ep03,What Love Remains
-/game/patchdlc/alisma/missions/plot/ali_ep04,Inhuman Trials
-/game/patchdlc/alisma/missions/plot/ali_ep05,Locus of Rage
-/game/patchdlc/alisma/missions/side/ali_sm_allshapesandcalibers,A Good Egg
-/game/patchdlc/alisma/missions/side/ali_sm_blastrequests,Blast Requests
-/game/patchdlc/alisma/missions/side/ali_sm_checksandbalances,"Check, Please"
-/game/patchdlc/alisma/missions/side/ali_sm_exposuretherapy,Remodel Behavior
-/game/patchdlc/alisma/missions/side/ali_sm_goodbyeoldfriend,Laid to Rust
-/game/patchdlc/alisma/missions/side/ali_sm_hotnbothered,Hot and Unbothered
-/game/patchdlc/alisma/missions/side/ali_sm_inkblots,Don't Call it a Rorschach
-/game/patchdlc/alisma/missions/side/ali_sm_paradeharpoon,Krieg's on Parade
-/game/patchdlc/alisma/missions/side/ali_sm_shadesoftruth,It's an Allegory
-/game/patchdlc/alisma/missions/side/ali_sm_spinetingler,"Scratch, Don't Sniff"
-/game/patchdlc/alisma/missions/side/ali_sm_strongbones,Does a Body Good
-/game/patchdlc/alisma/missions/side/ali_sm_thatringsabell,That Rings a Something
-/game/patchdlc/alisma/missions/side/ali_sm_whenitrains,Brainstorm
-/game/patchdlc/bloodyharvest/missions/side/seasonal/mission_season_01_intro,Bloody Harvest: Descent into Heck
-/game/patchdlc/bloodyharvest/missions/side/seasonal/mission_season_01_repeatable,Bloody Harvest: The Rebloodening
-/game/patchdlc/citizenscience/missions/mission_citizenscience_intro,Borderlands Science!
-/game/patchdlc/dandelion/missions/plot/mission_dlc1_ep01_meettimothy,The Handsome Jackpot
-/game/patchdlc/dandelion/missions/plot/mission_dlc1_ep02_meetcrad,Playing with Fire
-/game/patchdlc/dandelion/missions/plot/mission_dlc1_ep03_impound,Winners and Losers
-/game/patchdlc/dandelion/missions/plot/mission_dlc1_ep04_trashtown,One Man's Treasure
-/game/patchdlc/dandelion/missions/plot/mission_dlc1_ep05_theplan,The Plan
-/game/patchdlc/dandelion/missions/plot/mission_dlc1_ep06_thecore,Jack's Wild
-/game/patchdlc/dandelion/missions/plot/mission_dlc1_ep07_theheist,All Bets Off
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_acidtrip,Acid Trip
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_brotherlylove,Sisterly Love
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_doitfordigby_part1,Do it for Digby - Part 1
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_doitfordigby_part2,Do it for Digby - Part 2
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_doitfordigby_part3,Do it for Digby - Part 3
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_doubledown,Double Down
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_greatescape,The Great Escape
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_heartofgold,Heart of Gold
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_ragingbot,Raging Bot
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_regainingonesfeet,Regaining One's Feet
-/game/patchdlc/dandelion/missions/side/mission_dlc1_side_toomuchofagoodthing,Too Much Of A Good Thing
-/game/patchdlc/event2/missions/side/mauriceside/mission_maurice,Claw and Order
-/game/patchdlc/event2/missions/side/seasonal/mission_season_02_intro,Revenge of the Cartels: Ultraviolet Nights
-/game/patchdlc/event2/missions/side/seasonal/mission_season_02_repeatable,Revenge of the Cartels II: The Revengening
-/game/patchdlc/geranium/missions/plot/mission_ep01_westlandwelcome,Blood From A Stone
-/game/patchdlc/geranium/missions/plot/mission_ep02_bathhouse,The Name of the Law
-/game/patchdlc/geranium/missions/plot/mission_ep03_obsidianforest,Off the Rails
-/game/patchdlc/geranium/missions/plot/mission_ep04_facility,Where It All Started
-/game/patchdlc/geranium/missions/plot/mission_ep05_crater,Riding to Ruin
-/game/patchdlc/geranium/missions/side/mission_animalcontrol,Lost and Found
-/game/patchdlc/geranium/missions/side/mission_bloodandbeans,Of Blood and Beans
-/game/patchdlc/geranium/missions/side/mission_dirtydeeds,Dirty Deeds
-/game/patchdlc/geranium/missions/side/mission_dueling,The Quick and the Quickerer
-/game/patchdlc/geranium/missions/side/mission_ghoststories,The Meatman Prophecy
-/game/patchdlc/geranium/missions/side/mission_lovebarsnone,The Dandy and Damsel
-/game/patchdlc/geranium/missions/side/mission_moneybackguarantee,Money Back Guarantee
-/game/patchdlc/geranium/missions/side/mission_rustlerbaby,Devil Rustlers
-/game/patchdlc/geranium/missions/side/mission_saurdewvalley,Saurdew Valley
-/game/patchdlc/geranium/missions/side/mission_snakeoil,Miracle Elixir Fixer
-/game/patchdlc/geranium/missions/side/mission_thelegendofmcsmugger,The Legend of McSmugger
-/game/patchdlc/hibiscus/missions/plot/ep01_dlc2,The Party Out of Space
-/game/patchdlc/hibiscus/missions/plot/ep02_dlc2,The Shadow Over Cursehaven
-/game/patchdlc/hibiscus/missions/plot/ep03_dlc2,The Case of Wainwright Jakobs
-/game/patchdlc/hibiscus/missions/plot/ep04_dlc2,The Horror in the Woods
-/game/patchdlc/hibiscus/missions/plot/ep05_dlc2,On the Mountain of Mayhem
-/game/patchdlc/hibiscus/missions/plot/ep06_dlc2,The Call of Gythian
-/game/patchdlc/hibiscus/missions/side/rarespawn/mission_async_frostbitedragon,Kill Shiverous the Unscathed
-/game/patchdlc/hibiscus/missions/side/rarespawn/mission_async_mushroomgiant,Kill Fungal Gorger
-/game/patchdlc/hibiscus/missions/side/rarespawn/mission_async_shocker,Kill Voltborn
-/game/patchdlc/hibiscus/missions/side/rarespawn/mission_async_zealotpilfer,Kill Amach
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_bounty_businessasusual,The Proprietor: Rare Vintage
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_bounty_debtcollector,The Proprietor: Empty Bottles
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_happilyeverafter,Happily Ever After
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_intothedeep,The Madness Beneath
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_necrocookmicon,The Nibblenomicon
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_privateeyepart1,Cold Case: Buried Questions
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_privateeyepart2,Cold Case: Restless Memories
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_privateeyepart3,Cold Case: Forgotten Answers
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_returnofmaxsky,The Great Escape (Part 2)
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_sinistersounds,Sinister Sounds
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_weslasspart1,We Slass!
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_weslasspart2,We Slass! (Part 2)
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_weslasspart3,We Slass! (Part 3)
-/game/patchdlc/hibiscus/missions/side/sidemission_dlc2_whereibelong,Call of the Deep
-/game/patchdlc/ixora/missions/side/mission_gearup,Arms Race
-/game/patchdlc/ixora/missions/side/mission_gearup_intro,Arms Race: Introduction
-/game/patchdlc/ixora2/missions/side/mission_ixora_main01,Mysteriouslier: Murder on Eschaton Row
-/game/patchdlc/ixora2/missions/side/mission_ixora_main02,Mysteriouslier: The Vanishing of Hizzen Mays
-/game/patchdlc/ixora2/missions/side/mission_ixora_main03,Mysteriouslier: Ghosts of Karass Canyon
-/game/patchdlc/ixora2/missions/side/mission_ixora_main04,Mysteriouslier: Horror at Scryer's Crypt
-/game/patchdlc/ixora2/missions/side/mission_ixora_varkidboss,You. Will. Die. (Over and Over.)
-/game/patchdlc/raid1/missions/mission_raid1,Takedown at the Maliwan Blacksite
-/game/patchdlc/raid1/missions/mission_raid1intro,Discovery: Takedown at the Maliwan Blacksite
-/game/patchdlc/takedown2/missions/side/mission_takedown2,Takedown at the Guardian Breach
-/game/patchdlc/takedown2/missions/side/mission_takedown2_intro,Discovery: Takedown at the Guardian Breach
+/Game/Missions/Plot/Mission_Ep01_ChildrenOfTheVault,Children of the Vault
+/Game/Missions/Plot/Mission_Ep02_Sacrifice,From the Ground Up
+/Game/Missions/Plot/Mission_Ep03_GetVaultMap,Cult Following
+/Game/Missions/Plot/Mission_Ep04_EarnSpaceship,Taking Flight
+/Game/Missions/Plot/Mission_Ep05_OvercomeHQBlockade,Hostile Takeover
+/Game/Missions/Plot/Mission_Ep05_Sanctuary,Sanctuary
+/Game/Missions/Plot/Mission_Ep06_MeetMaya,The Impending Storm
+/Game/Missions/Plot/Mission_Ep08_OrbitalPlatform,Space-Laser Tag
+/Game/Missions/Plot/MIssion_Ep09_AtlasHQ,"Atlas, At Last"
+/Game/Missions/Plot/Mission_Ep10_CityVault,Beneath the Meridian
+/Game/Missions/Plot/Mission_Ep11_PrisonBreak,Hammerlocked
+/Game/Missions/Plot/Mission_Ep12_GrandTour,Lair of the Harpy
+/Game/Missions/Plot/Mission_Ep13_JakobsRebellion,The Guns of Reliance
+/Game/Missions/Plot/Mission_Ep13_Watership,The Family Jewel
+/Game/Missions/Plot/Mission_Ep15_MarshFields,Going Rogue
+/Game/Missions/Plot/Mission_Ep16_DesertVault,The Great Vault
+/Game/Missions/Plot/Mission_Ep16_SiblingRivalry,Cold as the Grave
+/Game/Missions/Plot/Mission_Ep17_BigChase,Blood Drive
+/Game/Missions/Plot/Mission_Ep19_MinerDetails,Angels and Speed Demons
+/Game/Missions/Plot/Mission_Ep20_FirstVaultHunter,The First Vault Hunter
+/Game/Missions/Plot/Mission_Ep21_Beachhead,Footsteps of Giants
+/Game/Missions/Plot/Mission_Ep22_TheMachine,In the Shadow of Starlight
+/Game/Missions/Plot/Mission_Ep23_TyreenFinalBoss,Divine Retribution
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds1/Mission_ProvingGrounds_Mission01,Trial of Survival
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds1/Mission_ProvingGroundsDiscovery_Mission01,Discover the Trial of Survival
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds4/Mission_ProvingGrounds_Mission04,Trial of Fervor
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds4/Mission_ProvingGroundsDiscovery_Mission04,Discover the Trial of Fervor
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds5/Mission_ProvingGrounds_Mission05,Trial of Cunning
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds5/Mission_ProvingGroundsDiscovery_Mission05,Discover the Trial of Cunning
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds6/Mission_ProvingGrounds_Mission06,Trial of Supremacy
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds6/Mission_ProvingGroundsDiscovery_Mission06,Discover the Trial of Supremacy
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds7/Mission_ProvingGrounds_Mission07,Trial of Discipline
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds7/Mission_ProvingGroundsDiscovery_Mission07,Discover the Trial of Discipline
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds8/Mission_ProvingGrounds_Mission08,Trial of Instinct
+/Game/Missions/Side/ProvingGrounds/ProvingGrounds8/Mission_ProvingGroundsDiscovery_Mission08,Discover the Trial of Instinct
+/Game/Missions/Side/Raid/Raid/Mission_RaidOnMaliwan,Raid On Maliwan
+/Game/Missions/Side/RareSpawn/Mission_Async_BormanNates,Kill Borman Nates
+/Game/Missions/Side/RareSpawn/Mission_Async_CaptainThunkAndSloth,Kill Captain Thunk and Sloth
+/Game/Missions/Side/RareSpawn/Mission_Async_DemoSkag,Kill Demoskaggon
+/Game/Missions/Side/RareSpawn/Mission_Async_Dinklebot,Kill Dinklebot
+/Game/Missions/Side/RareSpawn/Mission_Async_ElDragonJr,Kill El Dragón Jr
+/Game/Missions/Side/RareSpawn/Mission_Async_EnforcerUrist,Kill Urist McEnforcer
+/Game/Missions/Side/RareSpawn/Mission_Async_IndoTyrant,Kill IndoTyrant
+/Game/Missions/Side/RareSpawn/Mission_Async_Maxitrillion,Kill Maxitrillion
+/Game/Missions/Side/RareSpawn/Mission_Async_PowerTroopers,Kill the Power Troopers
+/Game/Missions/Side/RareSpawn/Mission_Async_Rakkman,Kill Rakkman
+/Game/Missions/Side/RareSpawn/Mission_Async_RedJabber,Kill Red Jabber
+/Game/Missions/Side/RareSpawn/Mission_Async_RoadDog,Kill Road Dog
+/Game/Missions/Side/RareSpawn/Mission_Async_Tarantella,Kill Tarantella
+/Game/Missions/Side/RareSpawn/Mission_Async_TheUnstoppable,Kill The Unstoppable
+/Game/Missions/Side/RareSpawn/Mission_Async_ThreeDragons,Kill the Grogans and Their Mother
+/Game/Missions/Side/RareSpawn/Mission_Async_VicAndWarty,Kill Wick and Warty
+/Game/Missions/Side/Sanctuary3/Mission_Infestation,The Kevin Konundrum
+/Game/Missions/Side/Sanctuary3/Mission_JustAPrick,Just A Prick
+/Game/Missions/Side/Slaughters/CoVSlaughter/Mission_COVSlaughter1,The Slaughter Shaft
+/Game/Missions/Side/Slaughters/CreatureSlaughter/Mission_CreatureSlaughter,Cistern of Slaughter
+/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughter1,Tech Slaughter
+/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery,Welcome to Slaughterstar 3000
+/Game/Missions/Side/Zone_0/Prologue/Mission_BadReception,Bad Reception
+/Game/Missions/Side/Zone_0/Prologue/Mission_FineDining,Skag Dog Days
+/Game/Missions/Side/Zone_0/Prologue/Mission_Scoopers_Bully,Dump on Dumptruck
+/Game/Missions/Side/Zone_0/Prologue/Mission_UnderwearTink,Under Taker
+/Game/Missions/Side/Zone_0/Prologue/Mission_VendingMachineRepair,Powerful Connections
+/Game/Missions/Side/Zone_0/Sacrifice/Mission_GoldenCalves,Golden Calves
+/Game/Missions/Side/Zone_0/Sacrifice/Mission_HeadCase,Head Case
+/Game/Missions/Side/Zone_0/Sacrifice/Mission_PandorasNextTopMouthpiece,Pandora's Next Top Mouthpiece
+/Game/Missions/Side/Zone_1/Athenas/Mission_InvasionOfPrivacy,Invasion of Privacy
+/Game/Missions/Side/Zone_1/Athenas/Mission_MonkMission,Holy Spirits
+/Game/Missions/Side/Zone_1/AtlasHQ/Mission_RatchetItUp,Ratch'd Up
+/Game/Missions/Side/Zone_1/City/Mission_BitterPillToSwallow,Healers and Dealers
+/Game/Missions/Side/Zone_1/City/Mission_DynastyDiner,Dynasty Diner
+/Game/Missions/Side/Zone_1/City/Mission_PissingContest,Maliwannabees
+/Game/Missions/Side/Zone_1/City/Mission_RiseAndGrind,Rise and Grind
+/Game/Missions/Side/Zone_1/City/Mission_WizardOfNogs,Technical NOGout
+/Game/Missions/Side/Zone_1/OrbitalPlatform/OppositionResearch/Mission_OppResearch,Opposition Research
+/Game/Missions/Side/Zone_1/Towers/Mission_KillKillavolt,Kill Killavolt
+/Game/Missions/Side/Zone_1/Towers/Mission_LastKatagawa,Proof of Wife
+/Game/Missions/Side/Zone_1/Towers/Mission_Porta-Prison,Porta Prison
+/Game/Missions/Side/Zone_2/Mansion/Mission_AureliasSkeletons,Sacked
+/Game/Missions/Side/Zone_2/Mansion/Mission_WitchesBrew,Witch's Brew
+/Game/Missions/Side/Zone_2/MarshFields/Mission_RockOnPandora,Raiders of the Lost Rock
+/Game/Missions/Side/Zone_2/MarshFields/Mission_SuckerPunch,Sell Out
+/Game/Missions/Side/Zone_2/Prison/Mission_FreeHugs,On the Blood Path
+/Game/Missions/Side/Zone_2/Prison/Mission_MalevolentPractice,Malevolent Practice
+/Game/Missions/Side/Zone_2/Watership/Mission_RumbleJungle,Rumble In The Jungle
+/Game/Missions/Side/Zone_2/Wetlands/Mission_DriveAwayThePain,"Get Quick, Slick"
+/Game/Missions/Side/Zone_2/Wetlands/Mission_DudeBro,Swamp Bro
+/Game/Missions/Side/Zone_2/Wetlands/Mission_DynastyDash_Wetlands,Dynasty Dash: Eden-6
+/Game/Missions/Side/Zone_2/Wetlands/Mission_DynastyDash_Wetlands_Repeatable,Dynasty Dash: Floodmoor Basin
+/Game/Missions/Side/Zone_2/Wetlands/Mission_SpecialDelivery,Capture the Frag
+/Game/Missions/Side/Zone_2/Wetlands/Mission_TheHangover,Irregular Customers
+/Game/Missions/Side/Zone_2/Wetlands/Mission_TortureTruck,Don't Truck with Eden-6
+/Game/Missions/Side/Zone_3/Desert/Mission_BabyDancer,Baby Dancer
+/Game/Missions/Side/Zone_3/Desert/Mission_BirthdaySurprise,Life of the Party
+/Game/Missions/Side/Zone_3/Desert/Mission_BuffFilmBuff,Buff Film Buff
+/Game/Missions/Side/Zone_3/Desert/Mission_CaringForElderly,The Feeble and the Furious
+/Game/Missions/Side/Zone_3/Desert/Mission_ChangeOfHeart,Sheega's All That
+/Game/Missions/Side/Zone_3/Desert/Mission_DynastyDash_Desert,Dynasty Dash: Pandora
+/Game/Missions/Side/Zone_3/Desert/Mission_DynastyDash_Desert_Repeatable,Dynasty Dash: Devil's Razor
+/Game/Missions/Side/Zone_3/Desert/Mission_EchoNetNeutrality,ECHOnet Neutrality
+/Game/Missions/Side/Zone_3/Desert/Mission_ItsComplicated,Boom Boom Boomtown
+/Game/Missions/Side/Zone_3/Mine/Mission_BridgeInTheDark,The Demon in the Dark
+/Game/Missions/Side/Zone_3/Mine/Mission_GrowingPains,Childhood's End
+/Game/Missions/Side/Zone_3/Mine/Mission_WildlifeConservation,Wildlife Conservation
+/Game/Missions/Side/Zone_3/Motorcade/Mission_Gameshow,Let's Get It Vaughn
+/Game/Missions/Side/Zone_3/Motorcade/Mission_Homestead_Part1,The Homestead
+/Game/Missions/Side/Zone_3/Motorcade/Mission_Homestead_Part2,The Homestead (Part 2)
+/Game/Missions/Side/Zone_3/Motorcade/Mission_Homestead_Part3,The Homestead (Part 3)
+/Game/Missions/Side/Zone_3/Motorcade/Mission_Just_Desserts,Just Desserts
+/Game/Missions/Side/Zone_4/Desolate/Mission_BetterTimes,Fire in the Sky
+/Game/Missions/Side/Zone_4/Desolate/Mission_BoneDeep,Bad Vibrations
+/Game/Missions/Side/Zone_4/Desolate/Mission_Canonization,Cannonization
+/Game/Missions/Side/Zone_4/Desolate/Mission_DestroyerOfWorlds,Transaction-Packed
+/Game/Missions/Side/Zone_4/Desolate/Mission_Homeopathological,Homeopathological
+/Game/Missions/Side/Zone_4/Desolate/Mission_ItsAlive2,It's Alive
+/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP01,Enter the Psychoscape
+/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP02,Siege of Castle Crimson
+/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP03,What Love Remains
+/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP04,Inhuman Trials
+/Game/PatchDLC/Alisma/Missions/Plot/ALI_EP05,Locus of Rage
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_AllShapesAndCalibers,A Good Egg
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_BlastRequests,Blast Requests
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ChecksAndBalances,"Check, Please"
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ExposureTherapy,Remodel Behavior
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_GoodbyeOldFriend,Laid to Rust
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_HotNBothered,Hot and Unbothered
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_InkBlots,Don't Call it a Rorschach
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ParadeHarpoon,Krieg's on Parade
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ShadesOfTruth,It's an Allegory
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_SpineTingler,"Scratch, Don't Sniff"
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_StrongBones,Does a Body Good
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_ThatRingsABell,That Rings a Something
+/Game/PatchDLC/Alisma/Missions/Side/ALI_SM_WhenItRains,Brainstorm
+/Game/PatchDLC/BloodyHarvest/Missions/Side/Seasonal/Mission_Season_01_Intro,Bloody Harvest: Descent into Heck
+/Game/PatchDLC/BloodyHarvest/Missions/Side/Seasonal/Mission_Season_01_Repeatable,Bloody Harvest: The Rebloodening
+/Game/PatchDLC/CitizenScience/Missions/Mission_CitizenScience_Intro,Borderlands Science!
+/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep01_MeetTimothy,The Handsome Jackpot
+/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep02_MeetCrad,Playing with Fire
+/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep03_Impound,Winners and Losers
+/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep04_Trashtown,One Man's Treasure
+/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep05_ThePlan,The Plan
+/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep06_TheCore,Jack's Wild
+/Game/PatchDLC/Dandelion/Missions/Plot/Mission_DLC1_Ep07_TheHeist,All Bets Off
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_AcidTrip,Acid Trip
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_BrotherlyLove,Sisterly Love
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_DoItForDigby_Part1,Do it for Digby - Part 1
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_DoItForDigby_Part2,Do it for Digby - Part 2
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_DoItForDigby_Part3,Do it for Digby - Part 3
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_DoubleDown,Double Down
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_GreatEscape,The Great Escape
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_HeartOfGold,Heart of Gold
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_RagingBot,Raging Bot
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_RegainingOnesFeet,Regaining One's Feet
+/Game/PatchDLC/Dandelion/Missions/Side/Mission_DLC1_Side_TooMuchOfAGoodThing,Too Much Of A Good Thing
+/Game/PatchDLC/Event2/Missions/Side/MauriceSide/Mission_Maurice,Claw and Order
+/Game/PatchDLC/Event2/Missions/Side/Seasonal/Mission_Season_02_Intro,Revenge of the Cartels: Ultraviolet Nights
+/Game/PatchDLC/Event2/Missions/Side/Seasonal/Mission_Season_02_Repeatable,Revenge of the Cartels II: The Revengening
+/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep01_WestlandWelcome,Blood From A Stone
+/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep02_Bathhouse,The Name of the Law
+/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep03_ObsidianForest,Off the Rails
+/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep04_Facility,Where It All Started
+/Game/PatchDLC/Geranium/Missions/Plot/Mission_Ep05_Crater,Riding to Ruin
+/Game/PatchDLC/Geranium/Missions/Side/Mission_AnimalControl,Lost and Found
+/Game/PatchDLC/Geranium/Missions/Side/Mission_BloodAndBeans,Of Blood and Beans
+/Game/PatchDLC/Geranium/Missions/Side/Mission_DirtyDeeds,Dirty Deeds
+/Game/PatchDLC/Geranium/Missions/Side/Mission_Dueling,The Quick and the Quickerer
+/Game/PatchDLC/Geranium/Missions/Side/Mission_GhostStories,The Meatman Prophecy
+/Game/PatchDLC/Geranium/Missions/Side/Mission_LoveBarsNone,The Dandy and Damsel
+/Game/PatchDLC/Geranium/Missions/Side/Mission_MoneyBackGuarantee,Money Back Guarantee
+/Game/PatchDLC/Geranium/Missions/Side/Mission_RustlerBaby,Devil Rustlers
+/Game/PatchDLC/Geranium/Missions/Side/Mission_SaurdewValley,Saurdew Valley
+/Game/PatchDLC/Geranium/Missions/Side/Mission_SnakeOil,Miracle Elixir Fixer
+/Game/PatchDLC/Geranium/Missions/Side/Mission_TheLegendOfMcSmugger,The Legend of McSmugger
+/Game/PatchDLC/Hibiscus/Missions/Plot/EP01_DLC2,The Party Out of Space
+/Game/PatchDLC/Hibiscus/Missions/Plot/EP02_DLC2,The Shadow Over Cursehaven
+/Game/PatchDLC/Hibiscus/Missions/Plot/EP03_DLC2,The Case of Wainwright Jakobs
+/Game/PatchDLC/Hibiscus/Missions/Plot/EP04_DLC2,The Horror in the Woods
+/Game/PatchDLC/Hibiscus/Missions/Plot/EP05_DLC2,On the Mountain of Mayhem
+/Game/PatchDLC/Hibiscus/Missions/Plot/EP06_DLC2,The Call of Gythian
+/Game/PatchDLC/Hibiscus/Missions/Side/RareSpawn/Mission_Async_FrostbiteDragon,Kill Shiverous the Unscathed
+/Game/PatchDLC/Hibiscus/Missions/Side/RareSpawn/Mission_Async_MushroomGiant,Kill Fungal Gorger
+/Game/PatchDLC/Hibiscus/Missions/Side/RareSpawn/Mission_Async_Shocker,Kill Voltborn
+/Game/PatchDLC/Hibiscus/Missions/Side/RareSpawn/Mission_Async_ZealotPilfer,Kill Amach
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_Bounty_BusinessAsUsual,The Proprietor: Rare Vintage
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_Bounty_DebtCollector,The Proprietor: Empty Bottles
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_HappilyEverAfter,Happily Ever After
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_IntoTheDeep,The Madness Beneath
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_Necrocookmicon,The Nibblenomicon
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_PrivateEyePart1,Cold Case: Buried Questions
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_PrivateEyePart2,Cold Case: Restless Memories
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_PrivateEyePart3,Cold Case: Forgotten Answers
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_ReturnOfMaxSky,The Great Escape (Part 2)
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_SinisterSounds,Sinister Sounds
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_WeSlassPart1,We Slass!
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_WeSlassPart2,We Slass! (Part 2)
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_WeSlassPart3,We Slass! (Part 3)
+/Game/PatchDLC/Hibiscus/Missions/Side/SideMission_DLC2_WhereIBelong,Call of the Deep
+/Game/PatchDLC/Ixora/Missions/Side/Mission_GearUp,Arms Race
+/Game/PatchDLC/Ixora/Missions/Side/Mission_GearUp_Intro,Arms Race: Introduction
+/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_Main01,Mysteriouslier: Murder on Eschaton Row
+/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_Main02,Mysteriouslier: The Vanishing of Hizzen Mays
+/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_Main03,Mysteriouslier: Ghosts of Karass Canyon
+/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_Main04,Mysteriouslier: Horror at Scryer's Crypt
+/Game/PatchDLC/Ixora2/Missions/Side/Mission_Ixora_VarkidBoss,You. Will. Die. (Over and Over.)
+/Game/PatchDLC/Raid1/Missions/Mission_Raid1,Takedown at the Maliwan Blacksite
+/Game/PatchDLC/Raid1/Missions/Mission_Raid1Intro,Discovery: Takedown at the Maliwan Blacksite
+/Game/PatchDLC/Takedown2/Missions/Side/Mission_Takedown2,Takedown at the Guardian Breach
+/Game/PatchDLC/Takedown2/Missions/Side/Mission_Takedown2_Intro,Discovery: Takedown at the Guardian Breach

@@ -122,7 +122,7 @@ impl ProfileData {
         let mut profile_emotes_unlocked = PROFILE_EMOTES_DEFAULTS.len();
 
         profile.unlocked_customizations.iter().for_each(|uc| {
-            let uc = uc.customization_asset_path.to_lowercase();
+            let uc = &uc.customization_asset_path;
             let uc = &uc.as_str();
 
             match uc {

@@ -64,7 +64,11 @@ impl CharacterData {
             .par_iter()
             .cloned()
             .chain(PROFILE_HEADS)
-            .filter(|h| h.0 .0.contains(&player_class.to_string().to_lowercase()))
+            .filter(|h| {
+                h.0 .0
+                    .to_lowercase()
+                    .contains(&player_class.to_string().to_lowercase())
+            })
             .collect::<Vec<_>>();
 
         let head_skin_selected = available_head_skins
@@ -74,7 +78,7 @@ impl CharacterData {
                 character
                     .selected_customizations
                     .par_iter()
-                    .any(|cs| cs.to_lowercase() == s.0 .0)
+                    .any(|cs| cs == s.0 .0)
             })
             .unwrap_or(available_head_skins[0]);
 
@@ -82,7 +86,11 @@ impl CharacterData {
             .par_iter()
             .cloned()
             .chain(PROFILE_SKINS)
-            .filter(|h| h.0 .0.contains(&player_class.to_string().to_lowercase()))
+            .filter(|h| {
+                h.0 .0
+                    .to_lowercase()
+                    .contains(&player_class.to_string().to_lowercase())
+            })
             .collect::<Vec<_>>();
 
         let character_skin_selected = available_character_skins
@@ -92,7 +100,7 @@ impl CharacterData {
                 character
                     .selected_customizations
                     .par_iter()
-                    .any(|cs| cs.to_lowercase() == s.0 .0)
+                    .any(|cs| cs == s.0 .0)
             })
             .unwrap_or(available_character_skins[0]);
 
@@ -104,7 +112,7 @@ impl CharacterData {
                 character
                     .selected_customizations
                     .par_iter()
-                    .any(|cs| cs.to_lowercase() == s.0 .0)
+                    .any(|cs| cs == s.0 .0)
             })
             .unwrap_or(PROFILE_ECHO_THEMES_DEFAULTS[0]);
 
@@ -116,7 +124,9 @@ impl CharacterData {
             .par_iter()
             .map(|i| {
                 Ok(InventorySlotData {
-                    slot: InventorySlot::from_str(&i.slot_data_path)?,
+                    slot: InventorySlot::from_str(&i.slot_data_path).with_context(|| {
+                        format!("failed to read inventory slot: {}", &i.slot_data_path)
+                    })?,
                     unlocked: i.enabled,
                 })
             })
@@ -128,7 +138,9 @@ impl CharacterData {
             .sdu_list
             .par_iter()
             .map(|s| {
-                let slot = SaveSduSlot::from_str(&s.sdu_data_path)?;
+                let slot = SaveSduSlot::from_str(&s.sdu_data_path).with_context(|| {
+                    format!("failed to read save sdu slot: {}", &s.sdu_data_path)
+                })?;
                 let max = slot.maximum();
 
                 Ok(SaveSduSlotData {
@@ -144,9 +156,10 @@ impl CharacterData {
         let mut ammo_pools = character
             .resource_pools
             .par_iter()
-            .filter(|rp| !rp.resource_path.to_lowercase().contains("eridium"))
+            .filter(|rp| !rp.resource_path.contains("Eridium"))
             .map(|rp| {
-                let ammo = Ammo::from_str(&rp.resource_path)?;
+                let ammo = Ammo::from_str(&rp.resource_path)
+                    .with_context(|| format!("failed to read ammo: {}", &rp.resource_path))?;
 
                 Ok(AmmoPoolData {
                     ammo,
@@ -172,16 +185,13 @@ impl CharacterData {
                 let unlocked = character
                     .challenge_data
                     .par_iter()
-                    .find_first(|cd| {
-                        cd.challenge_class_path
-                            .to_lowercase()
-                            .contains(&k.to_lowercase())
-                    })
+                    .find_first(|cd| cd.challenge_class_path.contains(k))
                     .map(|cd| cd.currently_completed)
                     .context("failed to read challenge milestones")?;
 
                 Ok(ChallengeData {
-                    challenge: Challenge::from_str(v)?,
+                    challenge: Challenge::from_str(v)
+                        .with_context(|| format!("failed to read challenge: {}", v))?,
                     unlocked,
                 })
             })
@@ -195,7 +205,7 @@ impl CharacterData {
         let mut cyclone_chassis = 0;
 
         character.vehicles_unlocked_data.iter().for_each(|vu| {
-            let vu = vu.asset_path.to_lowercase();
+            let vu = &vu.asset_path;
             let vu = &vu.as_str();
 
             match vu {
@@ -226,7 +236,7 @@ impl CharacterData {
         let mut cyclone_skins = 0;
 
         character.vehicle_parts_unlocked.iter().for_each(|vp| {
-            let vp = vp.to_lowercase();
+            let vp = vp;
             let vp = &vp.as_str();
 
             match vp {
@@ -324,7 +334,7 @@ impl CharacterData {
             .character
             .selected_customizations
             .iter_mut()
-            .find(|curr| curr_head_skin_selected == curr.to_lowercase())
+            .find(|curr| curr_head_skin_selected == *curr)
         {
             *curr_head = head_skin_selected_id;
         } else {

@@ -242,7 +242,7 @@ fn get_filtered_mission_list<const LENGTH: usize>(
         .map(|ms| {
             all_missions
                 .iter()
-                .find(|gd| ms.mission_class_path.to_lowercase().contains(gd.0 .0))
+                .find(|gd| ms.mission_class_path.contains(gd.0 .0))
                 .map(|gd| gd.0 .1.to_string())
                 .unwrap_or_else(|| ms.mission_class_path.to_owned())
         })

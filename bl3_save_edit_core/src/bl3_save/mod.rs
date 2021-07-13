@@ -554,7 +554,7 @@ mod tests {
     #[test]
     fn test_from_data_pc_2() {
         let mut save_file_data =
-            fs::read("./test_files/test_file_zak.sav").expect("failed to read mut test_file");
+            fs::read("./test_files/1.sav").expect("failed to read mut test_file");
         let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::PcSave)
             .expect("failed to read test save");
 
