@@ -62,12 +62,6 @@ impl Playthrough {
                 let active_travel_stations = character
                     .active_travel_stations_for_playthrough
                     .get(i)
-                    .with_context(|| {
-                        format!(
-                            "failed to read active_travel_stations for Playthrough: {}",
-                            i
-                        )
-                    })
                     .par_iter()
                     .map(|ats| {
                         ats.active_travel_stations

@@ -2150,6 +2150,6 @@ impl std::cmp::PartialOrd for GameDataKv {
 
 impl std::cmp::PartialEq for GameDataKv {
     fn eq(&self, other: &Self) -> bool {
-        self.name == other.name
+        self.ident == other.ident
     }
 }

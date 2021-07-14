@@ -33,7 +33,7 @@ impl ProfileCurrency {
             .par_iter()
             .find_first(|i| i.base_category_definition_hash as usize == hash)
             .map(|i| i.quantity)
-            .with_context(|| format!("failed to read profile_currency amount for: {:?}", self))?;
+            .with_context(|| format!("failed to read profile currency amount for: {:?}", self))?;
 
         Ok(amount)
     }

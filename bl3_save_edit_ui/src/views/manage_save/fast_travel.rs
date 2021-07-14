@@ -4,6 +4,7 @@ use iced::{
 };
 use strum::Display;
 
+use bl3_save_edit_core::bl3_save::models::VisitedTeleporter;
 use bl3_save_edit_core::game_data::{GameDataKv, FAST_TRAVEL};
 
 use crate::bl3_ui::{InteractionMessage, Message};
@@ -22,12 +23,6 @@ pub enum PlaythroughType {
 
 impl PlaythroughType {
     pub const ALL: [PlaythroughType; 2] = [PlaythroughType::Normal, PlaythroughType::Tvhm];
-}
-
-#[derive(Debug, Default)]
-pub struct VisitedTeleporter {
-    pub game_data: GameDataKv,
-    pub visited: bool,
 }
 
 #[derive(Debug)]

@@ -8,7 +8,7 @@ use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
 use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};
-use crate::bl3_save::models::Currency;
+use crate::bl3_save::models::{Currency, VisitedTeleporter};
 use crate::bl3_save::player_class::PlayerClass;
 use crate::bl3_save::playthrough::Playthrough;
 use crate::bl3_save::sdu::{SaveSduSlot, SaveSduSlotData};
@@ -343,5 +343,24 @@ impl CharacterData {
                 .selected_customizations
                 .push(head_skin_selected_id)
         }
+    }
+
+    pub fn set_active_travel_stations(
+        &mut self,
+        playthrough_index: usize,
+        visited_teleporters_list: &[VisitedTeleporter],
+    ) {
+        self.character
+            .active_travel_stations_for_playthrough
+            .get(playthrough_index)
+            .iter()
+            .map(|ats| {
+                ats.active_travel_stations
+                    .iter()
+                    .map(|ats| ats.active_travel_station_name.clone())
+                    .collect::<Vec<_>>()
+            })
+            .flatten()
+            .collect::<Vec<String>>();
     }
 }
