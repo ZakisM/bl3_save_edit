@@ -13,7 +13,7 @@ use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveMessage};
 use crate::widgets::text_margin::TextMargin;
 
-#[derive(Debug, Clone, Display, Eq, PartialEq)]
+#[derive(Debug, Clone, Display, Eq, PartialEq, Copy)]
 pub enum PlaythroughType {
     Normal,
     #[strum(to_string = "TVHM")]
@@ -41,6 +41,7 @@ pub struct FastTravelState {
     pub visited_teleporters_list_scrollable_state: scrollable::State,
     pub visited_teleporters_list_check_none_button_state: button::State,
     pub visited_teleporters_list_check_all_button_state: button::State,
+    pub playthroughs_len: usize,
 }
 
 impl std::default::Default for FastTravelState {
@@ -63,8 +64,6 @@ impl std::default::Default for FastTravelState {
             })
             .collect::<Vec<_>>();
 
-        dbg!(&visited_teleporters_list.len());
-
         Self {
             playthrough_type_selector: Default::default(),
             playthrough_type_selected: PlaythroughType::Normal,
@@ -75,6 +74,7 @@ impl std::default::Default for FastTravelState {
             visited_teleporters_list_scrollable_state: Default::default(),
             visited_teleporters_list_check_none_button_state: Default::default(),
             visited_teleporters_list_check_all_button_state: Default::default(),
+            playthroughs_len: 0,
         }
     }
 }
@@ -88,7 +88,7 @@ pub enum FastTravelMessage {
 
 #[derive(Debug, Clone)]
 pub enum FastTravelInteractionMessage {
-    CheckNoneVisitedTeleporterList,
+    UncheckAllVisitedTeleporterList,
     CheckAllVisitedTeleporterList,
 }
 
@@ -106,8 +106,8 @@ pub fn view(fast_travel_state: &mut FastTravelState) -> Container<Message> {
             .push(
                 PickList::new(
                     &mut fast_travel_state.playthrough_type_selector,
-                    &PlaythroughType::ALL[..],
-                    Some(fast_travel_state.playthrough_type_selected.clone()),
+                    &PlaythroughType::ALL[..fast_travel_state.playthroughs_len],
+                    Some(fast_travel_state.playthrough_type_selected),
                     |s| {
                         Message::ManageSave(ManageSaveMessage::FastTravel(
                             FastTravelMessage::PlaythroughSelected(s),
@@ -215,7 +215,7 @@ pub fn view(fast_travel_state: &mut FastTravelState) -> Container<Message> {
             )
             .on_press(InteractionMessage::ManageSaveInteraction(
                 ManageSaveInteractionMessage::FastTravel(
-                    FastTravelInteractionMessage::CheckNoneVisitedTeleporterList,
+                    FastTravelInteractionMessage::UncheckAllVisitedTeleporterList,
                 ),
             ))
             .padding(10)

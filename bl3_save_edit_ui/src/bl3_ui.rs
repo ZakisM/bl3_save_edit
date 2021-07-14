@@ -3,7 +3,6 @@ use iced::{
     HorizontalAlignment, Length, Row, Text,
 };
 
-use bl3_save_edit_core::bl3_save::inventory_slot::InventorySlot;
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
@@ -12,6 +11,7 @@ use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::interaction;
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO_BOLD};
+use crate::state_mappers;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -293,7 +293,7 @@ impl Application for Bl3Ui {
                     },
                     ManageSaveInteractionMessage::FastTravel(fast_travel_msg) => {
                         match fast_travel_msg {
-                            FastTravelInteractionMessage::CheckNoneVisitedTeleporterList => {
+                            FastTravelInteractionMessage::UncheckAllVisitedTeleporterList => {
                                 self.manage_save_state
                                     .main_state
                                     .fast_travel_state
@@ -374,140 +374,23 @@ impl Application for Bl3Ui {
                             .expect("loaded_files list was empty");
 
                         match first_file {
-                            Bl3FileType::PcSave(s) | Bl3FileType::Ps4Save(s) => {
-                                self.manage_save_state.current_file = s.to_owned();
+                            Bl3FileType::PcSave(save) | Bl3FileType::Ps4Save(save) => {
+                                self.manage_save_state.current_file = save.to_owned();
 
-                                self.manage_save_state.main_state.general_state.guid_input =
-                                    s.character_data.character.save_game_guid.clone();
-
-                                self.manage_save_state.main_state.general_state.slot_input =
-                                    s.character_data.character.save_game_id;
-
-                                self.manage_save_state.main_state.character_state.name_input =
-                                    s.character_data.character.preferred_character_name.clone();
-
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .player_class_selected_class = s.character_data.player_class;
-
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .xp_level_input = s.character_data.player_level;
-
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .xp_points_input = s.character_data.character.experience_points;
-
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .skin_state
-                                    .head_skin_selected = s.character_data.head_skin_selected;
-
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .skin_state
-                                    .character_skin_selected =
-                                    s.character_data.character_skin_selected;
-
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .skin_state
-                                    .echo_theme_selected = s.character_data.echo_theme_selected;
-
-                                let mut gear_state = std::mem::take(
-                                    &mut self
-                                        .manage_save_state
-                                        .main_state
-                                        .character_state
-                                        .gear_state,
+                                state_mappers::manage_save::general::map_general_state(
+                                    &save,
+                                    &mut self.manage_save_state,
                                 );
 
-                                s.character_data
-                                    .unlockable_inventory_slots
-                                    .iter()
-                                    .for_each(|s| match s.slot {
-                                        InventorySlot::Weapon1 => {
-                                            gear_state.unlock_weapon_1_slot = true;
-                                        }
-                                        InventorySlot::Weapon2 => {
-                                            gear_state.unlock_weapon_2_slot = s.unlocked;
-                                        }
-                                        InventorySlot::Weapon3 => {
-                                            gear_state.unlock_weapon_3_slot = s.unlocked;
-                                        }
-                                        InventorySlot::Weapon4 => {
-                                            gear_state.unlock_weapon_4_slot = s.unlocked;
-                                        }
-                                        InventorySlot::Shield => {
-                                            gear_state.unlock_shield_slot = s.unlocked;
-                                        }
-                                        InventorySlot::Grenade => {
-                                            gear_state.unlock_grenade_slot = s.unlocked;
-                                        }
-                                        InventorySlot::ClassMod => {
-                                            gear_state.unlock_class_mod_slot = s.unlocked;
-                                        }
-                                        InventorySlot::Artifact => {
-                                            gear_state.unlock_artifact_slot = s.unlocked;
-                                        }
-                                    });
-
-                                self.manage_save_state.main_state.character_state.gear_state =
-                                    gear_state;
-
-                                let mut sdu_state = std::mem::take(
-                                    &mut self
-                                        .manage_save_state
-                                        .main_state
-                                        .character_state
-                                        .sdu_state,
+                                state_mappers::manage_save::character::map_character_state(
+                                    &save,
+                                    &mut self.manage_save_state,
                                 );
 
-                                s.character_data
-                                    .sdu_slots
-                                    .iter()
-                                    .for_each(|s| match s.slot {
-                                        SaveSduSlot::Backpack => {
-                                            sdu_state.backpack_input = s.current
-                                        }
-                                        SaveSduSlot::Sniper => sdu_state.sniper_input = s.current,
-                                        SaveSduSlot::Shotgun => sdu_state.shotgun_input = s.current,
-                                        SaveSduSlot::Pistol => sdu_state.pistol_input = s.current,
-                                        SaveSduSlot::Grenade => sdu_state.grenade_input = s.current,
-                                        SaveSduSlot::Smg => sdu_state.smg_input = s.current,
-                                        SaveSduSlot::Ar => {
-                                            sdu_state.assault_rifle_input = s.current
-                                        }
-                                        SaveSduSlot::Heavy => sdu_state.heavy_input = s.current,
-                                    });
-
-                                self.manage_save_state.main_state.character_state.sdu_state =
-                                    sdu_state;
-
-                                if let Some(first_playthrough) =
-                                    s.character_data.playthroughs.get(0)
-                                {
-                                    self.manage_save_state
-                                        .main_state
-                                        .fast_travel_state
-                                        .visited_teleporters_list
-                                        .iter_mut()
-                                        .for_each(|vt| {
-                                            if first_playthrough
-                                                .active_travel_stations
-                                                .iter()
-                                                .any(|ats| ats.to_lowercase() == vt.game_data.ident)
-                                            {
-                                                vt.visited = true;
-                                            }
-                                        });
-                                }
+                                state_mappers::manage_save::fast_travel::map_fast_travel_state(
+                                    &save,
+                                    &mut self.manage_save_state,
+                                );
                             }
                             Bl3FileType::PcProfile(p) | Bl3FileType::Ps4Profile(p) => (),
                         }
@@ -515,127 +398,154 @@ impl Application for Bl3Ui {
                     Err(e) => eprintln!("{}", e),
                 },
             },
-            Message::ManageSave(manage_save_msg) => {
-                match manage_save_msg {
-                    ManageSaveMessage::General(general_msg) => match general_msg {
-                        GeneralMessage::GenerateRandomGuidCompleted(guid) => {
-                            self.manage_save_state.main_state.general_state.guid_input = guid;
-                        }
-                    },
-                    ManageSaveMessage::Character(character_msg) => match character_msg {
-                        CharacterMessage::PlayerClassSelected(player_class) => {
+            Message::ManageSave(manage_save_msg) => match manage_save_msg {
+                ManageSaveMessage::General(general_msg) => match general_msg {
+                    GeneralMessage::GenerateRandomGuidCompleted(guid) => {
+                        self.manage_save_state.main_state.general_state.guid_input = guid;
+                    }
+                },
+                ManageSaveMessage::Character(character_msg) => match character_msg {
+                    CharacterMessage::PlayerClassSelected(player_class) => {
+                        self.manage_save_state
+                            .main_state
+                            .character_state
+                            .player_class_selected_class = player_class;
+                    }
+                    CharacterMessage::SkinMessage(skin_msg) => match skin_msg {
+                        CharacterSkinMessage::HeadSkinSelected(selected) => {
                             self.manage_save_state
                                 .main_state
                                 .character_state
-                                .player_class_selected_class = player_class;
+                                .skin_state
+                                .head_skin_selected = selected;
                         }
-                        CharacterMessage::SkinMessage(skin_msg) => match skin_msg {
-                            CharacterSkinMessage::HeadSkinSelected(selected) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .skin_state
-                                    .head_skin_selected = selected;
-                            }
-                            CharacterSkinMessage::CharacterSkinSelected(selected) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .skin_state
-                                    .character_skin_selected = selected;
-                            }
-                            CharacterSkinMessage::EchoThemeSelected(selected) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .skin_state
-                                    .echo_theme_selected = selected;
-                            }
-                        },
-                        CharacterMessage::GearMessage(gear_msg) => match gear_msg {
-                            CharacterGearMessage::UnlockGrenadeSlot(b) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .gear_state
-                                    .unlock_grenade_slot = b;
-                            }
-                            CharacterGearMessage::UnlockShieldSlot(b) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .gear_state
-                                    .unlock_shield_slot = b;
-                            }
-                            CharacterGearMessage::UnlockWeapon1Slot(b) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .gear_state
-                                    .unlock_weapon_1_slot = b;
-                            }
-                            CharacterGearMessage::UnlockWeapon2Slot(b) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .gear_state
-                                    .unlock_weapon_2_slot = b;
-                            }
-                            CharacterGearMessage::UnlockWeapon3Slot(b) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .gear_state
-                                    .unlock_weapon_3_slot = b;
-                            }
-                            CharacterGearMessage::UnlockWeapon4Slot(b) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .gear_state
-                                    .unlock_weapon_4_slot = b;
-                            }
-                            CharacterGearMessage::UnlockArtifactSlot(b) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .gear_state
-                                    .unlock_artifact_slot = b;
-                            }
-                            CharacterGearMessage::UnlockClassModSlot(b) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .gear_state
-                                    .unlock_class_mod_slot = b;
-                            }
-                        },
-                    },
-                    ManageSaveMessage::FastTravel(fast_travel_msg) => match fast_travel_msg {
-                        FastTravelMessage::LastVisitedTeleporterSelected(last_visited) => {
+                        CharacterSkinMessage::CharacterSkinSelected(selected) => {
                             self.manage_save_state
                                 .main_state
-                                .fast_travel_state
-                                .last_visited_teleporter_selected = last_visited;
+                                .character_state
+                                .skin_state
+                                .character_skin_selected = selected;
                         }
-                        FastTravelMessage::VisitedTeleportersListUpdated((index, visited)) => {
+                        CharacterSkinMessage::EchoThemeSelected(selected) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .skin_state
+                                .echo_theme_selected = selected;
+                        }
+                    },
+                    CharacterMessage::GearMessage(gear_msg) => match gear_msg {
+                        CharacterGearMessage::UnlockGrenadeSlot(b) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .gear_state
+                                .unlock_grenade_slot = b;
+                        }
+                        CharacterGearMessage::UnlockShieldSlot(b) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .gear_state
+                                .unlock_shield_slot = b;
+                        }
+                        CharacterGearMessage::UnlockWeapon1Slot(b) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .gear_state
+                                .unlock_weapon_1_slot = b;
+                        }
+                        CharacterGearMessage::UnlockWeapon2Slot(b) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .gear_state
+                                .unlock_weapon_2_slot = b;
+                        }
+                        CharacterGearMessage::UnlockWeapon3Slot(b) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .gear_state
+                                .unlock_weapon_3_slot = b;
+                        }
+                        CharacterGearMessage::UnlockWeapon4Slot(b) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .gear_state
+                                .unlock_weapon_4_slot = b;
+                        }
+                        CharacterGearMessage::UnlockArtifactSlot(b) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .gear_state
+                                .unlock_artifact_slot = b;
+                        }
+                        CharacterGearMessage::UnlockClassModSlot(b) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .gear_state
+                                .unlock_class_mod_slot = b;
+                        }
+                    },
+                },
+                ManageSaveMessage::FastTravel(fast_travel_msg) => match fast_travel_msg {
+                    FastTravelMessage::LastVisitedTeleporterSelected(last_visited) => {
+                        self.manage_save_state
+                            .main_state
+                            .fast_travel_state
+                            .last_visited_teleporter_selected = last_visited;
+                    }
+                    FastTravelMessage::VisitedTeleportersListUpdated((index, visited)) => {
+                        self.manage_save_state
+                            .main_state
+                            .fast_travel_state
+                            .visited_teleporters_list
+                            .get_mut(index)
+                            .expect(
+                                "failed to find fast travel station to update in teleporters list",
+                            )
+                            .visited = visited;
+                    }
+                    FastTravelMessage::PlaythroughSelected(playthrough_type) => {
+                        self.manage_save_state
+                            .main_state
+                            .fast_travel_state
+                            .playthrough_type_selected = playthrough_type;
+
+                        let playthrough_id = playthrough_type as usize;
+
+                        if let Some(playthrough) = self
+                            .manage_save_state
+                            .current_file
+                            .character_data
+                            .playthroughs
+                            .get(playthrough_id)
+                        {
                             self.manage_save_state
                                 .main_state
                                 .fast_travel_state
                                 .visited_teleporters_list
-                                .get_mut(index)
-                                .expect("failed to find fast travel station to update in teleporters list")
-                                .visited = visited;
+                                .iter_mut()
+                                .for_each(|vt| {
+                                    vt.visited = false;
+
+                                    if playthrough
+                                        .active_travel_stations
+                                        .iter()
+                                        .any(|ats| ats.to_lowercase() == vt.game_data.ident)
+                                    {
+                                        vt.visited = true;
+                                    }
+                                });
                         }
-                        FastTravelMessage::PlaythroughSelected(playthrough_type) => {
-                            self.manage_save_state
-                                .main_state
-                                .fast_travel_state
-                                .playthrough_type_selected = playthrough_type;
-                        }
-                    },
-                }
-            }
+                    }
+                },
+            },
             Message::SaveFileCompleted(result) => match result {
                 Ok(_) => println!("Successfully saved file"),
                 Err(e) => eprintln!("{}", e),

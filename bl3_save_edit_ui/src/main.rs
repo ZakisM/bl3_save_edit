@@ -6,6 +6,7 @@ mod bl3_ui;
 mod bl3_ui_style;
 mod interaction;
 mod resources;
+mod state_mappers;
 mod views;
 mod widgets;
 
