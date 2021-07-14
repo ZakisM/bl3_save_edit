@@ -17,6 +17,7 @@ pub mod character_data;
 pub mod inventory_slot;
 pub mod models;
 pub mod player_class;
+pub mod playthrough;
 pub mod sdu;
 pub mod util;
 

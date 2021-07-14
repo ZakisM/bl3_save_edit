@@ -26,7 +26,7 @@ impl PlaythroughType {
 
 #[derive(Debug, Default)]
 pub struct VisitedTeleporter {
-    game_data: GameDataKv,
+    pub game_data: GameDataKv,
     pub visited: bool,
 }
 
@@ -47,12 +47,12 @@ impl std::default::Default for FastTravelState {
     fn default() -> Self {
         let mut fast_travel_locations = FAST_TRAVEL
             .iter()
-            .filter(|gd| gd.ident.contains("/fts_"))
+            .filter(|gd| gd.ident.contains("gamedata/fasttravel/fts_"))
             .cloned()
             .collect::<Vec<_>>();
 
         fast_travel_locations.sort();
-        fast_travel_locations.dedup();
+        // fast_travel_locations.dedup();
 
         let visited_teleporters_list = fast_travel_locations
             .iter()
@@ -62,6 +62,8 @@ impl std::default::Default for FastTravelState {
                 visited: false,
             })
             .collect::<Vec<_>>();
+
+        dbg!(&visited_teleporters_list.len());
 
         Self {
             playthrough_type_selector: Default::default(),
@@ -209,7 +211,7 @@ pub fn view(fast_travel_state: &mut FastTravelState) -> Container<Message> {
         .push(
             Button::new(
                 &mut fast_travel_state.visited_teleporters_list_check_none_button_state,
-                Text::new("Check None").font(JETBRAINS_MONO_BOLD).size(17),
+                Text::new("Uncheck All").font(JETBRAINS_MONO_BOLD).size(17),
             )
             .on_press(InteractionMessage::ManageSaveInteraction(
                 ManageSaveInteractionMessage::FastTravel(

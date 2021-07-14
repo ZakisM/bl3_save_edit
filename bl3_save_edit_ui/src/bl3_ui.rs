@@ -72,9 +72,7 @@ impl Application for Bl3Ui {
     fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
         (
             Bl3Ui {
-                view_state: ViewState::ManageSave(ManageSaveView::TabBar(
-                    MainTabBarView::FastTravel,
-                )),
+                view_state: ViewState::ChooseSaveDirectory,
                 ..Bl3Ui::default()
             },
             Command::none(),
@@ -491,6 +489,25 @@ impl Application for Bl3Ui {
 
                                 self.manage_save_state.main_state.character_state.sdu_state =
                                     sdu_state;
+
+                                if let Some(first_playthrough) =
+                                    s.character_data.playthroughs.get(0)
+                                {
+                                    self.manage_save_state
+                                        .main_state
+                                        .fast_travel_state
+                                        .visited_teleporters_list
+                                        .iter_mut()
+                                        .for_each(|vt| {
+                                            if first_playthrough
+                                                .active_travel_stations
+                                                .iter()
+                                                .any(|ats| ats.to_lowercase() == vt.game_data.ident)
+                                            {
+                                                vt.visited = true;
+                                            }
+                                        });
+                                }
                             }
                             Bl3FileType::PcProfile(p) | Bl3FileType::Ps4Profile(p) => (),
                         }

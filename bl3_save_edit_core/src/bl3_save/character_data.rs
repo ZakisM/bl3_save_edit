@@ -8,11 +8,12 @@ use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
 use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};
-use crate::bl3_save::models::{Currency, Playthrough};
+use crate::bl3_save::models::Currency;
 use crate::bl3_save::player_class::PlayerClass;
+use crate::bl3_save::playthrough::Playthrough;
 use crate::bl3_save::sdu::{SaveSduSlot, SaveSduSlotData};
 use crate::bl3_save::util::{
-    currency_amount_from_character, experience_to_level, read_playthroughs, IMPORTANT_CHALLENGES,
+    currency_amount_from_character, experience_to_level, IMPORTANT_CHALLENGES,
 };
 use crate::game_data::{
     GameDataKv, PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_HEADS,
@@ -118,7 +119,7 @@ impl CharacterData {
 
         let money = currency_amount_from_character(&character, &Currency::Money);
         let eridium = currency_amount_from_character(&character, &Currency::Eridium);
-        let playthroughs = read_playthroughs(&character)?;
+        let playthroughs = Playthrough::playthroughs_from_character(&character)?;
         let mut unlockable_inventory_slots = character
             .equipped_inventory_list
             .par_iter()
