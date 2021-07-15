@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use anyhow::{Context, Result};
+use protobuf::RepeatedField;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 
@@ -23,7 +24,12 @@ use crate::game_data::{
     VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST,
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
-use crate::protos::oak_save::{ActiveFastTravelSaveData, Character};
+use crate::protos::oak_save::{
+    ActiveFastTravelSaveData, Character, DiscoveredAreaInfo, DiscoveredLevelInfo,
+    GbxZoneMapFODSavedLevelData, MissionPlaythroughSaveGameData, MissionStatusPlayerSaveGameData,
+    MissionStatusPlayerSaveGameData_MissionState, RegionSaveGameData,
+};
+use crate::protos::oak_shared::ChallengeSaveGameData;
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
 #[derive(Debug, Clone, Default)]
@@ -350,7 +356,26 @@ impl CharacterData {
         playthrough_index: usize,
         visited_teleporters_list: &[VisitedTeleporter],
     ) {
-        //TODO: Set blacklisted true for the current station we are at? and give option to set travel stations for both playthroughs
+        //TODO: Find a save with every location and map everything below...
+
+        let mission_list = self.character.mission_playthroughs_data.get_mut(0);
+
+        if let Some(mission_list) = mission_list {
+            mission_list.mission_list.push(MissionStatusPlayerSaveGameData {
+                status: MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
+                has_been_viewed_in_log: false,
+                objectives_progress: vec![1, 1, 1, 1, 1, 1],
+                mission_class_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Mission_TechSlaughterDiscovery_C".to_string(),
+                active_objective_set_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Set_TalkToNPC_ObjectiveSet".to_string(),
+                dlc_package_id: 0,
+                kickoff_played: true,
+                league_instance: 0,
+                unknown_fields: Default::default(),
+                cached_size: Default::default(),
+            });
+
+            dbg!(&mission_list.mission_list);
+        }
 
         let curr_active_travel_stations = &mut self
             .character
@@ -359,29 +384,96 @@ impl CharacterData {
             .expect("failed to read current active travel stations for playthrough: ")
             .active_travel_stations;
 
-        visited_teleporters_list.iter().for_each(|vt| {
-            if vt.visited
-                && !curr_active_travel_stations
-                    .iter()
-                    .any(|ats| ats.active_travel_station_name.to_lowercase() == vt.game_data.ident)
-            {
-                println!("Adding: {}", vt.game_data.ident);
+        curr_active_travel_stations.push(ActiveFastTravelSaveData {
+            active_travel_station_name:
+                "/Game/GameData/FastTravel/FTS_TechSlaughterDropPod.FTS_TechSlaughterDropPod"
+                    .to_owned(),
+            blacklisted: false,
+            unknown_fields: Default::default(),
+            cached_size: Default::default(),
+        });
 
-                curr_active_travel_stations.push(ActiveFastTravelSaveData {
-                    active_travel_station_name: vt.game_data.ident.to_owned(),
-                    blacklisted: false,
+        let discovery_data = &mut self.character.discovery_data;
+
+        if let Some(discovery_data) = discovery_data.as_mut() {
+            discovery_data
+                .discovered_level_info
+                .push(DiscoveredLevelInfo {
+                    discovered_level_name: "/Game/Maps/Slaughters/TechSlaughter/TechSlaughter_P"
+                        .to_string(),
+                    //the index of playthrough + 1 i think
+                    discovered_playthroughs: 1,
+                    discovered_area_info: RepeatedField::from_vec(vec![DiscoveredAreaInfo {
+                        discovered_area_name: "TECHSLAUGHTER_PWDA_2".to_string(),
+                        //the index of playthrough + 1 i think
+                        discovered_playthroughs: 1,
+                        unknown_fields: Default::default(),
+                        cached_size: Default::default(),
+                    }]),
                     unknown_fields: Default::default(),
                     cached_size: Default::default(),
                 });
-            } else if !vt.visited {
-                if let Some(curr_station) = curr_active_travel_stations.iter().position(|ats| {
-                    ats.active_travel_station_name.to_lowercase() == vt.game_data.ident
-                }) {
-                    println!("Removing: {}", vt.game_data.ident);
+        }
 
-                    curr_active_travel_stations.remove(curr_station);
-                }
-            }
-        })
+        let challenge_data = &mut self.character.challenge_data;
+
+        let challenge_we_want = challenge_data
+            .iter_mut()
+            .find(|cd| cd.challenge_class_path == "/Game/GameData/Challenges/Discovery/Slaughter_Tech/Challenge_Discovery_TechSlaughter1.Challenge_Discovery_TechSlaughter1_C");
+
+        if let Some(challenge_we_want) = challenge_we_want {
+            challenge_we_want.completed_count = 1;
+            challenge_we_want.currently_completed = true;
+        }
+
+        let challenge_we_want = challenge_data
+            .iter_mut()
+            .find(|cd| cd.challenge_class_path == "/Game/GameData/Challenges/FastTravel/Challenge_FastTravel_TechSlaughter1.Challenge_FastTravel_TechSlaughter1_C");
+
+        if let Some(challenge_we_want) = challenge_we_want {
+            challenge_we_want.completed_count = 1;
+            challenge_we_want.currently_completed = true;
+        }
+
+        // let level_data = self.character.gbx_zone_map_fod_save_game_data.as_mut();
+        //
+        // if let Some(level_data) = level_data {
+        //     level_data.level_data.push(GbxZoneMapFODSavedLevelData {
+        //         level_name: "TechSlaughter".to_string(),
+        //         fod_texture_size: 256,
+        //         num_chunks: 16,
+        //         discovery_percentage: 0.0,
+        //         data_state: 1,
+        //         data_revision: 0,
+        //         fod_data: vec![],
+        //         unknown_fields: Default::default(),
+        //         cached_size: Default::default()
+        //     });
+        // }
+        //
+        // visited_teleporters_list.iter().for_each(|vt| {
+        //     if vt.visited
+        //         && !curr_active_travel_stations
+        //             .iter()
+        //             .any(|ats| ats.active_travel_station_name.to_lowercase() == vt.game_data.ident)
+        //     {
+        //         // println!("Adding: {}", vt.game_data.ident);
+        //
+        //         // curr_active_travel_stations.push(ActiveFastTravelSaveData {
+        //         //     active_travel_station_name: vt.game_data.ident.to_owned(),
+        //         //     blacklisted: false,
+        //         //     unknown_fields: Default::default(),
+        //         //     cached_size: Default::default(),
+        //         // });
+        //     } else if !vt.visited {
+        //         if let Some(curr_station) = curr_active_travel_stations.iter().position(|ats| {
+        //             ats.active_travel_station_name.to_lowercase() == vt.game_data.ident
+        //         }) {
+        //             // println!("Removing: {}", vt.game_data.ident);
+        //
+        //             // curr_active_travel_stations.remove(curr_station);
+        //         }
+        //     }
+        // })
     }
 }
