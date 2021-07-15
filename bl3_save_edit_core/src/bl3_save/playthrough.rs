@@ -31,12 +31,16 @@ impl Playthrough {
                     .get(i)
                     .and_then(|m| FAST_TRAVEL.get_value_by_key(&m.to_lowercase()).ok())
                     .map(|m| m.to_string())
-                    .context("failed to read character current map")?;
+                    .with_context(|| {
+                        format!("failed to read current map for playthrough: {}", i)
+                    })?;
 
                 let mission_playthrough_data = character
                     .mission_playthroughs_data
                     .get(i)
-                    .context("failed to read character active missions")?;
+                    .with_context(|| {
+                        format!("failed to read active missions for playthrough: {}", i)
+                    })?;
 
                 let mut active_missions = get_filtered_mission_list(
                     *MISSION,
@@ -62,15 +66,18 @@ impl Playthrough {
                 let active_travel_stations = character
                     .active_travel_stations_for_playthrough
                     .get(i)
-                    .par_iter()
                     .map(|ats| {
                         ats.active_travel_stations
                             .par_iter()
                             .map(|ats| ats.active_travel_station_name.clone())
                             .collect::<Vec<_>>()
                     })
-                    .flatten()
-                    .collect::<Vec<String>>();
+                    .with_context(|| {
+                        format!(
+                            "failed to read active fast travel stations for playthrough: {}",
+                            i
+                        )
+                    })?;
 
                 Ok(Playthrough {
                     mayhem_level,

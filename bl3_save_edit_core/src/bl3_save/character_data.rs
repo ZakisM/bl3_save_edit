@@ -23,7 +23,7 @@ use crate::game_data::{
     VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST,
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
-use crate::protos::oak_save::Character;
+use crate::protos::oak_save::{ActiveFastTravelSaveData, Character};
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
 #[derive(Debug, Clone, Default)]
@@ -350,17 +350,38 @@ impl CharacterData {
         playthrough_index: usize,
         visited_teleporters_list: &[VisitedTeleporter],
     ) {
-        self.character
+        //TODO: Set blacklisted true for the current station we are at? and give option to set travel stations for both playthroughs
+
+        let curr_active_travel_stations = &mut self
+            .character
             .active_travel_stations_for_playthrough
-            .get(playthrough_index)
-            .iter()
-            .map(|ats| {
-                ats.active_travel_stations
+            .get_mut(playthrough_index)
+            .expect("failed to read current active travel stations for playthrough: ")
+            .active_travel_stations;
+
+        visited_teleporters_list.iter().for_each(|vt| {
+            if vt.visited
+                && !curr_active_travel_stations
                     .iter()
-                    .map(|ats| ats.active_travel_station_name.clone())
-                    .collect::<Vec<_>>()
-            })
-            .flatten()
-            .collect::<Vec<String>>();
+                    .any(|ats| ats.active_travel_station_name.to_lowercase() == vt.game_data.ident)
+            {
+                println!("Adding: {}", vt.game_data.ident);
+
+                curr_active_travel_stations.push(ActiveFastTravelSaveData {
+                    active_travel_station_name: vt.game_data.ident.to_owned(),
+                    blacklisted: false,
+                    unknown_fields: Default::default(),
+                    cached_size: Default::default(),
+                });
+            } else if !vt.visited {
+                if let Some(curr_station) = curr_active_travel_stations.iter().position(|ats| {
+                    ats.active_travel_station_name.to_lowercase() == vt.game_data.ident
+                }) {
+                    println!("Removing: {}", vt.game_data.ident);
+
+                    curr_active_travel_stations.remove(curr_station);
+                }
+            }
+        })
     }
 }
