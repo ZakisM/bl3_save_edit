@@ -165,12 +165,8 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
         .open("src/game_data/mod.rs")?;
 
     writeln!(output, "use std::fmt::Formatter;\n")?;
-    writeln!(output, "use anyhow::{{Context, Result}};")?;
+    writeln!(output, "use anyhow::Result;")?;
     writeln!(output, "use once_cell::sync::Lazy;")?;
-    writeln!(
-        output,
-        "use rayon::iter::{{IntoParallelRefIterator, ParallelIterator}};\n"
-    )?;
 
     for input in input_data {
         writeln!(output, "{}", input)?;
@@ -180,12 +176,6 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
         output,
         r#"pub trait GameDataExt {{
     fn get_value_by_key(&self, key: &str) -> Result<&str>;
-}}
-
-impl<const LENGTH: usize> GameDataExt for [GameDataKv; LENGTH] {{
-    fn get_value_by_key(&self, key: &str) -> Result<&str> {{
-        self.par_iter().find_first(|gd| key == gd.ident).map(|gd| gd.name).with_context(|| format!("failed to find game data value for: {{}}", key))
-    }}
 }}
 
 #[derive(Clone, Copy, Debug, Default, Eq)]

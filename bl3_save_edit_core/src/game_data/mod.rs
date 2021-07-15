@@ -1,8 +1,7 @@
 use std::fmt::Formatter;
 
-use anyhow::{Context, Result};
+use anyhow::Result;
 use once_cell::sync::Lazy;
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 pub static FAST_TRAVEL: Lazy<[GameDataKv; 864]> = Lazy::new(|| {
     [
@@ -2107,15 +2106,6 @@ pub const VEHICLE_SKINS_JETBEAST: [&str; 6] = [
 
 pub trait GameDataExt {
     fn get_value_by_key(&self, key: &str) -> Result<&str>;
-}
-
-impl<const LENGTH: usize> GameDataExt for [GameDataKv; LENGTH] {
-    fn get_value_by_key(&self, key: &str) -> Result<&str> {
-        self.par_iter()
-            .find_first(|gd| key == gd.ident)
-            .map(|gd| gd.name)
-            .with_context(|| format!("failed to find game data value for: {}", key))
-    }
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq)]

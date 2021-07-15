@@ -3,14 +3,14 @@ use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIter
 use rayon::slice::ParallelSliceMut;
 
 use crate::bl3_save::util::{get_filtered_mission_list, IMPORTANT_MISSIONS};
-use crate::game_data::{GameDataExt, FAST_TRAVEL, MISSION};
+use crate::game_data::{GameDataKv, FAST_TRAVEL, MISSION};
 use crate::protos::oak_save::{Character, MissionStatusPlayerSaveGameData_MissionState};
 
 #[derive(Debug, Clone)]
 pub struct Playthrough {
     pub mayhem_level: i32,
     pub mayhem_random_seed: i32,
-    pub current_map: String,
+    pub current_map: GameDataKv,
     pub active_missions: Vec<String>,
     pub missions_completed: Vec<String>,
     pub mission_milestones: Vec<String>,
@@ -29,11 +29,13 @@ impl Playthrough {
                 let current_map = character
                     .last_active_travel_station_for_playthrough
                     .get(i)
-                    .and_then(|m| FAST_TRAVEL.get_value_by_key(&m.to_lowercase()).ok())
-                    .map(|m| m.to_string())
-                    .with_context(|| {
-                        format!("failed to read current map for playthrough: {}", i)
-                    })?;
+                    .and_then(|m| {
+                        FAST_TRAVEL
+                            .par_iter()
+                            .cloned()
+                            .find_first(|ft| ft.ident == m.to_lowercase())
+                    })
+                    .unwrap_or(FAST_TRAVEL[0]);
 
                 let mission_playthrough_data = character
                     .mission_playthroughs_data

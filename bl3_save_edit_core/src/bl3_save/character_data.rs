@@ -26,10 +26,8 @@ use crate::game_data::{
 };
 use crate::protos::oak_save::{
     ActiveFastTravelSaveData, Character, DiscoveredAreaInfo, DiscoveredLevelInfo,
-    GbxZoneMapFODSavedLevelData, MissionPlaythroughSaveGameData, MissionStatusPlayerSaveGameData,
-    MissionStatusPlayerSaveGameData_MissionState, RegionSaveGameData,
+    MissionStatusPlayerSaveGameData, MissionStatusPlayerSaveGameData_MissionState,
 };
-use crate::protos::oak_shared::ChallengeSaveGameData;
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
 #[derive(Debug, Clone, Default)]
@@ -354,7 +352,7 @@ impl CharacterData {
     pub fn set_active_travel_stations(
         &mut self,
         playthrough_index: usize,
-        visited_teleporters_list: &[VisitedTeleporter],
+        _visited_teleporters_list: &[VisitedTeleporter],
     ) {
         //TODO: Find a save with every location and map everything below...
 

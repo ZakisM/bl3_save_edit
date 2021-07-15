@@ -26,6 +26,21 @@ pub fn map_fast_travel_state(save: &Bl3Save, manage_save_state: &mut ManageSaveS
         _ => PlaythroughType::Normal,
     };
 
+    manage_save_state
+        .main_state
+        .fast_travel_state
+        .last_visited_teleporter_selected = save
+        .character_data
+        .playthroughs
+        .get(last_play_through_index)
+        .map(|p| p.current_map)
+        .unwrap_or(
+            manage_save_state
+                .main_state
+                .fast_travel_state
+                .fast_travel_locations[0],
+        );
+
     if let Some(playthrough) = save
         .character_data
         .playthroughs

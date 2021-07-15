@@ -309,7 +309,7 @@ mod tests {
         assert_eq!(first_playthrough.mayhem_level, 0);
         assert_eq!(first_playthrough.mayhem_random_seed, 0);
         assert_eq!(
-            first_playthrough.current_map,
+            first_playthrough.current_map.name,
             "Midnight's Cairn (Maliwan Takedown)"
         );
         assert_eq!(
@@ -337,7 +337,7 @@ mod tests {
 
         assert_eq!(second_playthrough.mayhem_level, 10);
         assert_eq!(second_playthrough.mayhem_random_seed, -1367132962);
-        assert_eq!(second_playthrough.current_map, "Sanctuary");
+        assert_eq!(second_playthrough.current_map.name, "Sanctuary");
         assert_eq!(
             second_playthrough.active_missions,
             vec![
@@ -583,7 +583,7 @@ mod tests {
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 1);
         assert_eq!(first_playthrough.mayhem_random_seed, 0);
-        assert_eq!(first_playthrough.current_map, "Sanctuary");
+        assert_eq!(first_playthrough.current_map.name, "Sanctuary");
         assert_eq!(
             first_playthrough.active_missions,
             vec!["Golden Calves", "Kill Killavolt", "Technical NOGout",]
@@ -807,7 +807,7 @@ mod tests {
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
         assert_eq!(first_playthrough.mayhem_random_seed, 9573);
-        assert_eq!(first_playthrough.current_map, "Covenant Pass");
+        assert_eq!(first_playthrough.current_map.name, "Covenant Pass");
         assert_eq!(
             first_playthrough.active_missions,
             vec!["Children of the Vault",]
@@ -989,7 +989,7 @@ mod tests {
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
         assert_eq!(first_playthrough.mayhem_random_seed, 20046);
-        assert_eq!(first_playthrough.current_map, "Sanctuary");
+        assert_eq!(first_playthrough.current_map.name, "Sanctuary");
         assert_eq!(
             first_playthrough.active_missions,
             vec!["Hostile Takeover", "The Handsome Jackpot",]
@@ -1218,7 +1218,7 @@ mod tests {
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
         assert_eq!(first_playthrough.mayhem_random_seed, 0);
-        assert_eq!(first_playthrough.current_map, "Desolation's Edge");
+        assert_eq!(first_playthrough.current_map.name, "Desolation's Edge");
         assert_eq!(
             first_playthrough.active_missions,
             vec!["Footsteps of Giants",]
@@ -1441,7 +1441,7 @@ mod tests {
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
         assert_eq!(first_playthrough.mayhem_random_seed, 0);
-        assert_eq!(first_playthrough.current_map, "Covenant Pass");
+        assert_eq!(first_playthrough.current_map.name, "Covenant Pass");
         assert_eq!(
             first_playthrough.active_missions,
             vec!["Children of the Vault",]
@@ -1623,7 +1623,7 @@ mod tests {
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
         assert_eq!(first_playthrough.mayhem_random_seed, 0);
-        assert_eq!(first_playthrough.current_map, "Sanctuary");
+        assert_eq!(first_playthrough.current_map.name, "Sanctuary");
         assert_eq!(first_playthrough.active_missions, vec!["Fire in the Sky",]);
         assert_eq!(first_playthrough.missions_completed.len(), 86);
         assert_eq!(first_playthrough.mission_milestones, vec!["Main Game"]);
@@ -1846,7 +1846,7 @@ mod tests {
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
         assert_eq!(first_playthrough.mayhem_random_seed, 20046);
-        assert_eq!(first_playthrough.current_map, "Sanctuary");
+        assert_eq!(first_playthrough.current_map.name, "Sanctuary");
         assert_eq!(
             first_playthrough.active_missions,
             vec!["Hostile Takeover", "The Handsome Jackpot"]

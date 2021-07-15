@@ -9,10 +9,11 @@ use crate::interaction::InteractionExt;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 use crate::resources::svgs::{CHARACTER, CURRENCY, FAST_TRAVEL, SETTINGS, VEHICLE};
 use crate::views::manage_save::character::CharacterState;
+use crate::views::manage_save::currency::CurrencyState;
 use crate::views::manage_save::fast_travel::FastTravelState;
 use crate::views::manage_save::general::GeneralState;
 use crate::views::manage_save::{
-    character, fast_travel, general, ManageSaveInteractionMessage, ManageSaveState,
+    character, currency, fast_travel, general, ManageSaveInteractionMessage, ManageSaveState,
 };
 
 #[derive(Debug, Default)]
@@ -20,6 +21,7 @@ pub struct MainState {
     tab_bar_state: TabBarState,
     pub general_state: GeneralState,
     pub character_state: CharacterState,
+    pub currency_state: CurrencyState,
     pub fast_travel_state: FastTravelState,
 }
 
@@ -198,10 +200,11 @@ pub fn view<'a>(
         MainTabBarView::Character => {
             character::view(&mut manage_save_state.main_state.character_state)
         }
+        MainTabBarView::Currency => {
+            currency::view(&mut manage_save_state.main_state.currency_state)
+        }
+        MainTabBarView::Vehicle => Container::new(Text::new("Vehicle")),
         _ => fast_travel::view(&mut manage_save_state.main_state.fast_travel_state),
-        // MainTabBarView::Vehicle => general::view(),
-        // MainTabBarView::Currency => general::view(),
-        // MainTabBarView::FastTravel => general::view(),
     };
 
     let all_contents = Column::new().push(tab_bar).push(tab_content);

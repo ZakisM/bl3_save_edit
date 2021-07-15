@@ -1,3 +1,5 @@
+use std::mem;
+
 use iced::{
     button, Align, Application, Button, Clipboard, Color, Column, Command, Container, Element,
     HorizontalAlignment, Length, Row, Text,
@@ -19,6 +21,7 @@ use crate::views::manage_save::character::{
     CharacterGearMessage, CharacterInteractionMessage, CharacterInteractionSduMessage,
     CharacterMessage, CharacterSkinMessage,
 };
+use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
 use crate::views::manage_save::main::{MainInteractionMessage, MainTabBarView};
@@ -48,7 +51,6 @@ pub enum Message {
 pub enum InteractionMessage {
     ChooseSaveInteraction(ChooseSaveInteractionMessage),
     ManageSaveInteraction(ManageSaveInteractionMessage),
-    SaveFilePressed,
     Ignore,
 }
 
@@ -291,6 +293,17 @@ impl Application for Bl3Ui {
                                 .heavy_input = SaveSduSlot::Heavy.maximum();
                         }
                     },
+                    ManageSaveInteractionMessage::Currency(currency_msg) => match currency_msg {
+                        CurrencyInteractionMessage::MoneyInputChanged(money) => {
+                            self.manage_save_state.main_state.currency_state.money_input = money;
+                        }
+                        CurrencyInteractionMessage::EridiumInputChanged(eridium) => {
+                            self.manage_save_state
+                                .main_state
+                                .currency_state
+                                .eridium_input = eridium;
+                        }
+                    },
                     ManageSaveInteractionMessage::FastTravel(fast_travel_msg) => {
                         match fast_travel_msg {
                             FastTravelInteractionMessage::UncheckAllVisitedTeleporterList => {
@@ -311,46 +324,46 @@ impl Application for Bl3Ui {
                             }
                         }
                     }
+                    ManageSaveInteractionMessage::SaveFilePressed => {
+                        let current_file = &mut self.manage_save_state.current_file;
+
+                        current_file.character_data.set_head_skin_selected(
+                            &self
+                                .manage_save_state
+                                .main_state
+                                .character_state
+                                .skin_state
+                                .head_skin_selected,
+                        );
+
+                        // current_file.character_data.set_active_travel_stations(
+                        //     self.manage_save_state
+                        //         .main_state
+                        //         .fast_travel_state
+                        //         .playthrough_type_selected as usize,
+                        //     &self
+                        //         .manage_save_state
+                        //         .main_state
+                        //         .fast_travel_state
+                        //         .visited_teleporters_list,
+                        // );
+
+                        let output_file = self
+                            .choose_save_directory_state
+                            .saves_dir
+                            .join("test_file_zak.sav");
+
+                        match current_file.to_bytes() {
+                            Ok(output) => {
+                                return Command::perform(
+                                    tokio::fs::write(output_file, output),
+                                    Message::SaveFileCompleted,
+                                );
+                            }
+                            Err(e) => eprintln!("{}", e),
+                        };
+                    }
                 },
-                InteractionMessage::SaveFilePressed => {
-                    let current_file = &mut self.manage_save_state.current_file;
-
-                    current_file.character_data.set_head_skin_selected(
-                        &self
-                            .manage_save_state
-                            .main_state
-                            .character_state
-                            .skin_state
-                            .head_skin_selected,
-                    );
-
-                    // current_file.character_data.set_active_travel_stations(
-                    //     self.manage_save_state
-                    //         .main_state
-                    //         .fast_travel_state
-                    //         .playthrough_type_selected as usize,
-                    //     &self
-                    //         .manage_save_state
-                    //         .main_state
-                    //         .fast_travel_state
-                    //         .visited_teleporters_list,
-                    // );
-
-                    let output_file = self
-                        .choose_save_directory_state
-                        .saves_dir
-                        .join("test_file_zak.sav");
-
-                    match current_file.to_bytes() {
-                        Ok(output) => {
-                            return Command::perform(
-                                tokio::fs::write(output_file, output),
-                                Message::SaveFileCompleted,
-                            );
-                        }
-                        Err(e) => eprintln!("{}", e),
-                    };
-                }
                 InteractionMessage::Ignore => {}
             },
             Message::ChooseSave(choose_save_msg) => match choose_save_msg {
@@ -374,10 +387,6 @@ impl Application for Bl3Ui {
                 }
                 ChooseSaveMessage::LoadedFiles(loaded_files) => match loaded_files {
                     Ok(files) => {
-                        self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                            MainTabBarView::Character,
-                        ));
-
                         self.loaded_files = files;
 
                         let first_file = self
@@ -399,10 +408,19 @@ impl Application for Bl3Ui {
                                     &mut self.manage_save_state,
                                 );
 
+                                state_mappers::manage_save::currency::map_currency_state(
+                                    &save,
+                                    &mut self.manage_save_state,
+                                );
+
                                 state_mappers::manage_save::fast_travel::map_fast_travel_state(
                                     &save,
                                     &mut self.manage_save_state,
                                 );
+
+                                self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
+                                    MainTabBarView::General,
+                                ));
                             }
                             Bl3FileType::PcProfile(p) | Bl3FileType::Ps4Profile(p) => (),
                         }
@@ -579,7 +597,9 @@ impl Application for Bl3Ui {
             &mut self.save_file_button_state,
             Text::new("Save").font(JETBRAINS_MONO_BOLD).size(17),
         )
-        .on_press(InteractionMessage::SaveFilePressed)
+        .on_press(InteractionMessage::ManageSaveInteraction(
+            ManageSaveInteractionMessage::SaveFilePressed,
+        ))
         .padding(10)
         .style(Bl3UiStyle)
         .into_element();
@@ -589,7 +609,12 @@ impl Application for Bl3Ui {
             .spacing(25)
             .align_items(Align::Center);
 
-        if self.view_state != ViewState::ChooseSaveDirectory {
+        // mem::discriminant will match any of the enum's under ViewState::ManageSave
+        if mem::discriminant(&self.view_state)
+            == mem::discriminant(&ViewState::ManageSave(ManageSaveView::TabBar(
+                MainTabBarView::General,
+            )))
+        {
             menu_bar_content = menu_bar_content.push(save_button);
         }
 

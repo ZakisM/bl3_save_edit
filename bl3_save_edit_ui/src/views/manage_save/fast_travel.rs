@@ -121,14 +121,6 @@ pub fn view(fast_travel_state: &mut FastTravelState) -> Container<Message> {
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
-    let pre_selected_last_visited_teleporter =
-        match fast_travel_state.last_visited_teleporter_selected {
-            GameDataKv { ident, name: _ } if ident.is_empty() => {
-                Some(fast_travel_state.fast_travel_locations[0])
-            }
-            current => Some(current),
-        };
-
     let last_visited_teleporter_selector = Container::new(
         Row::new()
             .push(
@@ -143,7 +135,7 @@ pub fn view(fast_travel_state: &mut FastTravelState) -> Container<Message> {
                 PickList::new(
                     &mut fast_travel_state.last_visited_teleporter_selector,
                     &fast_travel_state.fast_travel_locations,
-                    pre_selected_last_visited_teleporter,
+                    Some(fast_travel_state.last_visited_teleporter_selected),
                     |s| {
                         Message::ManageSave(ManageSaveMessage::FastTravel(
                             FastTravelMessage::LastVisitedTeleporterSelected(s),
