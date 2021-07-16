@@ -7,7 +7,7 @@ use strum::Display;
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
-use crate::resources::svgs::{CHARACTER, CURRENCY, FAST_TRAVEL, SETTINGS, VEHICLE};
+use crate::resources::svgs::{CHARACTER, CURRENCY, FAST_TRAVEL, INVENTORY, SETTINGS};
 use crate::views::manage_save::character::CharacterState;
 use crate::views::manage_save::currency::CurrencyState;
 use crate::views::manage_save::fast_travel::FastTravelState;
@@ -29,7 +29,7 @@ pub struct MainState {
 pub struct TabBarState {
     general_button_state: button::State,
     character_button_state: button::State,
-    vehicle_button_state: button::State,
+    inventory_button_state: button::State,
     currency_button_state: button::State,
     fast_travel_button_state: button::State,
 }
@@ -38,7 +38,7 @@ pub struct TabBarState {
 pub enum MainInteractionMessage {
     TabBarGeneralPressed,
     TabBarCharacterPressed,
-    TabBarVehiclePressed,
+    TabBarInventoryPressed,
     TabBarCurrencyPressed,
     TabBarFastTravelPressed,
 }
@@ -48,7 +48,7 @@ pub enum MainInteractionMessage {
 pub enum MainTabBarView {
     General,
     Character,
-    Vehicle,
+    Inventory,
     Currency,
     FastTravel,
 }
@@ -148,16 +148,16 @@ pub fn view<'a>(
         115,
     );
 
-    let vehicle_button = tab_bar_button(
+    let inventory_button = tab_bar_button(
         &mut manage_save_state
             .main_state
             .tab_bar_state
-            .vehicle_button_state,
-        MainTabBarView::Vehicle,
+            .inventory_button_state,
+        MainTabBarView::Inventory,
         &tab_bar_view,
-        MainInteractionMessage::TabBarVehiclePressed,
-        svg::Handle::from_memory(VEHICLE),
-        100,
+        MainInteractionMessage::TabBarInventoryPressed,
+        svg::Handle::from_memory(INVENTORY),
+        115,
     );
 
     let currency_button = tab_bar_button(
@@ -188,7 +188,7 @@ pub fn view<'a>(
         Row::new()
             .push(general_button)
             .push(character_button)
-            .push(vehicle_button)
+            .push(inventory_button)
             .push(currency_button)
             .push(fast_travel),
     )
@@ -203,7 +203,7 @@ pub fn view<'a>(
         MainTabBarView::Currency => {
             currency::view(&mut manage_save_state.main_state.currency_state)
         }
-        MainTabBarView::Vehicle => Container::new(Text::new("Vehicle")),
+        MainTabBarView::Inventory => Container::new(Text::new("Inventory")),
         _ => fast_travel::view(&mut manage_save_state.main_state.fast_travel_state),
     };
 

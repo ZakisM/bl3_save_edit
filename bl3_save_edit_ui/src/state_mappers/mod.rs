@@ -10,7 +10,7 @@ use crate::views::manage_save::ManageSaveView;
 pub mod manage_save;
 
 pub fn map_loaded_file_to_state(main_state: &mut Bl3UiState) {
-    match &main_state.loaded_files_selected {
+    match &*main_state.loaded_files_selected {
         Bl3FileType::PcSave(save) | Bl3FileType::Ps4Save(save) => {
             //This file will be the one that gets modified when we press save.
             main_state.manage_save_state.current_file = save.clone();

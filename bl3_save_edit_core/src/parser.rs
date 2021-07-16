@@ -6,15 +6,15 @@ use crate::error::BL3ParserError;
 use crate::error::ErrorExt;
 use crate::models::CustomFormatData;
 
-#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Display)]
 pub enum HeaderType {
-    #[strum(to_string = "PC")]
+    #[strum(to_string = "PC Save")]
     PcSave,
-    #[strum(to_string = "PC")]
+    #[strum(to_string = "PC Profile")]
     PcProfile,
-    #[strum(to_string = "PS4")]
+    #[strum(to_string = "PS4 Save")]
     Ps4Save,
-    #[strum(to_string = "PS4")]
+    #[strum(to_string = "PS4 Profile")]
     Ps4Profile,
 }
 
@@ -22,6 +22,12 @@ impl std::default::Default for HeaderType {
     fn default() -> Self {
         Self::PcSave
     }
+}
+
+impl HeaderType {
+    pub const SAVE_TYPES: [HeaderType; 2] = [HeaderType::PcSave, HeaderType::Ps4Save];
+
+    pub const PROFILE_TYPES: [HeaderType; 2] = [HeaderType::PcProfile, HeaderType::Ps4Profile];
 }
 
 const PC_SAVE_PREFIX_MAGIC: [u8; 32] = [

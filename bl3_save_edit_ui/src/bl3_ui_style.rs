@@ -107,7 +107,7 @@ impl checkbox::StyleSheet for Bl3UiStyle {
 impl button::StyleSheet for Bl3UiStyle {
     fn active(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(30, 30, 30).into()),
+            background: Some(Color::from_rgb8(23, 23, 23).into()),
             text_color: Color::from_rgb8(210, 210, 210),
             border_width: 1.0,
             border_radius: 1.0,
@@ -118,7 +118,7 @@ impl button::StyleSheet for Bl3UiStyle {
 
     fn hovered(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(32, 32, 32).into()),
+            background: Some(Color::from_rgb8(27, 27, 27).into()),
             text_color: Color::from_rgb8(210, 210, 210),
             border_width: 1.0,
             border_radius: 1.0,
@@ -129,7 +129,7 @@ impl button::StyleSheet for Bl3UiStyle {
 
     fn pressed(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(27, 27, 27).into()),
+            background: Some(Color::from_rgb8(20, 20, 20).into()),
             text_color: Color::from_rgb8(210, 210, 210),
             border_width: 1.0,
             border_radius: 1.0,

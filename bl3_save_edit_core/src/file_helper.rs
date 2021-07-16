@@ -84,7 +84,7 @@ impl std::fmt::Display for Bl3FileType {
         match self {
             Bl3FileType::PcSave(save) | Bl3FileType::Ps4Save(save) => write!(
                 f,
-                "[{} Save] {} ({}) - Level {}",
+                "[{}] {} ({}) - Level {}",
                 save.header_type,
                 save.character_data.character.preferred_character_name,
                 save.character_data.player_class,
@@ -93,10 +93,8 @@ impl std::fmt::Display for Bl3FileType {
             Bl3FileType::PcProfile(profile) | Bl3FileType::Ps4Profile(profile) => {
                 write!(
                     f,
-                    "[{} Profile] Golden Keys: {}/Guardian Rank: {}",
-                    profile.header_type,
-                    profile.profile_data.golden_keys,
-                    profile.profile_data.guardian_rank
+                    "[{}] Golden Keys: {}",
+                    profile.header_type, profile.profile_data.golden_keys,
                 )
             }
         }

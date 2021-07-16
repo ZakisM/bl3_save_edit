@@ -8,4 +8,9 @@ pub fn map_general_state(save: &Bl3Save, manage_save_state: &mut ManageSaveState
 
     manage_save_state.main_state.general_state.slot_input =
         save.character_data.character.save_game_id;
+
+    manage_save_state
+        .main_state
+        .general_state
+        .save_type_selected = save.header_type;
 }

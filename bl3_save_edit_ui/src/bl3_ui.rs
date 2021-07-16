@@ -36,8 +36,9 @@ pub struct Bl3UiState {
     choose_save_directory_state: ChooseSaveDirectoryState,
     pub manage_save_state: ManageSaveState,
     loaded_files_selector: pick_list::State<Bl3FileType>,
-    pub loaded_files_selected: Bl3FileType,
+    pub loaded_files_selected: Box<Bl3FileType>,
     loaded_files: Vec<Bl3FileType>,
+    change_dir_button_state: button::State,
     save_file_button_state: button::State,
 }
 
@@ -53,7 +54,7 @@ pub enum Message {
 pub enum InteractionMessage {
     ChooseSaveInteraction(ChooseSaveInteractionMessage),
     ManageSaveInteraction(ManageSaveInteractionMessage),
-    LoadedFileSelected(Bl3FileType),
+    LoadedFileSelected(Box<Bl3FileType>),
     Ignore,
 }
 
@@ -119,9 +120,9 @@ impl Application for Bl3UiState {
                                 MainTabBarView::Character,
                             ))
                         }
-                        MainInteractionMessage::TabBarVehiclePressed => {
+                        MainInteractionMessage::TabBarInventoryPressed => {
                             self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                MainTabBarView::Vehicle,
+                                MainTabBarView::Inventory,
                             ))
                         }
                         MainInteractionMessage::TabBarCurrencyPressed => {
@@ -151,6 +152,12 @@ impl Application for Bl3UiState {
                                     ))
                                 },
                             );
+                        }
+                        GeneralInteractionMessage::SaveTypeSelected(save_type) => {
+                            self.manage_save_state
+                                .main_state
+                                .general_state
+                                .save_type_selected = save_type;
                         }
                     },
                     ManageSaveInteractionMessage::Character(character_msg) => match character_msg {
@@ -398,11 +405,12 @@ impl Application for Bl3UiState {
                         files.sort();
                         self.loaded_files = files;
 
-                        self.loaded_files_selected = self
-                            .loaded_files
-                            .get(0)
-                            .expect("loaded_files was empty")
-                            .clone();
+                        self.loaded_files_selected = Box::new(
+                            self.loaded_files
+                                .get(0)
+                                .expect("loaded_files was empty")
+                                .clone(),
+                        );
 
                         state_mappers::map_loaded_file_to_state(self);
                     }
@@ -574,11 +582,24 @@ impl Application for Bl3UiState {
             .width(Length::Fill)
             .horizontal_alignment(HorizontalAlignment::Left);
 
+        let change_dir_button = Button::new(
+            &mut self.change_dir_button_state,
+            Text::new("Change Folder")
+                .font(JETBRAINS_MONO_BOLD)
+                .size(17),
+        )
+        .on_press(InteractionMessage::ChooseSaveInteraction(
+            ChooseSaveInteractionMessage::ChooseDirPressed,
+        ))
+        .padding(10)
+        .style(Bl3UiStyle)
+        .into_element();
+
         let all_saves_picklist = PickList::new(
             &mut self.loaded_files_selector,
             &self.loaded_files,
-            Some(self.loaded_files_selected.clone()),
-            |s| Message::InteractionMessage(InteractionMessage::LoadedFileSelected(s)),
+            Some(*self.loaded_files_selected.clone()),
+            |s| Message::InteractionMessage(InteractionMessage::LoadedFileSelected(Box::new(s))),
         )
         .font(JETBRAINS_MONO)
         .text_size(17)
@@ -608,6 +629,7 @@ impl Application for Bl3UiState {
                 MainTabBarView::General,
             )))
         {
+            menu_bar_content = menu_bar_content.push(change_dir_button);
             menu_bar_content = menu_bar_content.push(all_saves_picklist);
             menu_bar_content = menu_bar_content.push(save_button);
         }
