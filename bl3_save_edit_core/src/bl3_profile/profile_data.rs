@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use anyhow::Result;
+use derivative::Derivative;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 
@@ -15,8 +16,10 @@ use crate::game_data::{
 };
 use crate::protos::oak_profile::Profile;
 
-#[derive(Debug, Clone)]
+#[derive(Derivative)]
+#[derivative(Debug, Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct ProfileData {
+    #[derivative(PartialEq = "ignore", Ord = "ignore", PartialOrd = "ignore")]
     pub profile: Profile,
     pub golden_keys: i32,
     pub diamond_keys: i32,

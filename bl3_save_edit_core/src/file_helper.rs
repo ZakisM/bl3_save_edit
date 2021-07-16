@@ -1,3 +1,5 @@
+use std::fmt::Formatter;
+
 use anyhow::{bail, Result};
 use nom::Finish;
 
@@ -63,12 +65,42 @@ pub fn read_bytes(data: &[u8]) -> Result<FileData> {
     })
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq, Clone, Ord, PartialOrd)]
 pub enum Bl3FileType {
     PcSave(Bl3Save),
     PcProfile(Bl3Profile),
     Ps4Save(Bl3Save),
     Ps4Profile(Bl3Profile),
+}
+
+impl std::default::Default for Bl3FileType {
+    fn default() -> Self {
+        Self::PcSave(Bl3Save::default())
+    }
+}
+
+impl std::fmt::Display for Bl3FileType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Bl3FileType::PcSave(save) | Bl3FileType::Ps4Save(save) => write!(
+                f,
+                "[{} Save] {} ({}) - Level {}",
+                save.header_type,
+                save.character_data.character.preferred_character_name,
+                save.character_data.player_class,
+                save.character_data.player_level
+            ),
+            Bl3FileType::PcProfile(profile) | Bl3FileType::Ps4Profile(profile) => {
+                write!(
+                    f,
+                    "[{} Profile] Golden Keys: {}/Guardian Rank: {}",
+                    profile.header_type,
+                    profile.profile_data.golden_keys,
+                    profile.profile_data.guardian_rank
+                )
+            }
+        }
+    }
 }
 
 impl Bl3FileType {

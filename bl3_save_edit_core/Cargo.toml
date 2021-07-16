@@ -14,6 +14,7 @@ rayon = "1.5"
 encoding_rs = "0.8"
 byteorder = "1.4"
 once_cell = "1.8"
+derivative = "2.2.0"
 
 [dependencies.strum]
 version = "0.21"

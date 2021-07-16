@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use anyhow::{Context, Result};
+use derivative::Derivative;
 use protobuf::RepeatedField;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
@@ -30,8 +31,10 @@ use crate::protos::oak_save::{
 };
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
-#[derive(Debug, Clone, Default)]
+#[derive(Derivative)]
+#[derivative(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct CharacterData {
+    #[derivative(PartialEq = "ignore", Ord = "ignore", PartialOrd = "ignore")]
     pub character: Character,
     pub player_class: PlayerClass,
     pub player_level: i32,

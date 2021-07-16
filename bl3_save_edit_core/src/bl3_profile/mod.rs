@@ -21,7 +21,7 @@ pub mod science_levels;
 pub mod sdu;
 pub mod util;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, Ord, PartialOrd)]
 pub struct Bl3Profile {
     pub profile_version: u32,
     pub package_version: u32,
@@ -34,14 +34,21 @@ pub struct Bl3Profile {
     pub custom_format_data_count: u32,
     pub custom_format_data: Vec<CustomFormatData>,
     pub save_game_type: String,
+    pub header_type: HeaderType,
     pub profile_data: ProfileData,
+}
+
+impl std::cmp::PartialEq for Bl3Profile {
+    fn eq(&self, other: &Self) -> bool {
+        self.profile_data == other.profile_data
+    }
 }
 
 impl Bl3Profile {
     pub fn from_file_data(file_data: &FileData, header_type: HeaderType) -> Result<Self> {
         let remaining_data = file_data.remaining_data;
 
-        let profile: Profile = decrypt(remaining_data, header_type)?;
+        let profile: Profile = decrypt(remaining_data, &header_type)?;
 
         let profile_data = ProfileData::from_profile(profile)?;
 
@@ -72,6 +79,7 @@ impl Bl3Profile {
             custom_format_data_count,
             custom_format_data,
             save_game_type,
+            header_type,
             profile_data,
         })
     }

@@ -1,14 +1,14 @@
 use anyhow::{bail, Context, Result};
 use strum::Display;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct BorderlandsScienceInfo {
     pub science_level: ScienceLevel,
     pub solves: i32,
     pub tokens: i32,
 }
 
-#[derive(Copy, Clone, Debug, Display, Eq, PartialEq)]
+#[derive(Copy, Clone, Debug, Display, Eq, PartialEq, Ord, PartialOrd)]
 #[strum(serialize_all = "title_case")]
 pub enum ScienceLevel {
     Claptrap,

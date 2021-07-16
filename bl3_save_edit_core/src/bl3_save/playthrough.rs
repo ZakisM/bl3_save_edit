@@ -6,7 +6,7 @@ use crate::bl3_save::util::{get_filtered_mission_list, IMPORTANT_MISSIONS};
 use crate::game_data::{GameDataKv, FAST_TRAVEL, MISSION};
 use crate::protos::oak_save::{Character, MissionStatusPlayerSaveGameData_MissionState};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Playthrough {
     pub mayhem_level: i32,
     pub mayhem_random_seed: i32,

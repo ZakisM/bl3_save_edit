@@ -21,7 +21,7 @@ pub mod playthrough;
 pub mod sdu;
 pub mod util;
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, Eq, Ord, PartialOrd)]
 pub struct Bl3Save {
     pub save_game_version: u32,
     pub package_version: u32,
@@ -34,14 +34,21 @@ pub struct Bl3Save {
     pub custom_format_data_count: u32,
     pub custom_format_data: Vec<CustomFormatData>,
     pub save_game_type: String,
+    pub header_type: HeaderType,
     pub character_data: CharacterData,
+}
+
+impl std::cmp::PartialEq for Bl3Save {
+    fn eq(&self, other: &Self) -> bool {
+        self.character_data.character.save_game_id == other.character_data.character.save_game_id
+    }
 }
 
 impl Bl3Save {
     pub fn from_file_data(file_data: &FileData, header_type: HeaderType) -> Result<Self> {
         let remaining_data = file_data.remaining_data;
 
-        let character = decrypt(remaining_data, header_type)?;
+        let character = decrypt(remaining_data, &header_type)?;
 
         let character_data = CharacterData::from_character(character)?;
 
@@ -72,6 +79,7 @@ impl Bl3Save {
             custom_format_data_count,
             custom_format_data,
             save_game_type,
+            header_type,
             character_data,
         })
     }

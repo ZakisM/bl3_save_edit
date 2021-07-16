@@ -1,16 +1,27 @@
 use anyhow::{Context, Result};
 use byteorder::{LittleEndian, WriteBytesExt};
+use strum::Display;
 
 use crate::error::BL3ParserError;
 use crate::error::ErrorExt;
 use crate::models::CustomFormatData;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display)]
 pub enum HeaderType {
+    #[strum(to_string = "PC")]
     PcSave,
+    #[strum(to_string = "PC")]
     PcProfile,
+    #[strum(to_string = "PS4")]
     Ps4Save,
+    #[strum(to_string = "PS4")]
     Ps4Profile,
+}
+
+impl std::default::Default for HeaderType {
+    fn default() -> Self {
+        Self::PcSave
+    }
 }
 
 const PC_SAVE_PREFIX_MAGIC: [u8; 32] = [
@@ -115,7 +126,7 @@ pub fn read_guid(i: &[u8]) -> nom::IResult<&[u8], &[u8], BL3ParserError<String>>
     nom::bytes::complete::take(16_u32)(i)
 }
 
-pub fn decrypt<T: protobuf::Message>(data: &[u8], header_type: HeaderType) -> Result<T> {
+pub fn decrypt<T: protobuf::Message>(data: &[u8], header_type: &HeaderType) -> Result<T> {
     let (prefix_magic, xor_magic) = match header_type {
         HeaderType::PcSave => (PC_SAVE_PREFIX_MAGIC, PC_SAVE_XOR_MAGIC),
         HeaderType::PcProfile => (PC_PROFILE_PREFIX_MAGIC, PC_PROFILE_XOR_MAGIC),

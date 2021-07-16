@@ -103,22 +103,5 @@ pub async fn load_files_in_directory(dir: PathBuf) -> Result<Vec<Bl3FileType>> {
         );
     }
 
-    // for file in all_files {
-    //     match file {
-    //         Bl3FileType::PcSave(f) | Bl3FileType::Ps4Save(f) => println!(
-    //             "Save: {} ({}) - Level {}",
-    //             f.character_data.character.preferred_character_name,
-    //             f.character_data.player_class,
-    //             f.character_data.player_level
-    //         ),
-    //         Bl3FileType::PcProfile(f) | Bl3FileType::Ps4Profile(f) => {
-    //             println!(
-    //                 "Profile: Golden Keys: {}/Guardian Rank: {}",
-    //                 f.profile_data.golden_keys, f.profile_data.guardian_rank
-    //             );
-    //         }
-    //     }
-    // }
-
     Ok(all_files)
 }

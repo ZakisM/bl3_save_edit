@@ -8,7 +8,7 @@ use bl3_save_edit_core::file_helper::Bl3FileType;
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::interaction::InteractionExt;
-use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::resources::fonts::JETBRAINS_MONO;
 
 #[derive(Debug, Default)]
 pub struct ChooseSaveDirectoryState {
@@ -38,7 +38,7 @@ pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Conta
         &mut choose_save_directory_state.choose_dir_button_state,
         Text::new("Select...")
             .horizontal_alignment(HorizontalAlignment::Center)
-            .font(JETBRAINS_MONO_BOLD)
+            .font(JETBRAINS_MONO)
             .size(18),
     )
     .padding(10)

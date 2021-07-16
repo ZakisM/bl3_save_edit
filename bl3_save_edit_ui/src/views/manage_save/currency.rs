@@ -36,7 +36,7 @@ pub fn view(general_state: &mut CurrencyState) -> Container<Message> {
                             .font(JETBRAINS_MONO)
                             .size(17)
                             .color(Color::from_rgb8(242, 203, 5))
-                            .width(Length::Units(90)),
+                            .width(Length::Units(75)),
                     )
                     .push(
                         NumberInput::new(
@@ -77,7 +77,7 @@ pub fn view(general_state: &mut CurrencyState) -> Container<Message> {
                     .font(JETBRAINS_MONO)
                     .size(17)
                     .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(90)),
+                    .width(Length::Units(75)),
             )
             .push(
                 NumberInput::new(

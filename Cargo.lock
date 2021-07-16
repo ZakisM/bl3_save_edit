@@ -137,6 +137,7 @@ dependencies = [
  "anyhow",
  "byteorder",
  "csv",
+ "derivative",
  "encoding_rs",
  "nom",
  "once_cell",

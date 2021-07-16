@@ -1,8 +1,8 @@
 use std::mem;
 
 use iced::{
-    button, Align, Application, Button, Clipboard, Color, Column, Command, Container, Element,
-    HorizontalAlignment, Length, Row, Text,
+    button, pick_list, Align, Application, Button, Clipboard, Color, Column, Command, Container,
+    Element, HorizontalAlignment, Length, PickList, Row, Text,
 };
 
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
@@ -12,7 +12,7 @@ use bl3_save_edit_core::file_helper::Bl3FileType;
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::interaction;
 use crate::interaction::InteractionExt;
-use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO_BOLD};
+use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
@@ -31,10 +31,12 @@ use crate::views::manage_save::{
 use crate::views::{choose_save_directory, manage_save};
 
 #[derive(Debug, Default)]
-pub struct Bl3Ui {
-    view_state: ViewState,
+pub struct Bl3UiState {
+    pub view_state: ViewState,
     choose_save_directory_state: ChooseSaveDirectoryState,
-    manage_save_state: ManageSaveState,
+    pub manage_save_state: ManageSaveState,
+    loaded_files_selector: pick_list::State<Bl3FileType>,
+    pub loaded_files_selected: Bl3FileType,
     loaded_files: Vec<Bl3FileType>,
     save_file_button_state: button::State,
 }
@@ -51,11 +53,12 @@ pub enum Message {
 pub enum InteractionMessage {
     ChooseSaveInteraction(ChooseSaveInteractionMessage),
     ManageSaveInteraction(ManageSaveInteractionMessage),
+    LoadedFileSelected(Bl3FileType),
     Ignore,
 }
 
 #[derive(Debug, PartialEq)]
-enum ViewState {
+pub enum ViewState {
     ChooseSaveDirectory,
     ManageSave(ManageSaveView),
 }
@@ -66,16 +69,16 @@ impl std::default::Default for ViewState {
     }
 }
 
-impl Application for Bl3Ui {
+impl Application for Bl3UiState {
     type Executor = tokio::runtime::Runtime;
     type Message = Message;
     type Flags = ();
 
     fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
         (
-            Bl3Ui {
+            Bl3UiState {
                 view_state: ViewState::ChooseSaveDirectory,
-                ..Bl3Ui::default()
+                ..Bl3UiState::default()
             },
             Command::none(),
         )
@@ -364,6 +367,11 @@ impl Application for Bl3Ui {
                         };
                     }
                 },
+                InteractionMessage::LoadedFileSelected(loaded_file) => {
+                    self.loaded_files_selected = loaded_file;
+
+                    state_mappers::map_loaded_file_to_state(self);
+                }
                 InteractionMessage::Ignore => {}
             },
             Message::ChooseSave(choose_save_msg) => match choose_save_msg {
@@ -386,44 +394,17 @@ impl Application for Bl3Ui {
                     }
                 }
                 ChooseSaveMessage::LoadedFiles(loaded_files) => match loaded_files {
-                    Ok(files) => {
+                    Ok(mut files) => {
+                        files.sort();
                         self.loaded_files = files;
 
-                        let first_file = self
+                        self.loaded_files_selected = self
                             .loaded_files
                             .get(0)
-                            .expect("loaded_files list was empty");
+                            .expect("loaded_files was empty")
+                            .clone();
 
-                        match first_file {
-                            Bl3FileType::PcSave(save) | Bl3FileType::Ps4Save(save) => {
-                                self.manage_save_state.current_file = save.to_owned();
-
-                                state_mappers::manage_save::general::map_general_state(
-                                    &save,
-                                    &mut self.manage_save_state,
-                                );
-
-                                state_mappers::manage_save::character::map_character_state(
-                                    &save,
-                                    &mut self.manage_save_state,
-                                );
-
-                                state_mappers::manage_save::currency::map_currency_state(
-                                    &save,
-                                    &mut self.manage_save_state,
-                                );
-
-                                state_mappers::manage_save::fast_travel::map_fast_travel_state(
-                                    &save,
-                                    &mut self.manage_save_state,
-                                );
-
-                                self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                    MainTabBarView::General,
-                                ));
-                            }
-                            Bl3FileType::PcProfile(p) | Bl3FileType::Ps4Profile(p) => (),
-                        }
+                        state_mappers::map_loaded_file_to_state(self);
                     }
                     Err(e) => eprintln!("{}", e),
                 },
@@ -593,6 +574,18 @@ impl Application for Bl3Ui {
             .width(Length::Fill)
             .horizontal_alignment(HorizontalAlignment::Left);
 
+        let all_saves_picklist = PickList::new(
+            &mut self.loaded_files_selector,
+            &self.loaded_files,
+            Some(self.loaded_files_selected.clone()),
+            |s| Message::InteractionMessage(InteractionMessage::LoadedFileSelected(s)),
+        )
+        .font(JETBRAINS_MONO)
+        .text_size(17)
+        .width(Length::Fill)
+        .padding(10)
+        .style(Bl3UiStyle);
+
         let save_button = Button::new(
             &mut self.save_file_button_state,
             Text::new("Save").font(JETBRAINS_MONO_BOLD).size(17),
@@ -606,7 +599,7 @@ impl Application for Bl3Ui {
 
         let mut menu_bar_content = Row::new()
             .push(title)
-            .spacing(25)
+            .spacing(15)
             .align_items(Align::Center);
 
         // mem::discriminant will match any of the enum's under ViewState::ManageSave
@@ -615,6 +608,7 @@ impl Application for Bl3Ui {
                 MainTabBarView::General,
             )))
         {
+            menu_bar_content = menu_bar_content.push(all_saves_picklist);
             menu_bar_content = menu_bar_content.push(save_button);
         }
 
