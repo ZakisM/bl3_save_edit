@@ -1,10 +1,11 @@
 use bl3_save_edit_core::bl3_save::inventory_slot::InventorySlot;
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
-use bl3_save_edit_core::bl3_save::Bl3Save;
 
 use crate::views::manage_save::ManageSaveState;
 
-pub fn map_character_state(save: &Bl3Save, manage_save_state: &mut ManageSaveState) {
+pub fn map_character_state(manage_save_state: &mut ManageSaveState) {
+    let save = &manage_save_state.current_file;
+
     manage_save_state.main_state.character_state.name_input = save
         .character_data
         .character

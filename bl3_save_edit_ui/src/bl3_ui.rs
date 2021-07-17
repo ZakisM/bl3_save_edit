@@ -14,6 +14,7 @@ use crate::interaction;
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers;
+use crate::state_mappers::manage_save::fast_travel::map_fast_travel_stations_to_visited_teleporters_list;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -538,30 +539,10 @@ impl Application for Bl3UiState {
 
                         let playthrough_id = playthrough_type as usize;
 
-                        if let Some(playthrough) = self
-                            .manage_save_state
-                            .current_file
-                            .character_data
-                            .playthroughs
-                            .get(playthrough_id)
-                        {
-                            self.manage_save_state
-                                .main_state
-                                .fast_travel_state
-                                .visited_teleporters_list
-                                .iter_mut()
-                                .for_each(|vt| {
-                                    vt.visited = false;
-
-                                    if playthrough
-                                        .active_travel_stations
-                                        .iter()
-                                        .any(|ats| ats.to_lowercase() == vt.game_data.ident)
-                                    {
-                                        vt.visited = true;
-                                    }
-                                });
-                        }
+                        map_fast_travel_stations_to_visited_teleporters_list(
+                            playthrough_id,
+                            &mut self.manage_save_state,
+                        );
                     }
                 },
             },
