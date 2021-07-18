@@ -882,7 +882,7 @@ pub static MISSION: Lazy<[GameDataKv; 208]> = Lazy::new(|| {
         GameDataKv::new("/Game/Missions/Plot/Mission_Ep05_Sanctuary", "Sanctuary"),
         GameDataKv::new("/Game/Missions/Plot/Mission_Ep06_MeetMaya", "The Impending Storm"),
         GameDataKv::new("/Game/Missions/Plot/Mission_Ep08_OrbitalPlatform", "Space-Laser Tag"),
-        GameDataKv::new("/Game/Missions/Plot/MIssion_Ep09_AtlasHQ", "Atlas, At Last"),
+        GameDataKv::new("/Game/Missions/Plot/Mission_Ep09_AtlasHQ", "Atlas, At Last"),
         GameDataKv::new("/Game/Missions/Plot/Mission_Ep10_CityVault", "Beneath the Meridian"),
         GameDataKv::new("/Game/Missions/Plot/Mission_Ep11_PrisonBreak", "Hammerlocked"),
         GameDataKv::new("/Game/Missions/Plot/Mission_Ep12_GrandTour", "Lair of the Harpy"),

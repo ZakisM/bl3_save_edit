@@ -365,7 +365,7 @@ impl CharacterData {
             mission_list.mission_list.push(MissionStatusPlayerSaveGameData {
                 status: MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
                 has_been_viewed_in_log: false,
-                objectives_progress: vec![1, 1, 1, 1, 1, 1],
+                objectives_progress: vec![1, 1, 1, 0, 1, 1],
                 mission_class_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Mission_TechSlaughterDiscovery_C".to_string(),
                 active_objective_set_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Set_TalkToNPC_ObjectiveSet".to_string(),
                 dlc_package_id: 0,
@@ -436,22 +436,11 @@ impl CharacterData {
             challenge_we_want.currently_completed = true;
         }
 
-        // let level_data = self.character.gbx_zone_map_fod_save_game_data.as_mut();
-        //
-        // if let Some(level_data) = level_data {
-        //     level_data.level_data.push(GbxZoneMapFODSavedLevelData {
-        //         level_name: "TechSlaughter".to_string(),
-        //         fod_texture_size: 256,
-        //         num_chunks: 16,
-        //         discovery_percentage: 0.0,
-        //         data_state: 1,
-        //         data_revision: 0,
-        //         fod_data: vec![],
-        //         unknown_fields: Default::default(),
-        //         cached_size: Default::default()
-        //     });
-        // }
-        //
+        let save_name = format!("{}-out.txt", self.character.save_game_id);
+        let data = format!("{:#?}", self.character);
+
+        std::fs::write(save_name, data).unwrap();
+
         // visited_teleporters_list.iter().for_each(|vt| {
         //     if vt.visited
         //         && !curr_active_travel_stations
