@@ -45,13 +45,13 @@ impl Playthrough {
                     })?;
 
                 let mut active_missions = get_filtered_mission_list(
-                    *MISSION,
+                    MISSION,
                     mission_playthrough_data,
                     MissionStatusPlayerSaveGameData_MissionState::MS_Active,
                 );
 
                 let mut missions_completed = get_filtered_mission_list(
-                    *MISSION,
+                    MISSION,
                     mission_playthrough_data,
                     MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
                 );

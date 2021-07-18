@@ -105,7 +105,7 @@ fn gen_game_data_kv(input_name: &str) -> Result<String> {
 
     writeln!(
         output,
-        "pub static {}: Lazy<[GameDataKv; {}]> = Lazy::new(|| {{[",
+        "pub const {}: [GameDataKv; {}] = [",
         input_array_name,
         records.len()
     )?;
@@ -113,12 +113,12 @@ fn gen_game_data_kv(input_name: &str) -> Result<String> {
     for record in records {
         writeln!(
             output,
-            r#"{:>4}GameDataKv::new("{}", "{}"),"#,
+            r#"{:>4}GameDataKv {{ ident: "{}", name: "{}" }},"#,
             " ", record.key, record.value
         )?;
     }
 
-    writeln!(output, "]}});")?;
+    writeln!(output, "];")?;
 
     Ok(output)
 }
@@ -165,8 +165,7 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
         .open("src/game_data/mod.rs")?;
 
     writeln!(output, "use std::fmt::Formatter;\n")?;
-    writeln!(output, "use anyhow::Result;")?;
-    writeln!(output, "use once_cell::sync::Lazy;")?;
+    writeln!(output, "use anyhow::Result;\n")?;
 
     for input in input_data {
         writeln!(output, "{}", input)?;
@@ -182,12 +181,6 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) -> Result<()> {
 pub struct GameDataKv {{
     pub ident: &'static str,
     pub name: &'static str,
-}}
-
-impl GameDataKv {{
-    pub fn new(ident: &'static str, name: &'static str) -> Self {{
-        GameDataKv {{ ident, name }}
-    }}
 }}
 
 impl std::fmt::Display for GameDataKv {{
