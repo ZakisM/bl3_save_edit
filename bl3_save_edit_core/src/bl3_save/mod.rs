@@ -40,7 +40,7 @@ pub struct Bl3Save {
 
 impl std::cmp::PartialEq for Bl3Save {
     fn eq(&self, other: &Self) -> bool {
-        self.character_data.character.save_game_id == other.character_data.character.save_game_id
+        self.character_data == other.character_data
     }
 }
 

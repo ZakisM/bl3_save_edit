@@ -19,7 +19,7 @@ use crate::protos::oak_profile::Profile;
 #[derive(Derivative)]
 #[derivative(Debug, Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct ProfileData {
-    #[derivative(PartialEq = "ignore", Ord = "ignore", PartialOrd = "ignore")]
+    #[derivative(Ord = "ignore", PartialOrd = "ignore")]
     pub profile: Profile,
     pub golden_keys: i32,
     pub diamond_keys: i32,
