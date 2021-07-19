@@ -359,82 +359,82 @@ impl CharacterData {
     ) {
         //TODO: Find a save with every location and map everything below...
 
-        let mission_list = self.character.mission_playthroughs_data.get_mut(0);
-
-        if let Some(mission_list) = mission_list {
-            mission_list.mission_list.push(MissionStatusPlayerSaveGameData {
-                status: MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
-                has_been_viewed_in_log: false,
-                objectives_progress: vec![1, 1, 1, 0, 1, 1],
-                mission_class_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Mission_TechSlaughterDiscovery_C".to_string(),
-                active_objective_set_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Set_TalkToNPC_ObjectiveSet".to_string(),
-                dlc_package_id: 0,
-                kickoff_played: true,
-                league_instance: 0,
-                unknown_fields: Default::default(),
-                cached_size: Default::default(),
-            });
-
-            dbg!(&mission_list.mission_list);
-        }
-
-        let curr_active_travel_stations = &mut self
-            .character
-            .active_travel_stations_for_playthrough
-            .get_mut(playthrough_index)
-            .expect("failed to read current active travel stations for playthrough: ")
-            .active_travel_stations;
-
-        curr_active_travel_stations.push(ActiveFastTravelSaveData {
-            active_travel_station_name:
-                "/Game/GameData/FastTravel/FTS_TechSlaughterDropPod.FTS_TechSlaughterDropPod"
-                    .to_owned(),
-            blacklisted: false,
-            unknown_fields: Default::default(),
-            cached_size: Default::default(),
-        });
-
-        let discovery_data = &mut self.character.discovery_data;
-
-        if let Some(discovery_data) = discovery_data.as_mut() {
-            discovery_data
-                .discovered_level_info
-                .push(DiscoveredLevelInfo {
-                    discovered_level_name: "/Game/Maps/Slaughters/TechSlaughter/TechSlaughter_P"
-                        .to_string(),
-                    //the index of playthrough + 1 i think
-                    discovered_playthroughs: 1,
-                    discovered_area_info: RepeatedField::from_vec(vec![DiscoveredAreaInfo {
-                        discovered_area_name: "TECHSLAUGHTER_PWDA_2".to_string(),
-                        //the index of playthrough + 1 i think
-                        discovered_playthroughs: 1,
-                        unknown_fields: Default::default(),
-                        cached_size: Default::default(),
-                    }]),
-                    unknown_fields: Default::default(),
-                    cached_size: Default::default(),
-                });
-        }
-
-        let challenge_data = &mut self.character.challenge_data;
-
-        let challenge_we_want = challenge_data
-            .iter_mut()
-            .find(|cd| cd.challenge_class_path == "/Game/GameData/Challenges/Discovery/Slaughter_Tech/Challenge_Discovery_TechSlaughter1.Challenge_Discovery_TechSlaughter1_C");
-
-        if let Some(challenge_we_want) = challenge_we_want {
-            challenge_we_want.completed_count = 1;
-            challenge_we_want.currently_completed = true;
-        }
-
-        let challenge_we_want = challenge_data
-            .iter_mut()
-            .find(|cd| cd.challenge_class_path == "/Game/GameData/Challenges/FastTravel/Challenge_FastTravel_TechSlaughter1.Challenge_FastTravel_TechSlaughter1_C");
-
-        if let Some(challenge_we_want) = challenge_we_want {
-            challenge_we_want.completed_count = 1;
-            challenge_we_want.currently_completed = true;
-        }
+        // let mission_list = self.character.mission_playthroughs_data.get_mut(0);
+        //
+        // if let Some(mission_list) = mission_list {
+        //     mission_list.mission_list.push(MissionStatusPlayerSaveGameData {
+        //         status: MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
+        //         has_been_viewed_in_log: false,
+        //         objectives_progress: vec![1, 1, 1, 0, 1, 1],
+        //         mission_class_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Mission_TechSlaughterDiscovery_C".to_string(),
+        //         active_objective_set_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Set_TalkToNPC_ObjectiveSet".to_string(),
+        //         dlc_package_id: 0,
+        //         kickoff_played: true,
+        //         league_instance: 0,
+        //         unknown_fields: Default::default(),
+        //         cached_size: Default::default(),
+        //     });
+        //
+        //     dbg!(&mission_list.mission_list);
+        // }
+        //
+        // let curr_active_travel_stations = &mut self
+        //     .character
+        //     .active_travel_stations_for_playthrough
+        //     .get_mut(playthrough_index)
+        //     .expect("failed to read current active travel stations for playthrough: ")
+        //     .active_travel_stations;
+        //
+        // curr_active_travel_stations.push(ActiveFastTravelSaveData {
+        //     active_travel_station_name:
+        //         "/Game/GameData/FastTravel/FTS_TechSlaughterDropPod.FTS_TechSlaughterDropPod"
+        //             .to_owned(),
+        //     blacklisted: false,
+        //     unknown_fields: Default::default(),
+        //     cached_size: Default::default(),
+        // });
+        //
+        // let discovery_data = &mut self.character.discovery_data;
+        //
+        // if let Some(discovery_data) = discovery_data.as_mut() {
+        //     discovery_data
+        //         .discovered_level_info
+        //         .push(DiscoveredLevelInfo {
+        //             discovered_level_name: "/Game/Maps/Slaughters/TechSlaughter/TechSlaughter_P"
+        //                 .to_string(),
+        //             //the index of playthrough + 1 i think
+        //             discovered_playthroughs: 1,
+        //             discovered_area_info: RepeatedField::from_vec(vec![DiscoveredAreaInfo {
+        //                 discovered_area_name: "TECHSLAUGHTER_PWDA_2".to_string(),
+        //                 //the index of playthrough + 1 i think
+        //                 discovered_playthroughs: 1,
+        //                 unknown_fields: Default::default(),
+        //                 cached_size: Default::default(),
+        //             }]),
+        //             unknown_fields: Default::default(),
+        //             cached_size: Default::default(),
+        //         });
+        // }
+        //
+        // let challenge_data = &mut self.character.challenge_data;
+        //
+        // let challenge_we_want = challenge_data
+        //     .iter_mut()
+        //     .find(|cd| cd.challenge_class_path == "/Game/GameData/Challenges/Discovery/Slaughter_Tech/Challenge_Discovery_TechSlaughter1.Challenge_Discovery_TechSlaughter1_C");
+        //
+        // if let Some(challenge_we_want) = challenge_we_want {
+        //     challenge_we_want.completed_count = 1;
+        //     challenge_we_want.currently_completed = true;
+        // }
+        //
+        // let challenge_we_want = challenge_data
+        //     .iter_mut()
+        //     .find(|cd| cd.challenge_class_path == "/Game/GameData/Challenges/FastTravel/Challenge_FastTravel_TechSlaughter1.Challenge_FastTravel_TechSlaughter1_C");
+        //
+        // if let Some(challenge_we_want) = challenge_we_want {
+        //     challenge_we_want.completed_count = 1;
+        //     challenge_we_want.currently_completed = true;
+        // }
 
         let save_name = format!("{}-out.txt", self.character.save_game_id);
         let data = format!("{:#?}", self.character);

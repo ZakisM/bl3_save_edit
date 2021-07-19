@@ -167,11 +167,18 @@ pub fn view(fast_travel_state: &mut FastTravelState) -> Container<Message> {
         .enumerate()
     {
         teleporter_unlocker_checkboxes = teleporter_unlocker_checkboxes.push(
-            Checkbox::new(teleporter.visited, teleporter.game_data.name, move |b| {
-                Message::ManageSave(ManageSaveMessage::FastTravel(
-                    FastTravelMessage::VisitedTeleportersListUpdated((i, b)),
-                ))
-            })
+            Checkbox::new(
+                teleporter.visited,
+                format!(
+                    "{} ({})",
+                    teleporter.game_data.name, teleporter.game_data.ident
+                ),
+                move |b| {
+                    Message::ManageSave(ManageSaveMessage::FastTravel(
+                        FastTravelMessage::VisitedTeleportersListUpdated((i, b)),
+                    ))
+                },
+            )
             .size(20)
             .font(JETBRAINS_MONO)
             .text_color(Color::from_rgb8(220, 220, 220))
