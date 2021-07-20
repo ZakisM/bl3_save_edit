@@ -1,6 +1,11 @@
 use anyhow::{bail, Context, Result};
 use byteorder::{BigEndian, WriteBytesExt};
+use nom::bits::{bits, streaming::take};
+use nom::error::Error;
+use nom::sequence::{preceded, tuple};
+use nom::Finish;
 
+use crate::error::BL3ParserError;
 use crate::parser::read_be_int;
 
 pub struct Item;
@@ -48,32 +53,59 @@ fn decrypt_serial(serial: &mut [u8]) -> Result<()> {
 
     let orig_seed = read_be_int(&serial[1..5])?.1;
 
-    println!("{}", orig_seed);
+    // println!("{}", orig_seed);
 
     let decrypted = bogodecrypt(&mut serial[5..], orig_seed);
 
-    println!("{:?}", decrypted);
+    // println!("{:?}", decrypted);
 
     let orig_checksum = &decrypted[..2];
 
-    println!("{:?}", orig_checksum);
+    // println!("{:?}", orig_checksum);
 
     let data_to_checksum = [&serial[..5], b"\xFF\xFF", &decrypted[2..]].concat();
-    println!("{:?}", &data_to_checksum);
+    // println!("{:?}", &data_to_checksum);
 
     let mut hasher = crc32fast::Hasher::new();
     hasher.update(&data_to_checksum);
     let computed_crc = hasher.finalize();
-    println!("{}", computed_crc);
+    // println!("{}", computed_crc);
 
     let mut computed_checksum = Vec::with_capacity(2);
 
     computed_checksum
         .write_u16::<BigEndian>((((computed_crc >> 16) ^ computed_crc) & 0xFFFF) as u16)?;
 
-    println!("{:?}", computed_checksum);
+    // println!("{:?}", computed_checksum);
+
+    if orig_checksum != computed_checksum {
+        bail!("serial checksum is not equal to computed checksum")
+    }
+
+    parse_serial(&decrypted[2..]);
 
     Ok(())
+}
+
+fn parse_serial(decrypted_serial: &[u8]) -> Result<()> {
+    println!("{:?}", decrypted_serial);
+
+    let (r, ident) = parse_bits(&decrypted_serial, 8).finish()?;
+    let (r, version) = parse_bits(r, 7).finish()?;
+
+    dbg!(&ident);
+    dbg!(&version);
+
+    Ok(())
+}
+
+fn parse_bits(input: &[u8], bits_len: u8) -> nom::IResult<&[u8], u8, BL3ParserError<String>> {
+    // number of bits should be less than or equal to 8
+    let remaining = 8 - bits_len;
+    bits::<_, _, Error<(&[u8], usize)>, _, _>(preceded::<_, u8, _, _, _, _>(
+        take(remaining),
+        take(bits_len),
+    ))(input)
 }
 
 #[cfg(test)]
