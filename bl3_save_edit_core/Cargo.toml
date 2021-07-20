@@ -14,6 +14,7 @@ rayon = "1.5"
 encoding_rs = "0.8"
 byteorder = "1.4"
 derivative = "2.2.0"
+crc32fast = "1.2"
 
 [dependencies.strum]
 version = "0.21"

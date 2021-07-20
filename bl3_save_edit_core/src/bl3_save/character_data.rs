@@ -315,6 +315,16 @@ impl CharacterData {
             },
         ];
 
+        if character.save_game_id == 25 {
+            for item in &character.inventory_items {
+                println!(
+                    "{:?} - {}",
+                    item.item_serial_number,
+                    item.item_serial_number.len()
+                );
+            }
+        }
+
         Ok(Self {
             character,
             player_class,

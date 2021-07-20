@@ -16,6 +16,7 @@ pub mod challenge_data;
 pub mod character_data;
 pub mod fast_travel_unlock_data;
 pub mod inventory_slot;
+pub mod item;
 pub mod models;
 pub mod player_class;
 pub mod playthrough;

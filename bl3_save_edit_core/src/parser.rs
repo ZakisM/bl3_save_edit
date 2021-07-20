@@ -78,6 +78,10 @@ pub fn read_int(i: &[u8]) -> nom::IResult<&[u8], u32, BL3ParserError<String>> {
     nom::number::complete::le_u32(i)
 }
 
+pub fn read_be_int(i: &[u8]) -> nom::IResult<&[u8], u32, BL3ParserError<String>> {
+    nom::number::complete::be_u32(i)
+}
+
 pub fn read_short(i: &[u8]) -> nom::IResult<&[u8], u16, BL3ParserError<String>> {
     nom::number::complete::le_u16(i)
 }
