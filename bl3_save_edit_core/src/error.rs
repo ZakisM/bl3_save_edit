@@ -30,7 +30,7 @@ impl<I: Debug> nom::error::ParseError<I> for BL3ParserError<I> {
     }
 }
 
-impl nom::ErrorConvert<BL3ParserError<String>> for nom::error::Error<(&[u8], usize)> {
+impl<T> nom::ErrorConvert<BL3ParserError<String>> for nom::error::Error<(&[u8], T)> {
     fn convert(self) -> BL3ParserError<String> {
         BL3ParserError::NomError("Bit Data".to_owned(), self.code)
     }
