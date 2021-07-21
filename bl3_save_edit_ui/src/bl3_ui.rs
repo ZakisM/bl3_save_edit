@@ -347,17 +347,17 @@ impl Application for Bl3UiState {
                                 .head_skin_selected,
                         );
 
-                        current_file.character_data.set_active_travel_stations(
-                            self.manage_save_state
-                                .main_state
-                                .fast_travel_state
-                                .playthrough_type_selected as usize,
-                            &self
-                                .manage_save_state
-                                .main_state
-                                .fast_travel_state
-                                .visited_teleporters_list,
-                        );
+                        // current_file.character_data.set_active_travel_stations(
+                        //     self.manage_save_state
+                        //         .main_state
+                        //         .fast_travel_state
+                        //         .playthrough_type_selected as usize,
+                        //     &self
+                        //         .manage_save_state
+                        //         .main_state
+                        //         .fast_travel_state
+                        //         .visited_teleporters_list,
+                        // );
 
                         let output_file = self
                             .choose_save_directory_state

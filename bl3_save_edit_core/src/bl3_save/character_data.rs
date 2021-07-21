@@ -2,7 +2,6 @@ use std::str::FromStr;
 
 use anyhow::{Context, Result};
 use derivative::Derivative;
-use protobuf::RepeatedField;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 
@@ -25,10 +24,7 @@ use crate::game_data::{
     VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST,
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
-use crate::protos::oak_save::{
-    ActiveFastTravelSaveData, Character, DiscoveredAreaInfo, DiscoveredLevelInfo,
-    MissionStatusPlayerSaveGameData, MissionStatusPlayerSaveGameData_MissionState,
-};
+use crate::protos::oak_save::Character;
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
 #[derive(Derivative)]
@@ -364,7 +360,7 @@ impl CharacterData {
 
     pub fn set_active_travel_stations(
         &mut self,
-        playthrough_index: usize,
+        _playthrough_index: usize,
         _visited_teleporters_list: &[VisitedTeleporter],
     ) {
         //TODO: Find a save with every location and map everything below...

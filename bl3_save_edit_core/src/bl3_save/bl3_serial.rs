@@ -1,9 +1,8 @@
-use anyhow::{bail, ensure, Context, Result};
+use anyhow::{bail, ensure, Result};
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
 
 use crate::bl3_save::arbitrary_bits::ArbitraryBits;
-use crate::error::BL3ParserError;
 use crate::models::inventory_serial_db::InventorySerialDb;
 use crate::parser::read_be_int;
 
@@ -53,30 +52,20 @@ impl Bl3Serial {
 
         let orig_seed = read_be_int(&serial[1..5])?.1;
 
-        // println!("{}", orig_seed);
-
         let decrypted = Self::bogodecrypt(&mut serial[5..], orig_seed);
-
-        // println!("{:?}", decrypted);
 
         let orig_checksum = &decrypted[..2];
 
-        // println!("{:?}", orig_checksum);
-
         let data_to_checksum = [&serial[..5], b"\xFF\xFF", &decrypted[2..]].concat();
-        // println!("{:?}", &data_to_checksum);
 
         let mut hasher = crc32fast::Hasher::new();
         hasher.update(&data_to_checksum);
         let computed_crc = hasher.finalize();
-        // println!("{}", computed_crc);
 
         let mut computed_checksum = Vec::with_capacity(2);
 
         computed_checksum
             .write_u16::<BigEndian>((((computed_crc >> 16) ^ computed_crc) & 0xFFFF) as u16)?;
-
-        // println!("{:?}", computed_checksum);
 
         ensure!(orig_checksum == computed_checksum);
 
@@ -125,6 +114,10 @@ impl Bl3Serial {
 
         dbg!(&manufacturer);
 
+        let level = bits.data(7)?;
+
+        dbg!(&level);
+
         Ok(())
     }
 
@@ -134,7 +127,7 @@ impl Bl3Serial {
         bits: &mut ArbitraryBits,
         serial_version: usize,
     ) -> Result<String> {
-        let mut num_bits = inventory_serial_db.get_num_bits(category, serial_version)?;
+        let num_bits = inventory_serial_db.get_num_bits(category, serial_version)?;
 
         let part_idx = bits.data(num_bits)?;
 
