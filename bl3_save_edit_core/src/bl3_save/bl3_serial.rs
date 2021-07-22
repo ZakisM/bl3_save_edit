@@ -1,15 +1,17 @@
 use anyhow::{bail, ensure, Context, Result};
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use crate::bl3_save::arbitrary_bits::ArbitraryBits;
 use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
-use crate::parser::read_be_int;
+use crate::parser::{read_be_signed_int, HeaderType};
 use crate::resources::INVENTORY_SERIAL_DB;
 
 // Translated from https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/bl3save/datalib.py
 // All credits to apocalyptech
 
+#[derive(Debug)]
 pub struct Bl3Serial {
     header_version: u8,
     data_version: usize,
@@ -47,7 +49,7 @@ impl Bl3Serial {
 
         let header_version = initial_byte;
 
-        let orig_seed = read_be_int(&serial[1..5])?.1;
+        let orig_seed = read_be_signed_int(&serial[1..5])?.1;
 
         let decrypted_serial = Self::bogodecrypt(&mut serial[5..], orig_seed);
 
@@ -71,7 +73,8 @@ impl Bl3Serial {
 
         let ident = bits.eat(8)?;
 
-        ensure!(ident == 128);
+        // Todo: ident can be 0 in some pc saves? check this
+        ensure!(ident == 128 || ident == 0);
 
         let data_version = bits.eat(7)?;
 
@@ -82,37 +85,27 @@ impl Bl3Serial {
         let (balance, balance_bits, balance_idx) =
             Self::inv_db_header_part("InventoryBalanceData", &mut bits, data_version)?;
 
-        dbg!(&balance);
-
         let (inv_data, inv_data_bits, inv_data_idx) =
             Self::inv_db_header_part("InventoryData", &mut bits, data_version)?;
-
-        dbg!(&inv_data);
 
         let (manufacturer, manufacturer_bits, manufacturer_idx) =
             Self::inv_db_header_part("ManufacturerData", &mut bits, data_version)?;
 
-        dbg!(&manufacturer);
-
         let level = bits.eat(7)?;
 
-        dbg!(&level);
-
         let balance_eng_name = BALANCE_NAME_MAPPING
-            .iter()
-            .find(|gd| balance.to_lowercase().contains(gd.ident))
+            .par_iter()
+            .find_first(|gd| balance.to_lowercase().contains(gd.ident))
             .map(|gd| gd.name.to_owned());
 
         let part_invkey = BALANCE_TO_INV_KEY
-            .iter()
-            .find(|gd| balance.to_lowercase().contains(gd.ident))
+            .par_iter()
+            .find_first(|gd| balance.to_lowercase().contains(gd.ident))
             .map(|gd| gd.name.to_owned())
-            .context("failed to read part_invkey")?;
+            .with_context(|| format!("failed to read part_invkey: {}", orig_seed))?;
 
         let (part_bits, parts) =
             Self::inv_db_header_part_repeated(&part_invkey, &mut bits, data_version, 6)?;
-
-        dbg!(&parts);
 
         //generics (anointment + mayhem)
         let (generic_part_bits, generic_parts) = Self::inv_db_header_part_repeated(
@@ -122,8 +115,6 @@ impl Bl3Serial {
             4,
         )?;
 
-        dbg!(&generic_parts);
-
         let additional_count = bits.eat(8)?;
 
         let additional_data = (0..additional_count)
@@ -132,9 +123,9 @@ impl Bl3Serial {
 
         let num_customs = bits.eat(4)?;
 
-        let rerolled = if header_version > 4 { bits.eat(8)? } else { 0 };
+        let rerolled = if header_version >= 4 { bits.eat(8)? } else { 0 };
 
-        if bits.len() > 7 || bits.bitslice().load_le::<usize>() != 0 {
+        if bits.len() > 7 || bits.bitslice().count_ones() > 0 {
             bail!("could not fully parse the weapon data")
         }
 
@@ -154,9 +145,9 @@ impl Bl3Serial {
         })
     }
 
-    fn xor_data(data: &mut [u8], seed: u32) {
+    fn xor_data(data: &mut [u8], seed: i32) {
         if seed != 0 {
-            let mut xor = (seed >> 5) as u64;
+            let mut xor = ((seed >> 5) as i64) & 0xFFFFFFFF;
 
             for d in data.iter_mut() {
                 xor = (xor * 0x10A860C1) % 0xFFFFFFFB;
@@ -165,13 +156,15 @@ impl Bl3Serial {
         }
     }
 
-    fn bogodecrypt(data: &mut [u8], seed: u32) -> Vec<u8> {
+    fn bogodecrypt(data: &mut [u8], seed: i32) -> Vec<u8> {
         Self::xor_data(data, seed);
 
-        let steps = (seed & 0x1F) as usize % (data.len());
+        let data_len = data.len();
 
-        let first_half = &data[steps..];
-        let second_half = &data[..steps];
+        let steps = (seed & 0x1F) as usize % (data_len);
+
+        let first_half = &data[data_len - steps..];
+        let second_half = &data[..data_len - steps];
 
         [first_half, second_half].concat()
     }
@@ -230,8 +223,8 @@ mod tests {
 
         // let expected_decrypted = [5, 168, 128, 187, 35, 220, 64, 19, 60, 18, 132, 194, 85, 95, 201, 207, 99, 11, 0, 0];
 
-        let decrypted =
-            Bl3Serial::from_serial_number(serial_number).expect("failed to decrypt serial");
+        let decrypted = Bl3Serial::from_serial_number(&HeaderType::PcSave, serial_number)
+            .expect("failed to decrypt serial");
 
         // assert_eq!(decrypted, expected_decrypted);
     }

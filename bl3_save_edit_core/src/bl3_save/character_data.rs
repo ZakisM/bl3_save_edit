@@ -1,11 +1,12 @@
 use std::str::FromStr;
 
-use anyhow::{Context, Result};
+use anyhow::{Context, Error, Result};
 use derivative::Derivative;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 
 use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
+use crate::bl3_save::bl3_serial::Bl3Serial;
 use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};
@@ -24,6 +25,7 @@ use crate::game_data::{
     VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST,
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
+use crate::parser::HeaderType;
 use crate::protos::oak_save::Character;
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
@@ -49,7 +51,7 @@ pub struct CharacterData {
 }
 
 impl CharacterData {
-    pub fn from_character(character: Character) -> Result<Self> {
+    pub fn from_character(header_type: &HeaderType, character: Character) -> Result<Self> {
         let player_class = PlayerClass::from_str(
             character
                 .player_class_data
@@ -311,15 +313,20 @@ impl CharacterData {
             },
         ];
 
-        if character.save_game_id == 25 {
-            for item in &character.inventory_items {
-                println!(
-                    "{:?} - {}",
-                    item.item_serial_number,
-                    item.item_serial_number.len()
-                );
+        // if character.save_game_id == 2 {
+        character.inventory_items.par_iter().for_each(|item| {
+            match Bl3Serial::from_serial_number(item.item_serial_number.clone()) {
+                Ok(weapon) => {
+                    // dbg!(&weapon);
+                }
+                // Err(e) => eprintln!(
+                //     "failed to read item for save: {} - {}",
+                //     character.save_game_id, e
+                // ),
+                Err(_) => (),
             }
-        }
+        });
+        // }
 
         Ok(Self {
             character,
