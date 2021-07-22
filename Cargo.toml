@@ -4,4 +4,3 @@ members = ["bl3_save_edit_core", "bl3_save_edit_ui"]
 [profile.release]
 lto = 'fat'
 codegen-units = 1
-debug = true

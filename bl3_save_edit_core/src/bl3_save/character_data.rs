@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use anyhow::{Context, Error, Result};
+use anyhow::{Context, Result};
 use derivative::Derivative;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
@@ -25,7 +25,6 @@ use crate::game_data::{
     VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST,
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
-use crate::parser::HeaderType;
 use crate::protos::oak_save::Character;
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
@@ -48,10 +47,11 @@ pub struct CharacterData {
     pub ammo_pools: Vec<AmmoPoolData>,
     pub challenge_milestones: Vec<ChallengeData>,
     pub vehicle_stats: Vec<VehicleStats>,
+    pub inventory_items: Vec<Bl3Serial>,
 }
 
 impl CharacterData {
-    pub fn from_character(header_type: &HeaderType, character: Character) -> Result<Self> {
+    pub fn from_character(character: Character) -> Result<Self> {
         let player_class = PlayerClass::from_str(
             character
                 .player_class_data
@@ -156,6 +156,32 @@ impl CharacterData {
                 })
             })
             .collect::<Result<Vec<_>>>()?;
+
+        // make sure that we include all sdu slots that might not be in our save
+        let required_sdu_slots = [
+            SaveSduSlot::Backpack,
+            SaveSduSlot::Sniper,
+            SaveSduSlot::Shotgun,
+            SaveSduSlot::Pistol,
+            SaveSduSlot::Grenade,
+            SaveSduSlot::Smg,
+            SaveSduSlot::Ar,
+            SaveSduSlot::Heavy,
+        ];
+
+        required_sdu_slots.iter().for_each(|sdu| {
+            let contains_sdu_slot = sdu_slots.par_iter().any(|save_sdu| {
+                std::mem::discriminant(sdu) == std::mem::discriminant(&save_sdu.slot)
+            });
+
+            if !contains_sdu_slot {
+                sdu_slots.push(SaveSduSlotData {
+                    slot: sdu.to_owned(),
+                    current: 0,
+                    max: sdu.maximum(),
+                })
+            }
+        });
 
         sdu_slots.par_sort();
 
@@ -313,20 +339,11 @@ impl CharacterData {
             },
         ];
 
-        // if character.save_game_id == 2 {
-        character.inventory_items.par_iter().for_each(|item| {
-            match Bl3Serial::from_serial_number(item.item_serial_number.clone()) {
-                Ok(weapon) => {
-                    // dbg!(&weapon);
-                }
-                // Err(e) => eprintln!(
-                //     "failed to read item for save: {} - {}",
-                //     character.save_game_id, e
-                // ),
-                Err(_) => (),
-            }
-        });
-        // }
+        let inventory_items = character
+            .inventory_items
+            .par_iter()
+            .filter_map(|i| Bl3Serial::from_serial_number(i.item_serial_number.clone()).ok())
+            .collect::<Vec<_>>();
 
         Ok(Self {
             character,
@@ -344,6 +361,7 @@ impl CharacterData {
             ammo_pools,
             challenge_milestones,
             vehicle_stats,
+            inventory_items,
         })
     }
 

@@ -53,7 +53,7 @@ impl Bl3Save {
 
         let character = decrypt(remaining_data, &header_type)?;
 
-        let character_data = CharacterData::from_character(&header_type, character)?;
+        let character_data = CharacterData::from_character(character)?;
 
         let FileData {
             file_version,

@@ -5,13 +5,13 @@ use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use crate::bl3_save::arbitrary_bits::ArbitraryBits;
 use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
-use crate::parser::{read_be_signed_int, HeaderType};
+use crate::parser::read_be_signed_int;
 use crate::resources::INVENTORY_SERIAL_DB;
 
 // Translated from https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/bl3save/datalib.py
 // All credits to apocalyptech
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Bl3Serial {
     header_version: u8,
     data_version: usize,

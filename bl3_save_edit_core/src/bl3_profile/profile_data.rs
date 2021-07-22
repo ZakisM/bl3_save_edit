@@ -109,13 +109,13 @@ impl ProfileData {
 
         let bank_items = profile
             .bank_inventory_list
-            .iter()
+            .par_iter()
             .cloned()
             .collect::<Vec<_>>();
 
         let lost_loot_items = profile
             .lost_loot_inventory_list
-            .iter()
+            .par_iter()
             .cloned()
             .collect::<Vec<_>>();
 

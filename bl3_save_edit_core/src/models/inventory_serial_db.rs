@@ -35,6 +35,7 @@ impl InventorySerialDb {
         let mut cur_bits = self.data[category]["versions"][0]["bits"]
             .as_isize()
             .context("failed to read cur_bits")?;
+
         let version_isize = version as isize;
 
         for cat_version in self.data[category]["versions"].members() {
