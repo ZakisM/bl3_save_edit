@@ -1,18 +1,157 @@
-use anyhow::{bail, ensure, Result};
+use anyhow::{bail, ensure, Context, Result};
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
 
 use crate::bl3_save::arbitrary_bits::ArbitraryBits;
-use crate::models::inventory_serial_db::InventorySerialDb;
+use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
 use crate::parser::read_be_int;
+use crate::resources::INVENTORY_SERIAL_DB;
 
-pub struct Bl3Serial;
+// Translated from https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/bl3save/datalib.py
+// All credits to apocalyptech
+
+pub struct Bl3Serial {
+    header_version: u8,
+    data_version: usize,
+    balance: String,
+    balance_idx: usize,
+    balance_bits: usize,
+    inv_data: String,
+    inv_data_idx: usize,
+    inv_data_bits: usize,
+    manufacturer: String,
+    manufacturer_idx: usize,
+    manufacturer_bits: usize,
+    level: usize,
+}
+
+struct ItemPart {
+    ident: String,
+    name: Option<String>,
+    idx: usize,
+    bits: usize,
+}
 
 impl Bl3Serial {
-    pub fn from_serial_number(serial_number: Vec<u8>) -> Result<()> {
-        Self::decrypt_serial(serial_number)?;
+    pub fn from_serial_number(serial: Vec<u8>) -> Result<Self> {
+        // first decrypt the serial
+        let mut serial = serial;
 
-        Ok(())
+        ensure!(serial.len() >= 5);
+
+        let initial_byte = serial[0];
+
+        if initial_byte != 3 && initial_byte != 4 {
+            bail!("serial version was not correct so we will not decrypt this item");
+        }
+
+        let header_version = initial_byte;
+
+        let orig_seed = read_be_int(&serial[1..5])?.1;
+
+        let decrypted_serial = Self::bogodecrypt(&mut serial[5..], orig_seed);
+
+        let orig_checksum = &decrypted_serial[..2];
+
+        let data_to_checksum = [&serial[..5], b"\xFF\xFF", &decrypted_serial[2..]].concat();
+
+        let mut hasher = crc32fast::Hasher::new();
+        hasher.update(&data_to_checksum);
+        let computed_crc = hasher.finalize();
+
+        let mut computed_checksum = Vec::with_capacity(2);
+
+        computed_checksum
+            .write_u16::<BigEndian>((((computed_crc >> 16) ^ computed_crc) & 0xFFFF) as u16)?;
+
+        ensure!(orig_checksum == computed_checksum);
+
+        // parse the serial data
+        let mut bits = ArbitraryBits::new(decrypted_serial[2..].view_bits::<Lsb0>());
+
+        let ident = bits.eat(8)?;
+
+        ensure!(ident == 128);
+
+        let data_version = bits.eat(7)?;
+
+        if data_version > INVENTORY_SERIAL_DB.max_version {
+            bail!("cannot parse item as it is newer than the version of this parser")
+        }
+
+        let (balance, balance_bits, balance_idx) =
+            Self::inv_db_header_part("InventoryBalanceData", &mut bits, data_version)?;
+
+        dbg!(&balance);
+
+        let (inv_data, inv_data_bits, inv_data_idx) =
+            Self::inv_db_header_part("InventoryData", &mut bits, data_version)?;
+
+        dbg!(&inv_data);
+
+        let (manufacturer, manufacturer_bits, manufacturer_idx) =
+            Self::inv_db_header_part("ManufacturerData", &mut bits, data_version)?;
+
+        dbg!(&manufacturer);
+
+        let level = bits.eat(7)?;
+
+        dbg!(&level);
+
+        let balance_eng_name = BALANCE_NAME_MAPPING
+            .iter()
+            .find(|gd| balance.to_lowercase().contains(gd.ident))
+            .map(|gd| gd.name.to_owned());
+
+        let part_invkey = BALANCE_TO_INV_KEY
+            .iter()
+            .find(|gd| balance.to_lowercase().contains(gd.ident))
+            .map(|gd| gd.name.to_owned())
+            .context("failed to read part_invkey")?;
+
+        let (part_bits, parts) =
+            Self::inv_db_header_part_repeated(&part_invkey, &mut bits, data_version, 6)?;
+
+        dbg!(&parts);
+
+        //generics (anointment + mayhem)
+        let (generic_part_bits, generic_parts) = Self::inv_db_header_part_repeated(
+            "InventoryGenericPartData",
+            &mut bits,
+            data_version,
+            4,
+        )?;
+
+        dbg!(&generic_parts);
+
+        let additional_count = bits.eat(8)?;
+
+        let additional_data = (0..additional_count)
+            .map(|_| bits.eat(8))
+            .collect::<Result<Vec<_>>>()?;
+
+        let num_customs = bits.eat(4)?;
+
+        let rerolled = if header_version > 4 { bits.eat(8)? } else { 0 };
+
+        if bits.len() > 7 || bits.bitslice().load_le::<usize>() != 0 {
+            bail!("could not fully parse the weapon data")
+        }
+
+        Ok(Self {
+            header_version,
+            data_version,
+            balance,
+            balance_idx,
+            balance_bits,
+            inv_data,
+            inv_data_idx,
+            inv_data_bits,
+            manufacturer,
+            manufacturer_idx,
+            manufacturer_bits,
+            level,
+        })
     }
 
     fn xor_data(data: &mut [u8], seed: u32) {
@@ -37,105 +176,44 @@ impl Bl3Serial {
         [first_half, second_half].concat()
     }
 
-    fn decrypt_serial(serial: Vec<u8>) -> Result<()> {
-        let mut serial = serial;
-
-        ensure!(serial.len() >= 5);
-
-        let initial_byte = serial[0];
-
-        if initial_byte != 3 && initial_byte != 4 {
-            bail!("initial byte was not correct so we will not decrypt this item");
-        }
-
-        let serial_version = initial_byte;
-
-        let orig_seed = read_be_int(&serial[1..5])?.1;
-
-        let decrypted = Self::bogodecrypt(&mut serial[5..], orig_seed);
-
-        let orig_checksum = &decrypted[..2];
-
-        let data_to_checksum = [&serial[..5], b"\xFF\xFF", &decrypted[2..]].concat();
-
-        let mut hasher = crc32fast::Hasher::new();
-        hasher.update(&data_to_checksum);
-        let computed_crc = hasher.finalize();
-
-        let mut computed_checksum = Vec::with_capacity(2);
-
-        computed_checksum
-            .write_u16::<BigEndian>((((computed_crc >> 16) ^ computed_crc) & 0xFFFF) as u16)?;
-
-        ensure!(orig_checksum == computed_checksum);
-
-        Self::parse_serial(&decrypted[2..])?;
-
-        Ok(())
-    }
-
-    fn parse_serial(decrypted_serial: &[u8]) -> Result<()> {
-        println!("{:?}", decrypted_serial);
-
-        let mut bits = ArbitraryBits::new(decrypted_serial.view_bits::<Lsb0>());
-
-        let ident = bits.data(8)?;
-
-        ensure!(ident == 128);
-
-        let serial_version = bits.data(7)?;
-
-        let inventory_serial_db = InventorySerialDb::load()?;
-
-        let balance = Self::inv_db_header_part(
-            &inventory_serial_db,
-            "InventoryBalanceData",
-            &mut bits,
-            serial_version,
-        )?;
-
-        dbg!(&balance);
-
-        let inv_data = Self::inv_db_header_part(
-            &inventory_serial_db,
-            "InventoryData",
-            &mut bits,
-            serial_version,
-        )?;
-
-        dbg!(&inv_data);
-
-        let manufacturer = Self::inv_db_header_part(
-            &inventory_serial_db,
-            "ManufacturerData",
-            &mut bits,
-            serial_version,
-        )?;
-
-        dbg!(&manufacturer);
-
-        let level = bits.data(7)?;
-
-        dbg!(&level);
-
-        Ok(())
-    }
-
     fn inv_db_header_part(
-        inventory_serial_db: &InventorySerialDb,
         category: &str,
         bits: &mut ArbitraryBits,
-        serial_version: usize,
-    ) -> Result<String> {
-        let num_bits = inventory_serial_db.get_num_bits(category, serial_version)?;
+        version: usize,
+    ) -> Result<(String, usize, usize)> {
+        let num_bits = INVENTORY_SERIAL_DB.get_num_bits(category, version)?;
 
-        let part_idx = bits.data(num_bits)?;
+        let part_idx = bits.eat(num_bits)?;
 
-        let part = inventory_serial_db
+        let part = INVENTORY_SERIAL_DB
             .get_part(category, part_idx)
             .unwrap_or_else(|_| "unknown".to_owned());
 
-        Ok(part)
+        Ok((part, num_bits, part_idx))
+    }
+
+    fn inv_db_header_part_repeated(
+        category: &str,
+        bits: &mut ArbitraryBits,
+        version: usize,
+        count_bits: usize,
+    ) -> Result<(usize, Vec<(String, usize)>)> {
+        let num_bits = INVENTORY_SERIAL_DB.get_num_bits(category, version)?;
+        let num_parts = bits.eat(count_bits)?;
+
+        let mut parts = Vec::with_capacity(num_parts);
+
+        for _ in 0..num_parts {
+            let part_idx = bits.eat(num_bits)?;
+
+            let part_val = INVENTORY_SERIAL_DB
+                .get_part(category, part_idx)
+                .unwrap_or_else(|_| "unknown".to_owned());
+
+            parts.push((part_val, part_idx));
+        }
+
+        Ok((num_bits, parts))
     }
 }
 
@@ -145,7 +223,7 @@ mod tests {
 
     #[test]
     fn test_decrypt_serial() {
-        let mut serial_number: Vec<u8> = vec![
+        let serial_number: Vec<u8> = vec![
             3, 7, 104, 235, 106, 81, 127, 63, 184, 231, 198, 167, 96, 179, 97, 24, 224, 171, 102,
             232, 245, 72, 182, 213, 98,
         ];

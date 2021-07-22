@@ -17,6 +17,7 @@ derivative = "2.2.0"
 crc32fast = "1.2"
 bitvec = "0.20"
 json = "0.12"
+once_cell = "1.8"
 
 [dependencies.strum]
 version = "0.21"

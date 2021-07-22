@@ -28,6 +28,8 @@ fn main() {
         "game_data/PROFILE_HEADS_DEFAULTS.csv",
         "game_data/PROFILE_SKINS.csv",
         "game_data/PROFILE_SKINS_DEFAULTS.csv",
+        "game_data/BALANCE_NAME_MAPPING.csv",
+        "game_data/BALANCE_TO_INV_KEY.csv",
     ];
     let game_data_inputs_array = vec![
         "game_data/VEHICLE_CHASSIS_OUTRUNNER.csv",

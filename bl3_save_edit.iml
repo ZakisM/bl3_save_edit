@@ -10,6 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/bl3_save_edit_data" />
       <excludeFolder url="file://$MODULE_DIR$/bl3_save_edit_core/game_data" />
       <excludeFolder url="file://$MODULE_DIR$/bl3_save_edit_core/test_files" />
+      <excludeFolder url="file://$MODULE_DIR$/bl3_save_edit_core/resources" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

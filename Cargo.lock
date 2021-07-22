@@ -155,6 +155,7 @@ dependencies = [
  "encoding_rs",
  "json",
  "nom",
+ "once_cell",
  "protobuf",
  "protobuf-codegen-pure",
  "rayon",

@@ -1,17 +1,34 @@
+use std::convert::TryInto;
+
 use anyhow::{bail, Context, Result};
 use json::JsonValue;
 
-use crate::resources::INVENTORY_SERIAL_DB;
+use crate::resources::INVENTORY_SERIAL_DB_JSON;
 
 pub struct InventorySerialDb {
     pub data: JsonValue,
+    pub max_version: usize,
 }
 
 impl InventorySerialDb {
     pub fn load() -> Result<Self> {
-        let data = json::parse(std::str::from_utf8(INVENTORY_SERIAL_DB)?)?;
+        let data = json::parse(std::str::from_utf8(INVENTORY_SERIAL_DB_JSON)?)?;
 
-        Ok(Self { data })
+        let max_version = data
+            .entries()
+            .into_iter()
+            .map(|(i, _)| {
+                data[i]["versions"]
+                    .members()
+                    .map(|c| c["version"].as_isize().unwrap_or(0))
+                    .collect::<Vec<_>>()
+            })
+            .flatten()
+            .max()
+            .and_then(|v| v.try_into().ok())
+            .context("failed to read inventory serial db max version")?;
+
+        Ok(Self { data, max_version })
     }
 
     pub fn get_num_bits(&self, category: &str, version: usize) -> Result<usize> {
