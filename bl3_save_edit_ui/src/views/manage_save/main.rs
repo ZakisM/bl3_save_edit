@@ -12,8 +12,10 @@ use crate::views::manage_save::character::CharacterState;
 use crate::views::manage_save::currency::CurrencyState;
 use crate::views::manage_save::fast_travel::FastTravelState;
 use crate::views::manage_save::general::GeneralState;
+use crate::views::manage_save::inventory::InventoryState;
 use crate::views::manage_save::{
-    character, currency, fast_travel, general, ManageSaveInteractionMessage, ManageSaveState,
+    character, currency, fast_travel, general, inventory, ManageSaveInteractionMessage,
+    ManageSaveState,
 };
 
 #[derive(Debug, Default)]
@@ -22,6 +24,7 @@ pub struct MainState {
     pub general_state: GeneralState,
     pub character_state: CharacterState,
     pub currency_state: CurrencyState,
+    pub inventory_state: InventoryState,
     pub fast_travel_state: FastTravelState,
 }
 
@@ -203,7 +206,9 @@ pub fn view<'a>(
         MainTabBarView::Currency => {
             currency::view(&mut manage_save_state.main_state.currency_state)
         }
-        MainTabBarView::Inventory => Container::new(Text::new("Inventory")),
+        MainTabBarView::Inventory => {
+            inventory::view(&mut manage_save_state.main_state.inventory_state)
+        }
         _ => fast_travel::view(&mut manage_save_state.main_state.fast_travel_state),
     };
 

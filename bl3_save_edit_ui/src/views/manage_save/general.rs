@@ -53,7 +53,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                     .push(
                         TextInput::new(
                             &mut general_state.guid_input_state,
-                            "00000000-0000-0000-0000-000000000000",
+                            "00000000000000000000000000000000",
                             &general_state.guid_input,
                             |s| {
                                 InteractionMessage::ManageSaveInteraction(

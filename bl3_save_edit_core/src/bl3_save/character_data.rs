@@ -4,6 +4,7 @@ use anyhow::{Context, Result};
 use derivative::Derivative;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
+use strum::IntoEnumIterator;
 
 use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
 use crate::bl3_save::bl3_serial::Bl3Serial;
@@ -158,20 +159,9 @@ impl CharacterData {
             .collect::<Result<Vec<_>>>()?;
 
         // make sure that we include all sdu slots that might not be in our save
-        let required_sdu_slots = [
-            SaveSduSlot::Backpack,
-            SaveSduSlot::Sniper,
-            SaveSduSlot::Shotgun,
-            SaveSduSlot::Pistol,
-            SaveSduSlot::Grenade,
-            SaveSduSlot::Smg,
-            SaveSduSlot::Ar,
-            SaveSduSlot::Heavy,
-        ];
-
-        required_sdu_slots.iter().for_each(|sdu| {
+        SaveSduSlot::iter().for_each(|sdu| {
             let contains_sdu_slot = sdu_slots.par_iter().any(|save_sdu| {
-                std::mem::discriminant(sdu) == std::mem::discriminant(&save_sdu.slot)
+                std::mem::discriminant(&sdu) == std::mem::discriminant(&save_sdu.slot)
             });
 
             if !contains_sdu_slot {

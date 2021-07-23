@@ -25,6 +25,7 @@ use crate::views::manage_save::character::{
 use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
+use crate::views::manage_save::inventory::InventoryInteractionMessage;
 use crate::views::manage_save::main::{MainInteractionMessage, MainTabBarView};
 use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
@@ -374,6 +375,11 @@ impl Application for Bl3UiState {
                             Err(e) => eprintln!("{}", e),
                         };
                     }
+                    ManageSaveInteractionMessage::Inventory(inventory_msg) => match inventory_msg {
+                        InventoryInteractionMessage::ItemPressed(i) => {
+                            dbg!(&i);
+                        }
+                    },
                 },
                 InteractionMessage::LoadedFileSelected(loaded_file) => {
                     self.loaded_files_selected = loaded_file;

@@ -159,33 +159,31 @@ pub fn view(fast_travel_state: &mut FastTravelState) -> Container<Message> {
         .push(last_visited_teleporter_selector)
         .spacing(20);
 
-    let mut teleporter_unlocker_checkboxes = Column::new().spacing(15);
-
-    for (i, teleporter) in fast_travel_state
+    let teleporter_unlocker_checkboxes = fast_travel_state
         .visited_teleporters_list
         .iter()
         .enumerate()
-    {
-        teleporter_unlocker_checkboxes = teleporter_unlocker_checkboxes.push(
-            Checkbox::new(
-                teleporter.visited,
-                format!(
-                    "{} ({})",
-                    teleporter.game_data.name, teleporter.game_data.ident
-                ),
-                move |b| {
-                    Message::ManageSave(ManageSaveMessage::FastTravel(
-                        FastTravelMessage::VisitedTeleportersListUpdated((i, b)),
-                    ))
-                },
+        .fold(Column::new().spacing(15), |curr, (i, teleporter)| {
+            curr.push(
+                Checkbox::new(
+                    teleporter.visited,
+                    format!(
+                        "{} ({})",
+                        teleporter.game_data.name, teleporter.game_data.ident
+                    ),
+                    move |b| {
+                        Message::ManageSave(ManageSaveMessage::FastTravel(
+                            FastTravelMessage::VisitedTeleportersListUpdated((i, b)),
+                        ))
+                    },
+                )
+                .size(20)
+                .font(JETBRAINS_MONO)
+                .text_color(Color::from_rgb8(220, 220, 220))
+                .text_size(17)
+                .style(Bl3UiStyle),
             )
-            .size(20)
-            .font(JETBRAINS_MONO)
-            .text_color(Color::from_rgb8(220, 220, 220))
-            .text_size(17)
-            .style(Bl3UiStyle),
-        );
-    }
+        });
 
     let check_buttons_row = Row::new()
         .push(

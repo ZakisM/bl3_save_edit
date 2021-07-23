@@ -13,25 +13,28 @@ use crate::resources::INVENTORY_SERIAL_DB;
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Bl3Serial {
-    header_version: u8,
-    data_version: usize,
-    balance: String,
-    balance_idx: usize,
-    balance_bits: usize,
-    inv_data: String,
-    inv_data_idx: usize,
-    inv_data_bits: usize,
-    manufacturer: String,
-    manufacturer_idx: usize,
-    manufacturer_bits: usize,
-    level: usize,
+    pub header_version: u8,
+    pub data_version: usize,
+    pub balance_part: ItemPart,
+    pub inv_data: String,
+    pub inv_data_idx: usize,
+    pub inv_data_bits: usize,
+    pub manufacturer: String,
+    pub manufacturer_idx: usize,
+    pub manufacturer_bits: usize,
+    pub level: usize,
+    pub part_bits: usize,
+    pub parts: Vec<(String, usize)>,
+    pub generic_part_bits: usize,
+    pub generic_parts: Vec<(String, usize)>,
 }
 
-struct ItemPart {
-    ident: String,
-    name: Option<String>,
-    idx: usize,
-    bits: usize,
+#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
+pub struct ItemPart {
+    pub ident: String,
+    pub name: Option<String>,
+    pub idx: usize,
+    pub bits: usize,
 }
 
 impl Bl3Serial {
@@ -85,11 +88,17 @@ impl Bl3Serial {
         let (balance, balance_bits, balance_idx) =
             Self::inv_db_header_part("InventoryBalanceData", &mut bits, data_version)?;
 
+        println!("{}", balance);
+
         let (inv_data, inv_data_bits, inv_data_idx) =
             Self::inv_db_header_part("InventoryData", &mut bits, data_version)?;
 
+        println!("{}", inv_data);
+
         let (manufacturer, manufacturer_bits, manufacturer_idx) =
             Self::inv_db_header_part("ManufacturerData", &mut bits, data_version)?;
+
+        println!("{}", manufacturer);
 
         let level = bits.eat(7)?;
 
@@ -107,6 +116,10 @@ impl Bl3Serial {
         let (part_bits, parts) =
             Self::inv_db_header_part_repeated(&part_invkey, &mut bits, data_version, 6)?;
 
+        for (part, _) in &parts {
+            println!("{}", part);
+        }
+
         //generics (anointment + mayhem)
         let (generic_part_bits, generic_parts) = Self::inv_db_header_part_repeated(
             "InventoryGenericPartData",
@@ -114,6 +127,10 @@ impl Bl3Serial {
             data_version,
             4,
         )?;
+
+        for (generic_part, _) in &generic_parts {
+            println!("{}", generic_part);
+        }
 
         let additional_count = bits.eat(8)?;
 
@@ -129,12 +146,17 @@ impl Bl3Serial {
             bail!("could not fully parse the weapon data")
         }
 
+        let balance_part = ItemPart {
+            ident: balance,
+            name: balance_eng_name,
+            idx: balance_idx,
+            bits: balance_bits,
+        };
+
         Ok(Self {
             header_version,
             data_version,
-            balance,
-            balance_idx,
-            balance_bits,
+            balance_part,
             inv_data,
             inv_data_idx,
             inv_data_bits,
@@ -142,6 +164,10 @@ impl Bl3Serial {
             manufacturer_idx,
             manufacturer_bits,
             level,
+            part_bits,
+            parts,
+            generic_part_bits,
+            generic_parts,
         })
     }
 
@@ -221,11 +247,25 @@ mod tests {
             232, 245, 72, 182, 213, 98,
         ];
 
-        // let expected_decrypted = [5, 168, 128, 187, 35, 220, 64, 19, 60, 18, 132, 194, 85, 95, 201, 207, 99, 11, 0, 0];
+        let decrypted =
+            Bl3Serial::from_serial_number(serial_number).expect("failed to decrypt serial");
 
-        let decrypted = Bl3Serial::from_serial_number(&HeaderType::PcSave, serial_number)
-            .expect("failed to decrypt serial");
-
-        // assert_eq!(decrypted, expected_decrypted);
+        assert_eq!(decrypted.balance, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Balance/InvBalD_Shield_OldGod.InvBalD_Shield_OldGod");
+        assert_eq!(
+            decrypted.inv_data,
+            "/Game/Gear/Shields/_Design/A_Data/Shield_Default.Shield_Default"
+        );
+        assert_eq!(
+            decrypted.manufacturer,
+            "/Game/Gear/Manufacturers/_Design/Hyperion.Hyperion"
+        );
+        assert_eq!(decrypted.parts[0].0, "/Game/Gear/Shields/_Design/PartSets/Part_Manufacturer/Shield_Part_Body_03_Hyperion.Shield_Part_Body_03_Hyperion");
+        assert_eq!(decrypted.parts[1].0, "/Game/Gear/Shields/_Design/PartSets/Part_Rarity/Shield_Part_Rarity_Hyperion_05_Legendary.Shield_Part_Rarity_Hyperion_05_Legendary");
+        assert_eq!(decrypted.parts[2].0, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Part_Shield_Aug_OldGod.Part_Shield_Aug_OldGod");
+        assert_eq!(decrypted.parts[3].0, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/RechargeRate/Part_Shield_Aug_RechargeRate.Part_Shield_Aug_RechargeRate");
+        assert_eq!(decrypted.parts[4].0, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/Spike/Part_Shield_Aug_Spike.Part_Shield_Aug_Spike");
+        assert_eq!(decrypted.parts[5].0, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Element_Fire_OldGod.Shield_Part_Element_Fire_OldGod");
+        assert_eq!(decrypted.parts[6].0, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Mat_OldGod.Shield_Part_Mat_OldGod");
+        assert_eq!(decrypted.generic_parts[0].0, "/Game/PatchDLC/Raid1/Gear/Anointed/Generic/SkillEnd_BonusEleDamage_Radiation/GPart_EG_SkillEndBonusEleDamage_Radiation.GPart_EG_SkillEndBonusEleDamage_Radiation");
     }
 }

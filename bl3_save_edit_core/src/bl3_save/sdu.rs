@@ -1,4 +1,4 @@
-use strum::{Display, EnumString};
+use strum::{Display, EnumIter, EnumString};
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct SaveSduSlotData {
@@ -7,7 +7,7 @@ pub struct SaveSduSlotData {
     pub max: i32,
 }
 
-#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd, Clone)]
+#[derive(Debug, Display, EnumString, EnumIter, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub enum SaveSduSlot {
     #[strum(
         serialize = "/Game/Pickups/SDU/SDU_Backpack.SDU_Backpack",
