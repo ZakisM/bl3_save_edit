@@ -80,21 +80,21 @@ pub struct CharacterSduState {
     pub heavy_input_state: text_input::State,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum CharacterMessage {
     PlayerClassSelected(PlayerClass),
     SkinMessage(CharacterSkinMessage),
     GearMessage(CharacterGearMessage),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum CharacterSkinMessage {
     HeadSkinSelected(GameDataKv),
     CharacterSkinSelected(GameDataKv),
     EchoThemeSelected(GameDataKv),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum CharacterGearMessage {
     UnlockGrenadeSlot(bool),
     UnlockShieldSlot(bool),

@@ -1,6 +1,5 @@
 use std::path::PathBuf;
 
-use anyhow::Result;
 use iced::{button, Align, Button, Color, Column, Container, HorizontalAlignment, Length, Text};
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
@@ -17,10 +16,22 @@ pub struct ChooseSaveDirectoryState {
     pub saves_dir: PathBuf,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ChooseSaveMessage {
-    ChooseDirCompleted(Result<PathBuf>),
-    LoadedFiles(Result<Vec<Bl3FileType>>),
+    ChooseDirCompleted(ChooseDirResult),
+    LoadedFiles(LoadedFilesResult),
+}
+
+#[derive(Debug, Clone)]
+pub enum ChooseDirResult {
+    ChooseDirSuccess(PathBuf),
+    ChooseDirError(String),
+}
+
+#[derive(Debug, Clone)]
+pub enum LoadedFilesResult {
+    LoadedFilesSuccess(Vec<Bl3FileType>),
+    LoadedFilesError(String),
 }
 
 #[derive(Debug, Clone)]

@@ -20,7 +20,7 @@ pub struct ManageSaveState {
     pub current_file: Bl3Save,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ManageSaveMessage {
     General(GeneralMessage),
     Character(CharacterMessage),

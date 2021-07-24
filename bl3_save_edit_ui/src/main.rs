@@ -18,6 +18,7 @@ fn main() {
             ..window::Settings::default()
         },
         antialiasing: true,
+        text_multithreading: true,
         ..Settings::default()
     };
 

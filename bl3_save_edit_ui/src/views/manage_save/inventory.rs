@@ -1,17 +1,15 @@
 use iced::{
-    button, pick_list, scrollable, text_input, tooltip, Align, Button, Color, Column, Container,
-    Element, Length, PickList, Row, Scrollable, Text, TextInput, Tooltip,
+    button, scrollable, text_input, Align, Button, Color, Column, Container, Element, Length, Row,
+    Scrollable, Text, TextInput,
 };
 
 use bl3_save_edit_core::bl3_save::bl3_serial::Bl3Serial;
-use bl3_save_edit_core::parser::HeaderType;
 
 use crate::bl3_ui::{InteractionMessage, Message};
-use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
+use crate::bl3_ui_style::Bl3UiStyle;
 use crate::interaction::InteractionExt;
-use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_save::ManageSaveInteractionMessage;
-use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
 
 #[derive(Debug, Default)]

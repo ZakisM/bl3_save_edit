@@ -67,6 +67,7 @@ impl pick_list::StyleSheet for Bl3UiStyle {
             border_radius: 1.0,
             border_color: Color::from_rgb8(35, 35, 35),
             icon_size: 0.5,
+            placeholder_color: Default::default(),
         }
     }
 
@@ -78,6 +79,7 @@ impl pick_list::StyleSheet for Bl3UiStyle {
             border_radius: 1.0,
             border_color: Color::from_rgb8(45, 45, 45),
             icon_size: 0.5,
+            placeholder_color: Default::default(),
         }
     }
 }

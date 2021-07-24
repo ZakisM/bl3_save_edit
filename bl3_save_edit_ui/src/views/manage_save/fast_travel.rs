@@ -74,7 +74,7 @@ impl std::default::Default for FastTravelState {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum FastTravelMessage {
     LastVisitedTeleporterSelected(GameDataKv),
     PlaythroughSelected(PlaythroughType),

@@ -24,7 +24,7 @@ pub struct GeneralState {
     pub save_type_selected: HeaderType,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum GeneralMessage {
     GenerateRandomGuidCompleted(String),
 }
