@@ -28,5 +28,15 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState, item
     if let Some(item) = save.character_data.inventory_items.get(item_index) {
         manage_save_state.main_state.inventory_state.balance_input =
             item.balance_part.ident.clone();
+
+        manage_save_state
+            .main_state
+            .inventory_state
+            .inventory_data_input = item.inv_data.clone();
+
+        manage_save_state
+            .main_state
+            .inventory_state
+            .manufacturer_input = item.manufacturer.clone();
     }
 }

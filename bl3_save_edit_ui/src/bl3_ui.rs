@@ -469,6 +469,22 @@ impl Application for Bl3UiState {
                                 .inventory_state
                                 .balance_input = balance_input;
                         }
+                        InventoryInteractionMessage::InventoryDataInputChanged(
+                            inventory_data_input,
+                        ) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .inventory_data_input = inventory_data_input;
+                        }
+                        InventoryInteractionMessage::ManufacturerInputChanged(
+                            manufacturer_input,
+                        ) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .manufacturer_input = manufacturer_input;
+                        }
                     },
                 },
                 InteractionMessage::LoadedFileSelected(loaded_file) => {

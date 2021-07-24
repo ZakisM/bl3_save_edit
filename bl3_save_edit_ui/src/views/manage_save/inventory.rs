@@ -19,6 +19,10 @@ pub struct InventoryState {
     pub scrollable_state: scrollable::State,
     pub balance_input: String,
     pub balance_input_state: text_input::State,
+    pub inventory_data_input: String,
+    pub inventory_data_input_state: text_input::State,
+    pub manufacturer_input: String,
+    pub manufacturer_input_state: text_input::State,
 }
 
 #[derive(Debug)]
@@ -28,6 +32,8 @@ pub enum InventoryMessage {}
 pub enum InventoryInteractionMessage {
     ItemPressed(usize),
     BalanceInputChanged(String),
+    InventoryDataInputChanged(String),
+    ManufacturerInputChanged(String),
 }
 
 #[derive(Debug)]
@@ -153,33 +159,38 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                     Scrollable::new(&mut inventory_state.scrollable_state).push(inventory_items),
                 )
                 .padding(1)
-                .style(Bl3UiStyle),
+                .style(Bl3UiStyle)
+                .height(Length::Fill),
             ),
     )
-    .width(Length::FillPortion(3));
+    .width(Length::FillPortion(3))
+    .height(Length::Fill);
 
     //Todo: Each item should have it's own state
+
+    let item_editor_header = Container::new(
+        Column::new().push(
+            Container::new(
+                TextMargin::new("Item Data", 2)
+                    .0
+                    .font(JETBRAINS_MONO)
+                    .size(17)
+                    .color(Color::from_rgb8(242, 203, 5)),
+            )
+            .padding(10)
+            .align_x(Align::Center)
+            .width(Length::Fill)
+            .style(Bl3UiStyle),
+        ),
+    );
 
     let item_editor = Container::new(
         Column::new()
             .push(
                 Container::new(
-                    TextMargin::new("Item Data", 2)
-                        .0
-                        .font(JETBRAINS_MONO)
-                        .size(17)
-                        .color(Color::from_rgb8(242, 203, 5)),
-                )
-                .padding(10)
-                .align_x(Align::Center)
-                .width(Length::Fill)
-                .style(Bl3UiStyle),
-            )
-            .push(
-                Container::new(
                     LabelledElement::create(
                         "Balance",
-                        Length::Units(90),
+                        Length::Units(130),
                         TextInput::new(
                             &mut inventory_state.balance_input_state,
                             "",
@@ -203,11 +214,80 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                     .align_items(Align::Center),
                 )
                 .style(Bl3UiStyle),
-            ),
+            )
+            .push(
+                Container::new(
+                    LabelledElement::create(
+                        "Inventory Data",
+                        Length::Units(130),
+                        TextInput::new(
+                            &mut inventory_state.inventory_data_input_state,
+                            "",
+                            &inventory_state.inventory_data_input,
+                            |s| {
+                                InteractionMessage::ManageSaveInteraction(
+                                    ManageSaveInteractionMessage::Inventory(
+                                        InventoryInteractionMessage::InventoryDataInputChanged(s),
+                                    ),
+                                )
+                            },
+                        )
+                        .font(JETBRAINS_MONO)
+                        .padding(10)
+                        .size(17)
+                        .style(Bl3UiStyle)
+                        .into_element(),
+                    )
+                    .spacing(15)
+                    .width(Length::FillPortion(9))
+                    .align_items(Align::Center),
+                )
+                .style(Bl3UiStyle),
+            )
+            .push(
+                Container::new(
+                    LabelledElement::create(
+                        "Manufacturer",
+                        Length::Units(130),
+                        TextInput::new(
+                            &mut inventory_state.manufacturer_input_state,
+                            "",
+                            &inventory_state.manufacturer_input,
+                            |s| {
+                                InteractionMessage::ManageSaveInteraction(
+                                    ManageSaveInteractionMessage::Inventory(
+                                        InventoryInteractionMessage::ManufacturerInputChanged(s),
+                                    ),
+                                )
+                            },
+                        )
+                        .font(JETBRAINS_MONO)
+                        .padding(10)
+                        .size(17)
+                        .style(Bl3UiStyle)
+                        .into_element(),
+                    )
+                    .spacing(15)
+                    .width(Length::FillPortion(9))
+                    .align_items(Align::Center),
+                )
+                .style(Bl3UiStyle),
+            )
+            .spacing(20),
     )
-    .width(Length::FillPortion(7));
+    .height(Length::Fill)
+    .padding(20)
+    .style(Bl3UiStyle);
 
-    let all_contents = Row::new().push(item_list).push(item_editor).spacing(20);
+    let item_editor_column = Column::new()
+        .push(item_editor_header)
+        .push(item_editor)
+        .width(Length::FillPortion(7));
+
+    let all_contents = Row::new()
+        .push(item_list)
+        .push(item_editor_column)
+        .spacing(20);
 
     Container::new(all_contents).padding(30)
 }
