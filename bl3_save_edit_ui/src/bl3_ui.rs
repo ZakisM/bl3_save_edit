@@ -16,11 +16,8 @@ use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers;
 use crate::state_mappers::manage_save::fast_travel::map_fast_travel_stations_to_visited_teleporters_list;
 use crate::state_mappers::manage_save::inventory::map_save_to_inventory_state;
-use crate::views::choose_save_directory::LoadedFilesResult::{
-    LoadedFilesError, LoadedFilesSuccess,
-};
 use crate::views::choose_save_directory::{
-    ChooseDirResult, ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
+    ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
 use crate::views::manage_save::character::{
     CharacterGearMessage, CharacterInteractionMessage, CharacterInteractionSduMessage,
@@ -53,19 +50,22 @@ pub enum Message {
     InteractionMessage(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
     ManageSave(ManageSaveMessage),
-    SaveFileCompleted(SaveFileResult),
-}
-
-#[derive(Debug, Clone)]
-pub enum SaveFileResult {
-    SaveFileSuccess,
-    SaveFileError(String),
+    SaveFileCompleted(MessageResult<()>),
 }
 
 #[derive(Debug, Clone)]
 pub enum MessageResult<T> {
     Success(T),
     Error(String),
+}
+
+impl<T> MessageResult<T> {
+    pub fn handle_result(result: anyhow::Result<T>) -> MessageResult<T> {
+        match result {
+            Ok(v) => MessageResult::Success(v),
+            Err(e) => MessageResult::Error(e.to_string()),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -120,12 +120,9 @@ impl Application for Bl3UiState {
                             self.choose_save_directory_state.choose_dir_window_open = true;
 
                             Command::perform(interaction::choose_save_directory::choose(), |r| {
-                                let res = match r {
-                                    Ok(path) => ChooseDirResult::ChooseDirSuccess(path),
-                                    Err(e) => ChooseDirResult::ChooseDirError(e.to_string()),
-                                };
-
-                                Message::ChooseSave(ChooseSaveMessage::ChooseDirCompleted(res))
+                                Message::ChooseSave(ChooseSaveMessage::ChooseDirCompleted(
+                                    MessageResult::handle_result(r),
+                                ))
                             })
                         }
                     };
@@ -389,13 +386,8 @@ impl Application for Bl3UiState {
                         match current_file.to_bytes() {
                             Ok(output) => {
                                 return Command::perform(
-                                    tokio::fs::write(output_file, output),
-                                    |save_file_result| {
-                                        Message::SaveFileCompleted(match save_file_result {
-                                            Ok(_) => SaveFileResult::SaveFileSuccess,
-                                            Err(e) => SaveFileResult::SaveFileError(e.to_string()),
-                                        })
-                                    },
+                                    interaction::save_file::save_file(output_file, output),
+                                    |r| Message::SaveFileCompleted(MessageResult::handle_result(r)),
                                 );
                             }
                             Err(e) => eprintln!("{}", e),
@@ -439,26 +431,23 @@ impl Application for Bl3UiState {
                     self.choose_save_directory_state.choose_dir_window_open = false;
 
                     match choose_dir_res {
-                        ChooseDirResult::ChooseDirSuccess(dir) => {
+                        MessageResult::Success(dir) => {
                             self.choose_save_directory_state.saves_dir = dir.clone();
 
                             return Command::perform(
                                 interaction::choose_save_directory::load_files_in_directory(dir),
-                                |files_loaded_res| {
+                                |r| {
                                     Message::ChooseSave(ChooseSaveMessage::LoadedFiles(
-                                        match files_loaded_res {
-                                            Ok(files_loaded) => LoadedFilesSuccess(files_loaded),
-                                            Err(e) => LoadedFilesError(e.to_string()),
-                                        },
+                                        MessageResult::handle_result(r),
                                     ))
                                 },
                             );
                         }
-                        ChooseDirResult::ChooseDirError(e) => eprintln!("{}", e),
+                        MessageResult::Error(e) => eprintln!("{}", e),
                     }
                 }
                 ChooseSaveMessage::LoadedFiles(loaded_files) => match loaded_files {
-                    LoadedFilesSuccess(mut files) => {
+                    MessageResult::Success(mut files) => {
                         files.sort();
                         self.loaded_files = files;
 
@@ -471,7 +460,7 @@ impl Application for Bl3UiState {
 
                         state_mappers::map_loaded_file_to_state(self);
                     }
-                    LoadedFilesError(e) => eprintln!("{}", e),
+                    MessageResult::Error(e) => eprintln!("{}", e),
                 },
             },
             Message::ManageSave(manage_save_msg) => match manage_save_msg {
@@ -603,24 +592,22 @@ impl Application for Bl3UiState {
                 },
             },
             Message::SaveFileCompleted(res) => match res {
-                SaveFileResult::SaveFileSuccess => {
+                MessageResult::Success(_) => {
                     println!("Successfully saved file");
 
                     return Command::perform(
                         interaction::choose_save_directory::load_files_in_directory(
                             self.choose_save_directory_state.saves_dir.clone(),
                         ),
-                        |files_loaded_res: Result<Vec<Bl3FileType>, anyhow::Error>| {
-                            Message::ChooseSave(ChooseSaveMessage::LoadedFiles(
-                                match files_loaded_res {
-                                    Ok(files_loaded) => LoadedFilesSuccess(files_loaded),
-                                    Err(e) => LoadedFilesError(e.to_string()),
-                                },
-                            ))
+                        |r| {
+                            Message::ChooseSave(ChooseSaveMessage::LoadedFiles(match r {
+                                Ok(files_loaded) => MessageResult::Success(files_loaded),
+                                Err(e) => MessageResult::Error(e.to_string()),
+                            }))
                         },
                     );
                 }
-                SaveFileResult::SaveFileError(e) => eprintln!("{}", e),
+                MessageResult::Error(e) => eprintln!("{}", e),
             },
         };
 

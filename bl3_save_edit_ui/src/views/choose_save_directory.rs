@@ -4,7 +4,7 @@ use iced::{button, Align, Button, Color, Column, Container, HorizontalAlignment,
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{InteractionMessage, Message, MessageResult};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::JETBRAINS_MONO;
@@ -18,20 +18,8 @@ pub struct ChooseSaveDirectoryState {
 
 #[derive(Debug, Clone)]
 pub enum ChooseSaveMessage {
-    ChooseDirCompleted(ChooseDirResult),
-    LoadedFiles(LoadedFilesResult),
-}
-
-#[derive(Debug, Clone)]
-pub enum ChooseDirResult {
-    ChooseDirSuccess(PathBuf),
-    ChooseDirError(String),
-}
-
-#[derive(Debug, Clone)]
-pub enum LoadedFilesResult {
-    LoadedFilesSuccess(Vec<Bl3FileType>),
-    LoadedFilesError(String),
+    ChooseDirCompleted(MessageResult<PathBuf>),
+    LoadedFiles(MessageResult<Vec<Bl3FileType>>),
 }
 
 #[derive(Debug, Clone)]
