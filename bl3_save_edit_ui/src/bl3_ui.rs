@@ -15,6 +15,7 @@ use crate::interaction::InteractionExt;
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers;
 use crate::state_mappers::manage_save::fast_travel::map_fast_travel_stations_to_visited_teleporters_list;
+use crate::state_mappers::manage_save::inventory::map_save_to_inventory_state;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -376,8 +377,28 @@ impl Application for Bl3UiState {
                         };
                     }
                     ManageSaveInteractionMessage::Inventory(inventory_msg) => match inventory_msg {
-                        InventoryInteractionMessage::ItemPressed(i) => {
-                            dbg!(&i);
+                        InventoryInteractionMessage::ItemPressed(item_index) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .items
+                                .iter_mut()
+                                .enumerate()
+                                .for_each(|(i, item)| {
+                                    item.is_active = false;
+
+                                    if item_index == i {
+                                        item.is_active = true;
+                                    }
+                                });
+
+                            map_save_to_inventory_state(&mut self.manage_save_state, item_index);
+                        }
+                        InventoryInteractionMessage::BalanceInputChanged(balance_input) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .balance_input = balance_input;
                         }
                     },
                 },
@@ -581,18 +602,21 @@ impl Application for Bl3UiState {
             .width(Length::Fill)
             .horizontal_alignment(HorizontalAlignment::Left);
 
-        let change_dir_button = Button::new(
+        let mut change_dir_button = Button::new(
             &mut self.change_dir_button_state,
             Text::new("Change Folder")
                 .font(JETBRAINS_MONO_BOLD)
                 .size(17),
         )
-        .on_press(InteractionMessage::ChooseSaveInteraction(
-            ChooseSaveInteractionMessage::ChooseDirPressed,
-        ))
         .padding(10)
-        .style(Bl3UiStyle)
-        .into_element();
+        .style(Bl3UiStyle);
+
+        if !self.choose_save_directory_state.choose_dir_window_open {
+            change_dir_button =
+                change_dir_button.on_press(InteractionMessage::ChooseSaveInteraction(
+                    ChooseSaveInteractionMessage::ChooseDirPressed,
+                ));
+        }
 
         let all_saves_picklist = PickList::new(
             &mut self.loaded_files_selector,
@@ -628,7 +652,7 @@ impl Application for Bl3UiState {
                 MainTabBarView::General,
             )))
         {
-            menu_bar_content = menu_bar_content.push(change_dir_button);
+            menu_bar_content = menu_bar_content.push(change_dir_button.into_element());
             menu_bar_content = menu_bar_content.push(all_saves_picklist);
             menu_bar_content = menu_bar_content.push(save_button);
         }

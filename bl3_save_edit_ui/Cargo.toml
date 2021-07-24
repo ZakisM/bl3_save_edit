@@ -13,7 +13,6 @@ rayon = "1.5"
 tokio-rayon = "2.1"
 futures = "0.3"
 anyhow = "1.0"
-derivative = "2.2.0"
 
 [dependencies.uuid]
 version = "0.8"

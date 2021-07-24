@@ -170,7 +170,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "bl3_save_edit_core",
- "derivative",
  "dirs",
  "futures",
  "iced",

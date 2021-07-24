@@ -88,17 +88,11 @@ impl Bl3Serial {
         let (balance, balance_bits, balance_idx) =
             Self::inv_db_header_part("InventoryBalanceData", &mut bits, data_version)?;
 
-        println!("{}", balance);
-
         let (inv_data, inv_data_bits, inv_data_idx) =
             Self::inv_db_header_part("InventoryData", &mut bits, data_version)?;
 
-        println!("{}", inv_data);
-
         let (manufacturer, manufacturer_bits, manufacturer_idx) =
             Self::inv_db_header_part("ManufacturerData", &mut bits, data_version)?;
-
-        println!("{}", manufacturer);
 
         let level = bits.eat(7)?;
 
@@ -116,10 +110,6 @@ impl Bl3Serial {
         let (part_bits, parts) =
             Self::inv_db_header_part_repeated(&part_invkey, &mut bits, data_version, 6)?;
 
-        for (part, _) in &parts {
-            println!("{}", part);
-        }
-
         //generics (anointment + mayhem)
         let (generic_part_bits, generic_parts) = Self::inv_db_header_part_repeated(
             "InventoryGenericPartData",
@@ -127,10 +117,6 @@ impl Bl3Serial {
             data_version,
             4,
         )?;
-
-        for (generic_part, _) in &generic_parts {
-            println!("{}", generic_part);
-        }
 
         let additional_count = bits.eat(8)?;
 
