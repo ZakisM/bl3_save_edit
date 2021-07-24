@@ -8,16 +8,17 @@ pub mod save_file;
 
 pub trait InteractionExt<'a, T>
 where
-    Element<'a, InteractionMessage>: std::convert::From<T>,
+    T: Into<Element<'a, InteractionMessage>>,
 {
     fn into_element(self) -> Element<'a, Message>;
 }
 
 impl<'a, T> InteractionExt<'a, T> for T
 where
-    Element<'a, InteractionMessage>: std::convert::From<T>,
+    T: Into<Element<'a, InteractionMessage>>,
 {
     fn into_element(self) -> Element<'a, Message> {
-        Element::from(self).map(Message::InteractionMessage)
+        let element: Element<'a, InteractionMessage> = self.into();
+        element.map(Message::InteractionMessage)
     }
 }

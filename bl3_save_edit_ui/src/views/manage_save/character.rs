@@ -16,6 +16,7 @@ use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveMessage};
+use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
 use crate::{generate_sdu_input, generate_skin_pick_list};
@@ -82,8 +83,6 @@ pub struct CharacterSduState {
 
 #[derive(Debug, Clone)]
 pub enum CharacterMessage {
-    PlayerClassSelected(PlayerClass),
-    SkinMessage(CharacterSkinMessage),
     GearMessage(CharacterGearMessage),
 }
 
@@ -111,6 +110,8 @@ pub enum CharacterInteractionMessage {
     NameInputChanged(String),
     XpLevelInputChanged(i32),
     XpPointsInputChanged(i32),
+    PlayerClassSelected(PlayerClass),
+    SkinMessage(CharacterSkinMessage),
     SduMessage(CharacterInteractionSduMessage),
     MaxSduSlotsPressed,
 }
@@ -131,68 +132,57 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
     let selected_class = character_state.player_class_selected_class;
 
     let character_name = Container::new(
-        Row::new()
-            .push(
-                TextMargin::new("Name", 2)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(65)),
+        LabelledElement::create(
+            "Name",
+            Length::Units(75),
+            TextInput::new(
+                &mut character_state.name_input_state,
+                "FL4K",
+                &character_state.name_input,
+                |c| {
+                    InteractionMessage::ManageSaveInteraction(
+                        ManageSaveInteractionMessage::Character(
+                            CharacterInteractionMessage::NameInputChanged(c),
+                        ),
+                    )
+                },
             )
-            .push(
-                TextInput::new(
-                    &mut character_state.name_input_state,
-                    "FL4K",
-                    &character_state.name_input,
-                    |s| {
-                        InteractionMessage::ManageSaveInteraction(
-                            ManageSaveInteractionMessage::Character(
-                                CharacterInteractionMessage::NameInputChanged(s),
-                            ),
-                        )
-                    },
-                )
-                .font(JETBRAINS_MONO)
-                .padding(10)
-                .size(17)
-                .style(Bl3UiStyle)
-                .into_element(),
-            )
-            .align_items(Align::Center),
+            .font(JETBRAINS_MONO)
+            .padding(10)
+            .size(17)
+            .style(Bl3UiStyle)
+            .into_element(),
+        )
+        .align_items(Align::Center),
     )
     .width(Length::FillPortion(3))
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
     let player_class = Container::new(
-        Row::new()
-            .push(
-                TextMargin::new("Class", 2)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(65)),
+        LabelledElement::create(
+            "Class",
+            Length::Units(65),
+            PickList::new(
+                &mut character_state.player_class_selector,
+                &PlayerClass::ALL[..],
+                Some(selected_class),
+                |c| {
+                    InteractionMessage::ManageSaveInteraction(
+                        ManageSaveInteractionMessage::Character(
+                            CharacterInteractionMessage::PlayerClassSelected(c),
+                        ),
+                    )
+                },
             )
-            .push(
-                PickList::new(
-                    &mut character_state.player_class_selector,
-                    &PlayerClass::ALL[..],
-                    Some(selected_class),
-                    |s| {
-                        Message::ManageSave(ManageSaveMessage::Character(
-                            CharacterMessage::PlayerClassSelected(s),
-                        ))
-                    },
-                )
-                .font(JETBRAINS_MONO)
-                .text_size(17)
-                .width(Length::Fill)
-                .padding(10)
-                .style(Bl3UiStyle),
-            )
-            .align_items(Align::Center),
+            .font(JETBRAINS_MONO)
+            .text_size(17)
+            .width(Length::Fill)
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into_element(),
+        )
+        .align_items(Align::Center),
     )
     .width(Length::FillPortion(1))
     .height(Length::Units(36))
@@ -204,94 +194,80 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
         .spacing(20);
 
     let xp_level = Container::new(
-        Row::new()
-            .push(
-                TextMargin::new("Level", 2)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(55)),
-            )
-            .push(
-                Tooltip::new(
-                    NumberInput::new(
-                        &mut character_state.xp_level_input_state,
-                        character_state.xp_level_input,
-                        1,
-                        Some(MAX_CHARACTER_LEVEL as i32),
-                        |v| {
-                            InteractionMessage::ManageSaveInteraction(
-                                ManageSaveInteractionMessage::Character(
-                                    CharacterInteractionMessage::XpLevelInputChanged(v),
-                                ),
-                            )
-                        },
-                    )
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .padding(10)
-                    .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                    "Level must be between 1 and 72",
-                    tooltip::Position::Top,
+        LabelledElement::create(
+            "Level",
+            Length::Units(60),
+            Tooltip::new(
+                NumberInput::new(
+                    &mut character_state.xp_level_input_state,
+                    character_state.xp_level_input,
+                    1,
+                    Some(MAX_CHARACTER_LEVEL as i32),
+                    |v| {
+                        InteractionMessage::ManageSaveInteraction(
+                            ManageSaveInteractionMessage::Character(
+                                CharacterInteractionMessage::XpLevelInputChanged(v),
+                            ),
+                        )
+                    },
                 )
-                .gap(10)
-                .padding(10)
+                .0
                 .font(JETBRAINS_MONO)
+                .padding(10)
                 .size(17)
-                .style(Bl3UiTooltipStyle),
+                .style(Bl3UiStyle)
+                .into_element(),
+                "Level must be between 1 and 72",
+                tooltip::Position::Top,
             )
-            .spacing(15)
-            .align_items(Align::Center),
+            .gap(10)
+            .padding(10)
+            .font(JETBRAINS_MONO)
+            .size(17)
+            .style(Bl3UiTooltipStyle),
+        )
+        .spacing(15)
+        .align_items(Align::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
     let xp_points = Container::new(
-        Row::new()
-            .push(
-                TextMargin::new("Experience", 2)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(95)),
-            )
-            .push(
-                Tooltip::new(
-                    NumberInput::new(
-                        &mut character_state.xp_points_input_state,
-                        character_state.xp_points_input,
-                        0,
-                        Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0]),
-                        |v| {
-                            InteractionMessage::ManageSaveInteraction(
-                                ManageSaveInteractionMessage::Character(
-                                    CharacterInteractionMessage::XpPointsInputChanged(v),
-                                ),
-                            )
-                        },
-                    )
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .padding(10)
-                    .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                    "Experience must be between 0 and 9,520,932",
-                    tooltip::Position::Top,
+        LabelledElement::create(
+            "Experience",
+            Length::Units(95),
+            Tooltip::new(
+                NumberInput::new(
+                    &mut character_state.xp_points_input_state,
+                    character_state.xp_points_input,
+                    0,
+                    Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0]),
+                    |v| {
+                        InteractionMessage::ManageSaveInteraction(
+                            ManageSaveInteractionMessage::Character(
+                                CharacterInteractionMessage::XpPointsInputChanged(v),
+                            ),
+                        )
+                    },
                 )
-                .gap(10)
-                .padding(10)
+                .0
                 .font(JETBRAINS_MONO)
+                .padding(10)
                 .size(17)
-                .style(Bl3UiTooltipStyle),
+                .style(Bl3UiStyle)
+                .into_element(),
+                "Experience must be between 0 and 9,520,932",
+                tooltip::Position::Top,
             )
-            .spacing(15)
-            .align_items(Align::Center),
+            .gap(10)
+            .padding(10)
+            .font(JETBRAINS_MONO)
+            .size(17)
+            .style(Bl3UiTooltipStyle),
+        )
+        .spacing(15)
+        .align_items(Align::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -719,33 +695,29 @@ macro_rules! generate_skin_pick_list {
         };
 
         Container::new(
-            Row::new()
-                .push(
-                    TextMargin::new($name, 2)
-                        .0
-                        .font(JETBRAINS_MONO)
-                        .size(17)
-                        .color(Color::from_rgb8(242, 203, 5))
-                        .width(Length::Units($name_width)),
+            LabelledElement::create(
+                $name,
+                Length::Units($name_width),
+                PickList::new(
+                    &mut $character_state.skin_state.$selector_state,
+                    class_available_skins,
+                    pre_selected_skin,
+                    |selected| {
+                        InteractionMessage::ManageSaveInteraction(
+                            ManageSaveInteractionMessage::Character(
+                                CharacterInteractionMessage::SkinMessage($message(selected)),
+                            ),
+                        )
+                    },
                 )
-                .push(
-                    PickList::new(
-                        &mut $character_state.skin_state.$selector_state,
-                        class_available_skins,
-                        pre_selected_skin,
-                        |selected| {
-                            Message::ManageSave(ManageSaveMessage::Character(
-                                CharacterMessage::SkinMessage($message(selected)),
-                            ))
-                        },
-                    )
-                    .font(JETBRAINS_MONO)
-                    .text_size(17)
-                    .width(Length::Fill)
-                    .padding(10)
-                    .style(Bl3UiStyle),
-                )
-                .align_items(Align::Center),
+                .font(JETBRAINS_MONO)
+                .text_size(17)
+                .width(Length::Fill)
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
+            .align_items(Align::Center),
         )
         .width(Length::Fill)
         .height(Length::Units(36))

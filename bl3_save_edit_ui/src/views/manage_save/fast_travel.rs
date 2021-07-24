@@ -12,6 +12,7 @@ use crate::bl3_ui_style::Bl3UiStyle;
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveMessage};
+use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::text_margin::TextMargin;
 
 #[derive(Debug, Clone, Display, Eq, PartialEq, Copy)]
@@ -76,8 +77,6 @@ impl std::default::Default for FastTravelState {
 
 #[derive(Debug, Clone)]
 pub enum FastTravelMessage {
-    LastVisitedTeleporterSelected(GameDataKv),
-    PlaythroughSelected(PlaythroughType),
     VisitedTeleportersListUpdated((usize, bool)),
 }
 
@@ -85,70 +84,64 @@ pub enum FastTravelMessage {
 pub enum FastTravelInteractionMessage {
     UncheckAllVisitedTeleporterList,
     CheckAllVisitedTeleporterList,
+    LastVisitedTeleporterSelected(GameDataKv),
+    PlaythroughSelected(PlaythroughType),
 }
 
 pub fn view(fast_travel_state: &mut FastTravelState) -> Container<Message> {
     let playthrough_selector = Container::new(
-        Row::new()
-            .push(
-                TextMargin::new("Playthrough", 2)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(115)),
+        LabelledElement::create(
+            "Playthrough",
+            Length::Units(115),
+            PickList::new(
+                &mut fast_travel_state.playthrough_type_selector,
+                &PlaythroughType::ALL[..fast_travel_state.playthroughs_len],
+                Some(fast_travel_state.playthrough_type_selected),
+                |p| {
+                    InteractionMessage::ManageSaveInteraction(
+                        ManageSaveInteractionMessage::FastTravel(
+                            FastTravelInteractionMessage::PlaythroughSelected(p),
+                        ),
+                    )
+                },
             )
-            .push(
-                PickList::new(
-                    &mut fast_travel_state.playthrough_type_selector,
-                    &PlaythroughType::ALL[..fast_travel_state.playthroughs_len],
-                    Some(fast_travel_state.playthrough_type_selected),
-                    |s| {
-                        Message::ManageSave(ManageSaveMessage::FastTravel(
-                            FastTravelMessage::PlaythroughSelected(s),
-                        ))
-                    },
-                )
-                .font(JETBRAINS_MONO)
-                .text_size(17)
-                .width(Length::Fill)
-                .padding(10)
-                .style(Bl3UiStyle),
-            )
-            .align_items(Align::Center),
+            .font(JETBRAINS_MONO)
+            .text_size(17)
+            .width(Length::Fill)
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into_element(),
+        )
+        .align_items(Align::Center),
     )
     .width(Length::FillPortion(2))
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
     let last_visited_teleporter_selector = Container::new(
-        Row::new()
-            .push(
-                TextMargin::new("Last Visited Teleporter", 2)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(210)),
+        LabelledElement::create(
+            "Last Visited Teleporter",
+            Length::Units(210),
+            PickList::new(
+                &mut fast_travel_state.last_visited_teleporter_selector,
+                &fast_travel_state.fast_travel_locations,
+                Some(fast_travel_state.last_visited_teleporter_selected),
+                |t| {
+                    InteractionMessage::ManageSaveInteraction(
+                        ManageSaveInteractionMessage::FastTravel(
+                            FastTravelInteractionMessage::LastVisitedTeleporterSelected(t),
+                        ),
+                    )
+                },
             )
-            .push(
-                PickList::new(
-                    &mut fast_travel_state.last_visited_teleporter_selector,
-                    &fast_travel_state.fast_travel_locations,
-                    Some(fast_travel_state.last_visited_teleporter_selected),
-                    |s| {
-                        Message::ManageSave(ManageSaveMessage::FastTravel(
-                            FastTravelMessage::LastVisitedTeleporterSelected(s),
-                        ))
-                    },
-                )
-                .font(JETBRAINS_MONO)
-                .text_size(17)
-                .width(Length::Fill)
-                .padding(10)
-                .style(Bl3UiStyle),
-            )
-            .align_items(Align::Center),
+            .font(JETBRAINS_MONO)
+            .text_size(17)
+            .width(Length::Fill)
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into_element(),
+        )
+        .align_items(Align::Center),
     )
     .width(Length::FillPortion(7))
     .height(Length::Units(36))

@@ -10,6 +10,7 @@ use crate::bl3_ui_style::Bl3UiStyle;
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_save::ManageSaveInteractionMessage;
+use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::text_margin::TextMargin;
 
 #[derive(Debug, Default)]
@@ -85,16 +86,16 @@ pub struct InventoryItemStyle {
 
 impl button::StyleSheet for InventoryItemStyle {
     fn active(&self) -> button::Style {
-        let background = if self.is_active {
-            Some(Color::from_rgb8(35, 35, 35).into())
+        let (background, text_color) = if self.is_active {
+            (
+                Some(Color::from_rgb8(35, 35, 35).into()),
+                Color::from_rgb8(255, 255, 255),
+            )
         } else {
-            Some(Color::from_rgb8(23, 23, 23).into())
-        };
-
-        let text_color = if self.is_active {
-            Color::from_rgb8(255, 255, 255)
-        } else {
-            Color::from_rgb8(220, 220, 220)
+            (
+                Some(Color::from_rgb8(23, 23, 23).into()),
+                Color::from_rgb8(220, 220, 220),
+            )
         };
 
         button::Style {
@@ -176,37 +177,30 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
             )
             .push(
                 Container::new(
-                    Row::new()
-                        .push(
-                            TextMargin::new("Balance", 2)
-                                .0
-                                .font(JETBRAINS_MONO)
-                                .size(17)
-                                .color(Color::from_rgb8(242, 203, 5))
-                                .width(Length::Units(90)),
+                    LabelledElement::create(
+                        "Balance",
+                        Length::Units(90),
+                        TextInput::new(
+                            &mut inventory_state.balance_input_state,
+                            "",
+                            &inventory_state.balance_input,
+                            |s| {
+                                InteractionMessage::ManageSaveInteraction(
+                                    ManageSaveInteractionMessage::Inventory(
+                                        InventoryInteractionMessage::BalanceInputChanged(s),
+                                    ),
+                                )
+                            },
                         )
-                        .push(
-                            TextInput::new(
-                                &mut inventory_state.balance_input_state,
-                                "",
-                                &inventory_state.balance_input,
-                                |s| {
-                                    InteractionMessage::ManageSaveInteraction(
-                                        ManageSaveInteractionMessage::Inventory(
-                                            InventoryInteractionMessage::BalanceInputChanged(s),
-                                        ),
-                                    )
-                                },
-                            )
-                            .font(JETBRAINS_MONO)
-                            .padding(10)
-                            .size(17)
-                            .style(Bl3UiStyle)
-                            .into_element(),
-                        )
-                        .spacing(15)
-                        .width(Length::FillPortion(9))
-                        .align_items(Align::Center),
+                        .font(JETBRAINS_MONO)
+                        .padding(10)
+                        .size(17)
+                        .style(Bl3UiStyle)
+                        .into_element(),
+                    )
+                    .spacing(15)
+                    .width(Length::FillPortion(9))
+                    .align_items(Align::Center),
                 )
                 .style(Bl3UiStyle),
             ),

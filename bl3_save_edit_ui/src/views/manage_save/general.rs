@@ -1,6 +1,6 @@
 use iced::{
-    button, pick_list, text_input, tooltip, Align, Button, Color, Column, Container, Length,
-    PickList, Row, Text, TextInput, Tooltip,
+    button, pick_list, text_input, tooltip, Align, Button, Column, Container, Length, PickList,
+    Row, Text, TextInput, Tooltip,
 };
 
 use bl3_save_edit_core::parser::HeaderType;
@@ -10,8 +10,8 @@ use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::ManageSaveInteractionMessage;
+use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
-use crate::widgets::text_margin::TextMargin;
 
 #[derive(Debug, Default)]
 pub struct GeneralState {
@@ -41,37 +41,30 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
     let save_guid = Container::new(
         Row::new()
             .push(
-                Row::new()
-                    .push(
-                        TextMargin::new("Save GUID", 2)
-                            .0
-                            .font(JETBRAINS_MONO)
-                            .size(17)
-                            .color(Color::from_rgb8(242, 203, 5))
-                            .width(Length::Units(90)),
+                LabelledElement::create(
+                    "Save GUID",
+                    Length::Units(90),
+                    TextInput::new(
+                        &mut general_state.guid_input_state,
+                        "00000000000000000000000000000000",
+                        &general_state.guid_input,
+                        |s| {
+                            InteractionMessage::ManageSaveInteraction(
+                                ManageSaveInteractionMessage::General(
+                                    GeneralInteractionMessage::GuidInputChanged(s),
+                                ),
+                            )
+                        },
                     )
-                    .push(
-                        TextInput::new(
-                            &mut general_state.guid_input_state,
-                            "00000000000000000000000000000000",
-                            &general_state.guid_input,
-                            |s| {
-                                InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::General(
-                                        GeneralInteractionMessage::GuidInputChanged(s),
-                                    ),
-                                )
-                            },
-                        )
-                        .font(JETBRAINS_MONO)
-                        .padding(10)
-                        .size(17)
-                        .style(Bl3UiStyle)
-                        .into_element(),
-                    )
-                    .spacing(15)
-                    .width(Length::FillPortion(9))
-                    .align_items(Align::Center),
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                )
+                .spacing(15)
+                .width(Length::FillPortion(9))
+                .align_items(Align::Center),
             )
             .push(
                 Button::new(
@@ -94,88 +87,74 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
     .style(Bl3UiStyle);
 
     let save_slot = Container::new(
-        Row::new()
-            .push(
-                TextMargin::new("Save Slot", 2)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(90)),
-            )
-            .push(
-                Tooltip::new(
-                    NumberInput::new(
-                        &mut general_state.slot_input_state,
-                        general_state.slot_input,
-                        1,
-                        None,
-                        |v| {
-                            InteractionMessage::ManageSaveInteraction(
-                                ManageSaveInteractionMessage::General(
-                                    GeneralInteractionMessage::SlotInputChanged(v),
-                                ),
-                            )
-                        },
-                    )
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .padding(10)
-                    .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                    "Slot must be 1 or greater",
-                    tooltip::Position::Top,
+        LabelledElement::create(
+            "Save Slot",
+            Length::Units(90),
+            Tooltip::new(
+                NumberInput::new(
+                    &mut general_state.slot_input_state,
+                    general_state.slot_input,
+                    1,
+                    None,
+                    |v| {
+                        InteractionMessage::ManageSaveInteraction(
+                            ManageSaveInteractionMessage::General(
+                                GeneralInteractionMessage::SlotInputChanged(v),
+                            ),
+                        )
+                    },
                 )
-                .gap(10)
-                .padding(10)
+                .0
                 .font(JETBRAINS_MONO)
+                .padding(10)
                 .size(17)
-                .style(Bl3UiTooltipStyle),
+                .style(Bl3UiStyle)
+                .into_element(),
+                "Slot must be 1 or greater",
+                tooltip::Position::Top,
             )
-            .spacing(15)
-            .align_items(Align::Center),
+            .gap(10)
+            .padding(10)
+            .font(JETBRAINS_MONO)
+            .size(17)
+            .style(Bl3UiTooltipStyle),
+        )
+        .spacing(15)
+        .align_items(Align::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
     let save_type = Container::new(
-        Row::new()
-            .push(
-                TextMargin::new("Save Type", 2)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5))
-                    .width(Length::Units(90)),
+        LabelledElement::create(
+            "Save Type",
+            Length::Units(90),
+            PickList::new(
+                &mut general_state.save_type_selector,
+                &HeaderType::SAVE_TYPES[..],
+                Some(general_state.save_type_selected),
+                |h| {
+                    InteractionMessage::ManageSaveInteraction(
+                        ManageSaveInteractionMessage::General(
+                            GeneralInteractionMessage::SaveTypeSelected(h),
+                        ),
+                    )
+                },
             )
-            .push(
-                PickList::new(
-                    &mut general_state.save_type_selector,
-                    &HeaderType::SAVE_TYPES[..],
-                    Some(general_state.save_type_selected),
-                    |h| {
-                        InteractionMessage::ManageSaveInteraction(
-                            ManageSaveInteractionMessage::General(
-                                GeneralInteractionMessage::SaveTypeSelected(h),
-                            ),
-                        )
-                    },
-                )
-                .font(JETBRAINS_MONO)
-                .text_size(17)
-                .width(Length::Fill)
-                .padding(10)
-                .style(Bl3UiStyle),
-            )
-            .spacing(15)
-            .align_items(Align::Center),
+            .font(JETBRAINS_MONO)
+            .text_size(17)
+            .width(Length::Fill)
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into_element(),
+        )
+        .spacing(15)
+        .align_items(Align::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
-    .style(Bl3UiStyle)
-    .into_element();
+    .style(Bl3UiStyle);
 
     let all_contents = Column::new()
         .push(save_guid)

@@ -322,6 +322,37 @@ impl Application for Bl3UiState {
                                 .sdu_state
                                 .heavy_input = SaveSduSlot::Heavy.maximum();
                         }
+                        CharacterInteractionMessage::PlayerClassSelected(player_class) => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .player_class_selected_class = player_class;
+                        }
+                        CharacterInteractionMessage::SkinMessage(skin_message) => {
+                            match skin_message {
+                                CharacterSkinMessage::HeadSkinSelected(selected) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .skin_state
+                                        .head_skin_selected = selected;
+                                }
+                                CharacterSkinMessage::CharacterSkinSelected(selected) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .skin_state
+                                        .character_skin_selected = selected;
+                                }
+                                CharacterSkinMessage::EchoThemeSelected(selected) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .skin_state
+                                        .echo_theme_selected = selected;
+                                }
+                            }
+                        }
                     },
                     ManageSaveInteractionMessage::Currency(currency_msg) => match currency_msg {
                         CurrencyInteractionMessage::MoneyInputChanged(money) => {
@@ -351,6 +382,27 @@ impl Application for Bl3UiState {
                                     .visited_teleporters_list
                                     .iter_mut()
                                     .for_each(|vt| vt.visited = true);
+                            }
+                            FastTravelInteractionMessage::LastVisitedTeleporterSelected(
+                                last_visited,
+                            ) => {
+                                self.manage_save_state
+                                    .main_state
+                                    .fast_travel_state
+                                    .last_visited_teleporter_selected = last_visited;
+                            }
+                            FastTravelInteractionMessage::PlaythroughSelected(playthrough_type) => {
+                                self.manage_save_state
+                                    .main_state
+                                    .fast_travel_state
+                                    .playthrough_type_selected = playthrough_type;
+
+                                let playthrough_id = playthrough_type as usize;
+
+                                map_fast_travel_stations_to_visited_teleporters_list(
+                                    playthrough_id,
+                                    &mut self.manage_save_state,
+                                );
                             }
                         }
                     }
@@ -470,35 +522,6 @@ impl Application for Bl3UiState {
                     }
                 },
                 ManageSaveMessage::Character(character_msg) => match character_msg {
-                    CharacterMessage::PlayerClassSelected(player_class) => {
-                        self.manage_save_state
-                            .main_state
-                            .character_state
-                            .player_class_selected_class = player_class;
-                    }
-                    CharacterMessage::SkinMessage(skin_msg) => match skin_msg {
-                        CharacterSkinMessage::HeadSkinSelected(selected) => {
-                            self.manage_save_state
-                                .main_state
-                                .character_state
-                                .skin_state
-                                .head_skin_selected = selected;
-                        }
-                        CharacterSkinMessage::CharacterSkinSelected(selected) => {
-                            self.manage_save_state
-                                .main_state
-                                .character_state
-                                .skin_state
-                                .character_skin_selected = selected;
-                        }
-                        CharacterSkinMessage::EchoThemeSelected(selected) => {
-                            self.manage_save_state
-                                .main_state
-                                .character_state
-                                .skin_state
-                                .echo_theme_selected = selected;
-                        }
-                    },
                     CharacterMessage::GearMessage(gear_msg) => match gear_msg {
                         CharacterGearMessage::UnlockGrenadeSlot(b) => {
                             self.manage_save_state
@@ -559,12 +582,6 @@ impl Application for Bl3UiState {
                     },
                 },
                 ManageSaveMessage::FastTravel(fast_travel_msg) => match fast_travel_msg {
-                    FastTravelMessage::LastVisitedTeleporterSelected(last_visited) => {
-                        self.manage_save_state
-                            .main_state
-                            .fast_travel_state
-                            .last_visited_teleporter_selected = last_visited;
-                    }
                     FastTravelMessage::VisitedTeleportersListUpdated((index, visited)) => {
                         self.manage_save_state
                             .main_state
@@ -575,19 +592,6 @@ impl Application for Bl3UiState {
                                 "failed to find fast travel station to update in teleporters list",
                             )
                             .visited = visited;
-                    }
-                    FastTravelMessage::PlaythroughSelected(playthrough_type) => {
-                        self.manage_save_state
-                            .main_state
-                            .fast_travel_state
-                            .playthrough_type_selected = playthrough_type;
-
-                        let playthrough_id = playthrough_type as usize;
-
-                        map_fast_travel_stations_to_visited_teleporters_list(
-                            playthrough_id,
-                            &mut self.manage_save_state,
-                        );
                     }
                 },
             },
@@ -642,13 +646,14 @@ impl Application for Bl3UiState {
             &mut self.loaded_files_selector,
             &self.loaded_files,
             Some(*self.loaded_files_selected.clone()),
-            |s| Message::InteractionMessage(InteractionMessage::LoadedFileSelected(Box::new(s))),
+            |f| InteractionMessage::LoadedFileSelected(Box::new(f)),
         )
         .font(JETBRAINS_MONO)
         .text_size(17)
         .width(Length::Fill)
         .padding(10)
-        .style(Bl3UiStyle);
+        .style(Bl3UiStyle)
+        .into_element();
 
         let save_button = Button::new(
             &mut self.save_file_button_state,
