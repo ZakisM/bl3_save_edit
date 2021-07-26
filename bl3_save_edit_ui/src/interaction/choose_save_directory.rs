@@ -70,11 +70,11 @@ pub async fn load_files_in_directory(dir: PathBuf) -> Result<Vec<Bl3FileType>> {
                 && path
                     .extension()
                     .and_then(OsStr::to_str)
-                    .map(|p| p == "sav")
+                    .and_then(|p| if p == "sav" { Some(()) } else { None })
                     .is_some()
             {
-                match tokio::fs::read(path).await {
-                    Ok(data) => all_data.push(data),
+                match tokio::fs::read(&path).await {
+                    Ok(data) => all_data.push((path, data)),
                     Err(e) => eprintln!("{}", e),
                 }
             }
@@ -86,7 +86,7 @@ pub async fn load_files_in_directory(dir: PathBuf) -> Result<Vec<Bl3FileType>> {
     let all_files: Vec<Bl3FileType> = tokio_rayon::spawn(move || {
         all_data
             .par_iter()
-            .filter_map(|l| Bl3FileType::from_unknown_data(l).ok())
+            .filter_map(|(file_name, data)| Bl3FileType::from_unknown_data(file_name, data).ok())
             .collect::<Vec<_>>()
     })
     .await;

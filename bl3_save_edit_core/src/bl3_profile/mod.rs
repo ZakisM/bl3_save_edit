@@ -84,8 +84,8 @@ impl Bl3Profile {
         })
     }
 
-    pub fn from_bytes(data: &mut [u8], header_type: HeaderType) -> Result<Self> {
-        let file_data = file_helper::read_bytes(data)?;
+    pub fn from_bytes(file_name: &str, data: &mut [u8], header_type: HeaderType) -> Result<Self> {
+        let file_data = file_helper::read_bytes(file_name, data)?;
 
         Self::from_file_data(&file_data, header_type)
     }

@@ -83,6 +83,30 @@ fn main() {
 }
 
 #[derive(Debug, Deserialize)]
+struct WeaponPartInfo {
+    #[serde(rename = "Manufacturer/Name")]
+    manufacturer: String,
+    #[serde(rename = "Rarity")]
+    rarity: String,
+    #[serde(rename = "Balance")]
+    balance: String,
+    #[serde(rename = "Category")]
+    category: String,
+    #[serde(rename = "Min Parts")]
+    min_parts: u8,
+    #[serde(rename = "Max Parts")]
+    max_parts: u8,
+    #[serde(rename = "Weight")]
+    weight: f32,
+    #[serde(rename = "Part")]
+    part: String,
+    #[serde(rename = "Dependencies")]
+    dependencies: Vec<String>,
+    #[serde(rename = "Excluders")]
+    excluders: Vec<String>,
+}
+
+#[derive(Debug, Deserialize)]
 struct GameDataRecord {
     key: String,
     value: String,

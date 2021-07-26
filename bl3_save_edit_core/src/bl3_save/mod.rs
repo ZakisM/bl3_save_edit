@@ -26,6 +26,7 @@ pub mod util;
 
 #[derive(Debug, Clone, Default, Eq, Ord, PartialOrd)]
 pub struct Bl3Save {
+    pub file_name: String,
     pub save_game_version: u32,
     pub package_version: u32,
     pub engine_major: u16,
@@ -43,7 +44,7 @@ pub struct Bl3Save {
 
 impl std::cmp::PartialEq for Bl3Save {
     fn eq(&self, other: &Self) -> bool {
-        self.character_data == other.character_data
+        self.file_name == other.file_name && self.character_data == other.character_data
     }
 }
 
@@ -56,6 +57,7 @@ impl Bl3Save {
         let character_data = CharacterData::from_character(character)?;
 
         let FileData {
+            file_name,
             file_version,
             package_version,
             engine_major,
@@ -71,6 +73,7 @@ impl Bl3Save {
         } = file_data.clone();
 
         Ok(Self {
+            file_name: file_name.to_owned(),
             save_game_version: file_version,
             package_version,
             engine_major,
@@ -87,8 +90,8 @@ impl Bl3Save {
         })
     }
 
-    pub fn from_bytes(data: &[u8], header_type: HeaderType) -> Result<Self> {
-        let file_data = file_helper::read_bytes(&data)?;
+    pub fn from_bytes(file_name: &str, data: &[u8], header_type: HeaderType) -> Result<Self> {
+        let file_data = file_helper::read_bytes(file_name, &data)?;
 
         Self::from_file_data(&file_data, header_type)
     }

@@ -1,0 +1,872 @@
+Manufacturer/Name,Rarity,Balance,Category,Min Parts,Max Parts,Weight,Part,Dependencies,Excluders
+Atlas,01/Common,InvBalD_GrenadeMod_Atlas_01_Common,MANUFACTURER,1,1,1,GM_Part_Manufacturer_02_Atlas,,
+Atlas,01/Common,InvBalD_GrenadeMod_Atlas_01_Common,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Atlas,01/Common,InvBalD_GrenadeMod_Atlas_01_Common,RARITY,1,1,1,GM_Part_Rarity_01_Common,,
+Atlas,01/Common,InvBalD_GrenadeMod_Atlas_01_Common,MATERIAL,1,1,1,GM_Part_Material_Atlas_01_Common,,
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,MANUFACTURER,1,1,1,GM_Part_Manufacturer_02_Atlas,,
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,RARITY,1,1,1,GM_Part_Rarity_02_Uncommon,,
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,BEHAVIOR,1,1,3,GM_Part_Behavior_NONE,,
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_01_Large,,
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_23_Roider,,
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_22_Divider,,
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_16_Money,,
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Atlas,02/Uncommon,InvBalD_GrenadeMod_Atlas_02_Uncommon,MATERIAL,1,1,1,GM_Part_Material_Atlas_02_Uncommon,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_02_Atlas,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,3,GM_Part_Behavior_NONE,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_22_Divider,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_22_Divider,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_16_Money,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_16_Money,,
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Atlas,03/Rare,InvBalD_GrenadeMod_Atlas_03_Rare,MATERIAL,1,1,1,GM_Part_Material_Atlas_03_Rare,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_02_Atlas,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,3,GM_Part_Behavior_NONE,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_16_Money,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_16_Money,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_16_Money,,
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Atlas,04/Very Rare,InvBalD_GrenadeMod_Atlas_04_VeryRare,MATERIAL,1,1,1,GM_Part_Material_Atlas_04_VeryRare,,
+Hyperion,01/Common,InvBalD_GrenadeMod_Hyperion_01_Common,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Hyperion,01/Common,InvBalD_GrenadeMod_Hyperion_01_Common,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Hyperion,01/Common,InvBalD_GrenadeMod_Hyperion_01_Common,RARITY,1,1,1,GM_Part_Rarity_01_Common,,
+Hyperion,01/Common,InvBalD_GrenadeMod_Hyperion_01_Common,MATERIAL,1,1,1,GM_Part_Material_Hyperion_01_Common,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,RARITY,1,1,1,GM_Part_Rarity_02_Uncommon,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,3,GM_Part_Behavior_NONE,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_01_Large,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_15_Spring,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_16_Money,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_22_Divider,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_23_Roider,,
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Hyperion,02/Uncommon,InvBalD_GrenadeMod_Hyperion_02_Uncommon,MATERIAL,1,1,1,GM_Part_Material_Hyperion_02_Uncommon,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,3,GM_Part_Behavior_NONE,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_16_Money,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_16_Money,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_22_Divider,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_22_Divider,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Hyperion,03/Rare,InvBalD_GrenadeMod_Hyperion_03_Rare,MATERIAL,1,1,1,GM_Part_Material_Hyperion_03_Rare,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,3,GM_Part_Behavior_NONE,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_16_Money,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_16_Money,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_16_Money,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Hyperion,04/Very Rare,InvBalD_GrenadeMod_Hyperion_04_VeryRare,MATERIAL,1,1,1,GM_Part_Material_Hyperion_04_VeryRare,,
+Pangolin,01/Common,InvBalD_GrenadeMod_Pangolin_01_Common,MANUFACTURER,1,1,1,GM_Part_Manufacturer_06_Pangolin,,
+Pangolin,01/Common,InvBalD_GrenadeMod_Pangolin_01_Common,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Pangolin,01/Common,InvBalD_GrenadeMod_Pangolin_01_Common,RARITY,1,1,1,GM_Part_Rarity_01_Common,,
+Pangolin,01/Common,InvBalD_GrenadeMod_Pangolin_01_Common,MATERIAL,1,1,1,GM_Part_Material_Pangolin_01_Common,,
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,MANUFACTURER,1,1,1,GM_Part_Manufacturer_06_Pangolin,,
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,RARITY,1,1,1,GM_Part_Rarity_02_Uncommon,,
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,3,GM_Part_Behavior_NONE,,
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_15_Spring,,
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_23_Roider,,
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Pangolin,02/Uncommon,InvBalD_GrenadeMod_Pangolin_02_Uncommon,MATERIAL,1,1,1,GM_Part_Material_Pangolin_02_Uncommon,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_06_Pangolin,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,3,GM_Part_Behavior_NONE,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Pangolin,03/Rare,InvBalD_GrenadeMod_Pangolin_03_Rare,MATERIAL,1,1,1,GM_Part_Material_Pangolin_03_Rare,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_06_Pangolin,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,3,GM_Part_Behavior_NONE,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_10_Transfusion,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Pangolin,04/Very Rare,InvBalD_GrenadeMod_Pangolin_04_VeryRare,MATERIAL,1,1,1,GM_Part_Material_Pangolin_04_VeryRare,,
+Tediore,01/Common,InvBalD_GrenadeMod_Tediore_01_Common,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Tediore,01/Common,InvBalD_GrenadeMod_Tediore_01_Common,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Tediore,01/Common,InvBalD_GrenadeMod_Tediore_01_Common,RARITY,1,1,1,GM_Part_Rarity_01_Common,,
+Tediore,01/Common,InvBalD_GrenadeMod_Tediore_01_Common,MATERIAL,1,1,1,GM_Part_Material_Tediore_01_Common,,
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,RARITY,1,1,1,GM_Part_Rarity_02_Uncommon,,
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,3,GM_Part_Behavior_NONE,,
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_01_Large,,
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_11_Force,,GM_Part_Behavior_09_Singularity
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_15_Spring,,
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_22_Divider,,
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_23_Roider,,
+Tediore,02/Uncommon,InvBalD_GrenadeMod_Tediore_02_Uncommon,MATERIAL,1,1,1,GM_Part_Material_Tediore_02_Uncommon,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,3,GM_Part_Behavior_NONE,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_11_Force,,GM_Part_Behavior_09_Singularity
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_22_Divider,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_22_Divider,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Tediore,03/Rare,InvBalD_GrenadeMod_Tediore_03_Rare,MATERIAL,1,1,1,GM_Part_Material_Tediore_03_Rare,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,3,GM_Part_Behavior_NONE,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_11_Force,,GM_Part_Behavior_09_Singularity
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Tediore,04/Very Rare,InvBalD_GrenadeMod_Tediore_04_VeryRare,MATERIAL,1,1,1,GM_Part_Material_Tediore_04_VeryRare,,
+Torgue,01/Common,InvBalD_GrenadeMod_Torgue_01_Common,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Torgue,01/Common,InvBalD_GrenadeMod_Torgue_01_Common,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Torgue,01/Common,InvBalD_GrenadeMod_Torgue_01_Common,RARITY,1,1,1,GM_Part_Rarity_01_Common,,
+Torgue,01/Common,InvBalD_GrenadeMod_Torgue_01_Common,MATERIAL,1,1,1,GM_Part_Material_Torgue_01_Common,,
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,RARITY,1,1,1,GM_Part_Rarity_02_Uncommon,,
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,3,GM_Part_Behavior_NONE,,
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_01_Large,,
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_11_Force,,GM_Part_Behavior_09_Singularity
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_15_Spring,,
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_20_Nuke,,
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_23_Roider,,
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_12_Mini_MIRV,"GM_Part_Behavior_06_MIRV, GM_Part_Behavior_25_Rain",
+Torgue,02/Uncommon,InvBalD_GrenadeMod_Torgue_02_Uncommon,MATERIAL,1,1,1,GM_Part_Material_Torgue_02_Uncommon,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,3,GM_Part_Behavior_NONE,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_11_Force,,GM_Part_Behavior_09_Singularity
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_20_Nuke,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_20_Nuke,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_12_Mini_MIRV,"GM_Part_Behavior_06_MIRV, GM_Part_Behavior_25_Rain",
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_12_Mini_MIRV,"GM_Part_Behavior_06_MIRV, GM_Part_Behavior_25_Rain",
+Torgue,03/Rare,InvBalD_GrenadeMod_Torgue_03_Rare,MATERIAL,1,1,1,GM_Part_Material_Torgue_03_Rare,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,3,GM_Part_Behavior_NONE,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_11_Force,,GM_Part_Behavior_09_Singularity
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_20_Nuke,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_20_Nuke,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_20_Nuke,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_12_Mini_MIRV,"GM_Part_Behavior_06_MIRV, GM_Part_Behavior_25_Rain",
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_12_Mini_MIRV,"GM_Part_Behavior_06_MIRV, GM_Part_Behavior_25_Rain",
+Torgue,04/Very Rare,InvBalD_GrenadeMod_Torgue_04_VeryRare,MATERIAL,1,1,1,GM_Part_Material_Torgue_04_VeryRare,,
+Vladof,01/Common,InvBalD_GrenadeMod_Vladof_01_Common,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Vladof,01/Common,InvBalD_GrenadeMod_Vladof_01_Common,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Vladof,01/Common,InvBalD_GrenadeMod_Vladof_01_Common,RARITY,1,1,1,GM_Part_Rarity_01_Common,,
+Vladof,01/Common,InvBalD_GrenadeMod_Vladof_01_Common,MATERIAL,1,1,1,GM_Part_Material_Vladof_01_Common,,
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,RARITY,1,1,1,GM_Part_Rarity_02_Uncommon,,
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,3,GM_Part_Behavior_NONE,,
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_01_Large,,
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_15_Spring,,
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_22_Divider,,
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_23_Roider,,
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,BEHAVIOR,1,1,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Vladof,02/Uncommon,InvBalD_GrenadeMod_Vladof_02_Uncommon,MATERIAL,1,1,1,GM_Part_Material_Vladof_02_Uncommon,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,3,GM_Part_Behavior_NONE,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_01_Large,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_15_Spring,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_22_Divider,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_22_Divider,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_23_Roider,,
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,BEHAVIOR,2,2,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Vladof,03/Rare,InvBalD_GrenadeMod_Vladof_03_Rare,MATERIAL,1,1,1,GM_Part_Material_Vladof_03_Rare,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,3,GM_Part_Behavior_NONE,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_01_Large,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_15_Spring,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_19_Artillery,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link"
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_22_Divider,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_23_Roider,,
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,BEHAVIOR,3,3,1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Vladof,04/Very Rare,InvBalD_GrenadeMod_Vladof_04_VeryRare,MATERIAL,1,1,1,GM_Part_Material_Vladof_04_VeryRare,,
+Acid Burn,Named Grenade,InvBalD_GM_AcidBurn,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Acid Burn,Named Grenade,InvBalD_GM_AcidBurn,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Acid Burn,Named Grenade,InvBalD_GM_AcidBurn,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Acid Burn,Named Grenade,InvBalD_GM_AcidBurn,AUGMENT,1,1,1,Part_GM_Aug_AcidBurn,,
+Acid Burn,Named Grenade,InvBalD_GM_AcidBurn,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+Acid Burn,Named Grenade,InvBalD_GM_AcidBurn,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+Acid Burn,Named Grenade,InvBalD_GM_AcidBurn,MATERIAL,1,1,1,Part_GM_Material_AcidBurn,,
+Burning Summit,Named Grenade,InvBalD_GM_Summit,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Burning Summit,Named Grenade,InvBalD_GM_Summit,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Burning Summit,Named Grenade,InvBalD_GM_Summit,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Burning Summit,Named Grenade,InvBalD_GM_Summit,AUGMENT,1,1,1,Part_GM_Aug_Summit,,
+Burning Summit,Named Grenade,InvBalD_GM_Summit,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+Burning Summit,Named Grenade,InvBalD_GM_Summit,MATERIAL,1,1,1,Part_GM_Material_Summit,,
+Chocolate Thunder,Named Grenade,InvBalD_GM_JustDeserts,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Chocolate Thunder,Named Grenade,InvBalD_GM_JustDeserts,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Chocolate Thunder,Named Grenade,InvBalD_GM_JustDeserts,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Chocolate Thunder,Named Grenade,InvBalD_GM_JustDeserts,AUGMENT,1,1,1,Part_GM_Aug_JustDeserts,,
+Chocolate Thunder,Named Grenade,InvBalD_GM_JustDeserts,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Chocolate Thunder,Named Grenade,InvBalD_GM_JustDeserts,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Chocolate Thunder,Named Grenade,InvBalD_GM_JustDeserts,MATERIAL,1,1,1,Part_GM_Material_JustDeserts,,
+Chupa's Organ,Named Grenade,InvBalD_GM_Chupa,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Chupa's Organ,Named Grenade,InvBalD_GM_Chupa,MANUFACTURER,1,1,0.5,GM_Part_Manufacturer_02_Atlas,,
+Chupa's Organ,Named Grenade,InvBalD_GM_Chupa,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Chupa's Organ,Named Grenade,InvBalD_GM_Chupa,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Chupa's Organ,Named Grenade,InvBalD_GM_Chupa,AUGMENT,1,1,1,Part_GM_Aug_Chupa,,
+Chupa's Organ,Named Grenade,InvBalD_GM_Chupa,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+Chupa's Organ,Named Grenade,InvBalD_GM_Chupa,BEHAVIOR,1,1,1,GM_Part_Behavior_22_Divider,,
+Chupa's Organ,Named Grenade,InvBalD_GM_Chupa,MATERIAL,1,1,1,Part_GM_Material_Chupa,,
+Core Buster,Named Grenade,InvBalD_GM_CoreBurst,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Core Buster,Named Grenade,InvBalD_GM_CoreBurst,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Core Buster,Named Grenade,InvBalD_GM_CoreBurst,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Core Buster,Named Grenade,InvBalD_GM_CoreBurst,AUGMENT,1,1,1,Part_GM_Aug_CoreBurst,,
+Core Buster,Named Grenade,InvBalD_GM_CoreBurst,BEHAVIOR,3,3,1,GM_Part_Behavior_NONE,,
+Core Buster,Named Grenade,InvBalD_GM_CoreBurst,BEHAVIOR,3,3,1,GM_Part_Behavior_NONE,,
+Core Buster,Named Grenade,InvBalD_GM_CoreBurst,BEHAVIOR,3,3,1,GM_Part_Behavior_NONE,,
+Core Buster,Named Grenade,InvBalD_GM_CoreBurst,MATERIAL,1,1,1,Part_GM_Material_CoreBurst,,
+Diamond Butt Bomb,Named Grenade,InvBalD_GM_ButtStallion,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Diamond Butt Bomb,Named Grenade,InvBalD_GM_ButtStallion,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Diamond Butt Bomb,Named Grenade,InvBalD_GM_ButtStallion,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Diamond Butt Bomb,Named Grenade,InvBalD_GM_ButtStallion,AUGMENT,1,1,1,Part_GM_Aug_ButtStallion,,
+Diamond Butt Bomb,Named Grenade,InvBalD_GM_ButtStallion,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Diamond Butt Bomb,Named Grenade,InvBalD_GM_ButtStallion,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Diamond Butt Bomb,Named Grenade,InvBalD_GM_ButtStallion,MATERIAL,1,1,1,Part_GM_Material_ButtStallion,,
+Doc Hina's Miracle Bomb,Named Grenade,InvBalD_GM_SkagOil,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Doc Hina's Miracle Bomb,Named Grenade,InvBalD_GM_SkagOil,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Doc Hina's Miracle Bomb,Named Grenade,InvBalD_GM_SkagOil,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Doc Hina's Miracle Bomb,Named Grenade,InvBalD_GM_SkagOil,AUGMENT,1,1,1,Part_GM_Aug_SkagOil,,
+Doc Hina's Miracle Bomb,Named Grenade,InvBalD_GM_SkagOil,BEHAVIOR,3,3,1,GM_Part_Behavior_NONE,,
+Doc Hina's Miracle Bomb,Named Grenade,InvBalD_GM_SkagOil,BEHAVIOR,3,3,1,GM_Part_Behavior_NONE,,
+Doc Hina's Miracle Bomb,Named Grenade,InvBalD_GM_SkagOil,BEHAVIOR,3,3,1,GM_Part_Behavior_NONE,,
+Doc Hina's Miracle Bomb,Named Grenade,InvBalD_GM_SkagOil,MATERIAL,1,1,1,Part_GM_Material_SkagOil,,
+ECHO-2,Named Grenade,InvBalD_GM_EchoV2,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+ECHO-2,Named Grenade,InvBalD_GM_EchoV2,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+ECHO-2,Named Grenade,InvBalD_GM_EchoV2,RARITY,1,1,1,GM_Part_Rarity_01_Common,,
+ECHO-2,Named Grenade,InvBalD_GM_EchoV2,AUGMENT,1,1,1,Part_GM_Aug_EchoV2,,
+ECHO-2,Named Grenade,InvBalD_GM_EchoV2,MATERIAL,1,1,1,Part_GM_Material_EchoV2,,
+Elemental Persistent Contact Grenade,Named Grenade,InvBalD_GM_Mogwai,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Elemental Persistent Contact Grenade,Named Grenade,InvBalD_GM_Mogwai,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Elemental Persistent Contact Grenade,Named Grenade,InvBalD_GM_Mogwai,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Elemental Persistent Contact Grenade,Named Grenade,InvBalD_GM_Mogwai,BEHAVIOR,3,3,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Elemental Persistent Contact Grenade,Named Grenade,InvBalD_GM_Mogwai,BEHAVIOR,3,3,1,GM_Part_Behavior_07_Lingering,,"GM_Part_Behavior_10_Transfusion, GM_Part_Behavior_18_Generator, GM_Part_Behavior_21_Link, GM_Part_Element_01_Normal"
+Elemental Persistent Contact Grenade,Named Grenade,InvBalD_GM_Mogwai,BEHAVIOR,3,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Elemental Persistent Contact Grenade,Named Grenade,InvBalD_GM_Mogwai,MATERIAL,1,1,1,GM_Part_Material_Vladof_04_VeryRare,,
+EMP,Named Grenade,InvBalD_GM_EMP,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+EMP,Named Grenade,InvBalD_GM_EMP,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+EMP,Named Grenade,InvBalD_GM_EMP,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+EMP,Named Grenade,InvBalD_GM_EMP,AUGMENT,1,1,1,Part_GM_Aug_EMP,GM_Part_Manufacturer_03_Hyperion,GM_Part_Element_01_Normal
+EMP,Named Grenade,InvBalD_GM_EMP,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+EMP,Named Grenade,InvBalD_GM_EMP,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+EMP,Named Grenade,InvBalD_GM_EMP,MATERIAL,1,1,1,Part_GM_Material_EMP,,
+Epicenter,Named Grenade,InvBalD_GM_Epicenter,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Epicenter,Named Grenade,InvBalD_GM_Epicenter,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Epicenter,Named Grenade,InvBalD_GM_Epicenter,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Epicenter,Named Grenade,InvBalD_GM_Epicenter,AUGMENT,1,1,1,Part_GM_Aug_Epicenter,,
+Epicenter,Named Grenade,InvBalD_GM_Epicenter,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+Epicenter,Named Grenade,InvBalD_GM_Epicenter,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+Epicenter,Named Grenade,InvBalD_GM_Epicenter,BEHAVIOR,1,1,0.25,GM_Part_Behavior_15_Spring,,
+Epicenter,Named Grenade,InvBalD_GM_Epicenter,MATERIAL,1,1,1,Part_GM_Material_Epicenter,,
+Exterminator,Named Grenade,InvBalD_GM_BirthdaySuprise,MANUFACTURER,1,1,0.5,GM_Part_Manufacturer_02_Atlas,,
+Exterminator,Named Grenade,InvBalD_GM_BirthdaySuprise,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Exterminator,Named Grenade,InvBalD_GM_BirthdaySuprise,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Exterminator,Named Grenade,InvBalD_GM_BirthdaySuprise,AUGMENT,1,1,1,Part_GM_Aug_BirthdaySuprise,,
+Exterminator,Named Grenade,InvBalD_GM_BirthdaySuprise,BEHAVIOR,1,1,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Exterminator,Named Grenade,InvBalD_GM_BirthdaySuprise,MATERIAL,1,1,1,Part_GM_Material_BirthdaySuprise,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,AUGMENT,1,1,1,Part_GM_Aug_Fastball,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Fastball,Named Grenade,InvBalD_GM_TED_Fastball,MATERIAL,1,1,1,Part_GM_Material_Fastball,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,AUGMENT,1,1,1,Part_GM_Aug_FireStorm,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,BEHAVIOR,2,2,0.1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,BEHAVIOR,2,2,0.1,GM_Part_Behavior_25_Rain,,GM_Part_Behavior_06_MIRV
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,BEHAVIOR,2,2,0.1,GM_Part_Behavior_01_Large,,
+Firestorm,Named Grenade,InvBalD_GM_VLA_FireStorm,MATERIAL,1,1,1,Part_GM_Material_FireStorm,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,MANUFACTURER,1,1,1,GM_Part_Manufacturer_06_Pangolin,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,AUGMENT,1,1,1,Part_GM_Aug_FishSlap,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_09_Singularity,,GM_Part_Behavior_11_Force
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_21_Link,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_23_Roider,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_23_Roider,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_23_Roider,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_24_ElementalDamage,"GM_Part_Element_02_Fire, GM_Part_Element_03_Shock, GM_Part_Element_04_Corrosive, GM_Part_Element_05_Cryo, GM_Part_Element_06_Radiation",
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_15_Spring,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_15_Spring,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,BEHAVIOR,2,3,1,GM_Part_Behavior_15_Spring,,
+Fish Slap,Named Grenade,InvBalD_GM_FishSlap,MATERIAL,1,1,1,GM_Part_Material_Pangolin_04_VeryRare,,
+Fungus Among Us,Named Grenade,InvBalD_GM_Shroom,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Fungus Among Us,Named Grenade,InvBalD_GM_Shroom,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Fungus Among Us,Named Grenade,InvBalD_GM_Shroom,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Fungus Among Us,Named Grenade,InvBalD_GM_Shroom,AUGMENT,1,1,1,Part_GM_Aug_Shroom,,
+Fungus Among Us,Named Grenade,InvBalD_GM_Shroom,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Fungus Among Us,Named Grenade,InvBalD_GM_Shroom,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Fungus Among Us,Named Grenade,InvBalD_GM_Shroom,MATERIAL,1,1,1,Part_GM_Material_Shroom,,
+Ghast Call,Named Grenade,InvBalD_GM_TOR_FontOfDarkness,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Ghast Call,Named Grenade,InvBalD_GM_TOR_FontOfDarkness,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Ghast Call,Named Grenade,InvBalD_GM_TOR_FontOfDarkness,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Ghast Call,Named Grenade,InvBalD_GM_TOR_FontOfDarkness,AUGMENT,1,1,1,Part_GM_Aug_FontOfDarkness,,
+Ghast Call,Named Grenade,InvBalD_GM_TOR_FontOfDarkness,BEHAVIOR,1,2,5,GM_Part_Behavior_NONE,,
+Ghast Call,Named Grenade,InvBalD_GM_TOR_FontOfDarkness,BEHAVIOR,1,2,5,GM_Part_Behavior_NONE,,
+Ghast Call,Named Grenade,InvBalD_GM_TOR_FontOfDarkness,BEHAVIOR,1,2,0.5,GM_Part_Behavior_22_Divider,,
+Ghast Call,Named Grenade,InvBalD_GM_TOR_FontOfDarkness,BEHAVIOR,1,2,1,GM_Part_Behavior_23_Roider,,
+Ghast Call,Named Grenade,InvBalD_GM_TOR_FontOfDarkness,MATERIAL,1,1,1,Part_GM_Material_FontOfDarkness,,
+Hex,Named Grenade,InvBalD_GM_Seeker,MANUFACTURER,1,1,1,GM_Part_Manufacturer_02_Atlas,,
+Hex,Named Grenade,InvBalD_GM_Seeker,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Hex,Named Grenade,InvBalD_GM_Seeker,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Hex,Named Grenade,InvBalD_GM_Seeker,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Hex,Named Grenade,InvBalD_GM_Seeker,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Hex,Named Grenade,InvBalD_GM_Seeker,AUGMENT,1,1,1,Part_GM_Aug_Seeker,,
+Hex,Named Grenade,InvBalD_GM_Seeker,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Hex,Named Grenade,InvBalD_GM_Seeker,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Hex,Named Grenade,InvBalD_GM_Seeker,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Hex,Named Grenade,InvBalD_GM_Seeker,BEHAVIOR,2,2,0.5,GM_Part_Behavior_22_Divider,,
+Hex,Named Grenade,InvBalD_GM_Seeker,BEHAVIOR,2,2,0.5,GM_Part_Behavior_22_Divider,,
+Hex,Named Grenade,InvBalD_GM_Seeker,BEHAVIOR,2,2,0.5,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Hex,Named Grenade,InvBalD_GM_Seeker,BEHAVIOR,2,2,0.5,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Hex,Named Grenade,InvBalD_GM_Seeker,MATERIAL,1,1,1,Part_GM_Material_Seeker,,
+HOT Spring,Named Grenade,InvBalD_GM_HOTSpring,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+HOT Spring,Named Grenade,InvBalD_GM_HOTSpring,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+HOT Spring,Named Grenade,InvBalD_GM_HOTSpring,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+HOT Spring,Named Grenade,InvBalD_GM_HOTSpring,AUGMENT,1,1,7,Part_GM_Aug_HOTSpring1,,
+HOT Spring,Named Grenade,InvBalD_GM_HOTSpring,AUGMENT,1,1,2.5,Part_GM_Aug_HOTSpring2,,
+HOT Spring,Named Grenade,InvBalD_GM_HOTSpring,AUGMENT,1,1,0.5,Part_GM_Aug_HOTSpring3,,
+HOT Spring,Named Grenade,InvBalD_GM_HOTSpring,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+HOT Spring,Named Grenade,InvBalD_GM_HOTSpring,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+HOT Spring,Named Grenade,InvBalD_GM_HOTSpring,MATERIAL,1,1,1,Part_GM_Material_EMP,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,AUGMENT,1,1,1,Part_GM_Aug_HunterSeeker,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,BEHAVIOR,2,2,0.25,GM_Part_Behavior_22_Divider,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,BEHAVIOR,2,2,0.25,GM_Part_Behavior_22_Divider,,
+Hunter-Seeker,Named Grenade,InvBalD_GM_HunterSeeker,MATERIAL,1,1,1,Part_GM_Material_HunterSeeker,,
+It's Piss,Named Grenade,InvBalD_GM_Piss,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+It's Piss,Named Grenade,InvBalD_GM_Piss,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+It's Piss,Named Grenade,InvBalD_GM_Piss,AUGMENT,1,1,1,Part_GM_Aug_Piss,,
+It's Piss,Named Grenade,InvBalD_GM_Piss,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+It's Piss,Named Grenade,InvBalD_GM_Piss,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+It's Piss,Named Grenade,InvBalD_GM_Piss,MATERIAL,1,1,1,Part_GM_Material_Piss,,
+Kryll,Named Grenade,InvBalD_GM_Kryll,MANUFACTURER,1,1,1,GM_Part_Manufacturer_02_Atlas,,
+Kryll,Named Grenade,InvBalD_GM_Kryll,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Kryll,Named Grenade,InvBalD_GM_Kryll,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Kryll,Named Grenade,InvBalD_GM_Kryll,AUGMENT,1,1,1,Part_GM_Aug_Kryll,,
+Kryll,Named Grenade,InvBalD_GM_Kryll,MATERIAL,1,1,1,Part_GM_Material_Kryll,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,AUGMENT,1,1,1,Part_GM_Aug_Lightspeed,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,BEHAVIOR,3,3,1,GM_Part_Behavior_NONE,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,BEHAVIOR,3,3,1,GM_Part_Behavior_NONE,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,BEHAVIOR,3,3,1,GM_Part_Behavior_NONE,,
+Lightspeed,Named Grenade,InvBalD_GM_HYP_Lightspeed,MATERIAL,1,1,1,Part_GM_Mat_Lightspeed,,
+Mesmer,Named Grenade,InvBalD_GM_Mesmer,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Mesmer,Named Grenade,InvBalD_GM_Mesmer,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Mesmer,Named Grenade,InvBalD_GM_Mesmer,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Mesmer,Named Grenade,InvBalD_GM_Mesmer,AUGMENT,1,1,1,Part_GM_Aug_Mesmer,,
+Mesmer,Named Grenade,InvBalD_GM_Mesmer,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Mesmer,Named Grenade,InvBalD_GM_Mesmer,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Mesmer,Named Grenade,InvBalD_GM_Mesmer,MATERIAL,1,1,1,GM_Part_Material_Vladof_04_VeryRare,,
+Moxxi's Bouncing Pair,Named Grenade,InvBalD_GM_PAN_MoxiesBosom,MANUFACTURER,1,1,1,GM_Part_Manufacturer_06_Pangolin,,
+Moxxi's Bouncing Pair,Named Grenade,InvBalD_GM_PAN_MoxiesBosom,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Moxxi's Bouncing Pair,Named Grenade,InvBalD_GM_PAN_MoxiesBosom,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Moxxi's Bouncing Pair,Named Grenade,InvBalD_GM_PAN_MoxiesBosom,AUGMENT,1,1,1,Part_GM_Aug_PAN_MoxiesBosom,,
+Moxxi's Bouncing Pair,Named Grenade,InvBalD_GM_PAN_MoxiesBosom,BEHAVIOR,2,2,3,GM_Part_Behavior_NONE,,
+Moxxi's Bouncing Pair,Named Grenade,InvBalD_GM_PAN_MoxiesBosom,BEHAVIOR,2,2,3,GM_Part_Behavior_NONE,,
+Moxxi's Bouncing Pair,Named Grenade,InvBalD_GM_PAN_MoxiesBosom,MATERIAL,1,1,1,Part_GM_Material_PAN_MoxiesBosom,,
+Nagata,Named Grenade,InvBalD_GM_Nagate,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Nagata,Named Grenade,InvBalD_GM_Nagate,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Nagata,Named Grenade,InvBalD_GM_Nagate,AUGMENT,1,1,1,Part_GM_Aug_Nagate,,
+Nagata,Named Grenade,InvBalD_GM_Nagate,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Nagata,Named Grenade,InvBalD_GM_Nagate,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Nagata,Named Grenade,InvBalD_GM_Nagate,MATERIAL,1,1,1,Part_GM_Material_Nagate,,
+NOG Potion #9,Named Grenade,InvBalD_GM_WizardOfNOG,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+NOG Potion #9,Named Grenade,InvBalD_GM_WizardOfNOG,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+NOG Potion #9,Named Grenade,InvBalD_GM_WizardOfNOG,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+NOG Potion #9,Named Grenade,InvBalD_GM_WizardOfNOG,AUGMENT,1,1,1,Part_GM_Aug_WizardOfNOG,,
+NOG Potion #9,Named Grenade,InvBalD_GM_WizardOfNOG,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+NOG Potion #9,Named Grenade,InvBalD_GM_WizardOfNOG,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+NOG Potion #9,Named Grenade,InvBalD_GM_WizardOfNOG,MATERIAL,1,1,1,Part_GM_Material_WizardOfNOG,,
+Porcelain Pipe Bomb,Named Grenade,InvBalD_GM_TOR_ToiletBombs,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Porcelain Pipe Bomb,Named Grenade,InvBalD_GM_TOR_ToiletBombs,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Porcelain Pipe Bomb,Named Grenade,InvBalD_GM_TOR_ToiletBombs,RARITY,1,1,1,GM_Part_Rarity_03_Rare,,
+Porcelain Pipe Bomb,Named Grenade,InvBalD_GM_TOR_ToiletBombs,AUGMENT,1,1,1,Part_GM_Aug_ToiletBombs,,
+Porcelain Pipe Bomb,Named Grenade,InvBalD_GM_TOR_ToiletBombs,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Porcelain Pipe Bomb,Named Grenade,InvBalD_GM_TOR_ToiletBombs,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Porcelain Pipe Bomb,Named Grenade,InvBalD_GM_TOR_ToiletBombs,MATERIAL,1,1,1,Part_GM_Material_ToiletBombs,,
+Quasar,Named Grenade,InvBalD_GM_Quasar,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Quasar,Named Grenade,InvBalD_GM_Quasar,MANUFACTURER,1,1,1,GM_Part_Manufacturer_02_Atlas,,
+Quasar,Named Grenade,InvBalD_GM_Quasar,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Quasar,Named Grenade,InvBalD_GM_Quasar,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Quasar,Named Grenade,InvBalD_GM_Quasar,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Quasar,Named Grenade,InvBalD_GM_Quasar,AUGMENT,1,1,1,Part_GM_Aug_Quasar,,
+Quasar,Named Grenade,InvBalD_GM_Quasar,BEHAVIOR,1,1,1,GM_Part_Behavior_NONE,,
+Quasar,Named Grenade,InvBalD_GM_Quasar,BEHAVIOR,1,1,0.25,GM_Part_Behavior_04_Sticky,,GM_Part_Behavior_03_Bouncy
+Quasar,Named Grenade,InvBalD_GM_Quasar,MATERIAL,1,1,1,Part_GM_Material_Quasar,,
+Red Queen,Named Grenade,InvBalD_GM_RedQueen,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Red Queen,Named Grenade,InvBalD_GM_RedQueen,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Red Queen,Named Grenade,InvBalD_GM_RedQueen,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Red Queen,Named Grenade,InvBalD_GM_RedQueen,AUGMENT,1,1,1,Part_GM_Aug_RedQueen,,
+Red Queen,Named Grenade,InvBalD_GM_RedQueen,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Red Queen,Named Grenade,InvBalD_GM_RedQueen,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Red Queen,Named Grenade,InvBalD_GM_RedQueen,MATERIAL,1,1,1,Part_GM_Material_RedQueen,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,AUGMENT,1,1,1,Part_GM_Aug_Ringer,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,BEHAVIOR,2,2,1,GM_Part_Behavior_Ringer_Dead,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,BEHAVIOR,2,2,1,GM_Part_Behavior_Ringer_Big,,
+Ringer / The Big Ringer / Dead Ringer,Named Grenade,InvBalD_GM_Ringer,MATERIAL,1,1,1,GM_Part_Material_Torgue_04_VeryRare,,
+Rubber Cheddar Shredder,Named Grenade,InvBalD_GM_CashMoneyPreorder,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Rubber Cheddar Shredder,Named Grenade,InvBalD_GM_CashMoneyPreorder,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Rubber Cheddar Shredder,Named Grenade,InvBalD_GM_CashMoneyPreorder,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Rubber Cheddar Shredder,Named Grenade,InvBalD_GM_CashMoneyPreorder,AUGMENT,1,1,1,Part_GM_Aug_CashMoneyPreorder,,
+Rubber Cheddar Shredder,Named Grenade,InvBalD_GM_CashMoneyPreorder,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Rubber Cheddar Shredder,Named Grenade,InvBalD_GM_CashMoneyPreorder,BEHAVIOR,2,2,1,GM_Part_Behavior_03_Bouncy,,GM_Part_Behavior_04_Sticky
+Rubber Cheddar Shredder,Named Grenade,InvBalD_GM_CashMoneyPreorder,MATERIAL,1,1,1,Part_GM_Material_CashMoneyPreorder,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,AUGMENT,1,1,1,Part_GM_Aug_Slider,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Slider,Named Grenade,InvBalD_GM_TED_Slider,MATERIAL,1,1,1,Part_GM_Material_Slider,,
+Storm Front,Named Grenade,InvBalD_GM_StormFront,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Storm Front,Named Grenade,InvBalD_GM_StormFront,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Storm Front,Named Grenade,InvBalD_GM_StormFront,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Storm Front,Named Grenade,InvBalD_GM_StormFront,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Storm Front,Named Grenade,InvBalD_GM_StormFront,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Storm Front,Named Grenade,InvBalD_GM_StormFront,AUGMENT,1,1,1,Part_GM_Aug_StormFront,,
+Storm Front,Named Grenade,InvBalD_GM_StormFront,MATERIAL,1,1,1,Part_GM_Material_StormFront,,
+Surge,Named Grenade,InvBalD_GM_Surge,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Surge,Named Grenade,InvBalD_GM_Surge,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Surge,Named Grenade,InvBalD_GM_Surge,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Surge,Named Grenade,InvBalD_GM_Surge,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Surge,Named Grenade,InvBalD_GM_Surge,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Surge,Named Grenade,InvBalD_GM_Surge,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Surge,Named Grenade,InvBalD_GM_Surge,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Surge,Named Grenade,InvBalD_GM_Surge,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Surge,Named Grenade,InvBalD_GM_Surge,AUGMENT,1,1,1,Part_GM_Aug_Surge,,
+Surge,Named Grenade,InvBalD_GM_Surge,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Surge,Named Grenade,InvBalD_GM_Surge,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Surge,Named Grenade,InvBalD_GM_Surge,MATERIAL,1,1,1,Part_GM_Material_Surge,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,AUGMENT,1,1,1,Part_GM_Aug_HipHop,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Tina's Hippity Hopper,Named Grenade,InvBalD_GM_TOR_HipHop,MATERIAL,1,1,1,Part_GM_Material_HipHop,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,MANUFACTURER,1,1,1,GM_Part_Manufacturer_02_Atlas,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,AUGMENT,1,1,1,Part_GM_Aug_TranFusion,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,BEHAVIOR,2,2,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,BEHAVIOR,2,2,1,GM_Part_Behavior_18_Generator,,"GM_Part_Behavior_07_Lingering, GM_Part_Behavior_19_Artillery"
+Tran-fusion,Named Grenade,InvBalD_GM_TranFusion,MATERIAL,1,1,1,Part_GM_Material_TranFusion,,
+Ultraball,Named Grenade,InvBalD_GM_ToyGrenade,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Ultraball,Named Grenade,InvBalD_GM_ToyGrenade,ELEMENT,1,1,1,GM_Part_Element_01_Normal,,
+Ultraball,Named Grenade,InvBalD_GM_ToyGrenade,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Ultraball,Named Grenade,InvBalD_GM_ToyGrenade,AUGMENT,1,1,1,Part_GM_Aug_ToyGrenade,,
+Ultraball,Named Grenade,InvBalD_GM_ToyGrenade,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Ultraball,Named Grenade,InvBalD_GM_ToyGrenade,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Ultraball,Named Grenade,InvBalD_GM_ToyGrenade,MATERIAL,1,1,1,Part_GM_Material_ToyGrenade,,
+Whispering Ice,Named Grenade,InvBalD_GM_ObviousTrap,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Whispering Ice,Named Grenade,InvBalD_GM_ObviousTrap,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Whispering Ice,Named Grenade,InvBalD_GM_ObviousTrap,RARITY,1,1,1,GM_Part_Rarity_04_VeryRare,,
+Whispering Ice,Named Grenade,InvBalD_GM_ObviousTrap,AUGMENT,1,1,1,Part_GM_Aug_ObviousTrap,,
+Whispering Ice,Named Grenade,InvBalD_GM_ObviousTrap,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Whispering Ice,Named Grenade,InvBalD_GM_ObviousTrap,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Whispering Ice,Named Grenade,InvBalD_GM_ObviousTrap,MATERIAL,1,1,1,Part_GM_Material_ObviousTrap,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,MANUFACTURER,1,1,1,GM_Part_Manufacturer_04_Vladof,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,MANUFACTURER,1,1,1,GM_Part_Manufacturer_07_Tediore,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,MANUFACTURER,1,1,1,GM_Part_Manufacturer_03_Hyperion,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,MANUFACTURER,1,1,1,GM_Part_Manufacturer_01_Torgue,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,ELEMENT,1,1,5,GM_Part_Element_01_Normal,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,ELEMENT,1,1,1,GM_Part_Element_02_Fire,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,ELEMENT,1,1,1,GM_Part_Element_03_Shock,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,ELEMENT,1,1,1,GM_Part_Element_04_Corrosive,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,ELEMENT,1,1,1,GM_Part_Element_05_Cryo,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,ELEMENT,1,1,1,GM_Part_Element_06_Radiation,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,RARITY,1,1,1,GM_Part_Rarity_05_Legendary,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,AUGMENT,1,1,1,Part_GM_Aug_WidowMaker,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,BEHAVIOR,2,2,1,GM_Part_Behavior_NONE,,
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,BEHAVIOR,2,2,0.25,GM_Part_Behavior_06_MIRV,,GM_Part_Behavior_25_Rain
+Widowmaker,Named Grenade,InvBalD_GM_WidowMaker,MATERIAL,1,1,1,Part_GM_Material_WidowMaker,,

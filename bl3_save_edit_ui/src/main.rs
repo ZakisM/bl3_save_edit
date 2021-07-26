@@ -10,7 +10,7 @@ mod state_mappers;
 mod views;
 mod widgets;
 
-const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 fn main() {
     let settings = Settings {

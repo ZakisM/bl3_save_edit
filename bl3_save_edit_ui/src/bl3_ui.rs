@@ -10,7 +10,6 @@ use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
-use crate::{interaction, VERSION};
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers;
@@ -32,6 +31,7 @@ use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
 };
 use crate::views::{choose_save_directory, manage_save};
+use crate::{interaction, VERSION};
 
 #[derive(Debug, Default)]
 pub struct Bl3UiState {
