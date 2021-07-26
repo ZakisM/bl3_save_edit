@@ -1,9 +1,10 @@
 use iced::{
-    button, scrollable, text_input, Align, Button, Color, Column, Container, Element, Length, Row,
-    Scrollable, Text, TextInput,
+    button, scrollable, text_input, text_input_with_picklist, Align, Button, Color, Column,
+    Container, Element, Length, Row, Scrollable, Text, TextInput, TextInputWithPickList,
 };
 
 use bl3_save_edit_core::bl3_save::bl3_serial::Bl3Serial;
+use bl3_save_edit_core::game_data::{GameDataKv, BALANCE_NAME_MAPPING};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -18,7 +19,8 @@ pub struct InventoryState {
     pub items: Vec<InventoryItem>,
     pub scrollable_state: scrollable::State,
     pub balance_input: String,
-    pub balance_input_state: text_input::State,
+    pub balance_input_state: text_input_with_picklist::State<GameDataKv>,
+    pub balance_input_selected: GameDataKv,
     pub inventory_data_input: String,
     pub inventory_data_input_state: text_input::State,
     pub manufacturer_input: String,
@@ -32,6 +34,7 @@ pub enum InventoryMessage {}
 pub enum InventoryInteractionMessage {
     ItemPressed(usize),
     BalanceInputChanged(String),
+    BalanceInputSelected(GameDataKv),
     InventoryDataInputChanged(String),
     ManufacturerInputChanged(String),
 }
@@ -159,30 +162,14 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                     Scrollable::new(&mut inventory_state.scrollable_state).push(inventory_items),
                 )
                 .padding(1)
-                .style(Bl3UiStyle)
                 .height(Length::Fill),
             ),
     )
     .width(Length::FillPortion(3))
-    .height(Length::Fill);
+    .height(Length::Fill)
+    .style(Bl3UiStyle);
 
     //Todo: Each item should have it's own state
-
-    let item_editor_header = Container::new(
-        Column::new().push(
-            Container::new(
-                TextMargin::new("Item Data", 2)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5)),
-            )
-            .padding(10)
-            .align_x(Align::Center)
-            .width(Length::Fill)
-            .style(Bl3UiStyle),
-        ),
-    );
 
     let item_editor = Container::new(
         Column::new()
@@ -191,14 +178,23 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                     LabelledElement::create(
                         "Balance",
                         Length::Units(130),
-                        TextInput::new(
+                        TextInputWithPickList::new(
                             &mut inventory_state.balance_input_state,
                             "",
                             &inventory_state.balance_input,
+                            Some(inventory_state.balance_input_selected),
+                            &BALANCE_NAME_MAPPING[..],
                             |s| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Inventory(
                                         InventoryInteractionMessage::BalanceInputChanged(s),
+                                    ),
+                                )
+                            },
+                            |s| {
+                                InteractionMessage::ManageSaveInteraction(
+                                    ManageSaveInteractionMessage::Inventory(
+                                        InventoryInteractionMessage::BalanceInputSelected(s),
                                     ),
                                 )
                             },
@@ -275,19 +271,10 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
             )
             .spacing(20),
     )
-    .height(Length::Fill)
-    .padding(20)
-    .style(Bl3UiStyle);
+    .width(Length::FillPortion(7))
+    .height(Length::Fill);
 
-    let item_editor_column = Column::new()
-        .push(item_editor_header)
-        .push(item_editor)
-        .width(Length::FillPortion(7));
-
-    let all_contents = Row::new()
-        .push(item_list)
-        .push(item_editor_column)
-        .spacing(20);
+    let all_contents = Row::new().push(item_list).push(item_editor).spacing(20);
 
     Container::new(all_contents).padding(30)
 }

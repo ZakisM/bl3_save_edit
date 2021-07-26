@@ -469,6 +469,17 @@ impl Application for Bl3UiState {
                                 .inventory_state
                                 .balance_input = balance_input;
                         }
+                        InventoryInteractionMessage::BalanceInputSelected(balance_selected) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .balance_input = balance_selected.ident.to_owned();
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .balance_input_selected = balance_selected;
+                        }
                         InventoryInteractionMessage::InventoryDataInputChanged(
                             inventory_data_input,
                         ) => {

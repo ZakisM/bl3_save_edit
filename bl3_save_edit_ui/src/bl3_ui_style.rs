@@ -1,5 +1,6 @@
 use iced::pick_list::Menu;
-use iced::{button, checkbox, container, pick_list, text_input, Color};
+use iced::{button, checkbox, container, pick_list, text_input, text_input_with_picklist, Color};
+use iced_style::menu;
 
 pub struct Bl3UiStyle;
 
@@ -81,6 +82,51 @@ impl pick_list::StyleSheet for Bl3UiStyle {
             icon_size: 0.5,
             placeholder_color: Default::default(),
         }
+    }
+}
+
+impl text_input_with_picklist::StyleSheet for Bl3UiStyle {
+    fn menu(&self) -> menu::Style {
+        Menu {
+            text_color: Color::from_rgb8(220, 220, 220),
+            background: Color::from_rgb8(23, 23, 23).into(),
+            border_width: 1.5,
+            border_color: Color::from_rgb8(35, 35, 35),
+            selected_background: Color::from_rgb8(35, 35, 35).into(),
+            selected_text_color: Color::from_rgb8(220, 220, 220),
+        }
+    }
+
+    fn active(&self) -> text_input_with_picklist::Style {
+        text_input_with_picklist::Style {
+            background: Color::from_rgb8(23, 23, 23).into(),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(35, 35, 35),
+            icon_size: 0.5,
+        }
+    }
+
+    fn focused(&self) -> text_input_with_picklist::Style {
+        text_input_with_picklist::Style {
+            background: Color::from_rgb8(23, 23, 23).into(),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(45, 45, 45),
+            icon_size: 0.5,
+        }
+    }
+
+    fn placeholder_color(&self) -> Color {
+        Color::from_rgba8(255, 255, 255, 0.1)
+    }
+
+    fn value_color(&self) -> Color {
+        Color::from_rgb8(220, 220, 220)
+    }
+
+    fn selection_color(&self) -> Color {
+        Color::from_rgba8(255, 255, 255, 0.1)
     }
 }
 

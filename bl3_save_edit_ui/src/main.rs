@@ -13,8 +13,8 @@ mod widgets;
 fn main() {
     let settings = Settings {
         window: window::Settings {
-            min_size: Some((900, 800)),
-            size: (1100, 800),
+            min_size: Some((1650, 800)),
+            size: (1650, 800),
             ..window::Settings::default()
         },
         antialiasing: true,

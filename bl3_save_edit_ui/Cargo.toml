@@ -38,3 +38,8 @@ features = ["derive"]
 git = "https://github.com/ZakisM/iced"
 branch = "bl3_save_edit"
 features = ["tokio", "svg"]
+
+[dependencies.iced_style]
+git = "https://github.com/ZakisM/iced"
+branch = "bl3_save_edit"
+

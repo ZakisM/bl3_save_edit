@@ -173,6 +173,7 @@ dependencies = [
  "dirs",
  "futures",
  "iced",
+ "iced_style",
  "native-dialog 0.4.4",
  "native-dialog 0.5.5",
  "rayon",
@@ -1372,7 +1373,7 @@ dependencies = [
 [[package]]
 name = "iced"
 version = "0.3.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#7b37ac5702e6c5f9f177274126b77194f57ca24e"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#1ceb12e8ac841d20034f1bd94fa697b56fddb66d"
 dependencies = [
  "iced_core",
  "iced_futures",
@@ -1385,7 +1386,7 @@ dependencies = [
 [[package]]
 name = "iced_core"
 version = "0.4.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#7b37ac5702e6c5f9f177274126b77194f57ca24e"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#1ceb12e8ac841d20034f1bd94fa697b56fddb66d"
 dependencies = [
  "bitflags",
 ]
@@ -1393,7 +1394,7 @@ dependencies = [
 [[package]]
 name = "iced_futures"
 version = "0.3.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#7b37ac5702e6c5f9f177274126b77194f57ca24e"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#1ceb12e8ac841d20034f1bd94fa697b56fddb66d"
 dependencies = [
  "futures",
  "log",
@@ -1404,7 +1405,7 @@ dependencies = [
 [[package]]
 name = "iced_graphics"
 version = "0.2.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#7b37ac5702e6c5f9f177274126b77194f57ca24e"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#1ceb12e8ac841d20034f1bd94fa697b56fddb66d"
 dependencies = [
  "bytemuck",
  "font-kit",
@@ -1418,7 +1419,7 @@ dependencies = [
 [[package]]
 name = "iced_native"
 version = "0.4.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#7b37ac5702e6c5f9f177274126b77194f57ca24e"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#1ceb12e8ac841d20034f1bd94fa697b56fddb66d"
 dependencies = [
  "iced_core",
  "iced_futures",
@@ -1430,7 +1431,7 @@ dependencies = [
 [[package]]
 name = "iced_style"
 version = "0.3.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#7b37ac5702e6c5f9f177274126b77194f57ca24e"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#1ceb12e8ac841d20034f1bd94fa697b56fddb66d"
 dependencies = [
  "iced_core",
 ]
@@ -1438,7 +1439,7 @@ dependencies = [
 [[package]]
 name = "iced_web"
 version = "0.4.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#7b37ac5702e6c5f9f177274126b77194f57ca24e"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#1ceb12e8ac841d20034f1bd94fa697b56fddb66d"
 dependencies = [
  "dodrio",
  "iced_core",
@@ -1454,7 +1455,7 @@ dependencies = [
 [[package]]
 name = "iced_wgpu"
 version = "0.4.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#7b37ac5702e6c5f9f177274126b77194f57ca24e"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#1ceb12e8ac841d20034f1bd94fa697b56fddb66d"
 dependencies = [
  "bytemuck",
  "futures",
@@ -1473,7 +1474,7 @@ dependencies = [
 [[package]]
 name = "iced_winit"
 version = "0.3.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#7b37ac5702e6c5f9f177274126b77194f57ca24e"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#1ceb12e8ac841d20034f1bd94fa697b56fddb66d"
 dependencies = [
  "iced_futures",
  "iced_graphics",
