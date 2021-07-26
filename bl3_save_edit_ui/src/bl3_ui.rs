@@ -10,7 +10,7 @@ use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
-use crate::interaction;
+use crate::{interaction, VERSION};
 use crate::interaction::InteractionExt;
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers;
@@ -104,7 +104,7 @@ impl Application for Bl3UiState {
     }
 
     fn title(&self) -> String {
-        String::from("Borderlands 3 Save Edit")
+        format!("Borderlands 3 Save Editor - v{}", VERSION)
     }
 
     fn update(
@@ -646,7 +646,7 @@ impl Application for Bl3UiState {
     }
 
     fn view(&mut self) -> Element<'_, Self::Message> {
-        let title = Text::new("Borderlands 3 Save Edit".to_uppercase())
+        let title = Text::new("Borderlands 3 Save Editor".to_uppercase())
             .font(COMPACTA)
             .size(48)
             .color(Color::from_rgb8(242, 203, 5))
