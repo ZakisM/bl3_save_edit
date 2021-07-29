@@ -12,7 +12,7 @@ pub struct InventorySerialDb {
 
 impl InventorySerialDb {
     pub fn load() -> Result<Self> {
-        let data = json::parse(std::str::from_utf8(INVENTORY_SERIAL_DB_JSON)?)?;
+        let data = json::parse(INVENTORY_SERIAL_DB_JSON)?;
 
         let max_version = data
             .entries()

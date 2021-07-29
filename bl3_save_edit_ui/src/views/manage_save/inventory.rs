@@ -6,7 +6,8 @@ use iced::{
 };
 
 use bl3_save_edit_core::bl3_save::bl3_serial::Bl3Serial;
-use bl3_save_edit_core::game_data::{GameDataKv, BALANCE_NAME_MAPPING, INVENTORY_PARTS_SHIELDS};
+use bl3_save_edit_core::game_data::{GameDataKv, BALANCE_NAME_MAPPING};
+use bl3_save_edit_core::resources::INVENTORY_PARTS_SHIELDS;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -245,10 +246,9 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
     if let Some(active_item_parts) =
         active_item.and_then(|i| inv_part_shields.get(&Cow::from(&i.item.balance_part.short_name)))
     {
-        let parts_column = active_item_parts
-            .parts
-            .iter()
-            .fold(Column::new(), |curr, item| {
+        let parts_column = active_item_parts.inventory_categorized_parts.iter().fold(
+            Column::new(),
+            |curr, item| {
                 let item_sub_parts =
                     item.parts
                         .iter()
@@ -261,7 +261,8 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                         .push(Text::new(format!("{}", item.category)))
                         .push(item_sub_parts),
                 )
-            });
+            },
+        );
 
         item_editor_column = item_editor_column.push(parts_column);
     }

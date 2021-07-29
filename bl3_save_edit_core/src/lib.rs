@@ -6,5 +6,5 @@ pub mod game_data;
 pub mod models;
 pub mod parser;
 pub mod protos;
-mod resources;
+pub mod resources;
 pub mod vehicle_data;

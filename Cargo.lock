@@ -156,6 +156,7 @@ dependencies = [
  "json",
  "nom",
  "once_cell",
+ "parking_lot",
  "protobuf",
  "protobuf-codegen-pure",
  "rayon",
