@@ -3,6 +3,7 @@ use std::fmt::Formatter;
 
 use anyhow::Result;
 use once_cell::sync::Lazy;
+use std::borrow::Cow;
 
 pub const FAST_TRAVEL: [GameDataKv; 864] = [
     GameDataKv { ident: "/game/gamedata/fasttravel/fts_atlashq.fts_atlashq", name: "Atlas HQ" },
@@ -1365,10 +1366,9 @@ pub const PROFILE_ECHO_THEMES: [GameDataKv; 67] = [
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_35.ECHOTheme_35", name: "AMD Red Chipper" },
 ];
 
-pub const PROFILE_ECHO_THEMES_DEFAULTS: [GameDataKv; 1] = [GameDataKv {
-    ident: "/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_Default.ECHOTheme_Default",
-    name: "ECHO-3 Classic",
-}];
+pub const PROFILE_ECHO_THEMES_DEFAULTS: [GameDataKv; 1] = [
+    GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_Default.ECHOTheme_Default", name: "ECHO-3 Classic" },
+];
 
 pub const PROFILE_EMOTES: [GameDataKv; 64] = [
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/Emotes/Beastmaster/CustomEmote_Beastmaster_DLC4_01.CustomEmote_Beastmaster_DLC4_01", name: "Rage" },
@@ -4246,3574 +4246,194 @@ pub const VEHICLE_SKINS_JETBEAST: [&str; 6] = [
     "/Geranium/Vehicles/Horse/Design/Parts/Materials/VehiclePart_Mat_VehiclePart_Horse_Skin5.VehiclePart_Mat_VehiclePart_Horse_Skin5",
 ];
 
-pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<&'static str, InventoryPartBody>> =
-    Lazy::new(|| {
-        let mut m = HashMap::new();
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_HYP_DoubleDowner",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Shock",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_HYP_DoubleDowner",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_DoubleDowner",
-            InventoryPartBody {
-                manufacturer: "Double Downer",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_ANS_Aug_LGD_Aesclepius",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_ANS_Material_LGD_Aesclepius",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Aesclepius",
-            InventoryPartBody {
-                manufacturer: "Asclepius",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_HYP_LGD_ReCharger",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_HYP_LGD_ReCharger",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_ReCharger",
-            InventoryPartBody {
-                manufacturer: "Re-Charger",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Shock",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Healthy",
+pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<Cow<str>, InventoryPartBody>> = Lazy::new(|| {
+    let mut m = HashMap::new();
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
                     min_parts: 3,
                     max_parts: 3,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_HYP_BuriedAlive",
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_HYP_BuriedAlive",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_BuriedAlive",
-            InventoryPartBody {
-                manufacturer: "Mendel's Multivitamin Shield",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Hyperion_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Element_Shock",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Revolter",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Revolter",
-            InventoryPartBody {
-                manufacturer: "Re-Volter",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Roid",
-                    min_parts: 2,
-                    max_parts: 2,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Shock",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_LGD_Unpaler",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_LGD_Unpaler",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Unpaler",
-            InventoryPartBody {
-                manufacturer: "Unpaler",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ANS_LGD_WTF",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_WTF",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_WhiskeyTangoFoxtrot",
-            InventoryPartBody {
-                manufacturer: "Whiskey Tango Foxtrot",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_Cyttorak",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_Cyttorak",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Knockback",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: Some(vec!["Shield_Part_Body_02_Pangolin"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Shield_Part_Aug_00_None",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Cyttorak",
-            InventoryPartBody {
-                manufacturer: "Band of Sitorak",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_ReRouter",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "None",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ANS_LGD_ReRouter",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_Vamp",
-            InventoryPartBody {
-                manufacturer: "Re-Router",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Anshin_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_InfernalWish",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_InfernalWish",
-            InventoryPartBody {
-                manufacturer: "Infernal Wish",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Pangolin_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Aug_00_None",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Corrosive",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_MrCaffeine",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_PAN_MrCaffeine",
-            InventoryPartBody {
-                manufacturer: "Mr Caffeine",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Hyperion_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Hyperion_04_VeryRare",
-            InventoryPartBody {
-                manufacturer: "Hyperion",
-                rarity: "04/Very Rare",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_SlideKick_FrozenHeart",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Cryo",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_SlideKick",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_SlideKickFrozenHeart",
-            InventoryPartBody {
-                manufacturer: "Frozen Snowshoe",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Shock",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_Clover",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
                     name: "Part_Shield_Aug_ANS_Clover",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Clover",
-            InventoryPartBody {
-                manufacturer: "All-in",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Knockback",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: Some(vec!["Shield_Part_Body_02_Pangolin"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_04_VeryRare",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_Clover",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Pangolin_04_VeryRare",
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Clover"), InventoryPartBody { manufacturer: "All-in", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Aug_00_None",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Pangolin_04_VeryRare",
-            InventoryPartBody {
-                manufacturer: "Pangolin",
-                rarity: "04/Very Rare",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Body_01_Anshin",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Anshin_01_Common",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_SlideKick",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_01_Common",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_SlideKickRecharger",
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Anshin_01_Common"), InventoryPartBody { manufacturer: "Anshin", rarity: "01/Common", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_SlideKickRecharger",
-            InventoryPartBody {
-                manufacturer: "Red Card Re-Charger",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_FaultyStar",
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
                     name: "Part_Shield_Aug_Capacity",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_FaultyStar_Epic",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Shock",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_FaultyStar_Epic",
-            InventoryPartBody {
-                manufacturer: "Guilty Spark",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_NovaBurner",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ANS_LGD_NovaBurner",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Fire",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_NovaBurner",
-            InventoryPartBody {
-                manufacturer: "Nova Berner",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Knockback",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: Some(vec!["Shield_Part_Body_02_Pangolin"]),
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_Torch",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Torch",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Fire",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_Torch",
-            InventoryPartBody {
-                manufacturer: "Torch",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_MEAT",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Knockback",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: Some(vec!["Shield_Part_Body_02_Pangolin"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_MEAT",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_MEAT",
-            InventoryPartBody {
-                manufacturer: "M.E.A.T. Shield",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_LGD_ShootingStar",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_LGD_ShootingStar",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_ShootingStar",
-            InventoryPartBody {
-                manufacturer: "Shooting Star",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Shield_Part_Aug_00_None",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_Breakup",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ANS_LGD_Breakup",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_MessyBreakup",
-            InventoryPartBody {
-                manufacturer: "Messy Breakup",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_Firewall",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Firewall",
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
@@ -7822,2098 +4442,256 @@ pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<&'static str, InventoryPartBody
                         "Shield_Part_Rarity_Hyperion_02_Uncommon",
                         "Shield_Part_Rarity_Pangolin_02_Uncommon",
                     ]),
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_Firewall",
-            InventoryPartBody {
-                manufacturer: "Firewall",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Anshin_02_Uncommon",
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Body_01_Anshin",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_02_Uncommon",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Anshin_02_Uncommon",
-            InventoryPartBody {
-                manufacturer: "Anshin",
-                rarity: "02/Uncommon",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Knockback",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: Some(vec!["Shield_Part_Body_02_Pangolin"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Pangolin_02_Uncommon",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Pangolin_02_Uncommon",
-            InventoryPartBody {
-                manufacturer: "Pangolin",
-                rarity: "02/Uncommon",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_HYP_LGD_FrontLoader",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_HYP_LGD_FrontLoader",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_FrontLoader",
-            InventoryPartBody {
-                manufacturer: "Front Loader",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_LGD_Impaler",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_LGD_Impaler",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Element_Corrosive",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Spike",
-                    min_parts: 2,
-                    max_parts: 2,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Impaler",
-            InventoryPartBody {
-                manufacturer: "Impaler",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_HYP_LGD_StopGap",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_HYP_LGD_StopGap",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_StopGap",
-            InventoryPartBody {
-                manufacturer: "Stop-Gap",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Shock",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Shield_Part_Aug_HYP_LGD_Transformer",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Mat_HYP_LGD_Transformer",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Transformer",
-            InventoryPartBody {
-                manufacturer: "The Transformer",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_LGD_VoidRift",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+                Part {
                     name: "Shield_Part_Element_Cryo",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_LGD_VoidRift",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_VoidRift",
-            InventoryPartBody {
-                manufacturer: "Void Rift",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_LGD_Revengenader",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Knockback",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: Some(vec!["Shield_Part_Body_02_Pangolin"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_LGD_Revengenader",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Revengenader",
-            InventoryPartBody {
-                manufacturer: "Revengenader",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_Wattson",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ANS_LGD_Wattson",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_Wattson",
-            InventoryPartBody {
-                manufacturer: "Wattson",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_01_Common",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Aug_00_None",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Hyperion_01_Common",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Hyperion_01_Common",
-            InventoryPartBody {
-                manufacturer: "Hyperion",
-                rarity: "01/Common",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Hyperion_02_Uncommon",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Hyperion_02_Uncommon",
-            InventoryPartBody {
-                manufacturer: "Hyperion",
-                rarity: "02/Uncommon",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_LGD_BlackHole",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_LGD_BlackHole",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Shock",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_BlackHole",
-            InventoryPartBody {
-                manufacturer: "Black Hole",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+                Part {
                     name: "Shield_Part_Element_Fire",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_XPLootBooster",
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_XPLootBooster",
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Anshin_02_Uncommon",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_02_Uncommon",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Anshin_02_Uncommon"), InventoryPartBody { manufacturer: "Anshin", rarity: "02/Uncommon", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
                     name: "Part_Shield_Aug_Nova",
                     min_parts: 2,
                     max_parts: 2,
@@ -9923,1888 +4701,274 @@ pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<&'static str, InventoryPartBody
                         "Shield_Part_Rarity_Hyperion_02_Uncommon",
                         "Shield_Part_Rarity_Pangolin_02_Uncommon",
                     ]),
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_XPLootBooster",
-            InventoryPartBody {
-                manufacturer: "Deluxe Badass Combustor",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Corrosive_Ventilator",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Ventilator",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Hyperion_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Ventilator",
-            InventoryPartBody {
-                manufacturer: "Gas Mask",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Pangolin_01_Common",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_01_Common",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Aug_00_None",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Pangolin_01_Common",
-            InventoryPartBody {
-                manufacturer: "Pangolin",
-                rarity: "01/Common",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Rico",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_Rico",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Rico",
-            InventoryPartBody {
-                manufacturer: "Rico",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PlusUltra",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PlusUltra",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_PlusUltra",
-            InventoryPartBody {
-                manufacturer: "Plus Ultra",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Adrenaline",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_ANS_Aug_Initiative",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_ANS_Material_Initiative",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Initiative",
-            InventoryPartBody {
-                manufacturer: "Initiative",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Aug_00_None",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Anshin_01_Common",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_01_Common",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Anshin_01_Common",
-            InventoryPartBody {
-                manufacturer: "Anshin",
-                rarity: "01/Common",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_MoxxisEmbrace",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
                     dependencies: None,
                     excluders: Some(vec![
                         "Shield_Part_Rarity_Anshin_02_Uncommon",
                         "Shield_Part_Rarity_Hyperion_02_Uncommon",
                         "Shield_Part_Rarity_Pangolin_02_Uncommon",
                     ]),
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Brimming",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
                     dependencies: None,
                     excluders: Some(vec![
                         "Shield_Part_Rarity_Anshin_02_Uncommon",
                         "Shield_Part_Rarity_Hyperion_02_Uncommon",
                         "Shield_Part_Rarity_Pangolin_02_Uncommon",
                     ]),
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_MoxxisEmbrace",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_MoxxisEmbrace",
-            InventoryPartBody {
-                manufacturer: "Moxxi's Embrace",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Hyperion_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Hyperion_03_Rare",
-            InventoryPartBody {
-                manufacturer: "Hyperion",
-                rarity: "03/Rare",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Anshin_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Anshin_03_Rare",
-            InventoryPartBody {
-                manufacturer: "Anshin",
-                rarity: "03/Rare",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_HYP_LGD_Dispensary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_HYP_LGD_Dispensary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Dispensary",
-            InventoryPartBody {
-                manufacturer: "MSRC Auto-Dispensary",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_FaultyStar",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_FaultyStar",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_FaultyStar",
-            InventoryPartBody {
-                manufacturer: "Faulty Star",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_ANS_Aug_LGD_RoughRider",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Aug_00_None",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_ANS_Material_LGD_RoughRider2",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_RoughRider",
-            InventoryPartBody {
-                manufacturer: "Rough Rider",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ScreamOfTerror",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ScreamOfTerror",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
                     dependencies: None,
                     excluders: Some(vec![
                         "Shield_Part_Rarity_Anshin_02_Uncommon",
                         "Shield_Part_Rarity_Hyperion_02_Uncommon",
                         "Shield_Part_Rarity_Pangolin_02_Uncommon",
                     ]),
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Body_01_Anshin",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
                     name: "Shield_Part_Element_Cryo",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Brimming",
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
                     min_parts: 1,
                     max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Anshin_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Anshin_03_Rare"), InventoryPartBody { manufacturer: "Anshin", rarity: "03/Rare", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 3,
+                    max_parts: 3,
                     dependencies: None,
                     excluders: Some(vec![
                         "Shield_Part_Rarity_Anshin_02_Uncommon",
                         "Shield_Part_Rarity_Hyperion_02_Uncommon",
                         "Shield_Part_Rarity_Pangolin_02_Uncommon",
                     ]),
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_ScreamOfTerror",
-            InventoryPartBody {
-                manufacturer: "Scream of Terror",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_BackHam",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 3,
+                    max_parts: 3,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 3,
+                    max_parts: 3,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 3,
+                    max_parts: 3,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
+                },
+                Part {
                     name: "Part_Shield_Aug_Reflect",
                     min_parts: 3,
                     max_parts: 3,
@@ -11814,1254 +4978,2574 @@ pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<&'static str, InventoryPartBody
                         "Shield_Part_Rarity_Hyperion_02_Uncommon",
                         "Shield_Part_Rarity_Pangolin_02_Uncommon",
                     ]),
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_BackHam",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 3,
+                    max_parts: 3,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_BackHam",
-            InventoryPartBody {
-                manufacturer: "Back Ham",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 3,
+                    max_parts: 3,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ANS_LGD_SlideKick",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 3,
+                    max_parts: 3,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Body_01_Anshin",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_SlideKick",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_SlideKick",
-            InventoryPartBody {
-                manufacturer: "Red Card",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Pangolin_03_Rare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Knockback",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: Some(vec!["Shield_Part_Body_02_Pangolin"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Pangolin_03_Rare",
-            InventoryPartBody {
-                manufacturer: "Pangolin",
-                rarity: "03/Rare",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PlusUltra",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PlusUltra_Epic",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_PlusUltra_Epic",
-            InventoryPartBody {
-                manufacturer: "Limit Break",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_MadCap",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Anshin_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Madcap",
-            InventoryPartBody {
-                manufacturer: "Madcap",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ANS__LGD_Aurelia",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+                Part {
                     name: "Shield_Part_Element_Cryo",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_Aurelia",
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Anshin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Anshin_04_VeryRare"), InventoryPartBody { manufacturer: "Anshin", rarity: "04/Very Rare", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Body_01_Anshin",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Aurelia",
-            InventoryPartBody {
-                manufacturer: "Frozen Heart",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_Ward",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Ward",
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_ANS_Aug_LGD_Aesclepius",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_ANS_Material_LGD_Aesclepius",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Aesclepius"), InventoryPartBody { manufacturer: "Asclepius", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_BackHam",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_BackHam",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_BackHam"), InventoryPartBody { manufacturer: "Back Ham", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Knockback",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: Some(vec![
+                        "Shield_Part_Body_02_Pangolin",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Aug_00_None",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_Cyttorak",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_Cyttorak",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Cyttorak"), InventoryPartBody { manufacturer: "Band of Sitorak", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Beskar",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Anshin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Beskar"), InventoryPartBody { manufacturer: "Beskar", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Knockback",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: Some(vec![
+                        "Shield_Part_Body_02_Pangolin",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_LGD_BigBoomBlaster",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_LGD_BigBoomBlaster",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_BigBoomBlaster"), InventoryPartBody { manufacturer: "Big Boom Blaster", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_LGD_BlackHole",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_LGD_BlackHole",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_BlackHole"), InventoryPartBody { manufacturer: "Black Hole", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_XPLootBooster",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_XPLootBooster",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_XPLootBooster"), InventoryPartBody { manufacturer: "Deluxe Badass Combustor", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_HYP_DoubleDowner",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_HYP_DoubleDowner",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_DoubleDowner"), InventoryPartBody { manufacturer: "Double Downer", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_Ember",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_Ember",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Ember"), InventoryPartBody { manufacturer: "Ember's Blaze", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_FaultyStar",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_FaultyStar",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Rarity_Hyperion_05_Legendary",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Roid",
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_FaultyStar"), InventoryPartBody { manufacturer: "Faulty Star", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
                     min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Firewall",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_Firewall",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_Firewall"), InventoryPartBody { manufacturer: "Firewall", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_HYP_LGD_FrontLoader",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_HYP_LGD_FrontLoader",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_FrontLoader"), InventoryPartBody { manufacturer: "Front Loader", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ANS__LGD_Aurelia",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_Aurelia",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Aurelia"), InventoryPartBody { manufacturer: "Frozen Heart", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_SlideKick_FrozenHeart",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_SlideKick",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_SlideKickFrozenHeart"), InventoryPartBody { manufacturer: "Frozen Snowshoe", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
                     max_parts: 3,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Body_03_Hyperion",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Ward",
-            InventoryPartBody {
-                manufacturer: "Ward",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_OldGod",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive_Ventilator",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Mat_OldGod",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Ventilator",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Hyperion_04_VeryRare",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Cryo_OldGod",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: Some(vec!["Part_Shield_Aug_OldGod"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive_OldGod",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: Some(vec!["Part_Shield_Aug_OldGod"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation_OldGod",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: Some(vec!["Part_Shield_Aug_OldGod"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire_OldGod",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: Some(vec!["Part_Shield_Aug_OldGod"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock_OldGod",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: Some(vec!["Part_Shield_Aug_OldGod"]),
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Rarity_Hyperion_05_Legendary",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_OldGod",
-            InventoryPartBody {
-                manufacturer: "Old God",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_03_Rare",
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Ventilator"), InventoryPartBody { manufacturer: "Gas Mask", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_GoldenTouch",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
                     name: "Part_Shield_Aug_GoldenTouch",
                     min_parts: 1,
                     max_parts: 1,
@@ -13071,1851 +7555,7651 @@ pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<&'static str, InventoryPartBody
                         "Shield_Part_Rarity_Hyperion_02_Uncommon",
                         "Shield_Part_Rarity_Pangolin_02_Uncommon",
                     ]),
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_GoldenTouch",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_GoldenTouch",
-            InventoryPartBody {
-                manufacturer: "Golden Touch",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_03_Rare",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_03_Rare",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_LoopOf4N631",
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_GoldenTouch"), InventoryPartBody { manufacturer: "Golden Touch", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Body_03_Hyperion",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Aug_00_None",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Element_Shock",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Hyperion_03_Rare",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_FaultyStar_Epic",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_HYP_LoopOf4N631",
-            InventoryPartBody {
-                manufacturer: "Loop of 4N631",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Anshin_04_VeryRare",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_FaultyStar",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
-                    name: "Shield_Part_Element_Normal",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Beskar",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Beskar",
-            InventoryPartBody {
-                manufacturer: "Beskar",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_HYP_LGD_ReCharger",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ReCharger_Berner",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 0,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_ReCharger_Berner",
-            InventoryPartBody {
-                manufacturer: "Re-Charger Berner",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Rarity_Hyperion_04_VeryRare",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_FaultyStar_Epic"), InventoryPartBody { manufacturer: "Guilty Spark", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Aug_00_None",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Body_03_Hyperion",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_Ember",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Hyperion_01_Common",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_Ember",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_01_Common",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Hyperion_01_Common"), InventoryPartBody { manufacturer: "Hyperion", rarity: "01/Common", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
                     name: "Shield_Part_Element_Fire",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Ember",
-            InventoryPartBody {
-                manufacturer: "Ember's Blaze",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_LGD_Radiate",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
                     name: "Shield_Part_Element_Radiation",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_LGD_Radiate",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Knockback",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: Some(vec!["Shield_Part_Body_02_Pangolin"]),
-                        excluders: None,
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Radiate",
-            InventoryPartBody {
-                manufacturer: "Red Suit",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Knockback",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: Some(vec!["Shield_Part_Body_02_Pangolin"]),
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_LGD_BigBoomBlaster",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_PAN_LGD_BigBoomBlaster",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_BigBoomBlaster",
-            InventoryPartBody {
-                manufacturer: "Big Boom Blaster",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 3,
-                        max_parts: 3,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Shield_Part_Material_Anshin_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Anshin_04_VeryRare",
-            InventoryPartBody {
-                manufacturer: "Anshin",
-                rarity: "04/Very Rare",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_03_Hyperion",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_HYP_LGD_Rectifier1",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adaptive",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Vagabond",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Brimming",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Fleet",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Projected",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Healthy",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 2,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+                Part {
                     name: "Shield_Part_Element_Shock",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_HYP_LGD_Rectifier1",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Hyperion_02_Uncommon",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Rectifier",
-            InventoryPartBody {
-                manufacturer: "Rectifier",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_PAN_LGD_Stinger",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_02_Uncommon",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_02_Pangolin",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Hyperion_02_Uncommon"), InventoryPartBody { manufacturer: "Hyperion", rarity: "02/Uncommon", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
-                    min_parts: 1,
-                    max_parts: 1,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![Part {
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
                     name: "Part_Shield_Aug_Spike",
                     min_parts: 2,
                     max_parts: 2,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_Stinger",
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_LGD_Stinger",
-            InventoryPartBody {
-                manufacturer: "Stinger",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![
-                    Part {
-                        name: "Shield_Part_Element_Normal",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Corrosive",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Radiation",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Cryo",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Shock",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Shield_Part_Element_Fire",
-                        min_parts: 1,
-                        max_parts: 1,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
-                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
-                    name: "Part_Shield_Mat_ANS_LGD_VersionOmNom",
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_ANS_LGD_VersionOmNom",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "None",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 1,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_Legendary_VersionOmNom",
-            InventoryPartBody {
-                manufacturer: "Version 0.m",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        let parts = vec![
-            InventoryPart {
-                category: "BODY",
-                parts: vec![Part {
-                    name: "Shield_Part_Body_01_Anshin",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "LEGENDARY AUG",
-                parts: vec![Part {
-                    name: "Part_Shield_Aug_SuperSoldier",
-                    min_parts: 1,
-                    max_parts: 1,
-                    dependencies: None,
-                    excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "AUGMENT",
-                parts: vec![
-                    Part {
-                        name: "Part_Shield_Aug_Spike",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Capacity",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_HealthCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_PowerCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Adrenaline",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Roid",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Absorb",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_FortifyCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_TriggerHappy",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Amp",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeDelay",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Turtle",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Nova",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_ShieldCharge",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Resistance",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_RechargeRate",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: None,
-                    },
-                    Part {
-                        name: "Part_Shield_Aug_Reflect",
-                        min_parts: 0,
-                        max_parts: 2,
-                        dependencies: None,
-                        excluders: Some(vec![
-                            "Shield_Part_Rarity_Anshin_02_Uncommon",
-                            "Shield_Part_Rarity_Hyperion_02_Uncommon",
-                            "Shield_Part_Rarity_Pangolin_02_Uncommon",
-                        ]),
-                    },
-                ],
-            },
-            InventoryPart {
-                category: "ELEMENT",
-                parts: vec![Part {
+                },
+                Part {
                     name: "Shield_Part_Element_Normal",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
-                    excluders: Some(vec!["Part_Shield_Aug_Nova", "Part_Shield_Aug_Resistance"]),
-                }],
-            },
-            InventoryPart {
-                category: "MATERIAL",
-                parts: vec![Part {
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Hyperion_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Hyperion_03_Rare"), InventoryPartBody { manufacturer: "Hyperion", rarity: "03/Rare", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Hyperion_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Hyperion_04_VeryRare"), InventoryPartBody { manufacturer: "Hyperion", rarity: "04/Very Rare", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_LGD_Impaler",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_LGD_Impaler",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Impaler"), InventoryPartBody { manufacturer: "Impaler", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_InfernalWish",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Material_Anshin_04_VeryRare",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-            InventoryPart {
-                category: "RARITY",
-                parts: vec![Part {
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
                     name: "Shield_Part_Rarity_Anshin_05_Legendary",
                     min_parts: 1,
                     max_parts: 1,
                     dependencies: None,
                     excluders: None,
-                }],
-            },
-        ];
-        m.insert(
-            "InvBalD_Shield_SuperSoldier",
-            InventoryPartBody {
-                manufacturer: "Super Soldier",
-                rarity: "Named Shield",
-                parts,
-            },
-        );
-        m
-    });
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_InfernalWish"), InventoryPartBody { manufacturer: "Infernal Wish", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_ANS_Aug_Initiative",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_ANS_Material_Initiative",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Initiative"), InventoryPartBody { manufacturer: "Initiative", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PlusUltra_Epic",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PlusUltra",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_PlusUltra_Epic"), InventoryPartBody { manufacturer: "Limit Break", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Aug_00_None",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_LoopOf4N631",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Hyperion_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_HYP_LoopOf4N631"), InventoryPartBody { manufacturer: "Loop of 4N631", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Knockback",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: Some(vec![
+                        "Shield_Part_Body_02_Pangolin",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_MEAT",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_MEAT",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_MEAT"), InventoryPartBody { manufacturer: "M.E.A.T. Shield", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_HYP_LGD_Dispensary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_HYP_LGD_Dispensary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Dispensary"), InventoryPartBody { manufacturer: "MSRC Auto-Dispensary", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_MadCap",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Anshin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Madcap"), InventoryPartBody { manufacturer: "Madcap", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_HYP_BuriedAlive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_HYP_BuriedAlive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_BuriedAlive"), InventoryPartBody { manufacturer: "Mendel's Multivitamin Shield", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Aug_00_None",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ANS_LGD_Breakup",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_Breakup",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_MessyBreakup"), InventoryPartBody { manufacturer: "Messy Breakup", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_MoxxisEmbrace",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_MoxxisEmbrace",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_MoxxisEmbrace"), InventoryPartBody { manufacturer: "Moxxi's Embrace", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Aug_00_None",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_MrCaffeine",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Pangolin_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_PAN_MrCaffeine"), InventoryPartBody { manufacturer: "Mr Caffeine", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ANS_LGD_NovaBurner",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_NovaBurner",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_NovaBurner"), InventoryPartBody { manufacturer: "Nova Berner", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive_OldGod",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: Some(vec![
+                        "Part_Shield_Aug_OldGod",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo_OldGod",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: Some(vec![
+                        "Part_Shield_Aug_OldGod",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire_OldGod",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: Some(vec![
+                        "Part_Shield_Aug_OldGod",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation_OldGod",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: Some(vec![
+                        "Part_Shield_Aug_OldGod",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock_OldGod",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: Some(vec![
+                        "Part_Shield_Aug_OldGod",
+                    ]),
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_OldGod",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Mat_OldGod",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_OldGod"), InventoryPartBody { manufacturer: "Old God", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Aug_00_None",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Pangolin_01_Common",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_01_Common",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Pangolin_01_Common"), InventoryPartBody { manufacturer: "Pangolin", rarity: "01/Common", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Knockback",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: Some(vec![
+                        "Shield_Part_Body_02_Pangolin",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Pangolin_02_Uncommon",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Pangolin_02_Uncommon"), InventoryPartBody { manufacturer: "Pangolin", rarity: "02/Uncommon", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Knockback",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: Some(vec![
+                        "Shield_Part_Body_02_Pangolin",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Pangolin_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Pangolin_03_Rare"), InventoryPartBody { manufacturer: "Pangolin", rarity: "03/Rare", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Knockback",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: Some(vec![
+                        "Shield_Part_Body_02_Pangolin",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 3,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Pangolin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Pangolin_04_VeryRare"), InventoryPartBody { manufacturer: "Pangolin", rarity: "04/Very Rare", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PlusUltra",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PlusUltra",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_PlusUltra"), InventoryPartBody { manufacturer: "Plus Ultra", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_HYP_LGD_ReCharger",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_HYP_LGD_ReCharger",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_ReCharger"), InventoryPartBody { manufacturer: "Re-Charger", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ReCharger_Berner",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_HYP_LGD_ReCharger",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_ReCharger_Berner"), InventoryPartBody { manufacturer: "Re-Charger Berner", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "None",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ANS_LGD_ReRouter",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_ReRouter",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_Vamp"), InventoryPartBody { manufacturer: "Re-Router", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Revolter",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Hyperion_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Revolter"), InventoryPartBody { manufacturer: "Re-Volter", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_HYP_LGD_Rectifier1",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_HYP_LGD_Rectifier1",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Rectifier"), InventoryPartBody { manufacturer: "Rectifier", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ANS_LGD_SlideKick",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_SlideKick",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_SlideKick"), InventoryPartBody { manufacturer: "Red Card", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 0,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_SlideKickRecharger",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_SlideKick",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_SlideKickRecharger"), InventoryPartBody { manufacturer: "Red Card Re-Charger", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Knockback",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: Some(vec![
+                        "Shield_Part_Body_02_Pangolin",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_LGD_Radiate",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_LGD_Radiate",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Radiate"), InventoryPartBody { manufacturer: "Red Suit", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Knockback",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: Some(vec![
+                        "Shield_Part_Body_02_Pangolin",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_LGD_Revengenader",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_LGD_Revengenader",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Revengenader"), InventoryPartBody { manufacturer: "Revengenader", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Rico",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_Rico",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Rico"), InventoryPartBody { manufacturer: "Rico", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Aug_00_None",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_ANS_Aug_LGD_RoughRider",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_ANS_Material_LGD_RoughRider2",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_RoughRider"), InventoryPartBody { manufacturer: "Rough Rider", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ScreamOfTerror",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ScreamOfTerror",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_03_Rare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_ScreamOfTerror"), InventoryPartBody { manufacturer: "Scream of Terror", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_LGD_ShootingStar",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_LGD_ShootingStar",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_ShootingStar"), InventoryPartBody { manufacturer: "Shooting Star", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Stinger",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_LGD_Stinger",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Stinger"), InventoryPartBody { manufacturer: "Stinger", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adaptive",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Brimming",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Projected",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Vagabond",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_HYP_LGD_StopGap",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_HYP_LGD_StopGap",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_StopGap"), InventoryPartBody { manufacturer: "Stop-Gap", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 0,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_SuperSoldier",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Material_Anshin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_SuperSoldier"), InventoryPartBody { manufacturer: "Super Soldier", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Aug_HYP_LGD_Transformer",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Mat_HYP_LGD_Transformer",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Transformer"), InventoryPartBody { manufacturer: "The Transformer", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Fleet",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Healthy",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Knockback",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: Some(vec![
+                        "Shield_Part_Body_02_Pangolin",
+                    ]),
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Torch",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_Torch",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_Torch"), InventoryPartBody { manufacturer: "Torch", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_LGD_Unpaler",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_LGD_Unpaler",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_04_VeryRare",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_Unpaler"), InventoryPartBody { manufacturer: "Unpaler", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "None",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 1,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ANS_LGD_VersionOmNom",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_VersionOmNom",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_VersionOmNom"), InventoryPartBody { manufacturer: "Version 0.m", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_02_Pangolin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_PAN_LGD_VoidRift",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_PAN_LGD_VoidRift",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Pangolin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_LGD_VoidRift"), InventoryPartBody { manufacturer: "Void Rift", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 1,
+                    max_parts: 3,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_03_Hyperion",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Cryo",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+                Part {
+                    name: "Shield_Part_Element_Radiation",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Ward",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_Ward",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Hyperion_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Ward"), InventoryPartBody { manufacturer: "Ward", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Normal",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Part_Shield_Aug_Nova",
+                        "Part_Shield_Aug_Resistance",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ANS_LGD_Wattson",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_Wattson",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_Wattson"), InventoryPartBody { manufacturer: "Wattson", rarity: "Named Shield", parts });
+    let parts = vec![
+        InventoryPart {
+            category: "AUGMENT",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_Absorb",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Adrenaline",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Amp",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Capacity",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_FortifyCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_HealthCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Nova",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_PowerCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeDelay",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_RechargeRate",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Reflect",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Resistance",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Roid",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_ShieldCharge",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_Spike",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Part_Shield_Aug_TriggerHappy",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+                Part {
+                    name: "Part_Shield_Aug_Turtle",
+                    min_parts: 2,
+                    max_parts: 2,
+                    dependencies: None,
+                    excluders: Some(vec![
+                        "Shield_Part_Rarity_Anshin_02_Uncommon",
+                        "Shield_Part_Rarity_Hyperion_02_Uncommon",
+                        "Shield_Part_Rarity_Pangolin_02_Uncommon",
+                    ]),
+                },
+            ]
+        },
+        InventoryPart {
+            category: "BODY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Body_01_Anshin",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "ELEMENT",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Element_Corrosive",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Fire",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+                Part {
+                    name: "Shield_Part_Element_Shock",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "LEGENDARY AUG",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Aug_ANS_LGD_WTF",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "MATERIAL",
+            parts: vec![
+                Part {
+                    name: "Part_Shield_Mat_ANS_LGD_WTF",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+        InventoryPart {
+            category: "RARITY",
+            parts: vec![
+                Part {
+                    name: "Shield_Part_Rarity_Anshin_05_Legendary",
+                    min_parts: 1,
+                    max_parts: 1,
+                    dependencies: None,
+                    excluders: None,
+                },
+            ]
+        },
+    ];
+    m.insert(Cow::from("InvBalD_Shield_Legendary_WhiskeyTangoFoxtrot"), InventoryPartBody { manufacturer: "Whiskey Tango Foxtrot", rarity: "Named Shield", parts });
+m
+});
 
 pub trait GameDataExt {
     fn get_value_by_key(&self, key: &str) -> Result<&str>;
@@ -14951,24 +15235,24 @@ impl std::cmp::PartialEq for GameDataKv {
     }
 }
 
-#[derive(Debug)]
+        #[derive(Debug)]
 pub struct InventoryPartBody {
-    manufacturer: &'static str,
-    rarity: &'static str,
-    parts: Vec<InventoryPart>,
+    pub manufacturer: &'static str,
+    pub rarity: &'static str,
+    pub parts: Vec<InventoryPart>,
 }
 
 #[derive(Debug)]
 pub struct InventoryPart {
-    category: &'static str,
-    parts: Vec<Part>,
+    pub category: &'static str,
+    pub parts: Vec<Part>,
 }
 
 #[derive(Debug)]
 pub struct Part {
-    name: &'static str,
-    min_parts: u8,
-    max_parts: u8,
-    dependencies: Option<Vec<&'static str>>,
-    excluders: Option<Vec<&'static str>>,
+    pub name: &'static str,
+    pub min_parts: u8,
+    pub max_parts: u8,
+    pub dependencies: Option<Vec<&'static str>>,
+    pub excluders: Option<Vec<&'static str>>,
 }

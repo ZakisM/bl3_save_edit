@@ -32,6 +32,7 @@ pub struct Bl3Serial {
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct ItemPart {
     pub ident: String,
+    pub short_name: String,
     pub name: Option<String>,
     pub idx: usize,
     pub bits: usize,
@@ -96,6 +97,12 @@ impl Bl3Serial {
 
         let level = bits.eat(7)?;
 
+        let balance_short_name = balance
+            .rsplit('.')
+            .next()
+            .map(|s| s.to_owned())
+            .with_context(|| format!("failed to read balance_short_name for: {}", balance))?;
+
         let balance_eng_name = BALANCE_NAME_MAPPING
             .par_iter()
             .find_first(|gd| balance.to_lowercase().contains(gd.ident))
@@ -134,6 +141,7 @@ impl Bl3Serial {
 
         let balance_part = ItemPart {
             ident: balance,
+            short_name: balance_short_name,
             name: balance_eng_name,
             idx: balance_idx,
             bits: balance_bits,

@@ -21,6 +21,7 @@ pub const AMBERMIRE: FastTravelUnlockData<0, 1> = FastTravelUnlockData {
     ],
 };
 
+//Have actually tested this and it works... more data needed for all travel stations i.e objective progress array
 pub const SLAUGHTERSTAR_3000: FastTravelUnlockData<6, 2> = FastTravelUnlockData {
     objective_progress: [1, 1, 1, 0, 1, 1],
     mission_class_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Mission_TechSlaughterDiscovery_C",

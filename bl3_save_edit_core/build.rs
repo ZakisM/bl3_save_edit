@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt::Write as Write2;
 use std::fs::OpenOptions;
 use std::io::Write;
@@ -120,7 +120,7 @@ struct InventoryPartHeader {
     balance: String,
 }
 
-type InventoryPartBody = HashMap<String, HashSet<InventoryPart>>;
+type InventoryPartBody = BTreeMap<String, BTreeSet<InventoryPart>>;
 
 #[derive(Debug, Ord, PartialOrd, Eq, PartialEq, Hash, serde::Serialize)]
 struct InventoryPart {
@@ -178,7 +178,7 @@ fn gen_inventory_parts(input_name: &str) -> String {
         })
         .collect::<Vec<_>>();
 
-    let mut parts_grouped: HashMap<InventoryPartHeader, InventoryPartBody> = HashMap::new();
+    let mut parts_grouped: BTreeMap<InventoryPartHeader, InventoryPartBody> = BTreeMap::new();
 
     for inv_part in records {
         let inventory_part_header = InventoryPartHeader {
@@ -197,75 +197,75 @@ fn gen_inventory_parts(input_name: &str) -> String {
 
         let curr_group = parts_grouped
             .entry(inventory_part_header)
-            .or_insert_with(HashMap::new);
+            .or_insert_with(BTreeMap::new);
         let curr_group_category = curr_group
             .entry(inv_part.category)
-            .or_insert_with(HashSet::new);
+            .or_insert_with(BTreeSet::new);
         curr_group_category.insert(inventory_part);
     }
 
     writeln!(
         output,
-        r"pub static {}: Lazy<HashMap<&'static str, InventoryPartBody>> = Lazy::new(|| {{
-                let mut m = HashMap::new();",
+        r"pub static {}: Lazy<HashMap<Cow<str>, InventoryPartBody>> = Lazy::new(|| {{
+    let mut m = HashMap::new();",
         input_array_name
     )
     .unwrap();
 
     for (header, body) in parts_grouped {
-        writeln!(output, "let parts = vec![").unwrap();
+        writeln!(output, "{:>4}let parts = vec![", " ").unwrap();
 
         for (category, parts) in body {
-            writeln!(output, "InventoryPart {{").unwrap();
-            writeln!(output, r#"category: "{}","#, category).unwrap();
-            writeln!(output, "parts: vec![").unwrap();
+            writeln!(output, "{:>8}InventoryPart {{", " ").unwrap();
+            writeln!(output, r#"{:>12}category: "{}","#, " ", category).unwrap();
+            writeln!(output, "{:>12}parts: vec![", " ").unwrap();
 
             for part in parts {
-                writeln!(output, "Part {{").unwrap();
+                writeln!(output, "{:>16}Part {{", " ").unwrap();
 
-                writeln!(output, r#"name: "{}","#, part.name).unwrap();
-                writeln!(output, "min_parts: {},", part.min_parts).unwrap();
-                writeln!(output, "max_parts: {},", part.max_parts).unwrap();
+                writeln!(output, r#"{:>20}name: "{}","#, " ", part.name).unwrap();
+                writeln!(output, "{:>20}min_parts: {},", " ", part.min_parts).unwrap();
+                writeln!(output, "{:>20}max_parts: {},", " ", part.max_parts).unwrap();
 
                 if let Some(dependencies) = part.dependencies {
-                    writeln!(output, "dependencies: Some(vec![").unwrap();
+                    writeln!(output, "{:>20}dependencies: Some(vec![", " ").unwrap();
 
                     for dependency in dependencies {
-                        writeln!(output, r#""{}","#, dependency).unwrap();
+                        writeln!(output, r#"{:>24}"{}","#, " ", dependency).unwrap();
                     }
 
-                    writeln!(output, "]),").unwrap();
+                    writeln!(output, "{:>20}]),", " ").unwrap();
                 } else {
-                    writeln!(output, "dependencies: None,").unwrap();
+                    writeln!(output, "{:>20}dependencies: None,", " ").unwrap();
                 }
 
                 if let Some(excluders) = part.excluders {
-                    writeln!(output, "excluders: Some(vec![").unwrap();
+                    writeln!(output, "{:>20}excluders: Some(vec![", " ").unwrap();
 
                     for excluder in excluders {
-                        writeln!(output, r#""{}","#, excluder).unwrap();
+                        writeln!(output, r#"{:>24}"{}","#, " ", excluder).unwrap();
                     }
 
-                    writeln!(output, "]),").unwrap();
+                    writeln!(output, "{:>20}]),", " ").unwrap();
                 } else {
-                    writeln!(output, "excluders: None,").unwrap();
+                    writeln!(output, "{:>20}excluders: None,", " ").unwrap();
                 }
 
-                writeln!(output, "}},").unwrap();
+                writeln!(output, "{:>16}}},", " ").unwrap();
             }
 
-            writeln!(output, "]").unwrap();
-            writeln!(output, "}},").unwrap();
+            writeln!(output, "{:>12}]", " ").unwrap();
+            writeln!(output, "{:>8}}},", " ").unwrap();
         }
 
-        writeln!(output, "];").unwrap();
+        writeln!(output, "{:>4}];", " ").unwrap();
 
         writeln!(
             output,
-            r#"m.insert("{}", InventoryPartBody {{ manufacturer: "{}", rarity: "{}", parts }});"#,
-            header.balance, header.manufacturer, header.rarity
+            r#"{:>4}m.insert(Cow::from("{}"), InventoryPartBody {{ manufacturer: "{}", rarity: "{}", parts }});"#,
+            " ", header.balance, header.manufacturer, header.rarity
         )
-        .unwrap();
+            .unwrap();
     }
 
     writeln!(output, "m").unwrap();
@@ -362,7 +362,8 @@ fn gen_game_data_mod_rs(input_data: Vec<String>) {
     writeln!(output, "use std::collections::HashMap;").unwrap();
     writeln!(output, "use std::fmt::Formatter;\n").unwrap();
     writeln!(output, "use anyhow::Result;").unwrap();
-    writeln!(output, "use once_cell::sync::Lazy;\n").unwrap();
+    writeln!(output, "use once_cell::sync::Lazy;").unwrap();
+    writeln!(output, "use std::borrow::Cow;\n").unwrap();
 
     for input in input_data {
         writeln!(output, "{}", input).unwrap();
@@ -411,24 +412,24 @@ impl std::cmp::PartialEq for GameDataKv {{
         r#"
         #[derive(Debug)]
 pub struct InventoryPartBody {{
-    manufacturer: &'static str,
-    rarity: &'static str,
-    parts: Vec<InventoryPart>,
+    pub manufacturer: &'static str,
+    pub rarity: &'static str,
+    pub parts: Vec<InventoryPart>,
 }}
 
 #[derive(Debug)]
 pub struct InventoryPart {{
-    category: &'static str,
-    parts: Vec<Part>,
+    pub category: &'static str,
+    pub parts: Vec<Part>,
 }}
 
 #[derive(Debug)]
 pub struct Part {{
-    name: &'static str,
-    min_parts: u8,
-    max_parts: u8,
-    dependencies: Option<Vec<&'static str>>,
-    excluders: Option<Vec<&'static str>>,
+    pub name: &'static str,
+    pub min_parts: u8,
+    pub max_parts: u8,
+    pub dependencies: Option<Vec<&'static str>>,
+    pub excluders: Option<Vec<&'static str>>,
 }}"#
     )
     .unwrap();
