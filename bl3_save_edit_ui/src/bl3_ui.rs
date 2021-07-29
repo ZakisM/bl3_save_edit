@@ -19,14 +19,14 @@ use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
 use crate::views::manage_save::character::{
-    CharacterGearMessage, CharacterInteractionMessage, CharacterInteractionSduMessage,
-    CharacterMessage, CharacterSkinMessage,
+    CharacterInteractionMessage, CharacterMessage, CharacterSduInputChangedMessage,
+    CharacterSkinSelectedMessage, CharacterUnlockGearMessage,
 };
 use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
 use crate::views::manage_save::inventory::InventoryInteractionMessage;
-use crate::views::manage_save::main::{MainInteractionMessage, MainTabBarView};
+use crate::views::manage_save::main::{MainTabBarInteractionMessage, MainTabBarView};
 use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
 };
@@ -47,7 +47,7 @@ pub struct Bl3UiState {
 
 #[derive(Debug, Clone)]
 pub enum Message {
-    InteractionMessage(InteractionMessage),
+    Interaction(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
     ManageSave(ManageSaveMessage),
     SaveFileCompleted(MessageResult<()>),
@@ -113,7 +113,7 @@ impl Application for Bl3UiState {
         _clipboard: &mut Clipboard,
     ) -> Command<Self::Message> {
         match message {
-            Message::InteractionMessage(interaction_msg) => match interaction_msg {
+            Message::Interaction(interaction_msg) => match interaction_msg {
                 InteractionMessage::ChooseSaveInteraction(choose_save_msg) => {
                     return match choose_save_msg {
                         ChooseSaveInteractionMessage::ChooseDirPressed => {
@@ -130,27 +130,27 @@ impl Application for Bl3UiState {
                 InteractionMessage::ManageSaveInteraction(manage_save_msg) => match manage_save_msg
                 {
                     ManageSaveInteractionMessage::Main(main_msg) => match main_msg {
-                        MainInteractionMessage::TabBarGeneralPressed => {
+                        MainTabBarInteractionMessage::General => {
                             self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
                                 MainTabBarView::General,
                             ))
                         }
-                        MainInteractionMessage::TabBarCharacterPressed => {
+                        MainTabBarInteractionMessage::Character => {
                             self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
                                 MainTabBarView::Character,
                             ))
                         }
-                        MainInteractionMessage::TabBarInventoryPressed => {
+                        MainTabBarInteractionMessage::Inventory => {
                             self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
                                 MainTabBarView::Inventory,
                             ))
                         }
-                        MainInteractionMessage::TabBarCurrencyPressed => {
+                        MainTabBarInteractionMessage::Currency => {
                             self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
                                 MainTabBarView::Currency,
                             ))
                         }
-                        MainInteractionMessage::TabBarFastTravelPressed => {
+                        MainTabBarInteractionMessage::FastTravel => {
                             self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
                                 MainTabBarView::FastTravel,
                             ))
@@ -216,56 +216,56 @@ impl Application for Bl3UiState {
                                 .xp_level_input = level;
                         }
                         CharacterInteractionMessage::SduMessage(sdu_message) => match sdu_message {
-                            CharacterInteractionSduMessage::BackpackInputChanged(level) => {
+                            CharacterSduInputChangedMessage::Backpack(level) => {
                                 self.manage_save_state
                                     .main_state
                                     .character_state
                                     .sdu_state
                                     .backpack_input = level;
                             }
-                            CharacterInteractionSduMessage::SniperInputChanged(level) => {
+                            CharacterSduInputChangedMessage::Sniper(level) => {
                                 self.manage_save_state
                                     .main_state
                                     .character_state
                                     .sdu_state
                                     .sniper_input = level;
                             }
-                            CharacterInteractionSduMessage::ShotgunInputChanged(level) => {
+                            CharacterSduInputChangedMessage::Shotgun(level) => {
                                 self.manage_save_state
                                     .main_state
                                     .character_state
                                     .sdu_state
                                     .shotgun_input = level;
                             }
-                            CharacterInteractionSduMessage::PistolInputChanged(level) => {
+                            CharacterSduInputChangedMessage::Pistol(level) => {
                                 self.manage_save_state
                                     .main_state
                                     .character_state
                                     .sdu_state
                                     .pistol_input = level;
                             }
-                            CharacterInteractionSduMessage::GrenadeInputChanged(level) => {
+                            CharacterSduInputChangedMessage::Grenade(level) => {
                                 self.manage_save_state
                                     .main_state
                                     .character_state
                                     .sdu_state
                                     .grenade_input = level;
                             }
-                            CharacterInteractionSduMessage::SmgInputChanged(level) => {
+                            CharacterSduInputChangedMessage::Smg(level) => {
                                 self.manage_save_state
                                     .main_state
                                     .character_state
                                     .sdu_state
                                     .smg_input = level;
                             }
-                            CharacterInteractionSduMessage::AssaultRifleInputChanged(level) => {
+                            CharacterSduInputChangedMessage::AssaultRifle(level) => {
                                 self.manage_save_state
                                     .main_state
                                     .character_state
                                     .sdu_state
                                     .assault_rifle_input = level;
                             }
-                            CharacterInteractionSduMessage::HeavyInputChanged(level) => {
+                            CharacterSduInputChangedMessage::Heavy(level) => {
                                 self.manage_save_state
                                     .main_state
                                     .character_state
@@ -330,21 +330,21 @@ impl Application for Bl3UiState {
                         }
                         CharacterInteractionMessage::SkinMessage(skin_message) => {
                             match skin_message {
-                                CharacterSkinMessage::HeadSkinSelected(selected) => {
+                                CharacterSkinSelectedMessage::HeadSkin(selected) => {
                                     self.manage_save_state
                                         .main_state
                                         .character_state
                                         .skin_state
                                         .head_skin_selected = selected;
                                 }
-                                CharacterSkinMessage::CharacterSkinSelected(selected) => {
+                                CharacterSkinSelectedMessage::CharacterSkin(selected) => {
                                     self.manage_save_state
                                         .main_state
                                         .character_state
                                         .skin_state
                                         .character_skin_selected = selected;
                                 }
-                                CharacterSkinMessage::EchoThemeSelected(selected) => {
+                                CharacterSkinSelectedMessage::EchoTheme(selected) => {
                                     self.manage_save_state
                                         .main_state
                                         .character_state
@@ -550,56 +550,56 @@ impl Application for Bl3UiState {
                 },
                 ManageSaveMessage::Character(character_msg) => match character_msg {
                     CharacterMessage::GearMessage(gear_msg) => match gear_msg {
-                        CharacterGearMessage::UnlockGrenadeSlot(b) => {
+                        CharacterUnlockGearMessage::Grenade(b) => {
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .gear_state
                                 .unlock_grenade_slot = b;
                         }
-                        CharacterGearMessage::UnlockShieldSlot(b) => {
+                        CharacterUnlockGearMessage::Shield(b) => {
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .gear_state
                                 .unlock_shield_slot = b;
                         }
-                        CharacterGearMessage::UnlockWeapon1Slot(b) => {
+                        CharacterUnlockGearMessage::Weapon1(b) => {
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .gear_state
                                 .unlock_weapon_1_slot = b;
                         }
-                        CharacterGearMessage::UnlockWeapon2Slot(b) => {
+                        CharacterUnlockGearMessage::Weapon2(b) => {
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .gear_state
                                 .unlock_weapon_2_slot = b;
                         }
-                        CharacterGearMessage::UnlockWeapon3Slot(b) => {
+                        CharacterUnlockGearMessage::Weapon3(b) => {
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .gear_state
                                 .unlock_weapon_3_slot = b;
                         }
-                        CharacterGearMessage::UnlockWeapon4Slot(b) => {
+                        CharacterUnlockGearMessage::Weapon4(b) => {
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .gear_state
                                 .unlock_weapon_4_slot = b;
                         }
-                        CharacterGearMessage::UnlockArtifactSlot(b) => {
+                        CharacterUnlockGearMessage::Artifact(b) => {
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .gear_state
                                 .unlock_artifact_slot = b;
                         }
-                        CharacterGearMessage::UnlockClassModSlot(b) => {
+                        CharacterUnlockGearMessage::ClassMod(b) => {
                             self.manage_save_state
                                 .main_state
                                 .character_state

@@ -19,6 +19,6 @@ where
 {
     fn into_element(self) -> Element<'a, Message> {
         let element: Element<'a, InteractionMessage> = self.into();
-        element.map(Message::InteractionMessage)
+        element.map(Message::Interaction)
     }
 }

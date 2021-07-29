@@ -109,7 +109,7 @@ impl Bl3FileType {
         let file_name = file_name
             .to_str()
             .with_context(|| format!("failed to read file name: {:?}", file_name.file_name()))?;
-        let file_data = read_bytes(file_name, &data)?;
+        let file_data = read_bytes(file_name, data)?;
 
         if let Ok(save) = Bl3Save::from_file_data(&file_data, HeaderType::PcSave) {
             Ok(Bl3FileType::PcSave(save))

@@ -38,12 +38,12 @@ pub struct TabBarState {
 }
 
 #[derive(Debug, Clone)]
-pub enum MainInteractionMessage {
-    TabBarGeneralPressed,
-    TabBarCharacterPressed,
-    TabBarInventoryPressed,
-    TabBarCurrencyPressed,
-    TabBarFastTravelPressed,
+pub enum MainTabBarInteractionMessage {
+    General,
+    Character,
+    Inventory,
+    Currency,
+    FastTravel,
 }
 
 #[derive(Debug, Display, PartialEq)]
@@ -133,8 +133,8 @@ pub fn view<'a>(
             .tab_bar_state
             .general_button_state,
         MainTabBarView::General,
-        &tab_bar_view,
-        MainInteractionMessage::TabBarGeneralPressed,
+        tab_bar_view,
+        MainTabBarInteractionMessage::General,
         svg::Handle::from_memory(SETTINGS),
         100,
     );
@@ -145,8 +145,8 @@ pub fn view<'a>(
             .tab_bar_state
             .character_button_state,
         MainTabBarView::Character,
-        &tab_bar_view,
-        MainInteractionMessage::TabBarCharacterPressed,
+        tab_bar_view,
+        MainTabBarInteractionMessage::Character,
         svg::Handle::from_memory(CHARACTER),
         115,
     );
@@ -157,8 +157,8 @@ pub fn view<'a>(
             .tab_bar_state
             .inventory_button_state,
         MainTabBarView::Inventory,
-        &tab_bar_view,
-        MainInteractionMessage::TabBarInventoryPressed,
+        tab_bar_view,
+        MainTabBarInteractionMessage::Inventory,
         svg::Handle::from_memory(INVENTORY),
         115,
     );
@@ -169,8 +169,8 @@ pub fn view<'a>(
             .tab_bar_state
             .currency_button_state,
         MainTabBarView::Currency,
-        &tab_bar_view,
-        MainInteractionMessage::TabBarCurrencyPressed,
+        tab_bar_view,
+        MainTabBarInteractionMessage::Currency,
         svg::Handle::from_memory(CURRENCY),
         105,
     );
@@ -181,8 +181,8 @@ pub fn view<'a>(
             .tab_bar_state
             .fast_travel_button_state,
         MainTabBarView::FastTravel,
-        &tab_bar_view,
-        MainInteractionMessage::TabBarFastTravelPressed,
+        tab_bar_view,
+        MainTabBarInteractionMessage::FastTravel,
         svg::Handle::from_memory(FAST_TRAVEL),
         127,
     );
@@ -223,7 +223,7 @@ fn tab_bar_button<'a>(
     state: &'a mut button::State,
     tab_bar_view: MainTabBarView,
     current_tab_bar_view: &MainTabBarView,
-    on_press_message: MainInteractionMessage,
+    on_press_message: MainTabBarInteractionMessage,
     icon_handle: svg::Handle,
     length: u16,
 ) -> Element<'a, Message> {

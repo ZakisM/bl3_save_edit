@@ -223,11 +223,13 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_1() {
-        let mut profile_file_data =
-            fs::read("./test_files/1prof.sav").expect("failed to read test_file");
+        let filename = "./test_files/1prof.sav";
 
-        let bl3_profile = Bl3Profile::from_bytes(&mut profile_file_data, HeaderType::PcProfile)
-            .expect("failed to read test profile");
+        let mut profile_file_data = fs::read(&filename).expect("failed to read test_file");
+
+        let bl3_profile =
+            Bl3Profile::from_bytes(filename, &mut profile_file_data, HeaderType::PcProfile)
+                .expect("failed to read test profile");
 
         assert_eq!(bl3_profile.profile_data.golden_keys, 23);
         assert_eq!(bl3_profile.profile_data.diamond_keys, 0);
@@ -273,10 +275,13 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_2() {
-        let mut profile_file_data =
-            fs::read("./test_files/profile.sav").expect("failed to read test_file");
-        let bl3_profile = Bl3Profile::from_bytes(&mut profile_file_data, HeaderType::PcProfile)
-            .expect("failed to read test profile");
+        let filename = "./test_files/profile.sav";
+
+        let mut profile_file_data = fs::read(&filename).expect("failed to read test_file");
+
+        let bl3_profile =
+            Bl3Profile::from_bytes(filename, &mut profile_file_data, HeaderType::PcProfile)
+                .expect("failed to read test profile");
 
         assert_eq!(bl3_profile.profile_data.golden_keys, 1);
         assert_eq!(bl3_profile.profile_data.diamond_keys, 0);
@@ -322,10 +327,13 @@ mod tests {
 
     #[test]
     fn test_from_data_ps4_1() {
-        let mut profile_file_data =
-            fs::read("./test_files/2profps4.sav").expect("failed to read test_file");
-        let bl3_profile = Bl3Profile::from_bytes(&mut profile_file_data, HeaderType::Ps4Profile)
-            .expect("failed to read test profile");
+        let filename = "./test_files/2profps4.sav";
+
+        let mut profile_file_data = fs::read(&filename).expect("failed to read test_file");
+
+        let bl3_profile =
+            Bl3Profile::from_bytes(filename, &mut profile_file_data, HeaderType::Ps4Profile)
+                .expect("failed to read test profile");
 
         assert_eq!(bl3_profile.profile_data.golden_keys, 69420);
         assert_eq!(bl3_profile.profile_data.diamond_keys, 0);

@@ -83,26 +83,26 @@ pub struct CharacterSduState {
 
 #[derive(Debug, Clone)]
 pub enum CharacterMessage {
-    GearMessage(CharacterGearMessage),
+    GearMessage(CharacterUnlockGearMessage),
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterSkinMessage {
-    HeadSkinSelected(GameDataKv),
-    CharacterSkinSelected(GameDataKv),
-    EchoThemeSelected(GameDataKv),
+pub enum CharacterSkinSelectedMessage {
+    HeadSkin(GameDataKv),
+    CharacterSkin(GameDataKv),
+    EchoTheme(GameDataKv),
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterGearMessage {
-    UnlockGrenadeSlot(bool),
-    UnlockShieldSlot(bool),
-    UnlockWeapon1Slot(bool),
-    UnlockWeapon2Slot(bool),
-    UnlockWeapon3Slot(bool),
-    UnlockWeapon4Slot(bool),
-    UnlockArtifactSlot(bool),
-    UnlockClassModSlot(bool),
+pub enum CharacterUnlockGearMessage {
+    Grenade(bool),
+    Shield(bool),
+    Weapon1(bool),
+    Weapon2(bool),
+    Weapon3(bool),
+    Weapon4(bool),
+    Artifact(bool),
+    ClassMod(bool),
 }
 
 #[derive(Debug, Clone)]
@@ -111,21 +111,21 @@ pub enum CharacterInteractionMessage {
     XpLevelInputChanged(i32),
     XpPointsInputChanged(i32),
     PlayerClassSelected(PlayerClass),
-    SkinMessage(CharacterSkinMessage),
-    SduMessage(CharacterInteractionSduMessage),
+    SkinMessage(CharacterSkinSelectedMessage),
+    SduMessage(CharacterSduInputChangedMessage),
     MaxSduSlotsPressed,
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterInteractionSduMessage {
-    BackpackInputChanged(i32),
-    SniperInputChanged(i32),
-    ShotgunInputChanged(i32),
-    PistolInputChanged(i32),
-    GrenadeInputChanged(i32),
-    SmgInputChanged(i32),
-    AssaultRifleInputChanged(i32),
-    HeavyInputChanged(i32),
+pub enum CharacterSduInputChangedMessage {
+    Backpack(i32),
+    Sniper(i32),
+    Shotgun(i32),
+    Pistol(i32),
+    Grenade(i32),
+    Smg(i32),
+    AssaultRifle(i32),
+    Heavy(i32),
 }
 
 pub fn view(character_state: &mut CharacterState) -> Container<Message> {
@@ -284,7 +284,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
         PROFILE_HEADS,
         head_skin_selector,
         head_skin_selected,
-        CharacterSkinMessage::HeadSkinSelected
+        CharacterSkinSelectedMessage::HeadSkin
     );
 
     let character_skin = generate_skin_pick_list!(
@@ -296,7 +296,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
         PROFILE_SKINS,
         character_skin_selector,
         character_skin_selected,
-        CharacterSkinMessage::CharacterSkinSelected
+        CharacterSkinSelectedMessage::CharacterSkin
     );
 
     let echo_theme = generate_skin_pick_list!(
@@ -307,7 +307,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
         PROFILE_ECHO_THEMES,
         echo_theme_selector,
         echo_theme_selected,
-        CharacterSkinMessage::EchoThemeSelected
+        CharacterSkinSelectedMessage::EchoTheme
     );
 
     let skin_row = Container::new(
@@ -342,7 +342,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 |b| {
                                     Message::ManageSave(ManageSaveMessage::Character(
                                         CharacterMessage::GearMessage(
-                                            CharacterGearMessage::UnlockGrenadeSlot(b),
+                                            CharacterUnlockGearMessage::Grenade(b),
                                         ),
                                     ))
                                 },
@@ -360,7 +360,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 |b| {
                                     Message::ManageSave(ManageSaveMessage::Character(
                                         CharacterMessage::GearMessage(
-                                            CharacterGearMessage::UnlockShieldSlot(b),
+                                            CharacterUnlockGearMessage::Shield(b),
                                         ),
                                     ))
                                 },
@@ -378,7 +378,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 |b| {
                                     Message::ManageSave(ManageSaveMessage::Character(
                                         CharacterMessage::GearMessage(
-                                            CharacterGearMessage::UnlockWeapon1Slot(b),
+                                            CharacterUnlockGearMessage::Weapon1(b),
                                         ),
                                     ))
                                 },
@@ -396,7 +396,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 |b| {
                                     Message::ManageSave(ManageSaveMessage::Character(
                                         CharacterMessage::GearMessage(
-                                            CharacterGearMessage::UnlockWeapon2Slot(b),
+                                            CharacterUnlockGearMessage::Weapon2(b),
                                         ),
                                     ))
                                 },
@@ -414,7 +414,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 |b| {
                                     Message::ManageSave(ManageSaveMessage::Character(
                                         CharacterMessage::GearMessage(
-                                            CharacterGearMessage::UnlockWeapon3Slot(b),
+                                            CharacterUnlockGearMessage::Weapon3(b),
                                         ),
                                     ))
                                 },
@@ -432,7 +432,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 |b| {
                                     Message::ManageSave(ManageSaveMessage::Character(
                                         CharacterMessage::GearMessage(
-                                            CharacterGearMessage::UnlockWeapon4Slot(b),
+                                            CharacterUnlockGearMessage::Weapon4(b),
                                         ),
                                     ))
                                 },
@@ -450,7 +450,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 |b| {
                                     Message::ManageSave(ManageSaveMessage::Character(
                                         CharacterMessage::GearMessage(
-                                            CharacterGearMessage::UnlockArtifactSlot(b),
+                                            CharacterUnlockGearMessage::Artifact(b),
                                         ),
                                     ))
                                 },
@@ -468,7 +468,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                 |b| {
                                     Message::ManageSave(ManageSaveMessage::Character(
                                         CharacterMessage::GearMessage(
-                                            CharacterGearMessage::UnlockClassModSlot(b),
+                                            CharacterUnlockGearMessage::ClassMod(b),
                                         ),
                                     ))
                                 },
@@ -515,7 +515,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     backpack_input,
                                     backpack_input_state,
-                                    CharacterInteractionSduMessage::BackpackInputChanged
+                                    CharacterSduInputChangedMessage::Backpack
                                 ))
                                 .push(generate_sdu_input!(
                                     "Sniper",
@@ -524,7 +524,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     sniper_input,
                                     sniper_input_state,
-                                    CharacterInteractionSduMessage::SniperInputChanged
+                                    CharacterSduInputChangedMessage::Sniper
                                 )),
                         )
                         .push(
@@ -536,7 +536,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     heavy_input,
                                     heavy_input_state,
-                                    CharacterInteractionSduMessage::HeavyInputChanged
+                                    CharacterSduInputChangedMessage::Heavy
                                 ))
                                 .push(generate_sdu_input!(
                                     "Shotgun",
@@ -545,7 +545,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     shotgun_input,
                                     shotgun_input_state,
-                                    CharacterInteractionSduMessage::ShotgunInputChanged
+                                    CharacterSduInputChangedMessage::Shotgun
                                 )),
                         )
                         .push(
@@ -557,7 +557,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     grenade_input,
                                     grenade_input_state,
-                                    CharacterInteractionSduMessage::GrenadeInputChanged
+                                    CharacterSduInputChangedMessage::Grenade
                                 ))
                                 .push(generate_sdu_input!(
                                     "SMG",
@@ -566,7 +566,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     smg_input,
                                     smg_input_state,
-                                    CharacterInteractionSduMessage::SmgInputChanged
+                                    CharacterSduInputChangedMessage::Smg
                                 )),
                         )
                         .push(
@@ -578,7 +578,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     assault_rifle_input,
                                     assault_rifle_input_state,
-                                    CharacterInteractionSduMessage::AssaultRifleInputChanged
+                                    CharacterSduInputChangedMessage::AssaultRifle
                                 ))
                                 .push(generate_sdu_input!(
                                     "Pistol",
@@ -587,7 +587,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                                     character_state,
                                     pistol_input,
                                     pistol_input_state,
-                                    CharacterInteractionSduMessage::PistolInputChanged
+                                    CharacterSduInputChangedMessage::Pistol
                                 )),
                         )
                         .push(

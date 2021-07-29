@@ -5,7 +5,7 @@ use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
 use crate::views::manage_save::inventory::InventoryInteractionMessage;
-use crate::views::manage_save::main::{MainInteractionMessage, MainState, MainTabBarView};
+use crate::views::manage_save::main::{MainState, MainTabBarInteractionMessage, MainTabBarView};
 
 pub mod character;
 pub mod currency;
@@ -29,7 +29,7 @@ pub enum ManageSaveMessage {
 
 #[derive(Debug, Clone)]
 pub enum ManageSaveInteractionMessage {
-    Main(MainInteractionMessage),
+    Main(MainTabBarInteractionMessage),
     General(GeneralInteractionMessage),
     Character(CharacterInteractionMessage),
     Inventory(InventoryInteractionMessage),

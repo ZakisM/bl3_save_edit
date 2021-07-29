@@ -236,7 +236,7 @@ mod tests {
         let decrypted =
             Bl3Serial::from_serial_number(serial_number).expect("failed to decrypt serial");
 
-        assert_eq!(decrypted.balance, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Balance/InvBalD_Shield_OldGod.InvBalD_Shield_OldGod");
+        assert_eq!(decrypted.balance_part.ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Balance/InvBalD_Shield_OldGod.InvBalD_Shield_OldGod");
         assert_eq!(
             decrypted.inv_data,
             "/Game/Gear/Shields/_Design/A_Data/Shield_Default.Shield_Default"

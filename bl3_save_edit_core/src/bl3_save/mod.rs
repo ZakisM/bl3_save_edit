@@ -91,7 +91,7 @@ impl Bl3Save {
     }
 
     pub fn from_bytes(file_name: &str, data: &[u8], header_type: HeaderType) -> Result<Self> {
-        let file_data = file_helper::read_bytes(file_name, &data)?;
+        let file_data = file_helper::read_bytes(file_name, data)?;
 
         Self::from_file_data(&file_data, header_type)
     }
@@ -294,8 +294,11 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_1() {
-        let mut save_file_data = fs::read("./test_files/19.sav").expect("failed to read test_file");
-        let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::PcSave)
+        let filename = "./test_files/19.sav";
+
+        let mut save_file_data = fs::read(&filename).expect("failed to read test_file");
+
+        let bl3_save = Bl3Save::from_bytes(filename, &mut save_file_data, HeaderType::PcSave)
             .expect("failed to read test save");
 
         assert_eq!(
@@ -568,9 +571,11 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_2() {
-        let mut save_file_data =
-            fs::read("./test_files/1.sav").expect("failed to read mut test_file");
-        let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::PcSave)
+        let filename = "./test_files/1.sav";
+
+        let mut save_file_data = fs::read(&filename).expect("failed to read mut test_file");
+
+        let bl3_save = Bl3Save::from_bytes(filename, &mut save_file_data, HeaderType::PcSave)
             .expect("failed to read test save");
 
         assert_eq!(
@@ -789,9 +794,11 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_3() {
-        let mut save_file_data =
-            fs::read("./test_files/5.sav").expect("failed to read mut test_file");
-        let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::PcSave)
+        let filename = "./test_files/5.sav";
+
+        let mut save_file_data = fs::read(&filename).expect("failed to read mut test_file");
+
+        let bl3_save = Bl3Save::from_bytes(filename, &mut save_file_data, HeaderType::PcSave)
             .expect("failed to read test save");
 
         assert_eq!(
@@ -974,9 +981,11 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_4() {
-        let mut save_file_data =
-            fs::read("./test_files/310pc.sav").expect("failed to read mut test_file");
-        let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::PcSave)
+        let filename = "./test_files/310pc.sav";
+
+        let mut save_file_data = fs::read(&filename).expect("failed to read mut test_file");
+
+        let bl3_save = Bl3Save::from_bytes(filename, &mut save_file_data, HeaderType::PcSave)
             .expect("failed to read test save");
 
         assert_eq!(
@@ -1200,9 +1209,11 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_5() {
-        let mut save_file_data =
-            fs::read("./test_files/quick.sav").expect("failed to read mut test_file");
-        let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::PcSave)
+        let filename = "./test_files/quick.sav";
+
+        let mut save_file_data = fs::read(&filename).expect("failed to read mut test_file");
+
+        let bl3_save = Bl3Save::from_bytes(filename, &mut save_file_data, HeaderType::PcSave)
             .expect("failed to read test save");
 
         assert_eq!(
@@ -1429,9 +1440,11 @@ mod tests {
 
     #[test]
     fn test_from_data_ps4_1() {
-        let mut save_file_data =
-            fs::read("./test_files/1ps4_v100.sav").expect("failed to read test_file");
-        let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::Ps4Save)
+        let filename = "./test_files/1ps4_v100.sav";
+
+        let mut save_file_data = fs::read(&filename).expect("failed to read test_file");
+
+        let bl3_save = Bl3Save::from_bytes(filename, &mut save_file_data, HeaderType::Ps4Save)
             .expect("failed to read test save");
 
         assert_eq!(
@@ -1608,9 +1621,11 @@ mod tests {
 
     #[test]
     fn test_from_data_ps4_2() {
-        let mut save_file_data =
-            fs::read("./test_files/69ps4_v103.sav").expect("failed to read test_file");
-        let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::Ps4Save)
+        let filename = "./test_files/69ps4_v103.sav";
+
+        let mut save_file_data = fs::read(&filename).expect("failed to read test_file");
+
+        let bl3_save = Bl3Save::from_bytes(filename, &mut save_file_data, HeaderType::Ps4Save)
             .expect("failed to read test save");
 
         assert_eq!(
@@ -1831,9 +1846,11 @@ mod tests {
 
     #[test]
     fn test_from_data_ps4_3() {
-        let mut save_file_data =
-            fs::read("./test_files/310ps4.sav").expect("failed to read test_file");
-        let bl3_save = Bl3Save::from_bytes(&mut save_file_data, HeaderType::Ps4Save)
+        let filename = "./test_files/310ps4.sav";
+
+        let mut save_file_data = fs::read(&filename).expect("failed to read test_file");
+
+        let bl3_save = Bl3Save::from_bytes(filename, &mut save_file_data, HeaderType::Ps4Save)
             .expect("failed to read test save");
 
         assert_eq!(
