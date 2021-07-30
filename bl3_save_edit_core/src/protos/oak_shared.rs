@@ -22,8 +22,7 @@
 /// Generated files are compatible only with the same version
 /// of protobuf runtime.
 // const _PROTOBUF_VERSION_CHECK: () = ::protobuf::VERSION_2_24_1;
-
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct Vec3 {
     // message fields
     pub x: f32,
@@ -106,24 +105,24 @@ impl ::protobuf::Message for Vec3 {
                     }
                     let tmp = is.read_float()?;
                     self.x = tmp;
-                },
+                }
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.y = tmp;
-                },
+                }
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.z = tmp;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -213,7 +212,7 @@ impl ::protobuf::Message for Vec3 {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Vec3>(
                 "Vec3",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -245,7 +244,7 @@ impl ::protobuf::reflect::ProtobufValue for Vec3 {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct GameStatSaveGameData {
     // message fields
     pub stat_value: i32,
@@ -323,13 +322,13 @@ impl ::protobuf::Message for GameStatSaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.stat_value = tmp;
-                },
+                }
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.stat_path)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -408,7 +407,7 @@ impl ::protobuf::Message for GameStatSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GameStatSaveGameData>(
                 "GameStatSaveGameData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -439,7 +438,7 @@ impl ::protobuf::reflect::ProtobufValue for GameStatSaveGameData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct InventoryCategorySaveData {
     // message fields
     pub base_category_definition_hash: u32,
@@ -506,17 +505,17 @@ impl ::protobuf::Message for InventoryCategorySaveData {
                     }
                     let tmp = is.read_uint32()?;
                     self.base_category_definition_hash = tmp;
-                },
+                }
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.quantity = tmp;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -595,7 +594,7 @@ impl ::protobuf::Message for InventoryCategorySaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<InventoryCategorySaveData>(
                 "InventoryCategorySaveData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -626,7 +625,7 @@ impl ::protobuf::reflect::ProtobufValue for InventoryCategorySaveData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct OakSDUSaveGameData {
     // message fields
     pub sdu_level: i32,
@@ -704,13 +703,13 @@ impl ::protobuf::Message for OakSDUSaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.sdu_level = tmp;
-                },
+                }
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.sdu_data_path)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -789,7 +788,7 @@ impl ::protobuf::Message for OakSDUSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakSDUSaveGameData>(
                 "OakSDUSaveGameData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -820,7 +819,7 @@ impl ::protobuf::reflect::ProtobufValue for OakSDUSaveGameData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct RegisteredDownloadableEntitlement {
     // message fields
     pub id: i32,
@@ -919,31 +918,31 @@ impl ::protobuf::Message for RegisteredDownloadableEntitlement {
                     }
                     let tmp = is.read_int32()?;
                     self.id = tmp;
-                },
+                }
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.consumed = tmp;
-                },
+                }
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.registered = tmp;
-                },
+                }
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.seen = tmp;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -1044,7 +1043,7 @@ impl ::protobuf::Message for RegisteredDownloadableEntitlement {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<RegisteredDownloadableEntitlement>(
                 "RegisteredDownloadableEntitlement",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -1077,7 +1076,7 @@ impl ::protobuf::reflect::ProtobufValue for RegisteredDownloadableEntitlement {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct RegisteredDownloadableEntitlements {
     // message fields
     pub entitlement_source_asset_path: ::std::string::String,
@@ -1192,16 +1191,16 @@ impl ::protobuf::Message for RegisteredDownloadableEntitlements {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.entitlement_source_asset_path)?;
-                },
+                }
                 2 => {
                     ::protobuf::rt::read_repeated_int64_into(wire_type, is, &mut self.entitlement_ids)?;
-                },
+                }
                 3 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.entitlements)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -1294,7 +1293,7 @@ impl ::protobuf::Message for RegisteredDownloadableEntitlements {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<RegisteredDownloadableEntitlements>(
                 "RegisteredDownloadableEntitlements",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -1326,7 +1325,7 @@ impl ::protobuf::reflect::ProtobufValue for RegisteredDownloadableEntitlements {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct ChallengeStatSaveGameData {
     // message fields
     pub current_stat_value: i32,
@@ -1404,13 +1403,13 @@ impl ::protobuf::Message for ChallengeStatSaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.current_stat_value = tmp;
-                },
+                }
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.challenge_stat_path)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -1489,7 +1488,7 @@ impl ::protobuf::Message for ChallengeStatSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<ChallengeStatSaveGameData>(
                 "ChallengeStatSaveGameData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -1520,7 +1519,7 @@ impl ::protobuf::reflect::ProtobufValue for ChallengeStatSaveGameData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct OakChallengeRewardSaveGameData {
     // message fields
     pub challenge_reward_claimed: bool,
@@ -1571,10 +1570,10 @@ impl ::protobuf::Message for OakChallengeRewardSaveGameData {
                     }
                     let tmp = is.read_bool()?;
                     self.challenge_reward_claimed = tmp;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -1642,7 +1641,7 @@ impl ::protobuf::Message for OakChallengeRewardSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakChallengeRewardSaveGameData>(
                 "OakChallengeRewardSaveGameData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -1672,7 +1671,7 @@ impl ::protobuf::reflect::ProtobufValue for OakChallengeRewardSaveGameData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct ChallengeSaveGameData {
     // message fields
     pub completed_count: i32,
@@ -1876,47 +1875,47 @@ impl ::protobuf::Message for ChallengeSaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.completed_count = tmp;
-                },
+                }
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.is_active = tmp;
-                },
+                }
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.currently_completed = tmp;
-                },
+                }
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.completed_progress_level = tmp;
-                },
+                }
                 5 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.progress_counter = tmp;
-                },
+                }
                 6 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.stat_instance_state)?;
-                },
+                }
                 7 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.challenge_class_path)?;
-                },
+                }
                 8 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.challenge_reward_info)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -2067,7 +2066,7 @@ impl ::protobuf::Message for ChallengeSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<ChallengeSaveGameData>(
                 "ChallengeSaveGameData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -2104,7 +2103,7 @@ impl ::protobuf::reflect::ProtobufValue for ChallengeSaveGameData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct OakMailItem {
     // message fields
     pub mail_item_type: u32,
@@ -2365,49 +2364,49 @@ impl ::protobuf::Message for OakMailItem {
                     }
                     let tmp = is.read_uint32()?;
                     self.mail_item_type = tmp;
-                },
+                }
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.sender_display_name)?;
-                },
+                }
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.subject)?;
-                },
+                }
                 4 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.body)?;
-                },
+                }
                 5 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.gear_serial_number)?;
-                },
+                }
                 6 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.mail_guid)?;
-                },
+                }
                 7 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.date_sent = tmp;
-                },
+                }
                 8 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.expiration_date = tmp;
-                },
+                }
                 9 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.from_player_id)?;
-                },
+                }
                 10 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.has_been_read = tmp;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -2574,7 +2573,7 @@ impl ::protobuf::Message for OakMailItem {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakMailItem>(
                 "OakMailItem",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -2613,7 +2612,7 @@ impl ::protobuf::reflect::ProtobufValue for OakMailItem {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct OakCustomizationSaveGameData {
     // message fields
     pub is_new: bool,
@@ -2691,13 +2690,13 @@ impl ::protobuf::Message for OakCustomizationSaveGameData {
                     }
                     let tmp = is.read_bool()?;
                     self.is_new = tmp;
-                },
+                }
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.customization_asset_path)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -2776,7 +2775,7 @@ impl ::protobuf::Message for OakCustomizationSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakCustomizationSaveGameData>(
                 "OakCustomizationSaveGameData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -2807,7 +2806,7 @@ impl ::protobuf::reflect::ProtobufValue for OakCustomizationSaveGameData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct OakInventoryCustomizationPartInfo {
     // message fields
     pub customization_part_hash: u32,
@@ -2874,17 +2873,17 @@ impl ::protobuf::Message for OakInventoryCustomizationPartInfo {
                     }
                     let tmp = is.read_uint32()?;
                     self.customization_part_hash = tmp;
-                },
+                }
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.is_new = tmp;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -2963,7 +2962,7 @@ impl ::protobuf::Message for OakInventoryCustomizationPartInfo {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakInventoryCustomizationPartInfo>(
                 "OakInventoryCustomizationPartInfo",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -2994,7 +2993,7 @@ impl ::protobuf::reflect::ProtobufValue for OakInventoryCustomizationPartInfo {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct CrewQuartersDecorationItemSaveGameData {
     // message fields
     pub is_new: bool,
@@ -3072,13 +3071,13 @@ impl ::protobuf::Message for CrewQuartersDecorationItemSaveGameData {
                     }
                     let tmp = is.read_bool()?;
                     self.is_new = tmp;
-                },
+                }
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.decoration_item_asset_path)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -3157,7 +3156,7 @@ impl ::protobuf::Message for CrewQuartersDecorationItemSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersDecorationItemSaveGameData>(
                 "CrewQuartersDecorationItemSaveGameData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -3188,7 +3187,7 @@ impl ::protobuf::reflect::ProtobufValue for CrewQuartersDecorationItemSaveGameDa
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct CrewQuartersRoomItemSaveGameData {
     // message fields
     pub is_new: bool,
@@ -3266,13 +3265,13 @@ impl ::protobuf::Message for CrewQuartersRoomItemSaveGameData {
                     }
                     let tmp = is.read_bool()?;
                     self.is_new = tmp;
-                },
+                }
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.room_item_asset_path)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -3351,7 +3350,7 @@ impl ::protobuf::Message for CrewQuartersRoomItemSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersRoomItemSaveGameData>(
                 "CrewQuartersRoomItemSaveGameData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -3382,7 +3381,7 @@ impl ::protobuf::reflect::ProtobufValue for CrewQuartersRoomItemSaveGameData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct VaultCardSaveGameData {
     // message fields
     pub last_active_vault_card_id: u32,
@@ -3527,30 +3526,30 @@ impl ::protobuf::Message for VaultCardSaveGameData {
                     }
                     let tmp = is.read_uint32()?;
                     self.last_active_vault_card_id = tmp;
-                },
+                }
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.current_day_seed = tmp;
-                },
+                }
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.current_week_seed = tmp;
-                },
+                }
                 5 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.vault_card_previous_challenges)?;
-                },
+                }
                 6 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.vault_card_claimed_rewards)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -3668,7 +3667,7 @@ impl ::protobuf::Message for VaultCardSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardSaveGameData>(
                 "VaultCardSaveGameData",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -3702,7 +3701,7 @@ impl ::protobuf::reflect::ProtobufValue for VaultCardSaveGameData {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct VaultCardReward {
     // message fields
     pub column_index: i32,
@@ -3769,17 +3768,17 @@ impl ::protobuf::Message for VaultCardReward {
                     }
                     let tmp = is.read_int32()?;
                     self.column_index = tmp;
-                },
+                }
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.row_index = tmp;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -3858,7 +3857,7 @@ impl ::protobuf::Message for VaultCardReward {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardReward>(
                 "VaultCardReward",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -3889,7 +3888,7 @@ impl ::protobuf::reflect::ProtobufValue for VaultCardReward {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct VaultCardGearReward {
     // message fields
     pub gear_index: i32,
@@ -3956,17 +3955,17 @@ impl ::protobuf::Message for VaultCardGearReward {
                     }
                     let tmp = is.read_int32()?;
                     self.gear_index = tmp;
-                },
+                }
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.repurchase_count = tmp;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -4045,7 +4044,7 @@ impl ::protobuf::Message for VaultCardGearReward {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardGearReward>(
                 "VaultCardGearReward",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -4076,7 +4075,7 @@ impl ::protobuf::reflect::ProtobufValue for VaultCardGearReward {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct VaultCardRewardList {
     // message fields
     pub vault_card_id: u32,
@@ -4284,47 +4283,47 @@ impl ::protobuf::Message for VaultCardRewardList {
                     }
                     let tmp = is.read_uint32()?;
                     self.vault_card_id = tmp;
-                },
+                }
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.vault_card_experience = tmp;
-                },
+                }
                 4 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_reward_list)?;
-                },
+                }
                 5 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.redeemed_reward_list)?;
-                },
+                }
                 7 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.vault_card_chests = tmp;
-                },
+                }
                 8 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.vault_card_chests_opened = tmp;
-                },
+                }
                 9 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.vault_card_keys_spent = tmp;
-                },
+                }
                 10 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.gear_rewards)?;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -4478,7 +4477,7 @@ impl ::protobuf::Message for VaultCardRewardList {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardRewardList>(
                 "VaultCardRewardList",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }
@@ -4515,7 +4514,7 @@ impl ::protobuf::reflect::ProtobufValue for VaultCardRewardList {
     }
 }
 
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct VaultCardPreviousChallenge {
     // message fields
     pub previous_challenge_seed: i32,
@@ -4582,17 +4581,17 @@ impl ::protobuf::Message for VaultCardPreviousChallenge {
                     }
                     let tmp = is.read_int32()?;
                     self.previous_challenge_seed = tmp;
-                },
+                }
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.previous_challenge_id = tmp;
-                },
+                }
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
+                }
             };
         }
         ::std::result::Result::Ok(())
@@ -4671,7 +4670,7 @@ impl ::protobuf::Message for VaultCardPreviousChallenge {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<VaultCardPreviousChallenge>(
                 "VaultCardPreviousChallenge",
                 fields,
-                file_descriptor_proto()
+                file_descriptor_proto(),
             )
         })
     }

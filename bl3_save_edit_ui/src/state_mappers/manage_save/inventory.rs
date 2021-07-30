@@ -4,7 +4,10 @@ use crate::views::manage_save::ManageSaveState;
 pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
     let save = &manage_save_state.current_file;
 
-    let item_index = 0;
+    manage_save_state
+        .main_state
+        .inventory_state
+        .selected_item_index = 0;
 
     manage_save_state.main_state.inventory_state.items = save
         .character_data
@@ -12,20 +15,25 @@ pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
         .iter()
         .cloned()
         .enumerate()
-        .map(|(i, item)| {
-            let is_active = i == item_index;
-
-            InventoryItem::new(i, item, is_active)
-        })
+        .map(|(i, item)| InventoryItem::new(i, item))
         .collect();
 
-    map_save_to_inventory_state(manage_save_state, item_index);
+    map_save_to_inventory_state(manage_save_state);
 }
 
-pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState, item_index: usize) {
+pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
     let save = &manage_save_state.current_file;
+    let selected_item_index = manage_save_state
+        .main_state
+        .inventory_state
+        .selected_item_index;
 
-    if let Some(item) = save.character_data.inventory_items.get(item_index) {
+    if let Some(item) = save.character_data.inventory_items.get(selected_item_index) {
+        manage_save_state
+            .main_state
+            .inventory_state
+            .selected_item_index = selected_item_index;
+
         manage_save_state.main_state.inventory_state.balance_input =
             item.balance_part.ident.clone();
 

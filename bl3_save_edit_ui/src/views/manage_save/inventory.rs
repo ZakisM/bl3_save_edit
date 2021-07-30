@@ -19,6 +19,7 @@ use crate::widgets::text_margin::TextMargin;
 
 #[derive(Debug, Default)]
 pub struct InventoryState {
+    pub selected_item_index: usize,
     pub items: Vec<InventoryItem>,
     pub scrollable_state: scrollable::State,
     pub balance_input: String,
@@ -48,11 +49,10 @@ pub struct InventoryItem {
     item: Bl3Serial,
     label: String,
     item_state: button::State,
-    pub is_active: bool,
 }
 
 impl InventoryItem {
-    pub fn new(id: usize, item: Bl3Serial, is_active: bool) -> Self {
+    pub fn new(id: usize, item: Bl3Serial) -> Self {
         let balance_part = &item.balance_part;
 
         let label = format!(
@@ -69,11 +69,10 @@ impl InventoryItem {
             label,
             item,
             item_state: button::State::new(),
-            is_active,
         }
     }
 
-    pub fn view(&mut self) -> Element<Message> {
+    pub fn view(&mut self, is_active: bool) -> Element<Message> {
         Button::new(
             &mut self.item_state,
             Text::new(&self.label).font(JETBRAINS_MONO).size(16),
@@ -85,9 +84,7 @@ impl InventoryItem {
         ))
         .padding(10)
         .width(Length::Fill)
-        .style(InventoryItemStyle {
-            is_active: self.is_active,
-        })
+        .style(InventoryItemStyle { is_active })
         .into_element()
     }
 }
@@ -139,6 +136,8 @@ impl button::StyleSheet for InventoryItemStyle {
 
 pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
     //Todo: Each item should have it's own state
+
+    let selected_item_index = inventory_state.selected_item_index;
 
     let mut item_editor_column = Column::new()
         .push(
@@ -239,7 +238,9 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         )
         .spacing(20);
 
-    let active_item = inventory_state.items.iter().find(|i| i.is_active);
+    let active_item = inventory_state.items.get(selected_item_index);
+
+    dbg!(&active_item.unwrap().item.part_inv_key);
 
     let inv_part_shields = &*INVENTORY_PARTS_SHIELDS;
 
@@ -267,12 +268,10 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         item_editor_column = item_editor_column.push(parts_column);
     }
 
-    let inventory_items = inventory_state
-        .items
-        .iter_mut()
-        .fold(Column::new().align_items(Align::Start), |curr, item| {
-            curr.push(item.view())
-        });
+    let inventory_items = inventory_state.items.iter_mut().enumerate().fold(
+        Column::new().align_items(Align::Start),
+        |curr, (i, item)| curr.push(item.view(i == selected_item_index)),
+    );
 
     let item_list = Container::new(
         Column::new()

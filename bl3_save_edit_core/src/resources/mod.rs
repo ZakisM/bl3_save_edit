@@ -10,7 +10,7 @@ use crate::models::inventory_serial_db::InventorySerialDb;
 pub const INVENTORY_SERIAL_DB_JSON: &str = include_str!("../../resources/inventory_serial_db.json");
 
 const INVENTORY_PARTS_SHIELDS_DATA: &[u8] =
-    include_bytes!("../../game_data/INVENTORY_PARTS_SHIELDS.csv");
+    include_bytes!("../../resources/INVENTORY_PARTS_SHIELDS.csv");
 
 pub static INVENTORY_SERIAL_DB: Lazy<InventorySerialDb> =
     Lazy::new(|| InventorySerialDb::load().expect("failed to load inventory serial db"));

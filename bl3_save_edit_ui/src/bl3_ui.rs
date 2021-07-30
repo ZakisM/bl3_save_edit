@@ -458,21 +458,25 @@ impl Application for Bl3UiState {
                     }
                     ManageSaveInteractionMessage::Inventory(inventory_msg) => match inventory_msg {
                         InventoryInteractionMessage::ItemPressed(item_index) => {
+                            // self.manage_save_state
+                            //     .main_state
+                            //     .inventory_state
+                            //     .items
+                            //     .iter_mut()
+                            //     .enumerate()
+                            //     .for_each(|(i, item)| {
+                            //         item.is_active = false;
+                            //
+                            //         if item_index == i {
+                            //             item.is_active = true;
+                            //         }
+                            //     });
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .items
-                                .iter_mut()
-                                .enumerate()
-                                .for_each(|(i, item)| {
-                                    item.is_active = false;
+                                .selected_item_index = item_index;
 
-                                    if item_index == i {
-                                        item.is_active = true;
-                                    }
-                                });
-
-                            map_save_to_inventory_state(&mut self.manage_save_state, item_index);
+                            map_save_to_inventory_state(&mut self.manage_save_state);
                         }
                         InventoryInteractionMessage::BalanceInputChanged(balance_input) => {
                             self.manage_save_state

@@ -16,6 +16,7 @@ pub struct Bl3Serial {
     pub header_version: u8,
     pub data_version: usize,
     pub balance_part: ItemPart,
+    pub part_inv_key: String,
     pub inv_data: String,
     pub inv_data_idx: usize,
     pub inv_data_bits: usize,
@@ -108,14 +109,14 @@ impl Bl3Serial {
             .find_first(|gd| balance.to_lowercase().contains(gd.ident))
             .map(|gd| gd.name.to_owned());
 
-        let part_invkey = BALANCE_TO_INV_KEY
+        let part_inv_key = BALANCE_TO_INV_KEY
             .par_iter()
             .find_first(|gd| balance.to_lowercase().contains(gd.ident))
             .map(|gd| gd.name.to_owned())
-            .with_context(|| format!("failed to read part_invkey: {}", orig_seed))?;
+            .with_context(|| format!("failed to read part_inv_key: {}", orig_seed))?;
 
         let (part_bits, parts) =
-            Self::inv_db_header_part_repeated(&part_invkey, &mut bits, data_version, 6)?;
+            Self::inv_db_header_part_repeated(&part_inv_key, &mut bits, data_version, 6)?;
 
         //generics (anointment + mayhem)
         let (generic_part_bits, generic_parts) = Self::inv_db_header_part_repeated(
@@ -151,6 +152,7 @@ impl Bl3Serial {
             header_version,
             data_version,
             balance_part,
+            part_inv_key,
             inv_data,
             inv_data_idx,
             inv_data_bits,
