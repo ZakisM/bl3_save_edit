@@ -4,7 +4,7 @@ use crate::bl3_ui::Bl3UiState;
 
 mod bl3_ui;
 mod bl3_ui_style;
-mod interaction;
+mod commands;
 mod resources;
 mod state_mappers;
 mod views;

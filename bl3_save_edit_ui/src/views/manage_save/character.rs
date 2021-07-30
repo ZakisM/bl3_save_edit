@@ -13,9 +13,9 @@ use bl3_save_edit_core::game_data::{
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
-use crate::interaction::InteractionExt;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveMessage};
+use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;

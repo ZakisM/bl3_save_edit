@@ -5,7 +5,6 @@ use iced::{
 use strum::Display;
 
 use crate::bl3_ui::{InteractionMessage, Message};
-use crate::interaction::InteractionExt;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 use crate::resources::svgs::{CHARACTER, CURRENCY, FAST_TRAVEL, INVENTORY, SETTINGS};
 use crate::views::manage_save::character::CharacterState;
@@ -17,6 +16,7 @@ use crate::views::manage_save::{
     character, currency, fast_travel, general, inventory, ManageSaveInteractionMessage,
     ManageSaveState,
 };
+use crate::views::InteractionExt;
 
 #[derive(Debug, Default)]
 pub struct MainState {

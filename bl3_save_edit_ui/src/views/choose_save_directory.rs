@@ -6,8 +6,8 @@ use bl3_save_edit_core::file_helper::Bl3FileType;
 
 use crate::bl3_ui::{InteractionMessage, Message, MessageResult};
 use crate::bl3_ui_style::Bl3UiStyle;
-use crate::interaction::InteractionExt;
 use crate::resources::fonts::JETBRAINS_MONO;
+use crate::views::InteractionExt;
 
 #[derive(Debug, Default)]
 pub struct ChooseSaveDirectoryState {

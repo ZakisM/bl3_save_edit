@@ -2,9 +2,9 @@ use iced::{text_input, Align, Column, Container, Length, Row};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
-use crate::interaction::InteractionExt;
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_save::ManageSaveInteractionMessage;
+use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
 

@@ -10,9 +10,9 @@ use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
-use crate::interaction::InteractionExt;
+use crate::commands::initialization::InitializationMessage;
+use crate::commands::{initialization, interaction};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::state_mappers;
 use crate::state_mappers::manage_save::fast_travel::map_fast_travel_stations_to_visited_teleporters_list;
 use crate::state_mappers::manage_save::inventory::map_save_to_inventory_state;
 use crate::views::choose_save_directory::{
@@ -30,8 +30,8 @@ use crate::views::manage_save::main::{MainTabBarInteractionMessage, MainTabBarVi
 use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
 };
-use crate::views::{choose_save_directory, manage_save};
-use crate::{interaction, VERSION};
+use crate::views::InteractionExt;
+use crate::{state_mappers, views, VERSION};
 
 #[derive(Debug, Default)]
 pub struct Bl3UiState {
@@ -47,6 +47,7 @@ pub struct Bl3UiState {
 
 #[derive(Debug, Clone)]
 pub enum Message {
+    Initialization(InitializationMessage),
     Interaction(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
     ManageSave(ManageSaveMessage),
@@ -78,6 +79,7 @@ pub enum InteractionMessage {
 
 #[derive(Debug, PartialEq)]
 pub enum ViewState {
+    Initializing,
     ChooseSaveDirectory,
     ManageSave(ManageSaveView),
 }
@@ -94,12 +96,16 @@ impl Application for Bl3UiState {
     type Flags = ();
 
     fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
+        let initialization_tasks = [Command::perform(initialization::load_lazy_data(), |r| {
+            Message::Initialization(InitializationMessage::LoadLazyData)
+        })];
+
         (
             Bl3UiState {
-                view_state: ViewState::ChooseSaveDirectory,
+                view_state: ViewState::Initializing,
                 ..Bl3UiState::default()
             },
-            Command::none(),
+            Command::batch(initialization_tasks),
         )
     }
 
@@ -113,6 +119,11 @@ impl Application for Bl3UiState {
         _clipboard: &mut Clipboard,
     ) -> Command<Self::Message> {
         match message {
+            Message::Initialization(initialization_msg) => match initialization_msg {
+                InitializationMessage::LoadLazyData => {
+                    self.view_state = ViewState::ChooseSaveDirectory;
+                }
+            },
             Message::Interaction(interaction_msg) => match interaction_msg {
                 InteractionMessage::ChooseSaveInteraction(choose_save_msg) => {
                     return match choose_save_msg {
@@ -631,10 +642,9 @@ impl Application for Bl3UiState {
                             self.choose_save_directory_state.saves_dir.clone(),
                         ),
                         |r| {
-                            Message::ChooseSave(ChooseSaveMessage::LoadedFiles(match r {
-                                Ok(files_loaded) => MessageResult::Success(files_loaded),
-                                Err(e) => MessageResult::Error(e.to_string()),
-                            }))
+                            Message::ChooseSave(ChooseSaveMessage::LoadedFiles(
+                                MessageResult::handle_result(r),
+                            ))
                         },
                     );
                 }
@@ -715,12 +725,13 @@ impl Application for Bl3UiState {
             .style(Bl3UiMenuBarStyle);
 
         let content = match &self.view_state {
+            ViewState::Initializing => views::initialization::view(),
             ViewState::ChooseSaveDirectory => {
-                choose_save_directory::view(&mut self.choose_save_directory_state)
+                views::choose_save_directory::view(&mut self.choose_save_directory_state)
             }
             ViewState::ManageSave(manage_save_view) => match manage_save_view {
                 ManageSaveView::TabBar(main_tab_bar_view) => {
-                    manage_save::main::view(&mut self.manage_save_state, main_tab_bar_view)
+                    views::manage_save::main::view(&mut self.manage_save_state, main_tab_bar_view)
                 }
             },
         };

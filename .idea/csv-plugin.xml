@@ -24,35 +24,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/bl3_save_edit_core/game_data/INVENTORY_PARTS_ARTIFACTS.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/bl3_save_edit_core/game_data/INVENTORY_PARTS_CLASS_MODS.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/bl3_save_edit_core/game_data/INVENTORY_PARTS_GRENADE_MODS.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/bl3_save_edit_core/game_data/INVENTORY_PARTS_SHIELDS.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/bl3_save_edit_core/game_data/INVENTORY_PARTS_WEAPONS.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

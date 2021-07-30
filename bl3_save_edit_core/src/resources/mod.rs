@@ -2,7 +2,7 @@ use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use once_cell::sync::Lazy;
-use parking_lot::Mutex;
+use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
 use serde::Deserialize;
 
 use crate::models::inventory_serial_db::InventorySerialDb;
@@ -68,11 +68,11 @@ pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<Cow<str>, InventoryItem>> = Laz
 
     for (header, body) in parts_grouped {
         let inventory_categorized_parts = body
-            .into_iter()
+            .into_par_iter()
             .map(|(category, parts)| InventoryCategorizedParts {
                 category,
                 parts: parts
-                    .iter()
+                    .par_iter()
                     .map(|p| Part {
                         name: p.name.to_owned(),
                         min_parts: p.min_parts,
@@ -139,11 +139,9 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> BTreeMap<TempHeader, TempBody> 
         record
     });
 
-    let parts_grouped = Mutex::new(BTreeMap::new());
+    let mut parts_grouped = BTreeMap::new();
 
-    use rayon::iter::{ParallelBridge, ParallelIterator};
-
-    records.par_bridge().for_each(|inv_part| {
+    records.into_iter().for_each(|inv_part| {
         let inventory_part_header = TempHeader {
             manufacturer: inv_part.manufacturer,
             rarity: inv_part.rarity,
@@ -158,8 +156,6 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> BTreeMap<TempHeader, TempBody> 
             excluders: inv_part.excluders,
         };
 
-        let parts_grouped = &mut parts_grouped.lock();
-
         let curr_group = parts_grouped
             .entry(inventory_part_header)
             .or_insert_with(BTreeMap::new);
@@ -171,5 +167,5 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> BTreeMap<TempHeader, TempBody> 
         curr_group_category.insert(inventory_part);
     });
 
-    parts_grouped.into_inner()
+    parts_grouped
 }

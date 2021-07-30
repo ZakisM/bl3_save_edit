@@ -5,7 +5,6 @@ use anyhow::{bail, Context, Result};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
-use bl3_save_edit_core::resources::{INVENTORY_PARTS_SHIELDS, INVENTORY_SERIAL_DB};
 
 #[cfg(not(target_os = "macos"))]
 pub async fn choose() -> Result<PathBuf> {
@@ -103,14 +102,6 @@ pub async fn load_files_in_directory(dir: PathBuf) -> Result<Vec<Bl3FileType>> {
             end_time.as_millis()
         );
     }
-
-    //TODO: Move this to it's own message so we can show loading bar
-    //Initialize all our Lazily Loaded data
-    tokio_rayon::spawn(|| {
-        let _ = INVENTORY_SERIAL_DB;
-        let _ = INVENTORY_PARTS_SHIELDS;
-    })
-    .await;
 
     Ok(all_files)
 }
