@@ -17,7 +17,7 @@ pub const MAX_PARTS: usize = 63;
 pub struct Bl3Serial {
     pub header_version: u8,
     pub data_version: usize,
-    pub balance_part: ItemPart,
+    pub balance_part: BalancePart,
     pub part_inv_key: String,
     pub inv_data: String,
     pub inv_data_idx: usize,
@@ -27,18 +27,25 @@ pub struct Bl3Serial {
     pub manufacturer_bits: usize,
     pub level: usize,
     pub part_bits: usize,
-    pub parts: Vec<(String, usize)>,
+    pub parts: Vec<Part>,
     pub generic_part_bits: usize,
-    pub generic_parts: Vec<(String, usize)>,
+    pub generic_parts: Vec<Part>,
 }
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
-pub struct ItemPart {
+pub struct BalancePart {
     pub ident: String,
-    pub short_name: String,
+    pub short_ident: Option<String>,
     pub name: Option<String>,
     pub idx: usize,
     pub bits: usize,
+}
+
+#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
+pub struct Part {
+    pub ident: String,
+    pub short_ident: Option<String>,
+    pub idx: usize,
 }
 
 impl Bl3Serial {
@@ -100,11 +107,7 @@ impl Bl3Serial {
 
         let level = bits.eat(7)?;
 
-        let balance_short_name = balance
-            .rsplit('.')
-            .next()
-            .map(|s| s.to_owned())
-            .with_context(|| format!("failed to read balance_short_name for: {}", balance))?;
+        let balance_short_name = balance.rsplit('.').next().map(|s| s.to_owned());
 
         let balance_eng_name = BALANCE_NAME_MAPPING
             .par_iter()
@@ -142,9 +145,9 @@ impl Bl3Serial {
             bail!("could not fully parse the weapon data")
         }
 
-        let balance_part = ItemPart {
+        let balance_part = BalancePart {
             ident: balance,
-            short_name: balance_short_name,
+            short_ident: balance_short_name,
             name: balance_eng_name,
             idx: balance_idx,
             bits: balance_bits,
@@ -214,7 +217,7 @@ impl Bl3Serial {
         bits: &mut ArbitraryBits,
         version: usize,
         count_bits: usize,
-    ) -> Result<(usize, Vec<(String, usize)>)> {
+    ) -> Result<(usize, Vec<Part>)> {
         let num_bits = INVENTORY_SERIAL_DB.get_num_bits(category, version)?;
         let num_parts = bits.eat(count_bits)?;
 
@@ -223,11 +226,17 @@ impl Bl3Serial {
         for _ in 0..num_parts {
             let part_idx = bits.eat(num_bits)?;
 
-            let part_val = INVENTORY_SERIAL_DB
+            let ident = INVENTORY_SERIAL_DB
                 .get_part(category, part_idx)
                 .unwrap_or_else(|_| "unknown".to_owned());
 
-            parts.push((part_val, part_idx));
+            let short_ident = ident.rsplit('.').next().map(|s| s.to_owned());
+
+            parts.push(Part {
+                ident,
+                short_ident,
+                idx: part_idx,
+            });
         }
 
         Ok((num_bits, parts))

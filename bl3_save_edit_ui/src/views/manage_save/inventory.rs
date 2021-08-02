@@ -253,56 +253,111 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         )
         .padding(10)
         .align_x(Align::Center)
-        .width(Length::Fill)
+        .width(Length::FillPortion(2))
         .style(Bl3UiStyle),
     );
 
-    if let Some(active_item_parts) =
-        active_item.and_then(|i| inv_part_shields.get(&i.item.balance_part.short_name))
-    {
-        let parts_column = active_item_parts.inventory_categorized_parts.iter().fold(
-            Column::new(),
-            |curr, item| {
-                let item_sub_parts =
-                    item.parts
-                        .iter()
-                        .fold(Column::new(), |sub_part_curr, sub_part| {
+    let mut current_parts_column = Column::new().push(
+        Container::new(
+            TextMargin::new("Current Parts", 2)
+                .0
+                .font(JETBRAINS_MONO_BOLD)
+                .size(17)
+                .color(Color::from_rgb8(242, 203, 5)),
+        )
+        .padding(10)
+        .align_x(Align::Center)
+        .width(Length::FillPortion(2))
+        .style(Bl3UiStyle),
+    );
+
+    if let Some(active_item) = active_item {
+        if let Some(available_parts) = active_item
+            .item
+            .balance_part
+            .short_ident
+            .as_ref()
+            .and_then(|i| inv_part_shields.get(i))
+        {
+            let available_parts_list = available_parts.inventory_categorized_parts.iter().fold(
+                Column::new(),
+                |curr, categorized_part| {
+                    let categorized_part_sub_parts = categorized_part.parts.iter().fold(
+                        Column::new(),
+                        |sub_part_curr, sub_part| {
                             sub_part_curr.push(
                                 Text::new(format!("{}", sub_part.name))
                                     .font(JETBRAINS_MONO)
                                     .size(16)
                                     .color(Color::from_rgb8(255, 255, 255)),
                             )
-                        });
+                        },
+                    );
 
-                curr.push(
-                    Column::new()
-                        .push(
-                            Text::new(format!("{}", item.category))
-                                .font(JETBRAINS_MONO_BOLD)
-                                .size(17)
-                                .color(Color::from_rgb8(242, 203, 5)),
-                        )
-                        .push(item_sub_parts),
+                    curr.push(
+                        Column::new()
+                            .push(
+                                Text::new(format!("{}", categorized_part.category))
+                                    .font(JETBRAINS_MONO_BOLD)
+                                    .size(17)
+                                    .color(Color::from_rgb8(242, 203, 5)),
+                            )
+                            .push(categorized_part_sub_parts),
+                    )
+                },
+            );
+
+            available_parts_column = available_parts_column.push(
+                Container::new(
+                    Scrollable::new(&mut inventory_state.item_list_scrollable_state)
+                        .push(available_parts_list)
+                        .height(Length::Fill)
+                        .width(Length::Fill),
                 )
-            },
-        );
+                .padding(1),
+            );
+        }
 
-        available_parts_column = available_parts_column.push(
-            Container::new(
-                Scrollable::new(&mut inventory_state.item_list_scrollable_state).push(parts_column),
-            )
-            .padding(1)
-            .height(Length::Fill),
-        );
+        let current_parts_list = active_item
+            .item
+            .parts
+            .iter()
+            .fold(Column::new(), |curr, part| {
+                curr.push(
+                    Text::new(
+                        part.short_ident
+                            .clone()
+                            .unwrap_or_else(|| part.ident.clone()),
+                    )
+                    .font(JETBRAINS_MONO)
+                    .size(16)
+                    .color(Color::from_rgb8(255, 255, 255)),
+                )
+            });
+
+        current_parts_column = current_parts_column.push(Container::new(current_parts_list))
     }
 
     let available_parts_contents = Container::new(available_parts_column)
-        .width(Length::Fill)
+        .width(Length::FillPortion(2))
         .height(Length::Fill)
         .style(Bl3UiStyle);
 
-    let item_editor_contents = item_editor_contents.push(available_parts_contents);
+    let current_parts_contents = Container::new(current_parts_column)
+        .width(Length::FillPortion(2))
+        .height(Length::Fill)
+        .style(Bl3UiStyle);
+
+    let parts_editor = Row::new()
+        .push(available_parts_contents)
+        .push(current_parts_contents)
+        .spacing(20);
+
+    let parts_editor_contents = Container::new(parts_editor)
+        .width(Length::Fill)
+        .height(Length::Fill);
+
+    let item_editor_contents = item_editor_contents.push(parts_editor_contents);
 
     let inventory_items = inventory_state.items.iter_mut().enumerate().fold(
         Column::new().align_items(Align::Start),
@@ -327,10 +382,10 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
             .push(
                 Container::new(
                     Scrollable::new(&mut inventory_state.available_parts_scrollable_state)
-                        .push(inventory_items),
+                        .push(inventory_items)
+                        .height(Length::Fill),
                 )
-                .padding(1)
-                .height(Length::Fill),
+                .padding(1),
             ),
     )
     .width(Length::FillPortion(3))
