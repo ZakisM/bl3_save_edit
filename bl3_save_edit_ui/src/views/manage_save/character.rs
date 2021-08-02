@@ -300,7 +300,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
     );
 
     let echo_theme = generate_skin_pick_list!(
-        "Echo Theme",
+        "ECHO Theme",
         105,
         character_state,
         PROFILE_ECHO_THEMES_DEFAULTS,
@@ -323,7 +323,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 Container::new(
                     TextMargin::new("Gear Management", 2)
                         .0
-                        .font(JETBRAINS_MONO)
+                        .font(JETBRAINS_MONO_BOLD)
                         .size(17)
                         .color(Color::from_rgb8(242, 203, 5)),
                 )
@@ -494,7 +494,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 Container::new(
                     TextMargin::new("SDU Management", 2)
                         .0
-                        .font(JETBRAINS_MONO)
+                        .font(JETBRAINS_MONO_BOLD)
                         .size(17)
                         .color(Color::from_rgb8(242, 203, 5)),
                 )

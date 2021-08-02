@@ -340,7 +340,7 @@ mod tests {
                 "Malevolent Practice",
                 "Proof of Wife",
                 "Swamp Bro",
-                "Technical NOGout"
+                "Technical NOGout",
             ]
         );
         assert_eq!(first_playthrough.missions_completed.len(), 63);
@@ -369,7 +369,7 @@ mod tests {
                 "Takedown at the Guardian Breach",
                 "Takedown at the Maliwan Blacksite",
                 "The Feeble and the Furious",
-                "Witch's Brew"
+                "Witch's Brew",
             ]
         );
         assert_eq!(second_playthrough.missions_completed.len(), 115);
@@ -378,7 +378,7 @@ mod tests {
             vec![
                 "Main Game",
                 "DLC2 - Guns, Love, and Tentacles",
-                "DLC3 - Bounty of Blood"
+                "DLC3 - Bounty of Blood",
             ]
         );
 
@@ -605,7 +605,7 @@ mod tests {
         assert_eq!(first_playthrough.current_map.name, "Sanctuary");
         assert_eq!(
             first_playthrough.active_missions,
-            vec!["Golden Calves", "Kill Killavolt", "Technical NOGout",]
+            vec!["Golden Calves", "Kill Killavolt", "Technical NOGout"]
         );
         assert_eq!(first_playthrough.missions_completed.len(), 29);
         assert_eq!(first_playthrough.mission_milestones, vec!["Main Game"]);
@@ -651,6 +651,11 @@ mod tests {
         assert_eq!(
             bl3_save.character_data.sdu_slots,
             vec![
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Backpack,
+                    current: 0,
+                    max: 13,
+                },
                 SaveSduSlotData {
                     slot: SaveSduSlot::Sniper,
                     current: 3,
@@ -831,7 +836,7 @@ mod tests {
         assert_eq!(first_playthrough.current_map.name, "Covenant Pass");
         assert_eq!(
             first_playthrough.active_missions,
-            vec!["Children of the Vault",]
+            vec!["Children of the Vault"]
         );
         assert_eq!(first_playthrough.missions_completed.len(), 0);
         assert_eq!(first_playthrough.mission_milestones.len(), 0);
@@ -874,7 +879,51 @@ mod tests {
             ]
         );
 
-        assert_eq!(bl3_save.character_data.sdu_slots, vec![]);
+        assert_eq!(
+            bl3_save.character_data.sdu_slots,
+            vec![
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Backpack,
+                    current: 0,
+                    max: 13,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Sniper,
+                    current: 0,
+                    max: 13,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Shotgun,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Pistol,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Grenade,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Smg,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Ar,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Heavy,
+                    current: 0,
+                    max: 13,
+                },
+            ]
+        );
 
         assert_eq!(
             bl3_save.character_data.ammo_pools,
@@ -1015,7 +1064,7 @@ mod tests {
         assert_eq!(first_playthrough.current_map.name, "Sanctuary");
         assert_eq!(
             first_playthrough.active_missions,
-            vec!["Hostile Takeover", "The Handsome Jackpot",]
+            vec!["Hostile Takeover", "The Handsome Jackpot"]
         );
         assert_eq!(first_playthrough.missions_completed.len(), 5);
         assert_eq!(first_playthrough.mission_milestones.len(), 0);
@@ -1246,7 +1295,7 @@ mod tests {
         assert_eq!(first_playthrough.current_map.name, "Desolation's Edge");
         assert_eq!(
             first_playthrough.active_missions,
-            vec!["Footsteps of Giants",]
+            vec!["Footsteps of Giants"]
         );
         assert_eq!(first_playthrough.missions_completed.len(), 20);
         assert_eq!(first_playthrough.mission_milestones.len(), 0);
@@ -1471,7 +1520,7 @@ mod tests {
         assert_eq!(first_playthrough.current_map.name, "Covenant Pass");
         assert_eq!(
             first_playthrough.active_missions,
-            vec!["Children of the Vault",]
+            vec!["Children of the Vault"]
         );
         assert_eq!(first_playthrough.missions_completed.len(), 0);
         assert_eq!(first_playthrough.mission_milestones.len(), 0);
@@ -1514,7 +1563,51 @@ mod tests {
             ]
         );
 
-        assert_eq!(bl3_save.character_data.sdu_slots.len(), 0);
+        assert_eq!(
+            bl3_save.character_data.sdu_slots,
+            vec![
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Backpack,
+                    current: 0,
+                    max: 13,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Sniper,
+                    current: 0,
+                    max: 13,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Shotgun,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Pistol,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Grenade,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Smg,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Ar,
+                    current: 0,
+                    max: 10,
+                },
+                SaveSduSlotData {
+                    slot: SaveSduSlot::Heavy,
+                    current: 0,
+                    max: 13,
+                },
+            ]
+        );
 
         assert_eq!(
             bl3_save.character_data.ammo_pools,
@@ -1653,7 +1746,7 @@ mod tests {
         assert_eq!(first_playthrough.mayhem_level, 0);
         assert_eq!(first_playthrough.mayhem_random_seed, 0);
         assert_eq!(first_playthrough.current_map.name, "Sanctuary");
-        assert_eq!(first_playthrough.active_missions, vec!["Fire in the Sky",]);
+        assert_eq!(first_playthrough.active_missions, vec!["Fire in the Sky"]);
         assert_eq!(first_playthrough.missions_completed.len(), 86);
         assert_eq!(first_playthrough.mission_milestones, vec!["Main Game"]);
 

@@ -96,7 +96,7 @@ impl Application for Bl3UiState {
     type Flags = ();
 
     fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
-        let initialization_tasks = [Command::perform(initialization::load_lazy_data(), |r| {
+        let initialization_tasks = [Command::perform(initialization::load_lazy_data(), |_| {
             Message::Initialization(InitializationMessage::LoadLazyData)
         })];
 

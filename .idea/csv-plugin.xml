@@ -24,13 +24,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/bl3_save_edit_core/game_data/INVENTORY_PARTS_SHIELDS.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/bl3_save_edit_core/game_data/MISSION.csv">
           <value>
             <Attribute>
@@ -206,6 +199,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/bl3_save_edit_core/resources/INVENTORY_PARTS_SHIELDS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/resources/INVENTORY_PARTS_WEAPONS.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\bl3_save_edit_core\game_data\BALANCE_TO_INV_KEY.csv">
           <value>
             <Attribute>
@@ -214,13 +221,6 @@
           </value>
         </entry>
         <entry key="\bl3_save_edit_core\game_data\FAST_TRAVEL.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\bl3_save_edit_core\game_data\INVENTORY_PARTS_SHIELDS.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

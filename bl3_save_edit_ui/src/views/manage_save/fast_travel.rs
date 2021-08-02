@@ -215,7 +215,7 @@ pub fn view(fast_travel_state: &mut FastTravelState) -> Container<Message> {
                 Container::new(
                     TextMargin::new("Visited Teleporters", 2)
                         .0
-                        .font(JETBRAINS_MONO)
+                        .font(JETBRAINS_MONO_BOLD)
                         .size(17)
                         .color(Color::from_rgb8(242, 203, 5)),
                 )

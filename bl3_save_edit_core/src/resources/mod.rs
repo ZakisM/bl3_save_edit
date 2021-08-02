@@ -1,4 +1,3 @@
-use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use once_cell::sync::Lazy;
@@ -61,7 +60,7 @@ pub struct Part {
     pub excluders: Option<Vec<String>>,
 }
 
-pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<Cow<str>, InventoryItem>> = Lazy::new(|| {
+pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<String, InventoryItem>> = Lazy::new(|| {
     let parts_grouped = load_inventory_parts_grouped(INVENTORY_PARTS_SHIELDS_DATA);
 
     let mut m = HashMap::new();
@@ -90,7 +89,7 @@ pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<Cow<str>, InventoryItem>> = Laz
             inventory_categorized_parts,
         };
 
-        m.insert(Cow::from(header.balance), inv_part);
+        m.insert(header.balance, inv_part);
     }
 
     m

@@ -258,7 +258,7 @@ mod tests {
                     slot: ProfSduSlot::LostLoot,
                     current: 8,
                     max: 10,
-                }
+                },
             ]
         );
 
@@ -310,7 +310,7 @@ mod tests {
                     slot: ProfSduSlot::LostLoot,
                     current: 8,
                     max: 10,
-                }
+                },
             ]
         );
 
@@ -365,7 +365,7 @@ mod tests {
                     slot: ProfSduSlot::LostLoot,
                     current: 8,
                     max: 10,
-                }
+                },
             ]
         );
 

@@ -1,5 +1,3 @@
-use std::borrow::Cow;
-
 use iced::{
     button, scrollable, text_input, text_input_with_picklist, Align, Button, Color, Column,
     Container, Element, Length, Row, Scrollable, Text, TextInput, TextInputWithPickList,
@@ -11,7 +9,7 @@ use bl3_save_edit_core::resources::INVENTORY_PARTS_SHIELDS;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
-use crate::resources::fonts::JETBRAINS_MONO;
+use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
@@ -21,7 +19,8 @@ use crate::widgets::text_margin::TextMargin;
 pub struct InventoryState {
     pub selected_item_index: usize,
     pub items: Vec<InventoryItem>,
-    pub scrollable_state: scrollable::State,
+    pub item_list_scrollable_state: scrollable::State,
+    pub available_parts_scrollable_state: scrollable::State,
     pub balance_input: String,
     pub balance_input_state: text_input_with_picklist::State<GameDataKv>,
     pub balance_input_selected: GameDataKv,
@@ -139,7 +138,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
 
     let selected_item_index = inventory_state.selected_item_index;
 
-    let mut item_editor_column = Column::new()
+    let mut item_editor_contents = Column::new()
         .push(
             Container::new(
                 LabelledElement::create(
@@ -240,12 +239,26 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
 
     let active_item = inventory_state.items.get(selected_item_index);
 
-    dbg!(&active_item.unwrap().item.part_inv_key);
+    dbg!(&active_item.unwrap().item);
 
     let inv_part_shields = &*INVENTORY_PARTS_SHIELDS;
 
+    let mut available_parts_column = Column::new().push(
+        Container::new(
+            TextMargin::new("Available Parts", 2)
+                .0
+                .font(JETBRAINS_MONO_BOLD)
+                .size(17)
+                .color(Color::from_rgb8(242, 203, 5)),
+        )
+        .padding(10)
+        .align_x(Align::Center)
+        .width(Length::Fill)
+        .style(Bl3UiStyle),
+    );
+
     if let Some(active_item_parts) =
-        active_item.and_then(|i| inv_part_shields.get(&Cow::from(&i.item.balance_part.short_name)))
+        active_item.and_then(|i| inv_part_shields.get(&i.item.balance_part.short_name))
     {
         let parts_column = active_item_parts.inventory_categorized_parts.iter().fold(
             Column::new(),
@@ -254,19 +267,42 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                     item.parts
                         .iter()
                         .fold(Column::new(), |sub_part_curr, sub_part| {
-                            sub_part_curr.push(Text::new(format!("{}", sub_part.name)))
+                            sub_part_curr.push(
+                                Text::new(format!("{}", sub_part.name))
+                                    .font(JETBRAINS_MONO)
+                                    .size(16)
+                                    .color(Color::from_rgb8(255, 255, 255)),
+                            )
                         });
 
                 curr.push(
                     Column::new()
-                        .push(Text::new(format!("{}", item.category)))
+                        .push(
+                            Text::new(format!("{}", item.category))
+                                .font(JETBRAINS_MONO_BOLD)
+                                .size(17)
+                                .color(Color::from_rgb8(242, 203, 5)),
+                        )
                         .push(item_sub_parts),
                 )
             },
         );
 
-        item_editor_column = item_editor_column.push(parts_column);
+        available_parts_column = available_parts_column.push(
+            Container::new(
+                Scrollable::new(&mut inventory_state.item_list_scrollable_state).push(parts_column),
+            )
+            .padding(1)
+            .height(Length::Fill),
+        );
     }
+
+    let available_parts_contents = Container::new(available_parts_column)
+        .width(Length::Fill)
+        .height(Length::Fill)
+        .style(Bl3UiStyle);
+
+    let item_editor_contents = item_editor_contents.push(available_parts_contents);
 
     let inventory_items = inventory_state.items.iter_mut().enumerate().fold(
         Column::new().align_items(Align::Start),
@@ -279,7 +315,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                 Container::new(
                     TextMargin::new("Items", 2)
                         .0
-                        .font(JETBRAINS_MONO)
+                        .font(JETBRAINS_MONO_BOLD)
                         .size(17)
                         .color(Color::from_rgb8(242, 203, 5)),
                 )
@@ -290,7 +326,8 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
             )
             .push(
                 Container::new(
-                    Scrollable::new(&mut inventory_state.scrollable_state).push(inventory_items),
+                    Scrollable::new(&mut inventory_state.available_parts_scrollable_state)
+                        .push(inventory_items),
                 )
                 .padding(1)
                 .height(Length::Fill),
@@ -300,7 +337,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
     .height(Length::Fill)
     .style(Bl3UiStyle);
 
-    let item_editor = Container::new(item_editor_column)
+    let item_editor = Container::new(item_editor_contents)
         .width(Length::FillPortion(7))
         .height(Length::Fill);
 
