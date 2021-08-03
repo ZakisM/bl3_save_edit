@@ -214,7 +214,7 @@ impl Application for Bl3UiState {
                                 .xp_points_input = xp_points;
                         }
                         CharacterInteractionMessage::XpPointsInputChanged(xp) => {
-                            let level = experience_to_level(xp as i32).unwrap_or(0);
+                            let level = experience_to_level(xp as i32).unwrap_or(1);
 
                             self.manage_save_state
                                 .main_state

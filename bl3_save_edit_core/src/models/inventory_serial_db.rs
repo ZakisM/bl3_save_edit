@@ -20,9 +20,10 @@ impl InventorySerialDb {
             .map(|(i, _)| {
                 data[i]["versions"]
                     .members()
-                    .map(|c| c["version"].as_isize().unwrap_or(0))
+                    .map(|c| c["version"].as_isize())
                     .collect::<Vec<_>>()
             })
+            .flatten()
             .flatten()
             .max()
             .and_then(|v| v.try_into().ok())

@@ -138,7 +138,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
 
     let selected_item_index = inventory_state.selected_item_index;
 
-    let mut item_editor_contents = Column::new()
+    let item_editor_contents = Column::new()
         .push(
             Container::new(
                 LabelledElement::create(
@@ -239,8 +239,6 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
 
     let active_item = inventory_state.items.get(selected_item_index);
 
-    dbg!(&active_item.unwrap().item);
-
     let inv_part_shields = &*INVENTORY_PARTS_SHIELDS;
 
     let mut available_parts_column = Column::new().push(
@@ -281,29 +279,24 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         {
             let available_parts_list = available_parts.inventory_categorized_parts.iter().fold(
                 Column::new(),
-                |curr, categorized_part| {
-                    let categorized_part_sub_parts = categorized_part.parts.iter().fold(
-                        Column::new(),
-                        |sub_part_curr, sub_part| {
-                            sub_part_curr.push(
-                                Text::new(format!("{}", sub_part.name))
-                                    .font(JETBRAINS_MONO)
-                                    .size(16)
-                                    .color(Color::from_rgb8(255, 255, 255)),
-                            )
-                        },
+                |mut curr, categorized_part| {
+                    curr = curr.push(
+                        Text::new(&categorized_part.category)
+                            .font(JETBRAINS_MONO_BOLD)
+                            .size(17)
+                            .color(Color::from_rgb8(242, 203, 5)),
                     );
 
-                    curr.push(
-                        Column::new()
-                            .push(
-                                Text::new(format!("{}", categorized_part.category))
-                                    .font(JETBRAINS_MONO_BOLD)
-                                    .size(17)
-                                    .color(Color::from_rgb8(242, 203, 5)),
-                            )
-                            .push(categorized_part_sub_parts),
-                    )
+                    for p in &categorized_part.parts {
+                        curr = curr.push(
+                            Text::new(&p.name)
+                                .font(JETBRAINS_MONO)
+                                .size(16)
+                                .color(Color::from_rgb8(255, 255, 255)),
+                        );
+                    }
+
+                    curr
                 },
             );
 
@@ -316,26 +309,82 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                 )
                 .padding(1),
             );
+
+            let part_contains =
+                |short_ident: Option<&String>, ident: &str, cat_part_name: &str| -> bool {
+                    if let Some(short_ident) = short_ident {
+                        cat_part_name.to_lowercase() == short_ident.to_lowercase()
+                    } else {
+                        ident.to_lowercase().contains(&cat_part_name.to_lowercase())
+                    }
+                };
+
+            let unknown_parts = active_item
+                .item
+                .parts
+                .iter()
+                .filter(|p| {
+                    !available_parts
+                        .inventory_categorized_parts
+                        .iter()
+                        .any(|cat| {
+                            cat.parts.iter().any(|cat_p| {
+                                part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
+                            })
+                        })
+                })
+                .collect::<Vec<_>>();
+
+            let mut current_parts_list = available_parts.inventory_categorized_parts.iter().fold(
+                Column::new(),
+                |mut curr, categorized_part| {
+                    let parts =
+                        categorized_part.parts.iter().filter(|cat_p| {
+                            active_item.item.parts.iter().any(|p| {
+                                part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
+                            })
+                        });
+
+                    curr = curr.push(
+                        Text::new(&categorized_part.category)
+                            .font(JETBRAINS_MONO_BOLD)
+                            .size(17)
+                            .color(Color::from_rgb8(242, 203, 5)),
+                    );
+
+                    for p in parts {
+                        curr = curr.push(
+                            Text::new(&p.name)
+                                .font(JETBRAINS_MONO)
+                                .size(16)
+                                .color(Color::from_rgb8(255, 255, 255)),
+                        );
+                    }
+
+                    curr
+                },
+            );
+
+            if !unknown_parts.is_empty() {
+                current_parts_list = current_parts_list.push(
+                    Text::new("UNKNOWN PARTS")
+                        .font(JETBRAINS_MONO_BOLD)
+                        .size(17)
+                        .color(Color::from_rgb8(242, 203, 5)),
+                );
+
+                for p in unknown_parts {
+                    current_parts_list = current_parts_list.push(
+                        Text::new(&p.ident)
+                            .font(JETBRAINS_MONO)
+                            .size(16)
+                            .color(Color::from_rgb8(255, 255, 255)),
+                    );
+                }
+            }
+
+            current_parts_column = current_parts_column.push(Container::new(current_parts_list))
         }
-
-        let current_parts_list = active_item
-            .item
-            .parts
-            .iter()
-            .fold(Column::new(), |curr, part| {
-                curr.push(
-                    Text::new(
-                        part.short_ident
-                            .clone()
-                            .unwrap_or_else(|| part.ident.clone()),
-                    )
-                    .font(JETBRAINS_MONO)
-                    .size(16)
-                    .color(Color::from_rgb8(255, 255, 255)),
-                )
-            });
-
-        current_parts_column = current_parts_column.push(Container::new(current_parts_list))
     }
 
     let available_parts_contents = Container::new(available_parts_column)
