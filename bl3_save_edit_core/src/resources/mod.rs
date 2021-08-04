@@ -15,7 +15,7 @@ pub static INVENTORY_SERIAL_DB: Lazy<InventorySerialDb> =
     Lazy::new(|| InventorySerialDb::load().expect("failed to load inventory serial db"));
 
 #[derive(Debug, Deserialize)]
-struct InventoryItemRecord {
+struct ResourceItemRecord {
     #[serde(rename = "Manufacturer/Name")]
     manufacturer: String,
     #[serde(rename = "Rarity")]
@@ -38,21 +38,21 @@ struct InventoryItemRecord {
     excluders: Option<Vec<String>>,
 }
 
-#[derive(Debug)]
-pub struct InventoryItem {
+#[derive(Debug, Default, Clone)]
+pub struct ResourceItem {
     pub manufacturer: String,
     pub rarity: String,
-    pub inventory_categorized_parts: Vec<InventoryCategorizedParts>,
+    pub inventory_categorized_parts: Vec<ResourceCategorizedParts>,
 }
 
-#[derive(Debug)]
-pub struct InventoryCategorizedParts {
+#[derive(Debug, Default, Clone)]
+pub struct ResourceCategorizedParts {
     pub category: String,
-    pub parts: Vec<Part>,
+    pub parts: Vec<ResourcePart>,
 }
 
-#[derive(Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
-pub struct Part {
+#[derive(Debug, Default, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+pub struct ResourcePart {
     pub name: String,
     pub min_parts: u8,
     pub max_parts: u8,
@@ -60,7 +60,7 @@ pub struct Part {
     pub excluders: Option<Vec<String>>,
 }
 
-pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<String, InventoryItem>> = Lazy::new(|| {
+pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<String, ResourceItem>> = Lazy::new(|| {
     let parts_grouped = load_inventory_parts_grouped(INVENTORY_PARTS_SHIELDS_DATA);
 
     let mut m = HashMap::new();
@@ -68,11 +68,11 @@ pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<String, InventoryItem>> = Lazy:
     for (header, body) in parts_grouped {
         let inventory_categorized_parts = body
             .into_par_iter()
-            .map(|(category, parts)| InventoryCategorizedParts {
+            .map(|(category, parts)| ResourceCategorizedParts {
                 category,
                 parts: parts
                     .par_iter()
-                    .map(|p| Part {
+                    .map(|p| ResourcePart {
                         name: p.name.to_owned(),
                         min_parts: p.min_parts,
                         max_parts: p.max_parts,
@@ -83,7 +83,7 @@ pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<String, InventoryItem>> = Lazy:
             })
             .collect::<Vec<_>>();
 
-        let inv_part = InventoryItem {
+        let inv_part = ResourceItem {
             manufacturer: header.manufacturer,
             rarity: header.rarity,
             inventory_categorized_parts,
@@ -102,7 +102,7 @@ struct TempHeader {
     balance: String,
 }
 
-type TempBody = BTreeMap<String, BTreeSet<Part>>;
+type TempBody = BTreeMap<String, BTreeSet<ResourcePart>>;
 
 fn load_inventory_parts_grouped(bytes: &[u8]) -> BTreeMap<TempHeader, TempBody> {
     let mut rdr = csv::ReaderBuilder::new()
@@ -110,8 +110,7 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> BTreeMap<TempHeader, TempBody> 
         .from_reader(bytes);
 
     let records = rdr.deserialize().map(|r| {
-        let mut record: InventoryItemRecord =
-            r.expect("failed to deserialize inventory part record");
+        let mut record: ResourceItemRecord = r.expect("failed to deserialize resource part record");
 
         if let Some(curr_dependencies) = &record.dependencies {
             let all_dependencies = curr_dependencies
@@ -147,7 +146,7 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> BTreeMap<TempHeader, TempBody> 
             balance: inv_part.balance,
         };
 
-        let inventory_part = Part {
+        let inventory_part = ResourcePart {
             name: inv_part.part,
             min_parts: inv_part.min_parts,
             max_parts: inv_part.max_parts,

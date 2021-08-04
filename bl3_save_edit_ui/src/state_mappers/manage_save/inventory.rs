@@ -18,11 +18,33 @@ pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
         .map(|(i, item)| InventoryItem::new(i, item))
         .collect();
 
-    map_save_to_inventory_state(manage_save_state);
+    manage_save_state
+        .main_state
+        .inventory_state
+        .item_list_scrollable_state
+        .snap_to(0.0);
+
+    map_item_to_manage_save_state(manage_save_state);
 }
 
-pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
+pub fn map_item_to_manage_save_state(manage_save_state: &mut ManageSaveState) {
+    //TODO: Snap to top for every scrollable in each state_mapper when it is required (including pick_list if possible)
+    manage_save_state
+        .main_state
+        .inventory_state
+        .available_parts
+        .scrollable_state
+        .snap_to(0.0);
+
+    manage_save_state
+        .main_state
+        .inventory_state
+        .current_parts
+        .scrollable_state
+        .snap_to(0.0);
+
     let save = &manage_save_state.current_file;
+
     let selected_item_index = manage_save_state
         .main_state
         .inventory_state

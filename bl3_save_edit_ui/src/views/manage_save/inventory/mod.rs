@@ -10,17 +10,21 @@ use bl3_save_edit_core::resources::INVENTORY_PARTS_SHIELDS;
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::views::manage_save::inventory::available_parts::{AvailableParts, AvailablePartsIndex};
+use crate::views::manage_save::inventory::current_parts::{CurrentParts, CurrentPartsIndex};
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::text_margin::TextMargin;
+
+pub mod available_parts;
+pub mod current_parts;
 
 #[derive(Debug, Default)]
 pub struct InventoryState {
     pub selected_item_index: usize,
     pub items: Vec<InventoryItem>,
     pub item_list_scrollable_state: scrollable::State,
-    pub available_parts_scrollable_state: scrollable::State,
     pub balance_input: String,
     pub balance_input_state: text_input_with_picklist::State<GameDataKv>,
     pub balance_input_selected: GameDataKv,
@@ -28,6 +32,8 @@ pub struct InventoryState {
     pub inventory_data_input_state: text_input::State,
     pub manufacturer_input: String,
     pub manufacturer_input_state: text_input::State,
+    pub available_parts: AvailableParts,
+    pub current_parts: CurrentParts,
 }
 
 #[derive(Debug)]
@@ -36,6 +42,8 @@ pub enum InventoryMessage {}
 #[derive(Debug, Clone)]
 pub enum InventoryInteractionMessage {
     ItemPressed(usize),
+    AvailablePartPressed(AvailablePartsIndex),
+    CurrentPartPressed(CurrentPartsIndex),
     BalanceInputChanged(String),
     BalanceInputSelected(GameDataKv),
     InventoryDataInputChanged(String),
@@ -83,16 +91,16 @@ impl InventoryItem {
         ))
         .padding(10)
         .width(Length::Fill)
-        .style(InventoryItemStyle { is_active })
+        .style(InventoryButtonStyle { is_active })
         .into_element()
     }
 }
 
-pub struct InventoryItemStyle {
+pub struct InventoryButtonStyle {
     pub is_active: bool,
 }
 
-impl button::StyleSheet for InventoryItemStyle {
+impl button::StyleSheet for InventoryButtonStyle {
     fn active(&self) -> button::Style {
         let (background, text_color) = if self.is_active {
             (
@@ -137,6 +145,8 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
     //Todo: Each item should have it's own state
 
     let selected_item_index = inventory_state.selected_item_index;
+    let inv_part_shields = &*INVENTORY_PARTS_SHIELDS;
+    let active_item = inventory_state.items.get(selected_item_index);
 
     let item_editor_contents = Column::new()
         .push(
@@ -237,165 +247,23 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         )
         .spacing(20);
 
-    let active_item = inventory_state.items.get(selected_item_index);
-
-    let inv_part_shields = &*INVENTORY_PARTS_SHIELDS;
-
-    let mut available_parts_column = Column::new().push(
-        Container::new(
-            TextMargin::new("Available Parts", 2)
-                .0
-                .font(JETBRAINS_MONO_BOLD)
-                .size(17)
-                .color(Color::from_rgb8(242, 203, 5)),
-        )
-        .padding(10)
-        .align_x(Align::Center)
-        .width(Length::FillPortion(2))
-        .style(Bl3UiStyle),
-    );
-
-    let mut current_parts_column = Column::new().push(
-        Container::new(
-            TextMargin::new("Current Parts", 2)
-                .0
-                .font(JETBRAINS_MONO_BOLD)
-                .size(17)
-                .color(Color::from_rgb8(242, 203, 5)),
-        )
-        .padding(10)
-        .align_x(Align::Center)
-        .width(Length::FillPortion(2))
-        .style(Bl3UiStyle),
-    );
-
-    if let Some(active_item) = active_item {
-        if let Some(available_parts) = active_item
+    let resource_item = active_item.and_then(|inv_item| {
+        inv_item
             .item
             .balance_part
             .short_ident
             .as_ref()
             .and_then(|i| inv_part_shields.get(i))
-        {
-            let available_parts_list = available_parts.inventory_categorized_parts.iter().fold(
-                Column::new(),
-                |mut curr, categorized_part| {
-                    curr = curr.push(
-                        Text::new(&categorized_part.category)
-                            .font(JETBRAINS_MONO_BOLD)
-                            .size(17)
-                            .color(Color::from_rgb8(242, 203, 5)),
-                    );
+    });
 
-                    for p in &categorized_part.parts {
-                        curr = curr.push(
-                            Text::new(&p.name)
-                                .font(JETBRAINS_MONO)
-                                .size(16)
-                                .color(Color::from_rgb8(255, 255, 255)),
-                        );
-                    }
+    let available_parts_contents = inventory_state.available_parts.view(resource_item);
 
-                    curr
-                },
-            );
-
-            available_parts_column = available_parts_column.push(
-                Container::new(
-                    Scrollable::new(&mut inventory_state.item_list_scrollable_state)
-                        .push(available_parts_list)
-                        .height(Length::Fill)
-                        .width(Length::Fill),
-                )
-                .padding(1),
-            );
-
-            let part_contains =
-                |short_ident: Option<&String>, ident: &str, cat_part_name: &str| -> bool {
-                    if let Some(short_ident) = short_ident {
-                        cat_part_name.to_lowercase() == short_ident.to_lowercase()
-                    } else {
-                        ident.to_lowercase().contains(&cat_part_name.to_lowercase())
-                    }
-                };
-
-            let unknown_parts = active_item
-                .item
-                .parts
-                .iter()
-                .filter(|p| {
-                    !available_parts
-                        .inventory_categorized_parts
-                        .iter()
-                        .any(|cat| {
-                            cat.parts.iter().any(|cat_p| {
-                                part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
-                            })
-                        })
-                })
-                .collect::<Vec<_>>();
-
-            let mut current_parts_list = available_parts.inventory_categorized_parts.iter().fold(
-                Column::new(),
-                |mut curr, categorized_part| {
-                    let parts =
-                        categorized_part.parts.iter().filter(|cat_p| {
-                            active_item.item.parts.iter().any(|p| {
-                                part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
-                            })
-                        });
-
-                    curr = curr.push(
-                        Text::new(&categorized_part.category)
-                            .font(JETBRAINS_MONO_BOLD)
-                            .size(17)
-                            .color(Color::from_rgb8(242, 203, 5)),
-                    );
-
-                    for p in parts {
-                        curr = curr.push(
-                            Text::new(&p.name)
-                                .font(JETBRAINS_MONO)
-                                .size(16)
-                                .color(Color::from_rgb8(255, 255, 255)),
-                        );
-                    }
-
-                    curr
-                },
-            );
-
-            if !unknown_parts.is_empty() {
-                current_parts_list = current_parts_list.push(
-                    Text::new("UNKNOWN PARTS")
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
-                        .color(Color::from_rgb8(242, 203, 5)),
-                );
-
-                for p in unknown_parts {
-                    current_parts_list = current_parts_list.push(
-                        Text::new(&p.ident)
-                            .font(JETBRAINS_MONO)
-                            .size(16)
-                            .color(Color::from_rgb8(255, 255, 255)),
-                    );
-                }
-            }
-
-            current_parts_column = current_parts_column.push(Container::new(current_parts_list))
-        }
-    }
-
-    let available_parts_contents = Container::new(available_parts_column)
-        .width(Length::FillPortion(2))
-        .height(Length::Fill)
-        .style(Bl3UiStyle);
-
-    let current_parts_contents = Container::new(current_parts_column)
-        .width(Length::FillPortion(2))
-        .height(Length::Fill)
-        .style(Bl3UiStyle);
+    let current_parts_contents = inventory_state.current_parts.view(
+        inventory_state
+            .items
+            .get(inventory_state.selected_item_index),
+        resource_item,
+    );
 
     let parts_editor = Row::new()
         .push(available_parts_contents)
@@ -430,7 +298,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
             )
             .push(
                 Container::new(
-                    Scrollable::new(&mut inventory_state.available_parts_scrollable_state)
+                    Scrollable::new(&mut inventory_state.item_list_scrollable_state)
                         .push(inventory_items)
                         .height(Length::Fill),
                 )

@@ -13,7 +13,7 @@ use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers::manage_save::fast_travel::map_fast_travel_stations_to_visited_teleporters_list;
-use crate::state_mappers::manage_save::inventory::map_save_to_inventory_state;
+use crate::state_mappers::manage_save::inventory::map_item_to_manage_save_state;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -25,7 +25,9 @@ use crate::views::manage_save::character::{
 use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
-use crate::views::manage_save::inventory::InventoryInteractionMessage;
+use crate::views::manage_save::inventory::{
+    available_parts, current_parts, InventoryInteractionMessage,
+};
 use crate::views::manage_save::main::{MainTabBarInteractionMessage, MainTabBarView};
 use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
@@ -458,25 +460,30 @@ impl Application for Bl3UiState {
                     }
                     ManageSaveInteractionMessage::Inventory(inventory_msg) => match inventory_msg {
                         InventoryInteractionMessage::ItemPressed(item_index) => {
-                            // self.manage_save_state
-                            //     .main_state
-                            //     .inventory_state
-                            //     .items
-                            //     .iter_mut()
-                            //     .enumerate()
-                            //     .for_each(|(i, item)| {
-                            //         item.is_active = false;
-                            //
-                            //         if item_index == i {
-                            //             item.is_active = true;
-                            //         }
-                            //     });
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
                                 .selected_item_index = item_index;
 
-                            map_save_to_inventory_state(&mut self.manage_save_state);
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .available_parts
+                                .parts_index = available_parts::AvailablePartsIndex {
+                                category_index: 0,
+                                part_index: 0,
+                            };
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .current_parts
+                                .parts_index = current_parts::CurrentPartsIndex {
+                                category_index: 0,
+                                part_index: 0,
+                            };
+
+                            map_item_to_manage_save_state(&mut self.manage_save_state);
                         }
                         InventoryInteractionMessage::BalanceInputChanged(balance_input) => {
                             self.manage_save_state
@@ -510,6 +517,22 @@ impl Application for Bl3UiState {
                                 .main_state
                                 .inventory_state
                                 .manufacturer_input = manufacturer_input;
+                        }
+                        InventoryInteractionMessage::AvailablePartPressed(
+                            available_parts_index,
+                        ) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .available_parts
+                                .parts_index = available_parts_index;
+                        }
+                        InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .current_parts
+                                .parts_index = current_parts_index;
                         }
                     },
                 },
