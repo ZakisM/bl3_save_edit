@@ -70,7 +70,7 @@ impl AvailableResourcePart {
                 }),
             ),
         ))
-        .padding(5)
+        .padding(10)
         .width(Length::Fill)
         .style(InventoryButtonStyle { is_active })
         .into_element()

@@ -78,7 +78,7 @@ impl CurrentInventoryPart {
                 }),
             ),
         ))
-        .padding(5)
+        .padding(10)
         .width(Length::Fill)
         .style(InventoryButtonStyle { is_active })
         .into_element()
@@ -143,7 +143,7 @@ impl CurrentParts {
                         curr_cat_parts.push(p.to_owned());
                     } else {
                         let curr_cat_parts = categorized_parts
-                            .entry("UNKNOWN".to_owned())
+                            .entry("UNKNOWN PARTS".to_owned())
                             .or_insert_with(Vec::new);
 
                         curr_cat_parts.push(p.to_owned());
@@ -152,7 +152,7 @@ impl CurrentParts {
             } else {
                 active_item.item.parts.iter().for_each(|p| {
                     let curr_cat_parts = categorized_parts
-                        .entry("UNKNOWN".to_owned())
+                        .entry("UNKNOWN PARTS".to_owned())
                         .or_insert_with(Vec::new);
 
                     curr_cat_parts.push(p.to_owned());
