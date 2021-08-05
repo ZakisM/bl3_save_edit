@@ -25,71 +25,75 @@ pub fn map_character_state(manage_save_state: &mut ManageSaveState) {
     manage_save_state
         .main_state
         .character_state
-        .skin_state
-        .selected_head_skin = save.character_data.head_skin_selected;
+        .skin_selectors
+        .head_skin
+        .selected = save.character_data.head_skin_selected;
 
     manage_save_state
         .main_state
         .character_state
-        .skin_state
-        .selected_character_skin = save.character_data.character_skin_selected;
+        .skin_selectors
+        .character_skin
+        .selected = save.character_data.character_skin_selected;
 
     manage_save_state
         .main_state
         .character_state
-        .skin_state
-        .selected_echo_theme = save.character_data.echo_theme_selected;
+        .skin_selectors
+        .echo_theme
+        .selected = save.character_data.echo_theme_selected;
 
-    let mut gear_state =
-        std::mem::take(&mut manage_save_state.main_state.character_state.gear_state);
+    let mut gear_unlocker =
+        std::mem::take(&mut manage_save_state.main_state.character_state.gear_unlocker);
 
     save.character_data
         .unlockable_inventory_slots
         .iter()
         .for_each(|s| match s.slot {
-            InventorySlot::Weapon1 => {
-                gear_state.unlock_weapon_1_slot = true;
-            }
-            InventorySlot::Weapon2 => {
-                gear_state.unlock_weapon_2_slot = s.unlocked;
-            }
-            InventorySlot::Weapon3 => {
-                gear_state.unlock_weapon_3_slot = s.unlocked;
-            }
-            InventorySlot::Weapon4 => {
-                gear_state.unlock_weapon_4_slot = s.unlocked;
+            InventorySlot::Grenade => {
+                gear_unlocker.grenade.is_unlocked = s.unlocked;
             }
             InventorySlot::Shield => {
-                gear_state.unlock_shield_slot = s.unlocked;
+                gear_unlocker.shield.is_unlocked = s.unlocked;
             }
-            InventorySlot::Grenade => {
-                gear_state.unlock_grenade_slot = s.unlocked;
+            InventorySlot::Weapon1 => {
+                gear_unlocker.weapon_1.is_unlocked = s.unlocked;
             }
-            InventorySlot::ClassMod => {
-                gear_state.unlock_class_mod_slot = s.unlocked;
+            InventorySlot::Weapon2 => {
+                gear_unlocker.weapon_2.is_unlocked = s.unlocked;
+            }
+            InventorySlot::Weapon3 => {
+                gear_unlocker.weapon_3.is_unlocked = s.unlocked;
+            }
+            InventorySlot::Weapon4 => {
+                gear_unlocker.weapon_4.is_unlocked = s.unlocked;
             }
             InventorySlot::Artifact => {
-                gear_state.unlock_artifact_slot = s.unlocked;
+                gear_unlocker.artifact.is_unlocked = s.unlocked;
+            }
+            InventorySlot::ClassMod => {
+                gear_unlocker.class_mod.is_unlocked = s.unlocked;
             }
         });
 
-    manage_save_state.main_state.character_state.gear_state = gear_state;
+    manage_save_state.main_state.character_state.gear_unlocker = gear_unlocker;
 
-    let mut sdu_state = std::mem::take(&mut manage_save_state.main_state.character_state.sdu_state);
+    let mut sdu_unlocker =
+        std::mem::take(&mut manage_save_state.main_state.character_state.sdu_unlocker);
 
     save.character_data
         .sdu_slots
         .iter()
         .for_each(|s| match s.slot {
-            SaveSduSlot::Backpack => sdu_state.backpack_input = s.current,
-            SaveSduSlot::Sniper => sdu_state.sniper_input = s.current,
-            SaveSduSlot::Shotgun => sdu_state.shotgun_input = s.current,
-            SaveSduSlot::Pistol => sdu_state.pistol_input = s.current,
-            SaveSduSlot::Grenade => sdu_state.grenade_input = s.current,
-            SaveSduSlot::Smg => sdu_state.smg_input = s.current,
-            SaveSduSlot::Ar => sdu_state.assault_rifle_input = s.current,
-            SaveSduSlot::Heavy => sdu_state.heavy_input = s.current,
+            SaveSduSlot::Backpack => sdu_unlocker.backpack.input = s.current,
+            SaveSduSlot::Sniper => sdu_unlocker.sniper.input = s.current,
+            SaveSduSlot::Shotgun => sdu_unlocker.shotgun.input = s.current,
+            SaveSduSlot::Pistol => sdu_unlocker.pistol.input = s.current,
+            SaveSduSlot::Grenade => sdu_unlocker.grenade.input = s.current,
+            SaveSduSlot::Smg => sdu_unlocker.smg.input = s.current,
+            SaveSduSlot::Ar => sdu_unlocker.assault_rifle.input = s.current,
+            SaveSduSlot::Heavy => sdu_unlocker.heavy.input = s.current,
         });
 
-    manage_save_state.main_state.character_state.sdu_state = sdu_state;
+    manage_save_state.main_state.character_state.sdu_unlocker = sdu_unlocker;
 }

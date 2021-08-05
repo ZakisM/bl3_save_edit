@@ -1,30 +1,25 @@
-use std::cell::RefCell;
-
 use iced::{
-    button, pick_list, text_input, tooltip, Align, Button, Checkbox, Color, Column, Container,
-    Length, PickList, Row, Text, TextInput, Tooltip,
+    pick_list, text_input, tooltip, Align, Column, Container, Length, PickList, Row, TextInput,
+    Tooltip,
 };
 
 use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
-use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::REQUIRED_XP_LIST;
-use bl3_save_edit_core::game_data::{
-    GameDataKv, PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_HEADS,
-    PROFILE_HEADS_DEFAULTS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS,
-};
+use bl3_save_edit_core::game_data::GameDataKv;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
-use crate::generate_sdu_input;
-use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::manage_save::character::skins::SkinPickList;
-use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveMessage};
+use crate::resources::fonts::JETBRAINS_MONO;
+use crate::views::manage_save::character::gear::GearUnlocker;
+use crate::views::manage_save::character::sdu::SduUnlocker;
+use crate::views::manage_save::character::skins::SkinSelectors;
+use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
-use crate::widgets::text_margin::TextMargin;
 
 mod gear;
+mod sdu;
 mod skins;
 
 pub const MAX_CHARACTER_LEVEL: usize = 72;
@@ -39,20 +34,9 @@ pub struct CharacterState {
     pub xp_level_input_state: text_input::State,
     pub xp_points_input: i32,
     pub xp_points_input_state: text_input::State,
-    pub skin_state: CharacterSkinState,
-    pub gear_state: CharacterGearState,
-    pub sdu_state: CharacterSduState,
-    pub max_sdu_slots_button_state: button::State,
-}
-
-#[derive(Debug, Default)]
-pub struct CharacterSkinState {
-    pub head_skin: SkinPickList,
-    pub selected_head_skin: GameDataKv,
-    pub character_skin: SkinPickList,
-    pub selected_character_skin: GameDataKv,
-    pub echo_theme: SkinPickList,
-    pub selected_echo_theme: GameDataKv,
+    pub skin_selectors: SkinSelectors,
+    pub gear_unlocker: GearUnlocker,
+    pub sdu_unlocker: SduUnlocker,
 }
 
 #[derive(Debug, Default)]
@@ -67,31 +51,6 @@ pub struct CharacterGearState {
     pub unlock_class_mod_slot: bool,
 }
 
-#[derive(Debug, Default)]
-pub struct CharacterSduState {
-    pub backpack_input: i32,
-    pub backpack_input_state: text_input::State,
-    pub sniper_input: i32,
-    pub sniper_input_state: text_input::State,
-    pub shotgun_input: i32,
-    pub shotgun_input_state: text_input::State,
-    pub pistol_input: i32,
-    pub pistol_input_state: text_input::State,
-    pub grenade_input: i32,
-    pub grenade_input_state: text_input::State,
-    pub smg_input: i32,
-    pub smg_input_state: text_input::State,
-    pub assault_rifle_input: i32,
-    pub assault_rifle_input_state: text_input::State,
-    pub heavy_input: i32,
-    pub heavy_input_state: text_input::State,
-}
-
-#[derive(Debug, Clone)]
-pub enum CharacterMessage {
-    GearMessage(CharacterUnlockGearMessage),
-}
-
 #[derive(Debug, Clone)]
 pub enum CharacterSkinSelectedMessage {
     HeadSkin(GameDataKv),
@@ -100,7 +59,7 @@ pub enum CharacterSkinSelectedMessage {
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterUnlockGearMessage {
+pub enum CharacterGearUnlockedMessage {
     Grenade(bool),
     Shield(bool),
     Weapon1(bool),
@@ -118,6 +77,7 @@ pub enum CharacterInteractionMessage {
     XpPointsInputChanged(i32),
     PlayerClassSelected(PlayerClass),
     SkinMessage(CharacterSkinSelectedMessage),
+    GearMessage(CharacterGearUnlockedMessage),
     SduMessage(CharacterSduInputChangedMessage),
     MaxSduSlotsPressed,
 }
@@ -281,414 +241,34 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
 
     let xp_row = Row::new().push(xp_level).push(xp_points).spacing(20);
 
-    character_state.skin_state.head_skin = SkinPickList::new(
-        "Head Skin",
-        105,
-        &PROFILE_HEADS_DEFAULTS,
-        &PROFILE_HEADS,
-        &mut character_state.skin_state.selected_head_skin,
-        Some(selected_class),
-        CharacterSkinSelectedMessage::HeadSkin,
-    );
+    let skin_unlocker = character_state.skin_selectors.view(&selected_class);
 
-    character_state.skin_state.character_skin = SkinPickList::new(
-        "Character Skin",
-        135,
-        &PROFILE_SKINS_DEFAULTS,
-        &PROFILE_SKINS,
-        &mut character_state.skin_state.selected_character_skin,
-        Some(selected_class),
-        CharacterSkinSelectedMessage::CharacterSkin,
-    );
+    let gear_unlocker = character_state
+        .gear_unlocker
+        .view()
+        .width(Length::FillPortion(3));
 
-    character_state.skin_state.echo_theme = SkinPickList::new(
-        "ECHO Theme",
-        105,
-        &PROFILE_ECHO_THEMES_DEFAULTS,
-        &PROFILE_ECHO_THEMES,
-        &mut character_state.skin_state.selected_echo_theme,
-        None,
-        CharacterSkinSelectedMessage::EchoTheme,
-    );
-
-    let head_skin = character_state.skin_state.head_skin.view();
-    let character_skin = character_state.skin_state.character_skin.view();
-    let echo_theme = character_state.skin_state.echo_theme.view();
-
-    let skin_row = Container::new(
-        Column::new()
-            .push(Row::new().push(head_skin).push(character_skin).spacing(20))
-            .push(echo_theme)
-            .spacing(20),
-    );
-
-    let gear_unlocker = Container::new(
-        Column::new()
-            .push(
-                Container::new(
-                    TextMargin::new("Gear Management", 2)
-                        .0
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
-                        .color(Color::from_rgb8(242, 203, 5)),
-                )
-                .padding(10)
-                .align_x(Align::Center)
-                .width(Length::Fill)
-                .style(Bl3UiStyle),
-            )
-            .push(
-                Container::new(
-                    Column::new()
-                        .push(
-                            Checkbox::new(
-                                character_state.gear_state.unlock_grenade_slot,
-                                "Grenade",
-                                |b| {
-                                    Message::ManageSave(ManageSaveMessage::Character(
-                                        CharacterMessage::GearMessage(
-                                            CharacterUnlockGearMessage::Grenade(b),
-                                        ),
-                                    ))
-                                },
-                            )
-                            .size(20)
-                            .font(JETBRAINS_MONO)
-                            .text_color(Color::from_rgb8(220, 220, 220))
-                            .text_size(17)
-                            .style(Bl3UiStyle),
-                        )
-                        .push(
-                            Checkbox::new(
-                                character_state.gear_state.unlock_shield_slot,
-                                "Shield",
-                                |b| {
-                                    Message::ManageSave(ManageSaveMessage::Character(
-                                        CharacterMessage::GearMessage(
-                                            CharacterUnlockGearMessage::Shield(b),
-                                        ),
-                                    ))
-                                },
-                            )
-                            .size(20)
-                            .font(JETBRAINS_MONO)
-                            .text_color(Color::from_rgb8(220, 220, 220))
-                            .text_size(17)
-                            .style(Bl3UiStyle),
-                        )
-                        .push(
-                            Checkbox::new(
-                                character_state.gear_state.unlock_weapon_1_slot,
-                                "Weapon Slot 1",
-                                |b| {
-                                    Message::ManageSave(ManageSaveMessage::Character(
-                                        CharacterMessage::GearMessage(
-                                            CharacterUnlockGearMessage::Weapon1(b),
-                                        ),
-                                    ))
-                                },
-                            )
-                            .size(20)
-                            .font(JETBRAINS_MONO)
-                            .text_color(Color::from_rgb8(220, 220, 220))
-                            .text_size(17)
-                            .style(Bl3UiStyle),
-                        )
-                        .push(
-                            Checkbox::new(
-                                character_state.gear_state.unlock_weapon_2_slot,
-                                "Weapon Slot 2",
-                                |b| {
-                                    Message::ManageSave(ManageSaveMessage::Character(
-                                        CharacterMessage::GearMessage(
-                                            CharacterUnlockGearMessage::Weapon2(b),
-                                        ),
-                                    ))
-                                },
-                            )
-                            .size(20)
-                            .font(JETBRAINS_MONO)
-                            .text_color(Color::from_rgb8(220, 220, 220))
-                            .text_size(17)
-                            .style(Bl3UiStyle),
-                        )
-                        .push(
-                            Checkbox::new(
-                                character_state.gear_state.unlock_weapon_3_slot,
-                                "Weapon Slot 3",
-                                |b| {
-                                    Message::ManageSave(ManageSaveMessage::Character(
-                                        CharacterMessage::GearMessage(
-                                            CharacterUnlockGearMessage::Weapon3(b),
-                                        ),
-                                    ))
-                                },
-                            )
-                            .size(20)
-                            .font(JETBRAINS_MONO)
-                            .text_color(Color::from_rgb8(220, 220, 220))
-                            .text_size(17)
-                            .style(Bl3UiStyle),
-                        )
-                        .push(
-                            Checkbox::new(
-                                character_state.gear_state.unlock_weapon_4_slot,
-                                "Weapon Slot 4",
-                                |b| {
-                                    Message::ManageSave(ManageSaveMessage::Character(
-                                        CharacterMessage::GearMessage(
-                                            CharacterUnlockGearMessage::Weapon4(b),
-                                        ),
-                                    ))
-                                },
-                            )
-                            .size(20)
-                            .font(JETBRAINS_MONO)
-                            .text_color(Color::from_rgb8(220, 220, 220))
-                            .text_size(17)
-                            .style(Bl3UiStyle),
-                        )
-                        .push(
-                            Checkbox::new(
-                                character_state.gear_state.unlock_artifact_slot,
-                                "Artifact",
-                                |b| {
-                                    Message::ManageSave(ManageSaveMessage::Character(
-                                        CharacterMessage::GearMessage(
-                                            CharacterUnlockGearMessage::Artifact(b),
-                                        ),
-                                    ))
-                                },
-                            )
-                            .size(20)
-                            .font(JETBRAINS_MONO)
-                            .text_color(Color::from_rgb8(220, 220, 220))
-                            .text_size(17)
-                            .style(Bl3UiStyle),
-                        )
-                        .push(
-                            Checkbox::new(
-                                character_state.gear_state.unlock_class_mod_slot,
-                                "Class Mod",
-                                |b| {
-                                    Message::ManageSave(ManageSaveMessage::Character(
-                                        CharacterMessage::GearMessage(
-                                            CharacterUnlockGearMessage::ClassMod(b),
-                                        ),
-                                    ))
-                                },
-                            )
-                            .size(20)
-                            .font(JETBRAINS_MONO)
-                            .text_color(Color::from_rgb8(220, 220, 220))
-                            .text_size(17)
-                            .style(Bl3UiStyle),
-                        )
-                        .spacing(15),
-                )
-                .width(Length::Fill)
-                .padding(15)
-                .style(Bl3UiStyle),
-            ),
-    )
-    .width(Length::FillPortion(3));
-
-    let sdu_unlocker = Container::new(
-        Column::new()
-            .push(
-                Container::new(
-                    TextMargin::new("SDU Management", 2)
-                        .0
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
-                        .color(Color::from_rgb8(242, 203, 5)),
-                )
-                .padding(10)
-                .align_x(Align::Center)
-                .width(Length::Fill)
-                .style(Bl3UiStyle),
-            )
-            .push(
-                Container::new(
-                    Column::new()
-                        .push(
-                            Row::new()
-                                .push(generate_sdu_input!(
-                                    "Backpack",
-                                    0,
-                                    SaveSduSlot::Backpack,
-                                    character_state,
-                                    backpack_input,
-                                    backpack_input_state,
-                                    CharacterSduInputChangedMessage::Backpack
-                                ))
-                                .push(generate_sdu_input!(
-                                    "Sniper",
-                                    4,
-                                    SaveSduSlot::Sniper,
-                                    character_state,
-                                    sniper_input,
-                                    sniper_input_state,
-                                    CharacterSduInputChangedMessage::Sniper
-                                )),
-                        )
-                        .push(
-                            Row::new()
-                                .push(generate_sdu_input!(
-                                    "Heavy",
-                                    0,
-                                    SaveSduSlot::Heavy,
-                                    character_state,
-                                    heavy_input,
-                                    heavy_input_state,
-                                    CharacterSduInputChangedMessage::Heavy
-                                ))
-                                .push(generate_sdu_input!(
-                                    "Shotgun",
-                                    4,
-                                    SaveSduSlot::Shotgun,
-                                    character_state,
-                                    shotgun_input,
-                                    shotgun_input_state,
-                                    CharacterSduInputChangedMessage::Shotgun
-                                )),
-                        )
-                        .push(
-                            Row::new()
-                                .push(generate_sdu_input!(
-                                    "Grenade",
-                                    0,
-                                    SaveSduSlot::Grenade,
-                                    character_state,
-                                    grenade_input,
-                                    grenade_input_state,
-                                    CharacterSduInputChangedMessage::Grenade
-                                ))
-                                .push(generate_sdu_input!(
-                                    "SMG",
-                                    4,
-                                    SaveSduSlot::Smg,
-                                    character_state,
-                                    smg_input,
-                                    smg_input_state,
-                                    CharacterSduInputChangedMessage::Smg
-                                )),
-                        )
-                        .push(
-                            Row::new()
-                                .push(generate_sdu_input!(
-                                    "AR",
-                                    0,
-                                    SaveSduSlot::Ar,
-                                    character_state,
-                                    assault_rifle_input,
-                                    assault_rifle_input_state,
-                                    CharacterSduInputChangedMessage::AssaultRifle
-                                ))
-                                .push(generate_sdu_input!(
-                                    "Pistol",
-                                    4,
-                                    SaveSduSlot::Pistol,
-                                    character_state,
-                                    pistol_input,
-                                    pistol_input_state,
-                                    CharacterSduInputChangedMessage::Pistol
-                                )),
-                        )
-                        .push(
-                            Container::new(
-                                Button::new(
-                                    &mut character_state.max_sdu_slots_button_state,
-                                    Text::new("Max All SDU Levels")
-                                        .font(JETBRAINS_MONO_BOLD)
-                                        .size(17),
-                                )
-                                .on_press(InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::Character(
-                                        CharacterInteractionMessage::MaxSduSlotsPressed,
-                                    ),
-                                ))
-                                .padding(10)
-                                .style(Bl3UiStyle)
-                                .into_element(),
-                            )
-                            .padding(5),
-                        )
-                        .align_items(Align::Center)
-                        .spacing(15),
-                )
-                .padding(20)
-                .style(Bl3UiStyle),
-            ),
-    )
-    .width(Length::FillPortion(2));
-
-    //TODO:
-    // Set .invbal_ when setting the skin inside save
-    // /game/playercharacters/_customizations/beastmaster/heads/customhead_beastmaster_4.customhead_beastmaster_4
-    // /game/playercharacters/_customizations/beastmaster/heads/customhead_beastmaster_4.invbal_customhead_beastmaster_4
+    let sdu_unlocker = character_state
+        .sdu_unlocker
+        .view()
+        .width(Length::FillPortion(2));
 
     let slot_sdu_row = Row::new()
         .push(gear_unlocker)
         .push(sdu_unlocker)
         .spacing(20);
 
+    //TODO:
+    // Set .invbal_ when setting the skin inside save
+    // /game/playercharacters/_customizations/beastmaster/heads/customhead_beastmaster_4.customhead_beastmaster_4
+    // /game/playercharacters/_customizations/beastmaster/heads/customhead_beastmaster_4.invbal_customhead_beastmaster_4
+
     let all_contents = Column::new()
         .push(name_class_row)
         .push(xp_row)
-        .push(skin_row)
+        .push(skin_unlocker)
         .push(slot_sdu_row)
         .spacing(20);
 
     Container::new(all_contents).padding(30)
-}
-
-#[macro_export]
-macro_rules! generate_sdu_input {
-    ($name:literal, $text_margin:literal, $sdu_slot_type:path, $character_state:path, $input_value:ident, $input_state:ident, $input_message:path) => {{
-        let maximum = $sdu_slot_type.maximum();
-
-        Row::new()
-            .push(
-                TextMargin::new($name, $text_margin)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .color(Color::from_rgb8(220, 220, 220))
-                    .width(Length::FillPortion(8)),
-            )
-            .push(
-                Tooltip::new(
-                    NumberInput::new(
-                        &mut $character_state.sdu_state.$input_state,
-                        $character_state.sdu_state.$input_value,
-                        0,
-                        Some(maximum),
-                        |v| {
-                            InteractionMessage::ManageSaveInteraction(
-                                ManageSaveInteractionMessage::Character(
-                                    CharacterInteractionMessage::SduMessage($input_message(v)),
-                                ),
-                            )
-                        },
-                    )
-                    .0
-                    .width(Length::FillPortion(3))
-                    .font(JETBRAINS_MONO)
-                    .padding(10)
-                    .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                    format!("Level must be between 0 and {}", maximum),
-                    tooltip::Position::Top,
-                )
-                .gap(10)
-                .padding(10)
-                .font(JETBRAINS_MONO)
-                .size(17)
-                .style(Bl3UiTooltipStyle),
-            )
-            .width(Length::Fill)
-            .align_items(Align::Center)
-    }};
 }

@@ -1,10 +1,13 @@
 use std::rc::Rc;
 
 use derivative::Derivative;
-use iced::{pick_list, Align, Container, Length, PickList};
+use iced::{pick_list, Align, Column, Container, Length, PickList, Row};
 
 use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
-use bl3_save_edit_core::game_data::GameDataKv;
+use bl3_save_edit_core::game_data::{
+    GameDataKv, PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_HEADS,
+    PROFILE_HEADS_DEFAULTS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS,
+};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -17,28 +20,18 @@ use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 
 #[derive(Derivative)]
-#[derivative(Debug)]
+#[derivative(Debug, Default)]
 pub struct SkinPickList {
     name: String,
     name_width: u16,
     available_skins: Vec<GameDataKv>,
     pick_list: pick_list::State<GameDataKv>,
-    selected: Rc<GameDataKv>,
-    #[derivative(Debug = "ignore")]
+    pub selected: GameDataKv,
+    #[derivative(
+        Debug = "ignore",
+        Default(value = "Rc::new(CharacterSkinSelectedMessage::HeadSkin)")
+    )]
     on_selected: Rc<dyn Fn(GameDataKv) -> CharacterSkinSelectedMessage>,
-}
-
-impl std::default::Default for SkinPickList {
-    fn default() -> Self {
-        Self {
-            name: Default::default(),
-            name_width: Default::default(),
-            available_skins: Default::default(),
-            pick_list: Default::default(),
-            selected: Default::default(),
-            on_selected: Rc::new(CharacterSkinSelectedMessage::HeadSkin),
-        }
-    }
 }
 
 impl SkinPickList {
@@ -47,49 +40,50 @@ impl SkinPickList {
         name_width: u16,
         default_skin_list: &[GameDataKv],
         skin_list: &[GameDataKv],
-        selected_skin: &mut GameDataKv,
-        selected_class: Option<PlayerClass>,
         on_selected: F,
     ) -> Self
     where
         S: AsRef<str>,
         F: 'static + Fn(GameDataKv) -> CharacterSkinSelectedMessage,
     {
-        let mut available_skins = if let Some(selected_class) = selected_class {
-            let selected_class_s = selected_class.to_string().to_lowercase();
-
-            default_skin_list
-                .iter()
-                .chain(skin_list.iter())
-                .cloned()
-                .filter(|h| h.ident.to_lowercase().contains(&selected_class_s))
-                .collect::<Vec<_>>()
-        } else {
-            default_skin_list
-                .iter()
-                .chain(skin_list.iter())
-                .cloned()
-                .collect::<Vec<_>>()
-        };
+        let mut available_skins = default_skin_list
+            .iter()
+            .chain(skin_list.iter())
+            .cloned()
+            .collect::<Vec<_>>();
 
         available_skins.sort();
 
-        if !available_skins.contains(selected_skin) {
-            *selected_skin = available_skins[0];
-        }
+        let pre_selected_skin = available_skins[0];
 
         Self {
             name: name.as_ref().to_owned(),
             name_width,
             available_skins,
-            selected: Rc::new(*selected_skin),
+            selected: pre_selected_skin,
             pick_list: pick_list::State::default(),
             on_selected: Rc::new(on_selected),
         }
     }
 
-    pub fn view(&mut self) -> Container<Message> {
+    pub fn view(&mut self, player_class: Option<&PlayerClass>) -> Container<Message> {
         let on_selected = self.on_selected.clone();
+
+        let available_skins = if let Some(player_class) = player_class {
+            let player_class_s = player_class.to_string().to_lowercase();
+
+            self.available_skins
+                .iter()
+                .cloned()
+                .filter(|h| h.ident.to_lowercase().contains(&player_class_s))
+                .collect::<Vec<_>>()
+        } else {
+            self.available_skins.to_vec()
+        };
+
+        if !available_skins.contains(&self.selected) {
+            self.selected = available_skins[0];
+        }
 
         Container::new(
             LabelledElement::create(
@@ -97,8 +91,8 @@ impl SkinPickList {
                 Length::Units(self.name_width),
                 PickList::new(
                     &mut self.pick_list,
-                    &self.available_skins,
-                    Some(*self.selected),
+                    available_skins,
+                    Some(self.selected),
                     move |s| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
@@ -119,5 +113,55 @@ impl SkinPickList {
         .width(Length::Fill)
         .height(Length::Units(36))
         .style(Bl3UiStyle)
+    }
+}
+
+#[derive(Debug)]
+pub struct SkinSelectors {
+    pub head_skin: SkinPickList,
+    pub character_skin: SkinPickList,
+    pub echo_theme: SkinPickList,
+}
+
+impl std::default::Default for SkinSelectors {
+    fn default() -> Self {
+        Self {
+            head_skin: SkinPickList::new(
+                "Head Skin",
+                105,
+                &PROFILE_HEADS_DEFAULTS,
+                &PROFILE_HEADS,
+                CharacterSkinSelectedMessage::HeadSkin,
+            ),
+            character_skin: SkinPickList::new(
+                "Character Skin",
+                135,
+                &PROFILE_SKINS_DEFAULTS,
+                &PROFILE_SKINS,
+                CharacterSkinSelectedMessage::CharacterSkin,
+            ),
+            echo_theme: SkinPickList::new(
+                "ECHO Theme",
+                105,
+                &PROFILE_ECHO_THEMES_DEFAULTS,
+                &PROFILE_ECHO_THEMES,
+                CharacterSkinSelectedMessage::EchoTheme,
+            ),
+        }
+    }
+}
+
+impl SkinSelectors {
+    pub fn view(&mut self, player_class: &PlayerClass) -> Container<Message> {
+        let head_skin = self.head_skin.view(Some(player_class));
+        let character_skin = self.character_skin.view(Some(player_class));
+        let echo_theme = self.echo_theme.view(None);
+
+        Container::new(
+            Column::new()
+                .push(Row::new().push(head_skin).push(character_skin).spacing(20))
+                .push(echo_theme)
+                .spacing(20),
+        )
     }
 }

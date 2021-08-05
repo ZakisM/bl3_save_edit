@@ -1,6 +1,6 @@
 use bl3_save_edit_core::bl3_save::Bl3Save;
 
-use crate::views::manage_save::character::{CharacterInteractionMessage, CharacterMessage};
+use crate::views::manage_save::character::CharacterInteractionMessage;
 use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
@@ -23,7 +23,6 @@ pub struct ManageSaveState {
 #[derive(Debug, Clone)]
 pub enum ManageSaveMessage {
     General(GeneralMessage),
-    Character(CharacterMessage),
     FastTravel(FastTravelMessage),
 }
 

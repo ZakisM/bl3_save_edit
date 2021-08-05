@@ -48,6 +48,12 @@ pub enum SaveSduSlot {
     Heavy,
 }
 
+impl std::default::Default for SaveSduSlot {
+    fn default() -> Self {
+        Self::Backpack
+    }
+}
+
 impl SaveSduSlot {
     pub fn maximum(&self) -> i32 {
         match *self {
