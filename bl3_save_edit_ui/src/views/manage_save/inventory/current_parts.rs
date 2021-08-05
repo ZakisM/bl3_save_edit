@@ -10,9 +10,8 @@ use bl3_save_edit_core::resources::ResourceItem;
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::manage_save::inventory::{
-    InventoryButtonStyle, InventoryInteractionMessage, InventoryItem,
-};
+use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
+use crate::views::manage_save::inventory::{InventoryInteractionMessage, InventoryItem};
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::text_margin::TextMargin;

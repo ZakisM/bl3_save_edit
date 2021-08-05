@@ -1,9 +1,8 @@
 use iced::{
-    button, scrollable, text_input, text_input_with_picklist, Align, Button, Color, Column,
-    Container, Element, Length, Row, Scrollable, Text, TextInput, TextInputWithPickList,
+    scrollable, text_input, text_input_with_picklist, Align, Color, Column, Container, Length, Row,
+    Scrollable, TextInput, TextInputWithPickList,
 };
 
-use bl3_save_edit_core::bl3_save::bl3_serial::Bl3Serial;
 use bl3_save_edit_core::game_data::{GameDataKv, BALANCE_NAME_MAPPING};
 use bl3_save_edit_core::resources::INVENTORY_PARTS_SHIELDS;
 
@@ -12,6 +11,7 @@ use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::inventory::available_parts::{AvailableParts, AvailablePartsIndex};
 use crate::views::manage_save::inventory::current_parts::{CurrentParts, CurrentPartsIndex};
+use crate::views::manage_save::inventory::inventory_item::InventoryItem;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
@@ -19,6 +19,8 @@ use crate::widgets::text_margin::TextMargin;
 
 pub mod available_parts;
 pub mod current_parts;
+pub mod inventory_button_style;
+pub mod inventory_item;
 
 #[derive(Debug, Default)]
 pub struct InventoryState {
@@ -48,97 +50,6 @@ pub enum InventoryInteractionMessage {
     BalanceInputSelected(GameDataKv),
     InventoryDataInputChanged(String),
     ManufacturerInputChanged(String),
-}
-
-#[derive(Debug)]
-pub struct InventoryItem {
-    id: usize,
-    item: Bl3Serial,
-    label: String,
-    item_state: button::State,
-}
-
-impl InventoryItem {
-    pub fn new(id: usize, item: Bl3Serial) -> Self {
-        let balance_part = &item.balance_part;
-
-        let label = format!(
-            "[Lvl {}] {}",
-            item.level,
-            balance_part
-                .name
-                .clone()
-                .unwrap_or_else(|| balance_part.ident.clone()),
-        );
-
-        InventoryItem {
-            id,
-            label,
-            item,
-            item_state: button::State::new(),
-        }
-    }
-
-    pub fn view(&mut self, is_active: bool) -> Element<Message> {
-        Button::new(
-            &mut self.item_state,
-            Text::new(&self.label).font(JETBRAINS_MONO).size(16),
-        )
-        .on_press(InteractionMessage::ManageSaveInteraction(
-            ManageSaveInteractionMessage::Inventory(InventoryInteractionMessage::ItemPressed(
-                self.id,
-            )),
-        ))
-        .padding(10)
-        .width(Length::Fill)
-        .style(InventoryButtonStyle { is_active })
-        .into_element()
-    }
-}
-
-pub struct InventoryButtonStyle {
-    pub is_active: bool,
-}
-
-impl button::StyleSheet for InventoryButtonStyle {
-    fn active(&self) -> button::Style {
-        let (background, text_color) = if self.is_active {
-            (
-                Some(Color::from_rgb8(35, 35, 35).into()),
-                Color::from_rgb8(255, 255, 255),
-            )
-        } else {
-            (
-                Some(Color::from_rgb8(23, 23, 23).into()),
-                Color::from_rgb8(220, 220, 220),
-            )
-        };
-
-        button::Style {
-            background,
-            text_color,
-            border_width: 0.0,
-            ..button::Style::default()
-        }
-    }
-
-    fn hovered(&self) -> button::Style {
-        button::Style {
-            background: Some(Color::from_rgb8(35, 35, 35).into()),
-            border_width: 0.0,
-            text_color: Color::from_rgb8(255, 255, 255),
-            ..button::Style::default()
-        }
-    }
-
-    fn pressed(&self) -> button::Style {
-        button::Style {
-            background: Some(Color::from_rgb8(30, 30, 30).into()),
-            border_width: 0.0,
-            text_color: Color::from_rgb8(220, 220, 220),
-            ..button::Style::default()
-        }
-    }
 }
 
 pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {

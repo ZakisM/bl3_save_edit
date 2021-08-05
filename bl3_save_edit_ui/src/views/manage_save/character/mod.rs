@@ -1,3 +1,5 @@
+use std::cell::RefCell;
+
 use iced::{
     button, pick_list, text_input, tooltip, Align, Button, Checkbox, Color, Column, Container,
     Length, PickList, Row, Text, TextInput, Tooltip,
@@ -13,13 +15,17 @@ use bl3_save_edit_core::game_data::{
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
+use crate::generate_sdu_input;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::views::manage_save::character::skins::SkinPickList;
 use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveMessage};
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
-use crate::{generate_sdu_input, generate_skin_pick_list};
+
+mod gear;
+mod skins;
 
 pub const MAX_CHARACTER_LEVEL: usize = 72;
 
@@ -41,12 +47,12 @@ pub struct CharacterState {
 
 #[derive(Debug, Default)]
 pub struct CharacterSkinState {
-    pub head_skin_selector: pick_list::State<GameDataKv>,
-    pub head_skin_selected: GameDataKv,
-    pub character_skin_selector: pick_list::State<GameDataKv>,
-    pub character_skin_selected: GameDataKv,
-    pub echo_theme_selector: pick_list::State<GameDataKv>,
-    pub echo_theme_selected: GameDataKv,
+    pub head_skin: SkinPickList,
+    pub selected_head_skin: GameDataKv,
+    pub character_skin: SkinPickList,
+    pub selected_character_skin: GameDataKv,
+    pub echo_theme: SkinPickList,
+    pub selected_echo_theme: GameDataKv,
 }
 
 #[derive(Debug, Default)]
@@ -275,40 +281,39 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
 
     let xp_row = Row::new().push(xp_level).push(xp_points).spacing(20);
 
-    let head_skin = generate_skin_pick_list!(
+    character_state.skin_state.head_skin = SkinPickList::new(
         "Head Skin",
         105,
-        character_state,
-        selected_class,
-        PROFILE_HEADS_DEFAULTS,
-        PROFILE_HEADS,
-        head_skin_selector,
-        head_skin_selected,
-        CharacterSkinSelectedMessage::HeadSkin
+        &PROFILE_HEADS_DEFAULTS,
+        &PROFILE_HEADS,
+        &mut character_state.skin_state.selected_head_skin,
+        Some(selected_class),
+        CharacterSkinSelectedMessage::HeadSkin,
     );
 
-    let character_skin = generate_skin_pick_list!(
+    character_state.skin_state.character_skin = SkinPickList::new(
         "Character Skin",
         135,
-        character_state,
-        selected_class,
-        PROFILE_SKINS_DEFAULTS,
-        PROFILE_SKINS,
-        character_skin_selector,
-        character_skin_selected,
-        CharacterSkinSelectedMessage::CharacterSkin
+        &PROFILE_SKINS_DEFAULTS,
+        &PROFILE_SKINS,
+        &mut character_state.skin_state.selected_character_skin,
+        Some(selected_class),
+        CharacterSkinSelectedMessage::CharacterSkin,
     );
 
-    let echo_theme = generate_skin_pick_list!(
+    character_state.skin_state.echo_theme = SkinPickList::new(
         "ECHO Theme",
         105,
-        character_state,
-        PROFILE_ECHO_THEMES_DEFAULTS,
-        PROFILE_ECHO_THEMES,
-        echo_theme_selector,
-        echo_theme_selected,
-        CharacterSkinSelectedMessage::EchoTheme
+        &PROFILE_ECHO_THEMES_DEFAULTS,
+        &PROFILE_ECHO_THEMES,
+        &mut character_state.skin_state.selected_echo_theme,
+        None,
+        CharacterSkinSelectedMessage::EchoTheme,
     );
+
+    let head_skin = character_state.skin_state.head_skin.view();
+    let character_skin = character_state.skin_state.character_skin.view();
+    let echo_theme = character_state.skin_state.echo_theme.view();
 
     let skin_row = Container::new(
         Column::new()
@@ -636,93 +641,6 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
         .spacing(20);
 
     Container::new(all_contents).padding(30)
-}
-
-#[macro_export]
-macro_rules! generate_skin_pick_list {
-    ($name:literal, $name_width:literal, $character_state:path, $default_skin_list:path, $skin_list:path, $selector_state:ident, $selected_skin:ident, $message:path) => {{
-        let class_available_skins = $default_skin_list
-            .iter()
-            .chain($skin_list.iter())
-            .cloned()
-            .collect::<Vec<_>>();
-
-        generate_skin_pick_list!(
-            $name,
-            $name_width,
-            $character_state,
-            class_available_skins,
-            $selector_state,
-            $selected_skin,
-            $message
-        )
-    }};
-    ($name:literal, $name_width:literal, $character_state:path, $selected_class:path, $default_skin_list:path, $skin_list:path, $selector_state:ident, $selected_skin:ident, $message:path) => {{
-        let class_available_skins = $default_skin_list
-            .iter()
-            .chain($skin_list.iter())
-            .cloned()
-            .filter(|h| {
-                h.ident
-                    .to_lowercase()
-                    .contains(&$selected_class.to_string().to_lowercase())
-            })
-            .collect::<Vec<_>>();
-
-        generate_skin_pick_list!(
-            $name,
-            $name_width,
-            $character_state,
-            class_available_skins,
-            $selector_state,
-            $selected_skin,
-            $message
-        )
-    }};
-    ($name:literal, $name_width:literal, $character_state:path, $class_available_skins:ident, $selector_state:ident, $selected_skin:ident, $message:path) => {{
-        let mut class_available_skins = $class_available_skins;
-        class_available_skins.sort();
-
-        let pre_selected_skin = match $character_state.skin_state.$selected_skin {
-            GameDataKv { ident, name: _ }
-                if ident.is_empty()
-                    || !class_available_skins
-                        .contains(&$character_state.skin_state.$selected_skin) =>
-            {
-                Some(class_available_skins[0])
-            }
-            current => Some(current),
-        };
-
-        Container::new(
-            LabelledElement::create(
-                $name,
-                Length::Units($name_width),
-                PickList::new(
-                    &mut $character_state.skin_state.$selector_state,
-                    class_available_skins,
-                    pre_selected_skin,
-                    |selected| {
-                        InteractionMessage::ManageSaveInteraction(
-                            ManageSaveInteractionMessage::Character(
-                                CharacterInteractionMessage::SkinMessage($message(selected)),
-                            ),
-                        )
-                    },
-                )
-                .font(JETBRAINS_MONO)
-                .text_size(17)
-                .width(Length::Fill)
-                .padding(10)
-                .style(Bl3UiStyle)
-                .into_element(),
-            )
-            .align_items(Align::Center),
-        )
-        .width(Length::Fill)
-        .height(Length::Units(36))
-        .style(Bl3UiStyle)
-    }};
 }
 
 #[macro_export]

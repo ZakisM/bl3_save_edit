@@ -26,19 +26,19 @@ pub fn map_character_state(manage_save_state: &mut ManageSaveState) {
         .main_state
         .character_state
         .skin_state
-        .head_skin_selected = save.character_data.head_skin_selected;
+        .selected_head_skin = save.character_data.head_skin_selected;
 
     manage_save_state
         .main_state
         .character_state
         .skin_state
-        .character_skin_selected = save.character_data.character_skin_selected;
+        .selected_character_skin = save.character_data.character_skin_selected;
 
     manage_save_state
         .main_state
         .character_state
         .skin_state
-        .echo_theme_selected = save.character_data.echo_theme_selected;
+        .selected_echo_theme = save.character_data.echo_theme_selected;
 
     let mut gear_state =
         std::mem::take(&mut manage_save_state.main_state.character_state.gear_state);

@@ -1,4 +1,4 @@
-use crate::views::manage_save::inventory::InventoryItem;
+use crate::views::manage_save::inventory::inventory_item::InventoryItem;
 use crate::views::manage_save::ManageSaveState;
 
 pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {

@@ -348,21 +348,21 @@ impl Application for Bl3UiState {
                                         .main_state
                                         .character_state
                                         .skin_state
-                                        .head_skin_selected = selected;
+                                        .selected_head_skin = selected;
                                 }
                                 CharacterSkinSelectedMessage::CharacterSkin(selected) => {
                                     self.manage_save_state
                                         .main_state
                                         .character_state
                                         .skin_state
-                                        .character_skin_selected = selected;
+                                        .selected_character_skin = selected;
                                 }
                                 CharacterSkinSelectedMessage::EchoTheme(selected) => {
                                     self.manage_save_state
                                         .main_state
                                         .character_state
                                         .skin_state
-                                        .echo_theme_selected = selected;
+                                        .selected_echo_theme = selected;
                                 }
                             }
                         }
@@ -422,14 +422,14 @@ impl Application for Bl3UiState {
                     ManageSaveInteractionMessage::SaveFilePressed => {
                         let current_file = &mut self.manage_save_state.current_file;
 
-                        current_file.character_data.set_head_skin_selected(
-                            &self
-                                .manage_save_state
-                                .main_state
-                                .character_state
-                                .skin_state
-                                .head_skin_selected,
-                        );
+                        // current_file.character_data.set_head_skin_selected(
+                        //     &self
+                        //         .manage_save_state
+                        //         .main_state
+                        //         .character_state
+                        //         .skin_state
+                        //         .head_skin_selected,
+                        // );
 
                         // current_file.character_data.set_active_travel_stations(
                         //     self.manage_save_state
