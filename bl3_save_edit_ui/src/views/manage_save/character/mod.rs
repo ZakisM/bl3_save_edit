@@ -39,6 +39,18 @@ pub struct CharacterState {
     pub sdu_unlocker: SduUnlocker,
 }
 
+#[derive(Debug, Clone)]
+pub enum CharacterInteractionMessage {
+    NameInputChanged(String),
+    XpLevelInputChanged(i32),
+    XpPointsInputChanged(i32),
+    PlayerClassSelected(PlayerClass),
+    SkinMessage(CharacterSkinSelectedMessage),
+    GearMessage(CharacterGearUnlockedMessage),
+    SduMessage(CharacterSduInputChangedMessage),
+    MaxSduSlotsPressed,
+}
+
 #[derive(Debug, Default)]
 pub struct CharacterGearState {
     pub unlock_grenade_slot: bool,
@@ -68,18 +80,6 @@ pub enum CharacterGearUnlockedMessage {
     Weapon4(bool),
     Artifact(bool),
     ClassMod(bool),
-}
-
-#[derive(Debug, Clone)]
-pub enum CharacterInteractionMessage {
-    NameInputChanged(String),
-    XpLevelInputChanged(i32),
-    XpPointsInputChanged(i32),
-    PlayerClassSelected(PlayerClass),
-    SkinMessage(CharacterSkinSelectedMessage),
-    GearMessage(CharacterGearUnlockedMessage),
-    SduMessage(CharacterSduInputChangedMessage),
-    MaxSduSlotsPressed,
 }
 
 #[derive(Debug, Clone)]
