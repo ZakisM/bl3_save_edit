@@ -176,14 +176,14 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         resource_item,
     );
 
-    let parts_editor = Row::new()
-        .push(available_parts_contents)
-        .push(current_parts_contents)
-        .spacing(20);
-
-    let parts_editor_contents = Container::new(parts_editor)
-        .width(Length::Fill)
-        .height(Length::Fill);
+    let parts_editor_contents = Container::new(
+        Row::new()
+            .push(available_parts_contents)
+            .push(current_parts_contents)
+            .spacing(20),
+    )
+    .width(Length::Fill)
+    .height(Length::Fill);
 
     let item_editor_contents = item_editor_contents.push(parts_editor_contents);
 

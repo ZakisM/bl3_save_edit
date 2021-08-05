@@ -1,4 +1,5 @@
 use std::collections::{BTreeMap, BTreeSet, HashMap};
+use std::io::Read;
 
 use once_cell::sync::Lazy;
 use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
@@ -6,17 +7,20 @@ use serde::Deserialize;
 
 use crate::models::inventory_serial_db::InventorySerialDb;
 
-pub const INVENTORY_SERIAL_DB_JSON: &str = include_str!("../../resources/inventory_serial_db.json");
+pub const INVENTORY_SERIAL_DB_JSON_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_SERIAL_DB.json.sz");
 
-const INVENTORY_PARTS_SHIELDS_DATA: &[u8] =
-    include_bytes!("../../resources/INVENTORY_PARTS_SHIELDS.csv");
+const INVENTORY_PARTS_ALL_DATA_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_PARTS_ALL.csv.sz");
 
 pub static INVENTORY_SERIAL_DB: Lazy<InventorySerialDb> =
     Lazy::new(|| InventorySerialDb::load().expect("failed to load inventory serial db"));
 
+//TODO: Don't parse NONE for INVENTORY_PARTS_ALL_DATA
+
 #[derive(Debug, Deserialize)]
 struct ResourceItemRecord {
-    #[serde(rename = "Manufacturer/Name")]
+    #[serde(rename = "Name")]
     manufacturer: String,
     #[serde(rename = "Rarity")]
     rarity: String,
@@ -61,7 +65,7 @@ pub struct ResourcePart {
 }
 
 pub static INVENTORY_PARTS_SHIELDS: Lazy<HashMap<String, ResourceItem>> = Lazy::new(|| {
-    let parts_grouped = load_inventory_parts_grouped(INVENTORY_PARTS_SHIELDS_DATA);
+    let parts_grouped = load_inventory_parts_grouped(INVENTORY_PARTS_ALL_DATA_COMPRESSED);
 
     let mut m = HashMap::new();
 
@@ -104,10 +108,18 @@ struct TempHeader {
 
 type TempBody = BTreeMap<String, BTreeSet<ResourcePart>>;
 
+// TODO: Handle any errors here properly and exit UI correctly
 fn load_inventory_parts_grouped(bytes: &[u8]) -> BTreeMap<TempHeader, TempBody> {
+    let mut rdr = snap::read::FrameDecoder::new(bytes);
+
+    let mut decompressed_bytes = String::new();
+
+    rdr.read_to_string(&mut decompressed_bytes)
+        .expect("Failed to read decompressed bytes");
+
     let mut rdr = csv::ReaderBuilder::new()
         .has_headers(true)
-        .from_reader(bytes);
+        .from_reader(decompressed_bytes.as_bytes());
 
     let records = rdr.deserialize().map(|r| {
         let mut record: ResourceItemRecord = r.expect("failed to deserialize resource part record");

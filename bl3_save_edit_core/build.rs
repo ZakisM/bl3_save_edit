@@ -77,6 +77,30 @@ fn main() {
         })
         .run()
         .expect("Failed to generate protocol buffers");
+
+    //Compression of resources
+    let files_to_compress = [
+        "resources/INVENTORY_PARTS_ALL.csv",
+        "resources/INVENTORY_SERIAL_DB.json",
+    ];
+
+    for file in files_to_compress {
+        println!("cargo:rerun-if-changed={}", file);
+    }
+
+    for file in files_to_compress {
+        let mut input_file = std::fs::OpenOptions::new().read(true).open(file).unwrap();
+        let output_file = std::fs::OpenOptions::new()
+            .create(true)
+            .write(true)
+            .truncate(true)
+            .open(format!("{}.sz", file))
+            .unwrap();
+
+        let mut snappy_wtr = snap::write::FrameEncoder::new(output_file);
+
+        std::io::copy(&mut input_file, &mut snappy_wtr).unwrap();
+    }
 }
 
 #[derive(Debug, Deserialize)]

@@ -1,9 +1,10 @@
 use std::convert::TryInto;
+use std::io::Read;
 
 use anyhow::{bail, Context, Result};
 use json::JsonValue;
 
-use crate::resources::INVENTORY_SERIAL_DB_JSON;
+use crate::resources::INVENTORY_SERIAL_DB_JSON_COMPRESSED;
 
 pub struct InventorySerialDb {
     pub data: JsonValue,
@@ -12,7 +13,14 @@ pub struct InventorySerialDb {
 
 impl InventorySerialDb {
     pub fn load() -> Result<Self> {
-        let data = json::parse(INVENTORY_SERIAL_DB_JSON)?;
+        let mut rdr = snap::read::FrameDecoder::new(INVENTORY_SERIAL_DB_JSON_COMPRESSED);
+
+        let mut decompressed_bytes = String::new();
+
+        rdr.read_to_string(&mut decompressed_bytes)
+            .context("failed to read decompressed bytes")?;
+
+        let data = json::parse(&decompressed_bytes)?;
 
         let max_version = data
             .entries()
