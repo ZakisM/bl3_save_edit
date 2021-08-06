@@ -13,7 +13,7 @@ use crate::{file_helper, parser};
 
 pub mod ammo;
 pub mod arbitrary_bits;
-pub mod bl3_serial;
+pub mod bl3_item;
 pub mod challenge_data;
 pub mod character_data;
 pub mod fast_travel_unlock_data;

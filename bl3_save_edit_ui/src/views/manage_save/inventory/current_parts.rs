@@ -4,7 +4,7 @@ use iced::{
     button, scrollable, Align, Button, Color, Column, Container, Element, Length, Scrollable, Text,
 };
 
-use bl3_save_edit_core::bl3_save::bl3_serial::Part;
+use bl3_save_edit_core::bl3_save::bl3_item::{Part, MAX_PARTS};
 use bl3_save_edit_core::resources::ResourceItem;
 
 use crate::bl3_ui::{InteractionMessage, Message};
@@ -105,19 +105,7 @@ impl CurrentParts {
     ) -> Container<Message> {
         let selected_current_parts_index = &self.parts_index;
 
-        let mut current_parts_column = Column::new().push(
-            Container::new(
-                TextMargin::new("Current Parts", 2)
-                    .0
-                    .font(JETBRAINS_MONO_BOLD)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5)),
-            )
-            .padding(10)
-            .align_x(Align::Center)
-            .width(Length::FillPortion(2))
-            .style(Bl3UiStyle),
-        );
+        let mut current_parts_column = Column::new();
 
         if let Some(active_item) = active_item {
             let mut categorized_parts: BTreeMap<String, Vec<Part>> = BTreeMap::new();
@@ -197,6 +185,27 @@ impl CurrentParts {
 
             current_parts_column = current_parts_column.push(
                 Container::new(
+                    TextMargin::new(
+                        format!(
+                            "Current Parts ({}/{})",
+                            active_item.item.parts.len(),
+                            MAX_PARTS
+                        ),
+                        2,
+                    )
+                    .0
+                    .font(JETBRAINS_MONO_BOLD)
+                    .size(17)
+                    .color(Color::from_rgb8(242, 203, 5)),
+                )
+                .padding(10)
+                .align_x(Align::Center)
+                .width(Length::FillPortion(2))
+                .style(Bl3UiStyle),
+            );
+
+            current_parts_column = current_parts_column.push(
+                Container::new(
                     Scrollable::new(&mut self.scrollable_state)
                         .push(current_parts_list)
                         .height(Length::Fill)
@@ -205,6 +214,20 @@ impl CurrentParts {
                 .padding(1),
             );
         } else {
+            current_parts_column = current_parts_column.push(
+                Container::new(
+                    TextMargin::new("Current Parts", 2)
+                        .0
+                        .font(JETBRAINS_MONO_BOLD)
+                        .size(17)
+                        .color(Color::from_rgb8(242, 203, 5)),
+                )
+                .padding(10)
+                .align_x(Align::Center)
+                .width(Length::FillPortion(2))
+                .style(Bl3UiStyle),
+            );
+
             current_parts_column = current_parts_column.push(
                 Container::new(
                     Text::new("No current parts found.")

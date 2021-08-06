@@ -7,7 +7,7 @@ use rayon::prelude::ParallelSliceMut;
 use strum::IntoEnumIterator;
 
 use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
-use crate::bl3_save::bl3_serial::Bl3Serial;
+use crate::bl3_save::bl3_item::Bl3Item;
 use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};
@@ -48,7 +48,7 @@ pub struct CharacterData {
     pub ammo_pools: Vec<AmmoPoolData>,
     pub challenge_milestones: Vec<ChallengeData>,
     pub vehicle_stats: Vec<VehicleStats>,
-    pub inventory_items: Vec<Bl3Serial>,
+    pub inventory_items: Vec<Bl3Item>,
 }
 
 impl CharacterData {
@@ -332,7 +332,7 @@ impl CharacterData {
         let inventory_items = character
             .inventory_items
             .par_iter()
-            .filter_map(|i| Bl3Serial::from_serial_number(i.item_serial_number.clone()).ok())
+            .filter_map(|i| Bl3Item::from_serial_number(i.item_serial_number.clone()).ok())
             .collect::<Vec<_>>();
 
         Ok(Self {

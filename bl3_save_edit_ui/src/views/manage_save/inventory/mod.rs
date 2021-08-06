@@ -4,7 +4,7 @@ use iced::{
 };
 
 use bl3_save_edit_core::game_data::{GameDataKv, BALANCE_NAME_MAPPING};
-use bl3_save_edit_core::resources::INVENTORY_PARTS_SHIELDS;
+se bl3_save_edit_core::resources::INVENTORY_PARTS_ALL;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -56,7 +56,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
     //Todo: Each item should have it's own state
 
     let selected_item_index = inventory_state.selected_item_index;
-    let inv_part_shields = &*INVENTORY_PARTS_SHIELDS;
+    let inv_part_shields = &*INVENTORY_PARTS_ALL;
     let active_item = inventory_state.items.get(selected_item_index);
 
     let item_editor_contents = Column::new()

@@ -1,7 +1,10 @@
+use std::str::FromStr;
+
 use anyhow::{bail, ensure, Context, Result};
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use strum::{Display, EnumString};
 
 use crate::bl3_save::arbitrary_bits::ArbitraryBits;
 use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
@@ -14,7 +17,7 @@ pub const MAX_PARTS: usize = 63;
 // All credits to apocalyptech
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
-pub struct Bl3Serial {
+pub struct Bl3Item {
     pub header_version: u8,
     pub data_version: usize,
     pub balance_part: BalancePart,
@@ -30,6 +33,7 @@ pub struct Bl3Serial {
     pub parts: Vec<Part>,
     pub generic_part_bits: usize,
     pub generic_parts: Vec<Part>,
+    pub item_type: ItemType,
 }
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
@@ -48,7 +52,27 @@ pub struct Part {
     pub idx: usize,
 }
 
-impl Bl3Serial {
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display, EnumString)]
+pub enum ItemType {
+    #[strum(serialize = "BPInvPart_Artifact_C", to_string = "Artifact")]
+    Artifact,
+    #[strum(serialize = "BPInvPart_ClassMod_C", to_string = "Class Mod")]
+    ClassMod,
+    #[strum(serialize = "BPInvPart_GrenadeMod_C", to_string = "Grenade Mod")]
+    GrenadeMod,
+    #[strum(serialize = "BPInvPart_Shield_C", to_string = "Shield")]
+    Shield,
+    #[strum(to_string = "Weapon")]
+    Weapon,
+}
+
+impl std::default::Default for ItemType {
+    fn default() -> Self {
+        Self::Weapon
+    }
+}
+
+impl Bl3Item {
     pub fn from_serial_number(serial: Vec<u8>) -> Result<Self> {
         // first decrypt the serial
         let mut serial = serial;
@@ -153,6 +177,8 @@ impl Bl3Serial {
             bits: balance_bits,
         };
 
+        let item_type = ItemType::from_str(&part_inv_key).unwrap_or_default();
+
         Ok(Self {
             header_version,
             data_version,
@@ -169,6 +195,7 @@ impl Bl3Serial {
             parts,
             generic_part_bits,
             generic_parts,
+            item_type,
         })
     }
 
@@ -255,7 +282,7 @@ mod tests {
         ];
 
         let decrypted =
-            Bl3Serial::from_serial_number(serial_number).expect("failed to decrypt serial");
+            Bl3Item::from_serial_number(serial_number).expect("failed to decrypt serial");
 
         assert_eq!(decrypted.balance_part.ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Balance/InvBalD_Shield_OldGod.InvBalD_Shield_OldGod");
         assert_eq!(

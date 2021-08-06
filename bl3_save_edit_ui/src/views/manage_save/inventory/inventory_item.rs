@@ -1,6 +1,6 @@
 use iced::{button, Button, Element, Length, Text};
 
-use bl3_save_edit_core::bl3_save::bl3_serial::Bl3Serial;
+use bl3_save_edit_core::bl3_save::bl3_item::Bl3Item;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::resources::fonts::JETBRAINS_MONO;
@@ -12,18 +12,19 @@ use crate::views::InteractionExt;
 #[derive(Debug)]
 pub struct InventoryItem {
     id: usize,
-    pub item: Bl3Serial,
+    pub item: Bl3Item,
     label: String,
     button_state: button::State,
 }
 
 impl InventoryItem {
-    pub fn new(id: usize, item: Bl3Serial) -> Self {
+    pub fn new(id: usize, item: Bl3Item) -> Self {
         let balance_part = &item.balance_part;
 
         let label = format!(
-            "[Lvl {}] {}",
+            "[Lvl {} {}] {}",
             item.level,
+            item.item_type.to_string(),
             balance_part
                 .name
                 .clone()
