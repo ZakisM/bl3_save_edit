@@ -1,6 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 use std::io::Read;
 
+use heck::TitleCase;
 use once_cell::sync::Lazy;
 use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
 use serde::Deserialize;
@@ -23,6 +24,8 @@ pub static INVENTORY_PARTS_ALL: Lazy<HashMap<String, ResourceItem>> =
 struct ResourceItemRecord {
     #[serde(rename = "Name")]
     manufacturer: String,
+    #[serde(rename = "Gun Type", skip)]
+    weapon_type: Option<String>,
     #[serde(rename = "Rarity")]
     rarity: String,
     #[serde(rename = "Balance")]
@@ -140,7 +143,7 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> HashMap<String, ResourceItem> {
                 .or_insert_with(BTreeMap::new);
 
             let curr_group_category = curr_group
-                .entry(inv_part.category)
+                .entry(inv_part.category.to_title_case())
                 .or_insert_with(BTreeSet::new);
 
             curr_group_category.insert(inventory_part);

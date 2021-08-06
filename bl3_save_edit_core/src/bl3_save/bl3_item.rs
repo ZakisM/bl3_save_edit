@@ -9,7 +9,7 @@ use strum::{Display, EnumString};
 use crate::bl3_save::arbitrary_bits::ArbitraryBits;
 use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
 use crate::parser::read_be_signed_int;
-use crate::resources::INVENTORY_SERIAL_DB;
+use crate::resources::{INVENTORY_PARTS_ALL, INVENTORY_SERIAL_DB};
 
 pub const MAX_PARTS: usize = 63;
 
@@ -26,6 +26,7 @@ pub struct Bl3Item {
     pub inv_data_idx: usize,
     pub inv_data_bits: usize,
     pub manufacturer: String,
+    pub manufacturer_short: Option<String>,
     pub manufacturer_idx: usize,
     pub manufacturer_bits: usize,
     pub level: usize,
@@ -34,6 +35,7 @@ pub struct Bl3Item {
     pub generic_part_bits: usize,
     pub generic_parts: Vec<Part>,
     pub item_type: ItemType,
+    pub rarity: ItemRarity,
 }
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
@@ -69,6 +71,26 @@ pub enum ItemType {
 impl std::default::Default for ItemType {
     fn default() -> Self {
         Self::Weapon
+    }
+}
+
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display, EnumString)]
+pub enum ItemRarity {
+    #[strum(serialize = "01/Common", to_string = "Common")]
+    Common,
+    #[strum(serialize = "02/Uncommon", to_string = "Uncommon")]
+    Uncommon,
+    #[strum(serialize = "03/Rare", to_string = "Rare")]
+    Rare,
+    #[strum(serialize = "04/Very Rare", to_string = "Very Rare")]
+    VeryRare,
+    #[strum(to_string = "Legendary")]
+    Legendary,
+}
+
+impl std::default::Default for ItemRarity {
+    fn default() -> Self {
+        Self::Legendary
     }
 }
 
@@ -129,9 +151,19 @@ impl Bl3Item {
         let (manufacturer, manufacturer_bits, manufacturer_idx) =
             Self::inv_db_header_part("ManufacturerData", &mut bits, data_version)?;
 
+        let manufacturer_short = manufacturer.rsplit('.').next().map(|s| s.to_owned());
+
         let level = bits.eat(7)?;
 
         let balance_short_name = balance.rsplit('.').next().map(|s| s.to_owned());
+
+        let item_part_info = &*INVENTORY_PARTS_ALL;
+
+        let rarity = balance_short_name
+            .as_ref()
+            .and_then(|bs| item_part_info.get(bs))
+            .and_then(|info| ItemRarity::from_str(&info.rarity).ok())
+            .unwrap_or_default();
 
         let balance_eng_name = BALANCE_NAME_MAPPING
             .par_iter()
@@ -188,6 +220,7 @@ impl Bl3Item {
             inv_data_idx,
             inv_data_bits,
             manufacturer,
+            manufacturer_short,
             manufacturer_idx,
             manufacturer_bits,
             level,
@@ -196,6 +229,7 @@ impl Bl3Item {
             generic_part_bits,
             generic_parts,
             item_type,
+            rarity,
         })
     }
 

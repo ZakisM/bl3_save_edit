@@ -153,6 +153,7 @@ dependencies = [
  "csv",
  "derivative",
  "encoding_rs",
+ "heck",
  "json",
  "nom",
  "once_cell",
