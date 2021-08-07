@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="/Repository Diff: INVENTORY_PARTS_ALL.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/bl3_save_edit_core/game_data/BALANCE_NAME_MAPPING.csv">
           <value>
             <Attribute>

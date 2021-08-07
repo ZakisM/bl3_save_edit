@@ -3,6 +3,7 @@ use std::str::FromStr;
 use anyhow::{bail, ensure, Context, Result};
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
+use encoding_rs::mem::decode_latin1;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use strum::{Display, EnumString};
 
@@ -18,7 +19,9 @@ pub const MAX_PARTS: usize = 63;
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Bl3Item {
-    pub header_version: u8,
+    pub serial_version: u8,
+    pub orig_seed: i32,
+    decrypted_serial: Vec<u8>,
     pub data_version: usize,
     pub balance_part: BalancePart,
     pub part_inv_key: String,
@@ -124,7 +127,7 @@ impl Bl3Item {
             bail!("serial version was not correct so we will not decrypt this item");
         }
 
-        let header_version = initial_byte;
+        let serial_version = initial_byte;
 
         let orig_seed = read_be_signed_int(&serial[1..5])?.1;
 
@@ -145,8 +148,11 @@ impl Bl3Item {
 
         ensure!(orig_checksum == computed_checksum);
 
+        // What we will actually store
+        let decrypted_serial = &decrypted_serial[2..];
+
         // parse the serial data
-        let mut bits = ArbitraryBits::new(decrypted_serial[2..].view_bits::<Lsb0>());
+        let mut bits = ArbitraryBits::new(decrypted_serial.view_bits::<Lsb0>());
 
         let ident = bits.eat(8)?;
 
@@ -223,7 +229,9 @@ impl Bl3Item {
 
         let num_customs = bits.eat(4)?;
 
-        let rerolled = if header_version >= 4 { bits.eat(8)? } else { 0 };
+        ensure!(num_customs == 0);
+
+        let rerolled = if serial_version >= 4 { bits.eat(8)? } else { 0 };
 
         if bits.len() > 7 || bits.bitslice().count_ones() > 0 {
             bail!("could not fully parse the weapon data")
@@ -239,8 +247,12 @@ impl Bl3Item {
 
         let item_type = ItemType::from_str(&part_inv_key).unwrap_or_default();
 
+        let decrypted_serial = decrypted_serial.to_vec();
+
         Ok(Self {
-            header_version,
+            serial_version,
+            orig_seed,
+            decrypted_serial,
             data_version,
             balance_part,
             part_inv_key,
@@ -262,6 +274,65 @@ impl Bl3Item {
         })
     }
 
+    pub fn from_serial_base64(serial: &str) -> Result<Self> {
+        ensure!(serial.len() > 5);
+
+        let serial_lower = serial.to_lowercase();
+
+        if !serial_lower.starts_with("bl3(") || !serial_lower.ends_with(')') {
+            bail!("invalid item serial")
+        }
+
+        let decoded = base64::decode(&serial[4..serial.len() - 1])?;
+
+        Self::from_serial_number(decoded)
+    }
+
+    pub fn encrypt_serial(&self, seed: i32) -> Result<Vec<u8>> {
+        let mut header = Vec::new();
+        header.write_u8(self.serial_version)?;
+        header.write_i32::<BigEndian>(seed)?;
+
+        let mut hasher = crc32fast::Hasher::new();
+        hasher.update(&header);
+        hasher.update(b"\xFF\xFF");
+        hasher.update(&self.decrypted_serial);
+
+        let crc32 = hasher.finalize();
+
+        let mut checksum = Vec::new();
+
+        checksum.write_u16::<BigEndian>((((crc32 >> 16) ^ crc32) & 0xFFFF) as u16)?;
+
+        let mut data: Vec<u8> = [checksum, self.decrypted_serial.to_vec()].concat();
+
+        let encrypted = Self::bogoencrypt(&mut data, seed);
+
+        let encrypted_full = [header, encrypted].concat();
+
+        Ok(encrypted_full)
+    }
+
+    pub fn get_serial_number(&self, orig_seed: bool) -> Result<Vec<u8>> {
+        let seed = if orig_seed { self.orig_seed } else { 0 };
+
+        self.encrypt_serial(seed)
+    }
+
+    pub fn get_serial_number_base64(&self, orig_seed: bool) -> Result<String> {
+        let serial = self.get_serial_number(orig_seed)?;
+
+        let encoded = base64::encode(serial);
+
+        let non_latin = format!("BL3({})", encoded);
+
+        let res_bytes = decode_latin1(non_latin.as_bytes());
+
+        let res = res_bytes.to_string();
+
+        Ok(res)
+    }
+
     fn xor_data(data: &mut [u8], seed: i32) {
         if seed != 0 {
             let mut xor = ((seed >> 5) as i64) & 0xFFFFFFFF;
@@ -271,6 +342,21 @@ impl Bl3Item {
                 *d ^= xor as u8;
             }
         }
+    }
+
+    fn bogoencrypt(data: &mut [u8], seed: i32) -> Vec<u8> {
+        let data_len = data.len();
+
+        let steps = (seed & 0x1F) as usize % (data_len);
+
+        let first_half = &data[steps..];
+        let second_half = &data[..steps];
+
+        let mut data: Vec<u8> = [first_half, second_half].concat();
+
+        Self::xor_data(&mut data, seed);
+
+        data
     }
 
     fn bogodecrypt(data: &mut [u8], seed: i32) -> Vec<u8> {
@@ -338,11 +424,15 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_decrypt_serial() {
+    fn test_decrypt_encrypt_serial() {
         let serial_number: Vec<u8> = vec![
             3, 7, 104, 235, 106, 81, 127, 63, 184, 231, 198, 167, 96, 179, 97, 24, 224, 171, 102,
             232, 245, 72, 182, 213, 98,
         ];
+
+        let unencrypted_base64_serial_number = "BL3(AwAAAABmboC7I9xAEzwShMJVX8nPYwsAAA==)";
+
+        let orig_serial_number = serial_number.clone();
 
         let decrypted =
             Bl3Item::from_serial_number(serial_number).expect("failed to decrypt serial");
@@ -356,13 +446,34 @@ mod tests {
             decrypted.manufacturer,
             "/Game/Gear/Manufacturers/_Design/Hyperion.Hyperion"
         );
-        assert_eq!(decrypted.parts[0].0, "/Game/Gear/Shields/_Design/PartSets/Part_Manufacturer/Shield_Part_Body_03_Hyperion.Shield_Part_Body_03_Hyperion");
-        assert_eq!(decrypted.parts[1].0, "/Game/Gear/Shields/_Design/PartSets/Part_Rarity/Shield_Part_Rarity_Hyperion_05_Legendary.Shield_Part_Rarity_Hyperion_05_Legendary");
-        assert_eq!(decrypted.parts[2].0, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Part_Shield_Aug_OldGod.Part_Shield_Aug_OldGod");
-        assert_eq!(decrypted.parts[3].0, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/RechargeRate/Part_Shield_Aug_RechargeRate.Part_Shield_Aug_RechargeRate");
-        assert_eq!(decrypted.parts[4].0, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/Spike/Part_Shield_Aug_Spike.Part_Shield_Aug_Spike");
-        assert_eq!(decrypted.parts[5].0, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Element_Fire_OldGod.Shield_Part_Element_Fire_OldGod");
-        assert_eq!(decrypted.parts[6].0, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Mat_OldGod.Shield_Part_Mat_OldGod");
-        assert_eq!(decrypted.generic_parts[0].0, "/Game/PatchDLC/Raid1/Gear/Anointed/Generic/SkillEnd_BonusEleDamage_Radiation/GPart_EG_SkillEndBonusEleDamage_Radiation.GPart_EG_SkillEndBonusEleDamage_Radiation");
+        assert_eq!(decrypted.parts[0].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Manufacturer/Shield_Part_Body_03_Hyperion.Shield_Part_Body_03_Hyperion");
+        assert_eq!(decrypted.parts[1].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Rarity/Shield_Part_Rarity_Hyperion_05_Legendary.Shield_Part_Rarity_Hyperion_05_Legendary");
+        assert_eq!(decrypted.parts[2].ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Part_Shield_Aug_OldGod.Part_Shield_Aug_OldGod");
+        assert_eq!(decrypted.parts[3].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/RechargeRate/Part_Shield_Aug_RechargeRate.Part_Shield_Aug_RechargeRate");
+        assert_eq!(decrypted.parts[4].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/Spike/Part_Shield_Aug_Spike.Part_Shield_Aug_Spike");
+        assert_eq!(decrypted.parts[5].ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Element_Fire_OldGod.Shield_Part_Element_Fire_OldGod");
+        assert_eq!(decrypted.parts[6].ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Mat_OldGod.Shield_Part_Mat_OldGod");
+        assert_eq!(decrypted.generic_parts[0].ident, "/Game/PatchDLC/Raid1/Gear/Anointed/Generic/SkillEnd_BonusEleDamage_Radiation/GPart_EG_SkillEndBonusEleDamage_Radiation.GPart_EG_SkillEndBonusEleDamage_Radiation");
+
+        let encrypted = decrypted.get_serial_number(true).unwrap();
+
+        assert_eq!(encrypted, orig_serial_number);
+
+        let unencrypted_serial_base64 = decrypted.get_serial_number_base64(false).unwrap();
+
+        assert_eq!(unencrypted_serial_base64, unencrypted_base64_serial_number);
+
+        let decrypted_from_base64 =
+            Bl3Item::from_serial_base64(unencrypted_base64_serial_number).unwrap();
+
+        assert_eq!(decrypted.balance_part, decrypted_from_base64.balance_part);
+        assert_eq!(decrypted.parts, decrypted_from_base64.parts);
+        assert_eq!(decrypted.generic_parts, decrypted_from_base64.generic_parts);
+
+        let encrypted_serial_base64 = decrypted.get_serial_number_base64(true).unwrap();
+
+        let encrypted_from_base64 = Bl3Item::from_serial_base64(&encrypted_serial_base64).unwrap();
+
+        assert_eq!(decrypted, encrypted_from_base64);
     }
 }

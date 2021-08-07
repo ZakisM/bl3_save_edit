@@ -21,6 +21,7 @@ once_cell = "1.8"
 csv = "1.1"
 snap = "1"
 heck = "0.3"
+base64 = "0.13"
 
 [dependencies.serde]
 version = "1"

@@ -147,6 +147,7 @@ name = "bl3_save_edit_core"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "base64",
  "bitvec 0.20.4",
  "byteorder",
  "crc32fast",
