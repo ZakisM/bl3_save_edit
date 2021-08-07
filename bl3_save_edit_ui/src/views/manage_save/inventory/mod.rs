@@ -20,6 +20,7 @@ use crate::widgets::text_margin::TextMargin;
 pub mod available_parts;
 pub mod current_parts;
 pub mod inventory_button_style;
+pub mod inventory_category_style;
 pub mod inventory_item;
 
 #[derive(Debug, Default)]

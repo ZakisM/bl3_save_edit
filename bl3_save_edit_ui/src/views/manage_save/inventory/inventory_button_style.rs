@@ -8,7 +8,7 @@ impl button::StyleSheet for InventoryButtonStyle {
     fn active(&self) -> button::Style {
         let (background, text_color) = if self.is_active {
             (
-                Some(Color::from_rgb8(35, 35, 35).into()),
+                Some(Color::from_rgb8(28, 28, 28).into()),
                 Color::from_rgb8(255, 255, 255),
             )
         } else {
@@ -28,7 +28,7 @@ impl button::StyleSheet for InventoryButtonStyle {
 
     fn hovered(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(35, 35, 35).into()),
+            background: Some(Color::from_rgb8(28, 28, 28).into()),
             border_width: 0.0,
             text_color: Color::from_rgb8(255, 255, 255),
             ..button::Style::default()
@@ -37,7 +37,7 @@ impl button::StyleSheet for InventoryButtonStyle {
 
     fn pressed(&self) -> button::Style {
         button::Style {
-            background: Some(Color::from_rgb8(30, 30, 30).into()),
+            background: Some(Color::from_rgb8(25, 25, 25).into()),
             border_width: 0.0,
             text_color: Color::from_rgb8(220, 220, 220),
             ..button::Style::default()

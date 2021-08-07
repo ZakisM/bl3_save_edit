@@ -11,6 +11,7 @@ use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
+use crate::views::manage_save::inventory::inventory_category_style::InventoryCategoryStyle;
 use crate::views::manage_save::inventory::{InventoryInteractionMessage, InventoryItem};
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -170,6 +171,8 @@ impl CurrentParts {
                                 .size(17)
                                 .color(Color::from_rgb8(242, 203, 5)),
                         )
+                        .width(Length::Fill)
+                        .style(InventoryCategoryStyle)
                         .padding(10),
                     );
 

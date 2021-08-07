@@ -1,4 +1,6 @@
-use iced::{button, container, Align, Button, Color, Container, Element, Length, Row, Text};
+use iced::{
+    button, container, Align, Button, Color, Column, Container, Element, Length, Row, Text,
+};
 
 use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, ItemRarity};
 
@@ -37,28 +39,47 @@ impl InventoryItem {
     }
 
     pub fn view(&mut self, is_active: bool) -> Element<Message> {
-        let button_content = Row::new()
-            .push(Text::new(&self.label).font(JETBRAINS_MONO).size(17))
+        let mut tags_row = Row::new()
             .push(
                 Container::new(
                     Text::new(format!("Level {}", self.item.level))
-                        .font(JETBRAINS_MONO_BOLD)
+                        .font(JETBRAINS_MONO)
                         .size(15),
                 )
-                .padding(4)
-                .style(ItemLevelStyle),
+                .padding(5)
+                .style(ItemInfoStyle),
             )
+            .width(Length::Fill)
+            .spacing(10);
+
+        if let Some(manufacturer_short) = &self.item.manufacturer_short {
+            tags_row = tags_row.push(
+                Container::new(Text::new(manufacturer_short).font(JETBRAINS_MONO).size(15))
+                    .padding(5)
+                    .style(ItemInfoStyle),
+            )
+        }
+
+        tags_row = tags_row.push(
+            Container::new(
+                Text::new(self.item.rarity.to_string())
+                    .font(JETBRAINS_MONO)
+                    .size(15),
+            )
+            .padding(5)
+            .style(ItemRarityStyle {
+                rarity: self.item.rarity.clone(),
+            }),
+        );
+
+        let button_content = Column::new()
             .push(
-                Container::new(
-                    Text::new(self.item.rarity.to_string())
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(15),
-                )
-                .padding(4)
-                .style(ItemRarityStyle {
-                    rarity: self.item.rarity.clone(),
-                }),
-            );
+                Container::new(Text::new(&self.label).font(JETBRAINS_MONO_BOLD).size(17))
+                    .width(Length::Fill),
+            )
+            .push(tags_row)
+            .width(Length::Fill)
+            .align_items(Align::Start);
 
         Button::new(
             &mut self.button_state,
@@ -76,16 +97,16 @@ impl InventoryItem {
     }
 }
 
-struct ItemLevelStyle;
+struct ItemInfoStyle;
 
-impl container::StyleSheet for ItemLevelStyle {
+impl container::StyleSheet for ItemInfoStyle {
     fn style(&self) -> container::Style {
         container::Style {
-            text_color: Some(Color::from_rgb8(0, 0, 0)),
-            background: Some(Color::from_rgb8(220, 220, 220).into()),
+            text_color: Some(Color::from_rgb8(224, 224, 224)),
+            background: Some(Color::from_rgb8(38, 38, 38).into()),
             border_radius: 3.0,
-            border_width: 0.0,
-            border_color: Default::default(),
+            border_width: 1.0,
+            border_color: Color::from_rgb8(46, 46, 46),
         }
     }
 }
@@ -96,20 +117,40 @@ struct ItemRarityStyle {
 
 impl container::StyleSheet for ItemRarityStyle {
     fn style(&self) -> container::Style {
-        let background = match self.rarity {
-            ItemRarity::Common => Color::from_rgb8(209, 205, 199),
-            ItemRarity::Uncommon => Color::from_rgb8(123, 244, 81),
-            ItemRarity::Rare => Color::from_rgb8(47, 169, 255),
-            ItemRarity::VeryRare => Color::from_rgb8(203, 109, 255),
-            ItemRarity::Legendary => Color::from_rgb8(255, 198, 65),
+        let (text_color, background, border_color) = match self.rarity {
+            ItemRarity::Common => (
+                Color::from_rgb8(242, 233, 218),
+                Color::from_rgb8(54, 51, 48),
+                Color::from_rgb8(61, 59, 55),
+            ),
+            ItemRarity::Uncommon => (
+                Color::from_rgb8(172, 240, 149),
+                Color::from_rgb8(35, 54, 29),
+                Color::from_rgb8(42, 61, 36),
+            ),
+            ItemRarity::Rare => (
+                Color::from_rgb8(149, 202, 240),
+                Color::from_rgb8(29, 44, 54),
+                Color::from_rgb8(36, 51, 61),
+            ),
+            ItemRarity::VeryRare => (
+                Color::from_rgb8(208, 149, 240),
+                Color::from_rgb8(45, 29, 54),
+                Color::from_rgb8(52, 36, 61),
+            ),
+            ItemRarity::Legendary => (
+                Color::from_rgb8(240, 213, 149),
+                Color::from_rgb8(54, 47, 29),
+                Color::from_rgb8(61, 54, 36),
+            ),
         };
 
         container::Style {
-            text_color: Some(Color::from_rgb8(0, 0, 0)),
+            text_color: Some(text_color),
             background: Some(background.into()),
             border_radius: 3.0,
-            border_width: 0.0,
-            border_color: Default::default(),
+            border_width: 1.0,
+            border_color,
         }
     }
 }
