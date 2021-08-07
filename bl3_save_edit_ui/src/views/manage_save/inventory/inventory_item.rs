@@ -2,7 +2,7 @@ use iced::{
     button, container, Align, Button, Color, Column, Container, Element, Length, Row, Text,
 };
 
-use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, ItemRarity};
+use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, ItemRarity, ItemType};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
@@ -53,11 +53,39 @@ impl InventoryItem {
             .spacing(10);
 
         if let Some(manufacturer_short) = &self.item.manufacturer_short {
-            tags_row = tags_row.push(
-                Container::new(Text::new(manufacturer_short).font(JETBRAINS_MONO).size(15))
-                    .padding(5)
-                    .style(ItemInfoStyle),
-            )
+            let manufacturer_short = manufacturer_short.replace("_NoMinGamestage", "");
+
+            // Don't Care about Manufacturer class mod as we are showing that in the item_type
+            if manufacturer_short != "ClassMod" {
+                tags_row = tags_row.push(
+                    Container::new(Text::new(manufacturer_short).font(JETBRAINS_MONO).size(15))
+                        .padding(5)
+                        .style(ItemInfoStyle),
+                )
+            }
+        }
+
+        match &self.item.item_type {
+            ItemType::Weapon => {
+                if let Some(weapon_type) = &self.item.weapon_type {
+                    tags_row = tags_row.push(
+                        Container::new(
+                            Text::new(weapon_type.to_string())
+                                .font(JETBRAINS_MONO)
+                                .size(15),
+                        )
+                        .padding(5)
+                        .style(ItemTypeStyle),
+                    )
+                }
+            }
+            other => {
+                tags_row = tags_row.push(
+                    Container::new(Text::new(other.to_string()).font(JETBRAINS_MONO).size(15))
+                        .padding(5)
+                        .style(ItemTypeStyle),
+                )
+            }
         }
 
         tags_row = tags_row.push(
@@ -107,6 +135,20 @@ impl container::StyleSheet for ItemInfoStyle {
             border_radius: 3.0,
             border_width: 1.0,
             border_color: Color::from_rgb8(46, 46, 46),
+        }
+    }
+}
+
+struct ItemTypeStyle;
+
+impl container::StyleSheet for ItemTypeStyle {
+    fn style(&self) -> container::Style {
+        container::Style {
+            text_color: Some(Color::from_rgb8(240, 149, 149)),
+            background: Some(Color::from_rgb8(54, 29, 29).into()),
+            border_radius: 3.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(61, 36, 36),
         }
     }
 }

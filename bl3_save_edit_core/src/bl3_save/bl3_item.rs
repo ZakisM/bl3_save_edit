@@ -36,6 +36,7 @@ pub struct Bl3Item {
     pub generic_parts: Vec<Part>,
     pub item_type: ItemType,
     pub rarity: ItemRarity,
+    pub weapon_type: Option<WeaponType>,
 }
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
@@ -86,6 +87,22 @@ pub enum ItemRarity {
     VeryRare,
     #[strum(to_string = "Legendary")]
     Legendary,
+}
+
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display)]
+pub enum WeaponType {
+    #[strum(to_string = "Pistol")]
+    Pistol,
+    #[strum(to_string = "Shotgun")]
+    Shotgun,
+    #[strum(to_string = "SMG")]
+    Smg,
+    #[strum(to_string = "AR")]
+    Ar,
+    #[strum(to_string = "Sniper")]
+    Sniper,
+    #[strum(to_string = "Heavy")]
+    Heavy,
 }
 
 impl std::default::Default for ItemRarity {
@@ -157,13 +174,24 @@ impl Bl3Item {
 
         let balance_short_name = balance.rsplit('.').next().map(|s| s.to_owned());
 
-        let item_part_info = &*INVENTORY_PARTS_ALL;
-
-        let rarity = balance_short_name
+        let item_part_data = &*INVENTORY_PARTS_ALL;
+        let item_part_info = balance_short_name
             .as_ref()
-            .and_then(|bs| item_part_info.get(bs))
+            .and_then(|bs| item_part_data.get(bs));
+
+        let rarity = item_part_info
             .and_then(|info| ItemRarity::from_str(&info.rarity).ok())
             .unwrap_or_default();
+
+        let weapon_type = match &balance {
+            b if b.contains("_PS_") => Some(WeaponType::Pistol),
+            b if b.contains("_SG_") => Some(WeaponType::Shotgun),
+            b if b.contains("_SM_") => Some(WeaponType::Smg),
+            b if b.contains("_AR_") => Some(WeaponType::Ar),
+            b if b.contains("_SR_") => Some(WeaponType::Sniper),
+            b if b.contains("_HW_") => Some(WeaponType::Heavy),
+            _ => None,
+        };
 
         let balance_eng_name = BALANCE_NAME_MAPPING
             .par_iter()
@@ -230,6 +258,7 @@ impl Bl3Item {
             generic_parts,
             item_type,
             rarity,
+            weapon_type,
         })
     }
 

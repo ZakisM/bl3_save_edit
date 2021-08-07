@@ -24,7 +24,7 @@ pub static INVENTORY_PARTS_ALL: Lazy<HashMap<String, ResourceItem>> =
 struct ResourceItemRecord {
     #[serde(rename = "Name")]
     manufacturer: String,
-    #[serde(rename = "Gun Type", skip)]
+    #[serde(rename = "Weapon Type", skip)]
     weapon_type: Option<String>,
     #[serde(rename = "Rarity")]
     rarity: String,
