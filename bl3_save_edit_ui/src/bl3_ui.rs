@@ -5,9 +5,11 @@ use iced::{
     Element, HorizontalAlignment, Length, PickList, Row, Text,
 };
 
+use bl3_save_edit_core::bl3_save::bl3_item::MAX_BL3_ITEM_PARTS;
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
+use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
 
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
@@ -583,6 +585,41 @@ impl Application for Bl3UiState {
                                 .map_current_item_if_exists(|i| {
                                     i.editor.available_parts.parts_index = available_parts_index
                                 });
+
+                            if let Some(current_item) = self
+                                .manage_save_state
+                                .main_state
+                                .inventory_state
+                                .items
+                                .get_mut(
+                                    self.manage_save_state
+                                        .main_state
+                                        .inventory_state
+                                        .selected_item_index,
+                                )
+                            {
+                                if current_item.item.parts.len() < MAX_BL3_ITEM_PARTS {
+                                    let part_selected = current_item
+                                        .editor
+                                        .available_parts
+                                        .parts
+                                        .get_mut(available_parts_index.category_index)
+                                        .and_then(|p| {
+                                            p.parts.get_mut(available_parts_index.part_index)
+                                        });
+
+                                    if let Some(part_selected) = part_selected {
+                                        let part_inv_key = &current_item.item.part_inv_key;
+
+                                        if let Ok(bl3_part) = INVENTORY_SERIAL_DB.get_part_by_name(
+                                            part_inv_key,
+                                            &part_selected.part.name,
+                                        ) {
+                                            current_item.item.parts.push(bl3_part);
+                                        }
+                                    }
+                                }
+                            }
                         }
                         InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
                             self.manage_save_state

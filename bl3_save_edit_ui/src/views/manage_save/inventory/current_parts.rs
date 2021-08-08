@@ -4,7 +4,7 @@ use iced::{
     button, scrollable, Align, Button, Color, Column, Container, Element, Length, Scrollable, Text,
 };
 
-use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, Part, MAX_PARTS};
+use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, Bl3Part, MAX_BL3_ITEM_PARTS};
 use bl3_save_edit_core::resources::ResourceItem;
 
 use crate::bl3_ui::{InteractionMessage, Message};
@@ -30,7 +30,7 @@ pub struct CurrentCategorizedPart {
 }
 
 impl CurrentCategorizedPart {
-    pub fn new(category_id: usize, category: String, parts: Vec<Part>) -> Self {
+    pub fn new(category_id: usize, category: String, parts: Vec<Bl3Part>) -> Self {
         let parts = parts
             .into_iter()
             .enumerate()
@@ -45,12 +45,12 @@ impl CurrentCategorizedPart {
 pub struct CurrentInventoryPart {
     category_index: usize,
     part_index: usize,
-    part: Part,
+    part: Bl3Part,
     button_state: button::State,
 }
 
 impl CurrentInventoryPart {
-    pub fn new(category_index: usize, part_index: usize, part: Part) -> Self {
+    pub fn new(category_index: usize, part_index: usize, part: Bl3Part) -> Self {
         Self {
             category_index,
             part_index,
@@ -88,7 +88,7 @@ impl CurrentInventoryPart {
 #[derive(Debug, Clone)]
 pub struct InventoryCategorizedParts {
     pub category: String,
-    pub parts: Vec<Part>,
+    pub parts: Vec<Bl3Part>,
 }
 
 #[derive(Debug, Default)]
@@ -108,8 +108,7 @@ impl CurrentParts {
 
         let mut current_parts_column = Column::new();
 
-        // if let Some(active_item) = active_item {
-        let mut categorized_parts: BTreeMap<String, Vec<Part>> = BTreeMap::new();
+        let mut categorized_parts: BTreeMap<String, Vec<Bl3Part>> = BTreeMap::new();
 
         if let Some(available_parts) = available_parts {
             item.parts.iter().for_each(|p| {
@@ -186,7 +185,11 @@ impl CurrentParts {
         current_parts_column = current_parts_column.push(
             Container::new(
                 TextMargin::new(
-                    format!("Current Parts ({}/{})", item.parts.len(), MAX_PARTS),
+                    format!(
+                        "Current Parts ({}/{})",
+                        item.parts.len(),
+                        MAX_BL3_ITEM_PARTS
+                    ),
                     2,
                 )
                 .0

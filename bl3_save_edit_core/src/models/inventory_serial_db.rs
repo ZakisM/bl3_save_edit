@@ -1,9 +1,12 @@
+use std::collections::HashSet;
 use std::convert::TryInto;
 use std::io::Read;
 
 use anyhow::{bail, Context, Result};
 use json::JsonValue;
+use rayon::iter::{ParallelBridge, ParallelIterator};
 
+use crate::bl3_save::bl3_item::Bl3Part;
 use crate::resources::INVENTORY_SERIAL_DB_JSON_COMPRESSED;
 
 pub struct InventorySerialDb {
@@ -24,10 +27,11 @@ impl InventorySerialDb {
 
         let max_version = data
             .entries()
-            .into_iter()
-            .map(|(i, _)| {
-                data[i]["versions"]
+            .par_bridge()
+            .map(|(category, _)| {
+                data[category]["versions"]
                     .members()
+                    .par_bridge()
                     .map(|c| c["version"].as_isize())
                     .collect::<Vec<_>>()
             })
@@ -72,5 +76,48 @@ impl InventorySerialDb {
         } else {
             Ok(self.data[category]["assets"][index - 1].to_string())
         }
+    }
+
+    pub fn get_part_by_name(&self, category: &str, name: &str) -> Result<Bl3Part> {
+        let part_info = self.data[category]["assets"]
+            .members()
+            .into_iter()
+            .enumerate()
+            .map(|(i, p)| (i, p.to_string()))
+            .find(|(_, p)| p.to_lowercase().contains(&name.to_lowercase()))
+            .map(|(i, p)| (i, p));
+
+        if let Some((idx, ident)) = part_info {
+            let res = Bl3Part {
+                ident,
+                short_ident: Some(name.to_owned()),
+                idx,
+            };
+
+            Ok(res)
+        } else {
+            //This should never happen but lets leave it here just in case
+            bail!(
+                "failed to find part from inventory serial db - category: {}, name: {}",
+                category,
+                name
+            )
+        }
+    }
+
+    // Use this to ensure we only show Available Parts in the UI that we can actually add to the weapon
+    pub fn par_all_parts(&self) -> HashSet<String> {
+        self.data
+            .entries()
+            .par_bridge()
+            .map(|(category, _)| {
+                self.data[category]["assets"]
+                    .members()
+                    .par_bridge()
+                    .filter_map(|p| p.to_string().rsplit('.').next().map(|s| s.to_owned()))
+                    .collect::<HashSet<_>>()
+            })
+            .flatten()
+            .collect::<HashSet<_>>()
     }
 }

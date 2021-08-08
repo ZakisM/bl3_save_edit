@@ -3,7 +3,9 @@ use std::io::Read;
 
 use heck::TitleCase;
 use once_cell::sync::Lazy;
-use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
+use rayon::iter::{
+    IntoParallelIterator, IntoParallelRefIterator, ParallelBridge, ParallelIterator,
+};
 use serde::Deserialize;
 
 use crate::models::inventory_serial_db::InventorySerialDb;
@@ -88,13 +90,16 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> HashMap<String, ResourceItem> {
         .has_headers(true)
         .from_reader(decompressed_bytes.as_bytes());
 
+    let inventory_serial_db_all_parts = INVENTORY_SERIAL_DB.par_all_parts();
+
     let records = rdr
         .deserialize()
+        .par_bridge()
         .map(|r| {
             let record: ResourceItemRecord = r.expect("failed to deserialize resource part record");
             record
         })
-        .filter(|r| r.part != "None")
+        .filter(|r| inventory_serial_db_all_parts.contains(r.part.as_str()))
         .map(|mut record| {
             if let Some(curr_dependencies) = &record.dependencies {
                 let all_dependencies = curr_dependencies
@@ -119,7 +124,8 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> HashMap<String, ResourceItem> {
             };
 
             record
-        });
+        })
+        .collect::<Vec<_>>();
 
     let parts_grouped = records
         .into_iter()

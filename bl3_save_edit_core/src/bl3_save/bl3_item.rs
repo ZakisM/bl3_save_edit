@@ -12,7 +12,7 @@ use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
 use crate::parser::read_be_signed_int;
 use crate::resources::{INVENTORY_PARTS_ALL, INVENTORY_SERIAL_DB};
 
-pub const MAX_PARTS: usize = 63;
+pub const MAX_BL3_ITEM_PARTS: usize = 63;
 
 // Translated from https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/bl3save/datalib.py
 // All credits to apocalyptech
@@ -34,9 +34,9 @@ pub struct Bl3Item {
     pub manufacturer_bits: usize,
     pub level: usize,
     pub part_bits: usize,
-    pub parts: Vec<Part>,
+    pub parts: Vec<Bl3Part>,
     pub generic_part_bits: usize,
-    pub generic_parts: Vec<Part>,
+    pub generic_parts: Vec<Bl3Part>,
     pub rerolled: usize,
     pub item_type: ItemType,
     pub rarity: ItemRarity,
@@ -53,7 +53,7 @@ pub struct BalancePart {
 }
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
-pub struct Part {
+pub struct Bl3Part {
     pub ident: String,
     pub short_ident: Option<String>,
     pub idx: usize,
@@ -395,7 +395,7 @@ impl Bl3Item {
         bits: &mut ArbitraryBits,
         version: usize,
         count_bits: usize,
-    ) -> Result<(usize, Vec<Part>)> {
+    ) -> Result<(usize, Vec<Bl3Part>)> {
         let num_bits = INVENTORY_SERIAL_DB.get_num_bits(category, version)?;
         let num_parts = bits.eat(count_bits)?;
 
@@ -410,7 +410,7 @@ impl Bl3Item {
 
             let short_ident = ident.rsplit('.').next().map(|s| s.to_owned());
 
-            parts.push(Part {
+            parts.push(Bl3Part {
                 ident,
                 short_ident,
                 idx: part_idx,
