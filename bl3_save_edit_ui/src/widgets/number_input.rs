@@ -50,7 +50,7 @@ impl<'a> NumberInput<'a> {
 
             on_change(value)
         })
-        .select_all_first_click(true);
+        .select_all_on_click(true);
 
         Self(input)
     }

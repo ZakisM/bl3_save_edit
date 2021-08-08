@@ -570,6 +570,28 @@ impl Application for Bl3UiState {
 
                             map_item_to_manage_save_state(&mut self.manage_save_state);
                         }
+                        InventoryInteractionMessage::AvailablePartPressed(
+                            available_parts_index,
+                        ) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .available_parts
+                                .parts_index = available_parts_index;
+                        }
+                        InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .current_parts
+                                .parts_index = current_parts_index;
+                        }
+                        InventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .item_level_input = item_level_input;
+                        }
                         InventoryInteractionMessage::BalanceInputChanged(balance_input) => {
                             self.manage_save_state
                                 .main_state
@@ -602,22 +624,6 @@ impl Application for Bl3UiState {
                                 .main_state
                                 .inventory_state
                                 .manufacturer_input = manufacturer_input;
-                        }
-                        InventoryInteractionMessage::AvailablePartPressed(
-                            available_parts_index,
-                        ) => {
-                            self.manage_save_state
-                                .main_state
-                                .inventory_state
-                                .available_parts
-                                .parts_index = available_parts_index;
-                        }
-                        InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
-                            self.manage_save_state
-                                .main_state
-                                .inventory_state
-                                .current_parts
-                                .parts_index = current_parts_index;
                         }
                     },
                 },

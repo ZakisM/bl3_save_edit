@@ -1,20 +1,22 @@
 use iced::{
-    scrollable, text_input, text_input_with_picklist, Align, Color, Column, Container, Length, Row,
-    Scrollable, TextInput, TextInputWithPickList,
+    scrollable, text_input, text_input_with_picklist, tooltip, Align, Color, Column, Container,
+    Length, Row, Scrollable, TextInput, TextInputWithPickList, Tooltip,
 };
 
 use bl3_save_edit_core::game_data::{GameDataKv, BALANCE_NAME_MAPPING};
 use bl3_save_edit_core::resources::INVENTORY_PARTS_ALL;
 
 use crate::bl3_ui::{InteractionMessage, Message};
-use crate::bl3_ui_style::Bl3UiStyle;
+use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
 use crate::views::manage_save::inventory::available_parts::{AvailableParts, AvailablePartsIndex};
 use crate::views::manage_save::inventory::current_parts::{CurrentParts, CurrentPartsIndex};
 use crate::views::manage_save::inventory::inventory_item::InventoryItem;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
+use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
 
 pub mod available_parts;
@@ -28,6 +30,8 @@ pub struct InventoryState {
     pub selected_item_index: usize,
     pub items: Vec<InventoryItem>,
     pub item_list_scrollable_state: scrollable::State,
+    pub item_level_input: i32,
+    pub item_level_input_state: text_input::State,
     pub balance_input: String,
     pub balance_input_state: text_input_with_picklist::State<GameDataKv>,
     pub balance_input_selected: GameDataKv,
@@ -47,6 +51,7 @@ pub enum InventoryInteractionMessage {
     ItemPressed(usize),
     AvailablePartPressed(AvailablePartsIndex),
     CurrentPartPressed(CurrentPartsIndex),
+    ItemLevelInputChanged(i32),
     BalanceInputChanged(String),
     BalanceInputSelected(GameDataKv),
     InventoryDataInputChanged(String),
@@ -61,6 +66,47 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
     let active_item = inventory_state.items.get(selected_item_index);
 
     let item_editor_contents = Column::new()
+        .push(
+            Container::new(
+                LabelledElement::create(
+                    "Level",
+                    Length::Units(60),
+                    Tooltip::new(
+                        NumberInput::new(
+                            &mut inventory_state.item_level_input_state,
+                            inventory_state.item_level_input,
+                            1,
+                            Some(MAX_CHARACTER_LEVEL as i32),
+                            |v| {
+                                InteractionMessage::ManageSaveInteraction(
+                                    ManageSaveInteractionMessage::Inventory(
+                                        InventoryInteractionMessage::ItemLevelInputChanged(v),
+                                    ),
+                                )
+                            },
+                        )
+                        .0
+                        .font(JETBRAINS_MONO)
+                        .padding(10)
+                        .size(17)
+                        .style(Bl3UiStyle)
+                        .into_element(),
+                        "Level must be between 1 and 72",
+                        tooltip::Position::Top,
+                    )
+                    .gap(10)
+                    .padding(10)
+                    .font(JETBRAINS_MONO)
+                    .size(17)
+                    .style(Bl3UiTooltipStyle),
+                )
+                .spacing(15)
+                .align_items(Align::Center),
+            )
+            .width(Length::Fill)
+            .height(Length::Units(36))
+            .style(Bl3UiStyle),
+        )
         .push(
             Container::new(
                 LabelledElement::create(
@@ -226,6 +272,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         .height(Length::Fill);
 
     let all_contents = Row::new().push(item_list).push(item_editor).spacing(20);
-
+    //
     Container::new(all_contents).padding(30)
+    // Container::new(Text::new("HI")).padding(30)
 }

@@ -5,7 +5,7 @@ use iced::{
 use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, ItemRarity, ItemType};
 
 use crate::bl3_ui::{InteractionMessage, Message};
-use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
 use crate::views::manage_save::inventory::InventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
@@ -102,7 +102,7 @@ impl InventoryItem {
 
         let button_content = Column::new()
             .push(
-                Container::new(Text::new(&self.label).font(JETBRAINS_MONO_BOLD).size(17))
+                Container::new(Text::new(&self.label).font(JETBRAINS_MONO).size(17))
                     .width(Length::Fill),
             )
             .push(tags_row)

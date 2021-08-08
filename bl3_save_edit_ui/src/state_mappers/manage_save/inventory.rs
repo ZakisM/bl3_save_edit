@@ -1,4 +1,7 @@
+use std::convert::TryInto;
+
 use crate::views::manage_save::inventory::inventory_item::InventoryItem;
+use crate::views::manage_save::inventory::{available_parts, current_parts};
 use crate::views::manage_save::ManageSaveState;
 
 pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
@@ -36,13 +39,6 @@ pub fn map_item_to_manage_save_state(manage_save_state: &mut ManageSaveState) {
         .scrollable_state
         .snap_to(0.0);
 
-    manage_save_state
-        .main_state
-        .inventory_state
-        .current_parts
-        .scrollable_state
-        .snap_to(0.0);
-
     let save = &manage_save_state.current_file;
 
     let selected_item_index = manage_save_state
@@ -55,6 +51,29 @@ pub fn map_item_to_manage_save_state(manage_save_state: &mut ManageSaveState) {
             .main_state
             .inventory_state
             .selected_item_index = selected_item_index;
+
+        manage_save_state
+            .main_state
+            .inventory_state
+            .available_parts
+            .parts_index = available_parts::AvailablePartsIndex {
+            category_index: 0,
+            part_index: 0,
+        };
+
+        manage_save_state
+            .main_state
+            .inventory_state
+            .current_parts
+            .parts_index = current_parts::CurrentPartsIndex {
+            category_index: 0,
+            part_index: 0,
+        };
+
+        manage_save_state
+            .main_state
+            .inventory_state
+            .item_level_input = item.level.try_into().unwrap_or(1);
 
         manage_save_state.main_state.inventory_state.balance_input =
             item.balance_part.ident.clone();
