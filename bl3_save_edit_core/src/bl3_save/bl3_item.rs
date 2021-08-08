@@ -37,6 +37,7 @@ pub struct Bl3Item {
     pub parts: Vec<Part>,
     pub generic_part_bits: usize,
     pub generic_parts: Vec<Part>,
+    pub rerolled: usize,
     pub item_type: ItemType,
     pub rarity: ItemRarity,
     pub weapon_type: Option<WeaponType>,
@@ -223,7 +224,7 @@ impl Bl3Item {
 
         let additional_count = bits.eat(8)?;
 
-        let additional_data = (0..additional_count)
+        let _additional_data = (0..additional_count)
             .map(|_| bits.eat(8))
             .collect::<Result<Vec<_>>>()?;
 
@@ -268,6 +269,7 @@ impl Bl3Item {
             parts,
             generic_part_bits,
             generic_parts,
+            rerolled,
             item_type,
             rarity,
             weapon_type,

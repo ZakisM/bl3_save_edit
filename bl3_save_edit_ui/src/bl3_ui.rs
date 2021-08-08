@@ -13,7 +13,7 @@ use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers::manage_save::fast_travel::map_fast_travel_stations_to_visited_teleporters_list;
-use crate::state_mappers::manage_save::inventory::map_item_to_manage_save_state;
+use crate::state_mappers::manage_save::inventory::map_item_to_inventory_state;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -26,7 +26,7 @@ use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
 use crate::views::manage_save::inventory::{
-    available_parts, current_parts, InventoryInteractionMessage,
+    available_parts, current_parts, InventoryInteractionMessage, InventoryStateExt,
 };
 use crate::views::manage_save::main::{MainTabBarInteractionMessage, MainTabBarView};
 use crate::views::manage_save::{
@@ -553,22 +553,26 @@ impl Application for Bl3UiState {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .available_parts
-                                .parts_index = available_parts::AvailablePartsIndex {
-                                category_index: 0,
-                                part_index: 0,
-                            };
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.available_parts.parts_index =
+                                        available_parts::AvailablePartsIndex {
+                                            category_index: 0,
+                                            part_index: 0,
+                                        }
+                                });
 
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .current_parts
-                                .parts_index = current_parts::CurrentPartsIndex {
-                                category_index: 0,
-                                part_index: 0,
-                            };
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.current_parts.parts_index =
+                                        current_parts::CurrentPartsIndex {
+                                            category_index: 0,
+                                            part_index: 0,
+                                        }
+                                });
 
-                            map_item_to_manage_save_state(&mut self.manage_save_state);
+                            map_item_to_inventory_state(&mut self.manage_save_state);
                         }
                         InventoryInteractionMessage::AvailablePartPressed(
                             available_parts_index,
@@ -576,38 +580,48 @@ impl Application for Bl3UiState {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .available_parts
-                                .parts_index = available_parts_index;
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.available_parts.parts_index = available_parts_index
+                                });
                         }
                         InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .current_parts
-                                .parts_index = current_parts_index;
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.current_parts.parts_index = current_parts_index
+                                });
                         }
                         InventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .item_level_input = item_level_input;
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.item_level_input = item_level_input
+                                });
                         }
                         InventoryInteractionMessage::BalanceInputChanged(balance_input) => {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .balance_input = balance_input;
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.balance_input = balance_input
+                                });
                         }
                         InventoryInteractionMessage::BalanceInputSelected(balance_selected) => {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .balance_input = balance_selected.ident.to_owned();
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.balance_input = balance_selected.ident.to_owned()
+                                });
 
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .balance_input_selected = balance_selected;
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.balance_input_selected = balance_selected
+                                });
                         }
                         InventoryInteractionMessage::InventoryDataInputChanged(
                             inventory_data_input,
@@ -615,7 +629,9 @@ impl Application for Bl3UiState {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .inventory_data_input = inventory_data_input;
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.inventory_data_input = inventory_data_input
+                                });
                         }
                         InventoryInteractionMessage::ManufacturerInputChanged(
                             manufacturer_input,
@@ -623,7 +639,9 @@ impl Application for Bl3UiState {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
-                                .manufacturer_input = manufacturer_input;
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.manufacturer_input = manufacturer_input
+                                });
                         }
                     },
                 },

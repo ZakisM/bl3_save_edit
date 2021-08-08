@@ -1,7 +1,7 @@
 use std::convert::TryInto;
 
-use crate::views::manage_save::inventory::inventory_item::InventoryItem;
-use crate::views::manage_save::inventory::{available_parts, current_parts};
+use crate::views::manage_save::inventory::inventory_item::InventoryListItem;
+use crate::views::manage_save::inventory::InventoryStateExt;
 use crate::views::manage_save::ManageSaveState;
 
 pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
@@ -18,7 +18,7 @@ pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
         .iter()
         .cloned()
         .enumerate()
-        .map(|(i, item)| InventoryItem::new(i, item))
+        .map(|(i, item)| InventoryListItem::new(i, item))
         .collect();
 
     manage_save_state
@@ -27,17 +27,15 @@ pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
         .item_list_scrollable_state
         .snap_to(0.0);
 
-    map_item_to_manage_save_state(manage_save_state);
+    map_item_to_inventory_state(manage_save_state);
 }
 
-pub fn map_item_to_manage_save_state(manage_save_state: &mut ManageSaveState) {
+pub fn map_item_to_inventory_state(manage_save_state: &mut ManageSaveState) {
     //TODO: Snap to top for every scrollable in each state_mapper when it is required (including pick_list if possible)
     manage_save_state
         .main_state
         .inventory_state
-        .available_parts
-        .scrollable_state
-        .snap_to(0.0);
+        .map_current_item_if_exists(|i| i.editor.available_parts.scrollable_state.snap_to(0.0));
 
     let save = &manage_save_state.current_file;
 
@@ -52,40 +50,21 @@ pub fn map_item_to_manage_save_state(manage_save_state: &mut ManageSaveState) {
             .inventory_state
             .selected_item_index = selected_item_index;
 
-        manage_save_state
+        // Only map this initially as we want to maintain state for the changes made to items
+        if let Some(i) = manage_save_state
             .main_state
             .inventory_state
-            .available_parts
-            .parts_index = available_parts::AvailablePartsIndex {
-            category_index: 0,
-            part_index: 0,
-        };
+            .items
+            .get_mut(selected_item_index)
+        {
+            if !i.has_mapped_from_save {
+                i.editor.item_level_input = item.level.try_into().unwrap_or(1);
+                i.editor.balance_input = item.balance_part.ident.clone();
+                i.editor.inventory_data_input = item.inv_data.clone();
+                i.editor.manufacturer_input = item.manufacturer.clone();
 
-        manage_save_state
-            .main_state
-            .inventory_state
-            .current_parts
-            .parts_index = current_parts::CurrentPartsIndex {
-            category_index: 0,
-            part_index: 0,
-        };
-
-        manage_save_state
-            .main_state
-            .inventory_state
-            .item_level_input = item.level.try_into().unwrap_or(1);
-
-        manage_save_state.main_state.inventory_state.balance_input =
-            item.balance_part.ident.clone();
-
-        manage_save_state
-            .main_state
-            .inventory_state
-            .inventory_data_input = item.inv_data.clone();
-
-        manage_save_state
-            .main_state
-            .inventory_state
-            .manufacturer_input = item.manufacturer.clone();
+                i.has_mapped_from_save = true;
+            }
+        }
     }
 }

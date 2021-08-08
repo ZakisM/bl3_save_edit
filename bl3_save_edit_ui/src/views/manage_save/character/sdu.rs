@@ -44,9 +44,8 @@ impl SduUnlockField {
             name: name.as_ref().to_owned(),
             text_margin,
             sdu_slot_type,
-            input: 0,
-            input_state: text_input::State::default(),
             on_changed: Rc::new(on_changed),
+            ..Default::default()
         }
     }
 

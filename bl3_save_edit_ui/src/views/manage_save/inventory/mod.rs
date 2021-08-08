@@ -1,22 +1,13 @@
-use iced::{
-    scrollable, text_input, text_input_with_picklist, tooltip, Align, Color, Column, Container,
-    Length, Row, Scrollable, TextInput, TextInputWithPickList, Tooltip,
-};
+use iced::{scrollable, Align, Color, Column, Container, Length, Row, Scrollable, Text};
 
-use bl3_save_edit_core::game_data::{GameDataKv, BALANCE_NAME_MAPPING};
-use bl3_save_edit_core::resources::INVENTORY_PARTS_ALL;
+use bl3_save_edit_core::game_data::GameDataKv;
 
-use crate::bl3_ui::{InteractionMessage, Message};
-use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
-use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
-use crate::views::manage_save::inventory::available_parts::{AvailableParts, AvailablePartsIndex};
-use crate::views::manage_save::inventory::current_parts::{CurrentParts, CurrentPartsIndex};
-use crate::views::manage_save::inventory::inventory_item::InventoryItem;
-use crate::views::manage_save::ManageSaveInteractionMessage;
-use crate::views::InteractionExt;
-use crate::widgets::labelled_element::LabelledElement;
-use crate::widgets::number_input::NumberInput;
+use crate::bl3_ui::Message;
+use crate::bl3_ui_style::Bl3UiStyle;
+use crate::resources::fonts::JETBRAINS_MONO_BOLD;
+use crate::views::manage_save::inventory::available_parts::AvailablePartsIndex;
+use crate::views::manage_save::inventory::current_parts::CurrentPartsIndex;
+use crate::views::manage_save::inventory::inventory_item::InventoryListItem;
 use crate::widgets::text_margin::TextMargin;
 
 pub mod available_parts;
@@ -24,23 +15,30 @@ pub mod current_parts;
 pub mod inventory_button_style;
 pub mod inventory_category_style;
 pub mod inventory_item;
+pub mod inventory_item_editor;
 
 #[derive(Debug, Default)]
 pub struct InventoryState {
     pub selected_item_index: usize,
-    pub items: Vec<InventoryItem>,
+    pub items: Vec<InventoryListItem>,
     pub item_list_scrollable_state: scrollable::State,
-    pub item_level_input: i32,
-    pub item_level_input_state: text_input::State,
-    pub balance_input: String,
-    pub balance_input_state: text_input_with_picklist::State<GameDataKv>,
-    pub balance_input_selected: GameDataKv,
-    pub inventory_data_input: String,
-    pub inventory_data_input_state: text_input::State,
-    pub manufacturer_input: String,
-    pub manufacturer_input_state: text_input::State,
-    pub available_parts: AvailableParts,
-    pub current_parts: CurrentParts,
+}
+
+pub trait InventoryStateExt {
+    fn map_current_item_if_exists<F>(&mut self, f: F)
+    where
+        F: FnOnce(&mut InventoryListItem);
+}
+
+impl InventoryStateExt for InventoryState {
+    fn map_current_item_if_exists<F>(&mut self, f: F)
+    where
+        F: FnOnce(&mut InventoryListItem),
+    {
+        if let Some(item) = self.items.get_mut(self.selected_item_index) {
+            f(item)
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -59,185 +57,32 @@ pub enum InventoryInteractionMessage {
 }
 
 pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
-    //Todo: Each item should have it's own state
-
     let selected_item_index = inventory_state.selected_item_index;
-    let item_part_data = &*INVENTORY_PARTS_ALL;
-    let active_item = inventory_state.items.get(selected_item_index);
 
-    let item_editor_contents = Column::new()
-        .push(
-            Container::new(
-                LabelledElement::create(
-                    "Level",
-                    Length::Units(60),
-                    Tooltip::new(
-                        NumberInput::new(
-                            &mut inventory_state.item_level_input_state,
-                            inventory_state.item_level_input,
-                            1,
-                            Some(MAX_CHARACTER_LEVEL as i32),
-                            |v| {
-                                InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::Inventory(
-                                        InventoryInteractionMessage::ItemLevelInputChanged(v),
-                                    ),
-                                )
-                            },
-                        )
-                        .0
-                        .font(JETBRAINS_MONO)
-                        .padding(10)
-                        .size(17)
-                        .style(Bl3UiStyle)
-                        .into_element(),
-                        "Level must be between 1 and 72",
-                        tooltip::Position::Top,
-                    )
-                    .gap(10)
-                    .padding(10)
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .style(Bl3UiTooltipStyle),
-                )
-                .spacing(15)
-                .align_items(Align::Center),
-            )
-            .width(Length::Fill)
-            .height(Length::Units(36))
-            .style(Bl3UiStyle),
-        )
-        .push(
-            Container::new(
-                LabelledElement::create(
-                    "Balance",
-                    Length::Units(130),
-                    TextInputWithPickList::new(
-                        &mut inventory_state.balance_input_state,
-                        "",
-                        &inventory_state.balance_input,
-                        Some(inventory_state.balance_input_selected),
-                        &BALANCE_NAME_MAPPING[..],
-                        |s| {
-                            InteractionMessage::ManageSaveInteraction(
-                                ManageSaveInteractionMessage::Inventory(
-                                    InventoryInteractionMessage::BalanceInputChanged(s),
-                                ),
-                            )
-                        },
-                        |s| {
-                            InteractionMessage::ManageSaveInteraction(
-                                ManageSaveInteractionMessage::Inventory(
-                                    InventoryInteractionMessage::BalanceInputSelected(s),
-                                ),
-                            )
-                        },
-                    )
-                    .font(JETBRAINS_MONO)
-                    .padding(10)
-                    .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                )
-                .spacing(15)
-                .width(Length::FillPortion(9))
-                .align_items(Align::Center),
-            )
-            .style(Bl3UiStyle),
-        )
-        .push(
-            Container::new(
-                LabelledElement::create(
-                    "Inventory Data",
-                    Length::Units(130),
-                    TextInput::new(
-                        &mut inventory_state.inventory_data_input_state,
-                        "",
-                        &inventory_state.inventory_data_input,
-                        |s| {
-                            InteractionMessage::ManageSaveInteraction(
-                                ManageSaveInteractionMessage::Inventory(
-                                    InventoryInteractionMessage::InventoryDataInputChanged(s),
-                                ),
-                            )
-                        },
-                    )
-                    .font(JETBRAINS_MONO)
-                    .padding(10)
-                    .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                )
-                .spacing(15)
-                .width(Length::FillPortion(9))
-                .align_items(Align::Center),
-            )
-            .style(Bl3UiStyle),
-        )
-        .push(
-            Container::new(
-                LabelledElement::create(
-                    "Manufacturer",
-                    Length::Units(130),
-                    TextInput::new(
-                        &mut inventory_state.manufacturer_input_state,
-                        "",
-                        &inventory_state.manufacturer_input,
-                        |s| {
-                            InteractionMessage::ManageSaveInteraction(
-                                ManageSaveInteractionMessage::Inventory(
-                                    InventoryInteractionMessage::ManufacturerInputChanged(s),
-                                ),
-                            )
-                        },
-                    )
-                    .font(JETBRAINS_MONO)
-                    .padding(10)
-                    .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                )
-                .spacing(15)
-                .width(Length::FillPortion(9))
-                .align_items(Align::Center),
-            )
-            .style(Bl3UiStyle),
-        )
-        .spacing(20);
-
-    let resource_item = active_item.and_then(|inv_item| {
-        inv_item
-            .item
-            .balance_part
-            .short_ident
-            .as_ref()
-            .and_then(|i| item_part_data.get(i))
-    });
-
-    let available_parts_contents = inventory_state.available_parts.view(resource_item);
-
-    let current_parts_contents = inventory_state.current_parts.view(
-        inventory_state
-            .items
-            .get(inventory_state.selected_item_index),
-        resource_item,
-    );
-
-    let parts_editor_contents = Container::new(
-        Row::new()
-            .push(available_parts_contents)
-            .push(current_parts_contents)
-            .spacing(20),
-    )
-    .width(Length::Fill)
-    .height(Length::Fill);
-
-    let item_editor_contents = item_editor_contents.push(parts_editor_contents);
+    let mut item_editor = None;
 
     let inventory_items = inventory_state.items.iter_mut().enumerate().fold(
         Column::new().align_items(Align::Start),
-        |curr, (i, item)| curr.push(item.view(i == selected_item_index)),
+        |inventory_items, (i, item)| {
+            let is_active = i == selected_item_index;
+
+            let (list_item_button, curr_item_editor) = item.view(is_active);
+
+            if is_active {
+                item_editor = curr_item_editor;
+            }
+
+            inventory_items.push(list_item_button)
+        },
     );
+
+    let item_editor = if let Some(item_editor) = item_editor {
+        item_editor
+    } else {
+        Container::new(Text::new("Select something mate"))
+    }
+    .width(Length::FillPortion(7))
+    .height(Length::Fill);
 
     let item_list = Container::new(
         Column::new()
@@ -267,12 +112,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
     .height(Length::Fill)
     .style(Bl3UiStyle);
 
-    let item_editor = Container::new(item_editor_contents)
-        .width(Length::FillPortion(7))
-        .height(Length::Fill);
-
     let all_contents = Row::new().push(item_list).push(item_editor).spacing(20);
-    //
+
     Container::new(all_contents).padding(30)
-    // Container::new(Text::new("HI")).padding(30)
 }

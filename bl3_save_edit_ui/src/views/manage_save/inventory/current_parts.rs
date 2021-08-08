@@ -4,7 +4,7 @@ use iced::{
     button, scrollable, Align, Button, Color, Column, Container, Element, Length, Scrollable, Text,
 };
 
-use bl3_save_edit_core::bl3_save::bl3_item::{Part, MAX_PARTS};
+use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, Part, MAX_PARTS};
 use bl3_save_edit_core::resources::ResourceItem;
 
 use crate::bl3_ui::{InteractionMessage, Message};
@@ -12,7 +12,7 @@ use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
 use crate::views::manage_save::inventory::inventory_category_style::InventoryCategoryStyle;
-use crate::views::manage_save::inventory::{InventoryInteractionMessage, InventoryItem};
+use crate::views::manage_save::inventory::InventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::text_margin::TextMargin;
@@ -101,149 +101,114 @@ pub struct CurrentParts {
 impl CurrentParts {
     pub fn view(
         &mut self,
-        active_item: Option<&InventoryItem>,
+        item: &Bl3Item,
         available_parts: Option<&ResourceItem>,
     ) -> Container<Message> {
         let selected_current_parts_index = &self.parts_index;
 
         let mut current_parts_column = Column::new();
 
-        if let Some(active_item) = active_item {
-            let mut categorized_parts: BTreeMap<String, Vec<Part>> = BTreeMap::new();
+        // if let Some(active_item) = active_item {
+        let mut categorized_parts: BTreeMap<String, Vec<Part>> = BTreeMap::new();
 
-            if let Some(available_parts) = available_parts {
-                active_item.item.parts.iter().for_each(|p| {
-                    let known_cat_p =
-                        available_parts
-                            .inventory_categorized_parts
-                            .iter()
-                            .find(|cat| {
-                                cat.parts.iter().any(|cat_p| {
-                                    part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
-                                })
-                            });
+        if let Some(available_parts) = available_parts {
+            item.parts.iter().for_each(|p| {
+                let known_cat_p = available_parts
+                    .inventory_categorized_parts
+                    .iter()
+                    .find(|cat| {
+                        cat.parts.iter().any(|cat_p| {
+                            part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
+                        })
+                    });
 
-                    if let Some(known_cat_p) = known_cat_p {
-                        let curr_cat_parts = categorized_parts
-                            .entry(known_cat_p.category.to_owned())
-                            .or_insert_with(Vec::new);
+                if let Some(known_cat_p) = known_cat_p {
+                    let curr_cat_parts = categorized_parts
+                        .entry(known_cat_p.category.to_owned())
+                        .or_insert_with(Vec::new);
 
-                        curr_cat_parts.push(p.to_owned());
-                    } else {
-                        let curr_cat_parts = categorized_parts
-                            .entry("UNKNOWN PARTS".to_owned())
-                            .or_insert_with(Vec::new);
-
-                        curr_cat_parts.push(p.to_owned());
-                    }
-                });
-            } else {
-                active_item.item.parts.iter().for_each(|p| {
+                    curr_cat_parts.push(p.to_owned());
+                } else {
                     let curr_cat_parts = categorized_parts
                         .entry("UNKNOWN PARTS".to_owned())
                         .or_insert_with(Vec::new);
 
                     curr_cat_parts.push(p.to_owned());
-                })
-            }
-
-            let inventory_categorized_parts =
-                categorized_parts.into_iter().map(|(category, mut parts)| {
-                    parts.sort();
-                    InventoryCategorizedParts { category, parts }
-                });
-
-            self.parts = inventory_categorized_parts
-                .into_iter()
-                .enumerate()
-                .map(|(cat_id, cat_p)| {
-                    CurrentCategorizedPart::new(cat_id, cat_p.category, cat_p.parts)
-                })
-                .collect();
-
-            let current_parts_list = self.parts.iter_mut().enumerate().fold(
-                Column::new(),
-                |mut curr, (cat_index, cat_parts)| {
-                    curr = curr.push(
-                        Container::new(
-                            Text::new(&cat_parts.category)
-                                .font(JETBRAINS_MONO_BOLD)
-                                .size(17)
-                                .color(Color::from_rgb8(242, 203, 5)),
-                        )
-                        .width(Length::Fill)
-                        .style(InventoryCategoryStyle)
-                        .padding(10),
-                    );
-
-                    for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
-                        let is_active = selected_current_parts_index.category_index == cat_index
-                            && selected_current_parts_index.part_index == part_index;
-                        curr = curr.push(p.view(is_active))
-                    }
-
-                    curr
-                },
-            );
-
-            current_parts_column = current_parts_column.push(
-                Container::new(
-                    TextMargin::new(
-                        format!(
-                            "Current Parts ({}/{})",
-                            active_item.item.parts.len(),
-                            MAX_PARTS
-                        ),
-                        2,
-                    )
-                    .0
-                    .font(JETBRAINS_MONO_BOLD)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5)),
-                )
-                .padding(10)
-                .align_x(Align::Center)
-                .width(Length::FillPortion(2))
-                .style(Bl3UiStyle),
-            );
-
-            current_parts_column = current_parts_column.push(
-                Container::new(
-                    Scrollable::new(&mut self.scrollable_state)
-                        .push(current_parts_list)
-                        .height(Length::Fill)
-                        .width(Length::Fill),
-                )
-                .padding(1),
-            );
+                }
+            });
         } else {
-            current_parts_column = current_parts_column.push(
-                Container::new(
-                    TextMargin::new("Current Parts", 2)
-                        .0
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
-                        .color(Color::from_rgb8(242, 203, 5)),
-                )
-                .padding(10)
-                .align_x(Align::Center)
-                .width(Length::FillPortion(2))
-                .style(Bl3UiStyle),
-            );
+            item.parts.iter().for_each(|p| {
+                let curr_cat_parts = categorized_parts
+                    .entry("UNKNOWN PARTS".to_owned())
+                    .or_insert_with(Vec::new);
 
-            current_parts_column = current_parts_column.push(
-                Container::new(
-                    Text::new("No current parts found.")
-                        .font(JETBRAINS_MONO)
-                        .size(17)
-                        .color(Color::from_rgb8(220, 220, 220)),
-                )
-                .width(Length::Fill)
-                .height(Length::Fill)
-                .align_x(Align::Center)
-                .align_y(Align::Center),
-            )
+                curr_cat_parts.push(p.to_owned());
+            })
         }
+
+        let inventory_categorized_parts =
+            categorized_parts.into_iter().map(|(category, mut parts)| {
+                parts.sort();
+                InventoryCategorizedParts { category, parts }
+            });
+
+        self.parts = inventory_categorized_parts
+            .into_iter()
+            .enumerate()
+            .map(|(cat_id, cat_p)| CurrentCategorizedPart::new(cat_id, cat_p.category, cat_p.parts))
+            .collect();
+
+        let current_parts_list = self.parts.iter_mut().enumerate().fold(
+            Column::new(),
+            |mut curr, (cat_index, cat_parts)| {
+                curr = curr.push(
+                    Container::new(
+                        Text::new(&cat_parts.category)
+                            .font(JETBRAINS_MONO_BOLD)
+                            .size(17)
+                            .color(Color::from_rgb8(242, 203, 5)),
+                    )
+                    .width(Length::Fill)
+                    .style(InventoryCategoryStyle)
+                    .padding(10),
+                );
+
+                for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
+                    let is_active = selected_current_parts_index.category_index == cat_index
+                        && selected_current_parts_index.part_index == part_index;
+                    curr = curr.push(p.view(is_active))
+                }
+
+                curr
+            },
+        );
+
+        current_parts_column = current_parts_column.push(
+            Container::new(
+                TextMargin::new(
+                    format!("Current Parts ({}/{})", item.parts.len(), MAX_PARTS),
+                    2,
+                )
+                .0
+                .font(JETBRAINS_MONO_BOLD)
+                .size(17)
+                .color(Color::from_rgb8(242, 203, 5)),
+            )
+            .padding(10)
+            .align_x(Align::Center)
+            .width(Length::FillPortion(2))
+            .style(Bl3UiStyle),
+        );
+
+        current_parts_column = current_parts_column.push(
+            Container::new(
+                Scrollable::new(&mut self.scrollable_state)
+                    .push(current_parts_list)
+                    .height(Length::Fill)
+                    .width(Length::Fill),
+            )
+            .padding(1),
+        );
 
         Container::new(current_parts_column)
             .width(Length::FillPortion(2))
