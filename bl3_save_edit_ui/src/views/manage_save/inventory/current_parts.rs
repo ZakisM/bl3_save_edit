@@ -129,7 +129,7 @@ impl CurrentParts {
                     curr_cat_parts.push(p.to_owned());
                 } else {
                     let curr_cat_parts = categorized_parts
-                        .entry("UNKNOWN PARTS".to_owned())
+                        .entry("Unknown Parts".to_owned())
                         .or_insert_with(Vec::new);
 
                     curr_cat_parts.push(p.to_owned());
@@ -138,7 +138,7 @@ impl CurrentParts {
         } else {
             item.parts.iter().for_each(|p| {
                 let curr_cat_parts = categorized_parts
-                    .entry("UNKNOWN PARTS".to_owned())
+                    .entry("Unknown Parts".to_owned())
                     .or_insert_with(Vec::new);
 
                 curr_cat_parts.push(p.to_owned());

@@ -101,6 +101,8 @@ fn main() {
 
         std::io::copy(&mut input_file, &mut snappy_wtr).unwrap();
     }
+
+    //Generate RON resources
 }
 
 #[derive(Debug, Deserialize)]

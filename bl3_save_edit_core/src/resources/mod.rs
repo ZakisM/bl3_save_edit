@@ -10,6 +10,9 @@ use serde::Deserialize;
 
 use crate::models::inventory_serial_db::InventorySerialDb;
 
+type InventoryPartsAll = HashMap<String, ResourceItem>;
+type InventorySerialDbCategorizedParts = HashMap<String, Vec<ResourceCategorizedParts>>;
+
 pub const INVENTORY_SERIAL_DB_JSON_COMPRESSED: &[u8] =
     include_bytes!("../../resources/INVENTORY_SERIAL_DB.json.sz");
 
@@ -19,10 +22,15 @@ const INVENTORY_PARTS_ALL_DATA_COMPRESSED: &[u8] =
 pub static INVENTORY_SERIAL_DB: Lazy<InventorySerialDb> =
     Lazy::new(|| InventorySerialDb::load().expect("failed to load inventory serial db"));
 
-pub static INVENTORY_PARTS_ALL: Lazy<HashMap<String, ResourceItem>> =
-    Lazy::new(|| load_inventory_parts_grouped(INVENTORY_PARTS_ALL_DATA_COMPRESSED));
+pub static INVENTORY_PARTS: Lazy<InventoryParts> =
+    Lazy::new(load_inventory_parts_and_inventory_serial_parts);
 
-#[derive(Debug, Deserialize)]
+pub struct InventoryParts {
+    pub inventory_parts_all: InventoryPartsAll,
+    // pub inventory_serial_db_categorized_parts: InventorySerialDbCategorizedParts,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 struct ResourceItemRecord {
     #[serde(rename = "Name")]
     manufacturer: String,
@@ -70,15 +78,29 @@ pub struct ResourcePart {
     pub excluders: Option<Vec<String>>,
 }
 
-#[derive(Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 struct TempHeader {
     manufacturer: String,
     rarity: String,
     balance: String,
 }
 
-// TODO: Handle any errors here properly and exit UI correctly
-fn load_inventory_parts_grouped(bytes: &[u8]) -> HashMap<String, ResourceItem> {
+fn load_inventory_parts_and_inventory_serial_parts() -> InventoryParts {
+    let records = load_inventory_parts_all_records();
+
+    let inventory_serial_db_categorized_parts =
+        load_inventory_serial_db_categorized_parts(&records);
+    let inventory_parts_all = load_inventory_parts_all(records);
+
+    InventoryParts {
+        inventory_parts_all,
+        // inventory_serial_db_categorized_parts,
+    }
+}
+
+fn load_inventory_parts_all_records() -> Vec<ResourceItemRecord> {
+    let bytes = &*INVENTORY_PARTS_ALL_DATA_COMPRESSED;
+
     let mut rdr = snap::read::FrameDecoder::new(bytes);
 
     let mut decompressed_bytes = String::new();
@@ -92,8 +114,7 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> HashMap<String, ResourceItem> {
 
     let inventory_serial_db_all_parts = INVENTORY_SERIAL_DB.par_all_parts();
 
-    let records = rdr
-        .deserialize()
+    rdr.deserialize()
         .par_bridge()
         .map(|r| {
             let record: ResourceItemRecord = r.expect("failed to deserialize resource part record");
@@ -125,8 +146,11 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> HashMap<String, ResourceItem> {
 
             record
         })
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+}
 
+// TODO: Handle any errors here properly and exit UI correctly
+fn load_inventory_parts_all(records: Vec<ResourceItemRecord>) -> HashMap<String, ResourceItem> {
     let parts_grouped = records
         .into_iter()
         .fold(BTreeMap::new(), |mut curr, inv_part| {
@@ -187,4 +211,70 @@ fn load_inventory_parts_grouped(bytes: &[u8]) -> HashMap<String, ResourceItem> {
 
             curr
         })
+}
+
+// This will first get all of the parts found in INVENTORY_SERIAL_DB,
+// then get part info from INVENTORY_PARTS_ALL.csv and group accordingly.
+fn load_inventory_serial_db_categorized_parts(
+    records: &[ResourceItemRecord],
+) -> HashMap<String, Vec<ResourceCategorizedParts>> {
+    let inventory_serial_db = &*INVENTORY_SERIAL_DB;
+    let records = records;
+
+    inventory_serial_db
+        .data
+        .entries()
+        .par_bridge()
+        .map(|(inv_db_category, _)| {
+            let parts_grouped = inventory_serial_db.data[inv_db_category]["assets"]
+                .members()
+                .filter_map(|p| p.to_string().rsplit('.').next().map(|s| s.to_owned()))
+                .fold(BTreeMap::new(), |mut curr, inv_db_part_name| {
+                    let curr_record = records
+                        .par_iter()
+                        .find_first(|r| r.part == inv_db_part_name)
+                        .map(|r| r.to_owned());
+
+                    if let Some(curr_record) = curr_record {
+                        let curr_group = curr
+                            .entry(curr_record.category.to_title_case())
+                            .or_insert_with(BTreeSet::new);
+
+                        let inventory_part = ResourcePart {
+                            name: curr_record.part,
+                            min_parts: curr_record.min_parts,
+                            max_parts: curr_record.max_parts,
+                            dependencies: curr_record.dependencies,
+                            excluders: curr_record.excluders,
+                        };
+
+                        curr_group.insert(inventory_part);
+                    } else {
+                        let curr_group = curr
+                            .entry("Unknown Parts".to_owned())
+                            .or_insert_with(BTreeSet::new);
+
+                        let inventory_part = ResourcePart {
+                            name: inv_db_part_name,
+                            min_parts: 0,
+                            max_parts: 0,
+                            dependencies: None,
+                            excluders: None,
+                        };
+
+                        curr_group.insert(inventory_part);
+                    }
+
+                    curr
+                })
+                .into_par_iter()
+                .map(|(category, parts)| ResourceCategorizedParts {
+                    category,
+                    parts: parts.into_par_iter().collect::<Vec<_>>(),
+                })
+                .collect::<Vec<_>>();
+
+            (inv_db_category.to_owned(), parts_grouped)
+        })
+        .collect()
 }
