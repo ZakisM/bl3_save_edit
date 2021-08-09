@@ -5,7 +5,7 @@ use iced::{
 
 use bl3_save_edit_core::bl3_save::bl3_item::Bl3Item;
 use bl3_save_edit_core::game_data::{GameDataKv, BALANCE_NAME_MAPPING};
-use bl3_save_edit_core::resources::INVENTORY_PARTS;
+use bl3_save_edit_core::resources::INVENTORY_PARTS_ALL_CATEGORIZED;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
@@ -36,7 +36,7 @@ pub struct InventoryItemEditor {
 
 impl InventoryItemEditor {
     pub fn view(&mut self, item: &Bl3Item) -> Container<Message> {
-        let item_part_data = &INVENTORY_PARTS.inventory_parts_all;
+        let item_part_data = &INVENTORY_PARTS_ALL_CATEGORIZED;
         let resource_item = item
             .balance_part
             .short_ident

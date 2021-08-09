@@ -10,7 +10,7 @@ use strum::{Display, EnumString};
 use crate::bl3_save::arbitrary_bits::ArbitraryBits;
 use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
 use crate::parser::read_be_signed_int;
-use crate::resources::{INVENTORY_PARTS, INVENTORY_SERIAL_DB};
+use crate::resources::{INVENTORY_PARTS_ALL_CATEGORIZED, INVENTORY_SERIAL_DB};
 
 pub const MAX_BL3_ITEM_PARTS: usize = 63;
 
@@ -181,7 +181,7 @@ impl Bl3Item {
 
         let balance_short_name = balance.rsplit('.').next().map(|s| s.to_owned());
 
-        let item_part_data = &INVENTORY_PARTS.inventory_parts_all;
+        let item_part_data = &INVENTORY_PARTS_ALL_CATEGORIZED;
         let item_part_info = balance_short_name
             .as_ref()
             .and_then(|bs| item_part_data.get(bs));
