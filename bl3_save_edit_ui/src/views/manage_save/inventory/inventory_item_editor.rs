@@ -23,6 +23,8 @@ use crate::widgets::number_input::NumberInput;
 pub struct InventoryItemEditor {
     pub item_level_input: i32,
     pub item_level_input_state: text_input::State,
+    pub serial_input: String,
+    pub serial_input_state: text_input::State,
     pub balance_input: String,
     pub balance_input_state: text_input_with_picklist::State<GameDataKv>,
     pub balance_input_selected: GameDataKv,
@@ -43,7 +45,7 @@ impl InventoryItemEditor {
             .as_ref()
             .and_then(|i| item_part_data.get(i));
 
-        let item_editor_contents = Column::new()
+        let level_serial_row = Row::new()
             .push(
                 Container::new(
                     LabelledElement::create(
@@ -85,6 +87,33 @@ impl InventoryItemEditor {
                 .height(Length::Units(36))
                 .style(Bl3UiStyle),
             )
+            .push(
+                Container::new(
+                    LabelledElement::create(
+                        "Serial",
+                        Length::Units(85),
+                        TextInput::new(
+                            &mut self.serial_input_state,
+                            "BL3(AwAAAABmboC7I9xAEzwShMJVX8nPYwsAAA==)",
+                            &self.serial_input,
+                            |_| InteractionMessage::Ignore,
+                        )
+                        .font(JETBRAINS_MONO)
+                        .padding(10)
+                        .size(17)
+                        .style(Bl3UiStyle)
+                        .into_element(),
+                    )
+                    .align_items(Align::Center),
+                )
+                .width(Length::Fill)
+                .height(Length::Units(36))
+                .style(Bl3UiStyle),
+            )
+            .spacing(20);
+
+        let item_editor_contents = Column::new()
+            .push(level_serial_row)
             .push(
                 Container::new(
                     LabelledElement::create(

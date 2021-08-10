@@ -111,7 +111,7 @@ impl CurrentParts {
         let mut categorized_parts: BTreeMap<String, Vec<Bl3Part>> = BTreeMap::new();
 
         if let Some(available_parts) = available_parts {
-            item.parts.iter().for_each(|p| {
+            item.parts().iter().for_each(|p| {
                 let known_cat_p = available_parts
                     .inventory_categorized_parts
                     .iter()
@@ -136,7 +136,7 @@ impl CurrentParts {
                 }
             });
         } else {
-            item.parts.iter().for_each(|p| {
+            item.parts().iter().for_each(|p| {
                 let curr_cat_parts = categorized_parts
                     .entry("Unknown Parts".to_owned())
                     .or_insert_with(Vec::new);
@@ -187,7 +187,7 @@ impl CurrentParts {
                 TextMargin::new(
                     format!(
                         "Current Parts ({}/{})",
-                        item.parts.len(),
+                        item.parts().len(),
                         MAX_BL3_ITEM_PARTS
                     ),
                     2,

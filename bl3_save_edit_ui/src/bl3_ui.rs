@@ -598,7 +598,7 @@ impl Application for Bl3UiState {
                                         .selected_item_index,
                                 )
                             {
-                                if current_item.item.parts.len() < MAX_BL3_ITEM_PARTS {
+                                if current_item.item.parts().len() < MAX_BL3_ITEM_PARTS {
                                     let part_selected = current_item
                                         .editor
                                         .available_parts
@@ -615,7 +615,9 @@ impl Application for Bl3UiState {
                                             part_inv_key,
                                             &part_selected.part.name,
                                         ) {
-                                            current_item.item.parts.push(bl3_part);
+                                            if let Err(e) = current_item.item.add_part(bl3_part) {
+                                                println!("{}", e);
+                                            }
                                         }
                                     }
                                 }

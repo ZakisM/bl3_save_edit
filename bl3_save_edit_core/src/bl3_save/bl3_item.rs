@@ -34,7 +34,7 @@ pub struct Bl3Item {
     pub manufacturer_bits: usize,
     pub level: usize,
     pub part_bits: usize,
-    pub parts: Vec<Bl3Part>,
+    parts: Vec<Bl3Part>,
     pub generic_part_bits: usize,
     pub generic_parts: Vec<Bl3Part>,
     pub rerolled: usize,
@@ -157,7 +157,7 @@ impl Bl3Item {
 
         let ident = bits.eat(8)?;
 
-        // Todo: ident can be 0 in some pc saves? check this
+        // Ident will be 0 if is item is not obfuscated
         ensure!(ident == 128 || ident == 0);
 
         let data_version = bits.eat(7)?;
@@ -333,6 +333,22 @@ impl Bl3Item {
         let res = res_bytes.to_string();
 
         Ok(res)
+    }
+
+    pub fn parts(&self) -> &Vec<Bl3Part> {
+        &self.parts
+    }
+
+    pub fn add_part(&mut self, part: Bl3Part) -> Result<()> {
+        self.parts.push(part);
+
+        let mut new_serial_bits: BitVec<Lsb0, u32> = BitVec::new();
+        new_serial_bits.resize(8, false);
+        new_serial_bits[0..8].store_be(128_u32);
+        // new_serial_bits.store_be(self.data_version);
+        // new_serial_bits.store_be(self.balance_part.idx);
+
+        Ok(())
     }
 
     fn xor_data(data: &mut [u8], seed: i32) {

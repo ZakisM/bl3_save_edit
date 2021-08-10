@@ -38,3 +38,24 @@ impl<'a> ArbitraryBits<'a> {
         }
     }
 }
+
+#[derive(Debug, Default)]
+pub struct ArbitraryBitVec<O = Lsb0, T = usize>
+where
+    O: BitOrder,
+    T: BitStore,
+{
+    bitvec: BitVec<O, T>,
+}
+
+impl<O, T> ArbitraryBitVec<O, T>
+where
+    O: BitOrder,
+    T: BitStore,
+{
+    pub fn new() -> Self {
+        ArbitraryBitVec {
+            bitvec: BitVec::<O, T>::new(),
+        }
+    }
+}

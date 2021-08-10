@@ -63,6 +63,10 @@ pub fn map_item_to_inventory_state(manage_save_state: &mut ManageSaveState) {
                 i.editor.inventory_data_input = item.inv_data.clone();
                 i.editor.manufacturer_input = item.manufacturer.clone();
 
+                if let Ok(base_64_serial) = item.get_serial_number_base64(false) {
+                    i.editor.serial_input = base_64_serial;
+                }
+
                 i.has_mapped_from_save = true;
             }
         }
