@@ -603,9 +603,9 @@ impl Application for Bl3UiState {
                                         .editor
                                         .available_parts
                                         .parts
-                                        .get_mut(available_parts_index.category_index)
+                                        .get(available_parts_index.category_index)
                                         .and_then(|p| {
-                                            p.parts.get_mut(available_parts_index.part_index)
+                                            p.parts.get(available_parts_index.part_index)
                                         });
 
                                     if let Some(part_selected) = part_selected {
@@ -615,8 +615,12 @@ impl Application for Bl3UiState {
                                             part_inv_key,
                                             &part_selected.part.name,
                                         ) {
-                                            if let Err(e) = current_item.item.add_part(bl3_part) {
-                                                println!("{}", e);
+                                            current_item.item.add_part(bl3_part);
+
+                                            if let Ok(base_64_serial) =
+                                                current_item.item.get_serial_number_base64(false)
+                                            {
+                                                current_item.editor.serial_input = base_64_serial;
                                             }
                                         }
                                     }

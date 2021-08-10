@@ -91,7 +91,7 @@ impl InventorySerialDb {
             let res = Bl3Part {
                 ident,
                 short_ident: Some(name.to_owned()),
-                idx,
+                idx: idx + 1,
             };
 
             Ok(res)

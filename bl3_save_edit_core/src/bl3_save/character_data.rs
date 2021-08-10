@@ -332,7 +332,7 @@ impl CharacterData {
         let inventory_items = character
             .inventory_items
             .par_iter()
-            .filter_map(|i| Bl3Item::from_serial_number(i.item_serial_number.clone()).ok())
+            .filter_map(|i| Bl3Item::from_serial_bytes(i.item_serial_number.clone()).ok())
             .collect::<Vec<_>>();
 
         Ok(Self {

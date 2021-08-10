@@ -45,17 +45,44 @@ where
     O: BitOrder,
     T: BitStore,
 {
-    bitvec: BitVec<O, T>,
+    pub bitvec: BitVec<O, T>,
+    pub curr_index: usize,
 }
 
 impl<O, T> ArbitraryBitVec<O, T>
 where
     O: BitOrder,
     T: BitStore,
+    BitSlice<O, T>: BitField,
 {
     pub fn new() -> Self {
         ArbitraryBitVec {
             bitvec: BitVec::<O, T>::new(),
+            curr_index: 0,
         }
+    }
+
+    pub fn append_le(&mut self, value: usize, num_bits: usize) {
+        self.bitvec.resize(self.bitvec.len() + num_bits, false);
+
+        // fit the value into the smallest bit sized integer
+        let index = self.curr_index..num_bits + self.curr_index;
+
+        match num_bits {
+            b if b <= 8 => {
+                self.bitvec[index].store_le::<u8>(value as u8);
+            }
+            b if b <= 16 => {
+                self.bitvec[index].store_le::<u16>(value as u16);
+            }
+            b if b <= 32 => {
+                self.bitvec[index].store_le::<u32>(value as u32);
+            }
+            _ => {
+                self.bitvec[index].store_le::<usize>(value);
+            }
+        }
+
+        self.curr_index += num_bits;
     }
 }

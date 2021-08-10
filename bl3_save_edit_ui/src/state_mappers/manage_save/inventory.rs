@@ -50,7 +50,6 @@ pub fn map_item_to_inventory_state(manage_save_state: &mut ManageSaveState) {
             .inventory_state
             .selected_item_index = selected_item_index;
 
-        // Only map this initially as we want to maintain state for the changes made to items
         if let Some(i) = manage_save_state
             .main_state
             .inventory_state

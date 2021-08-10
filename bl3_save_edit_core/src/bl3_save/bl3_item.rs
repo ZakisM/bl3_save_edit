@@ -7,7 +7,7 @@ use encoding_rs::mem::decode_latin1;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use strum::{Display, EnumString};
 
-use crate::bl3_save::arbitrary_bits::ArbitraryBits;
+use crate::bl3_save::arbitrary_bits::{ArbitraryBitVec, ArbitraryBits};
 use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
 use crate::parser::read_be_signed_int;
 use crate::resources::{INVENTORY_PARTS_ALL_CATEGORIZED, INVENTORY_SERIAL_DB};
@@ -37,6 +37,8 @@ pub struct Bl3Item {
     parts: Vec<Bl3Part>,
     pub generic_part_bits: usize,
     pub generic_parts: Vec<Bl3Part>,
+    pub additional_data: Vec<usize>,
+    pub num_customs: usize,
     pub rerolled: usize,
     pub item_type: ItemType,
     pub rarity: ItemRarity,
@@ -116,7 +118,7 @@ impl std::default::Default for ItemRarity {
 }
 
 impl Bl3Item {
-    pub fn from_serial_number(serial: Vec<u8>) -> Result<Self> {
+    pub fn from_serial_bytes(serial: Vec<u8>) -> Result<Self> {
         // first decrypt the serial
         let mut serial = serial;
 
@@ -224,7 +226,7 @@ impl Bl3Item {
 
         let additional_count = bits.eat(8)?;
 
-        let _additional_data = (0..additional_count)
+        let additional_data = (0..additional_count)
             .map(|_| bits.eat(8))
             .collect::<Result<Vec<_>>>()?;
 
@@ -269,6 +271,8 @@ impl Bl3Item {
             parts,
             generic_part_bits,
             generic_parts,
+            additional_data,
+            num_customs,
             rerolled,
             item_type,
             rarity,
@@ -287,7 +291,7 @@ impl Bl3Item {
 
         let decoded = base64::decode(&serial[4..serial.len() - 1])?;
 
-        Self::from_serial_number(decoded)
+        Self::from_serial_bytes(decoded)
     }
 
     pub fn encrypt_serial(&self, seed: i32) -> Result<Vec<u8>> {
@@ -339,16 +343,50 @@ impl Bl3Item {
         &self.parts
     }
 
-    pub fn add_part(&mut self, part: Bl3Part) -> Result<()> {
+    pub fn add_part(&mut self, part: Bl3Part) {
         self.parts.push(part);
 
-        let mut new_serial_bits: BitVec<Lsb0, u32> = BitVec::new();
-        new_serial_bits.resize(8, false);
-        new_serial_bits[0..8].store_be(128_u32);
-        // new_serial_bits.store_be(self.data_version);
-        // new_serial_bits.store_be(self.balance_part.idx);
+        // TODO: Should move this to somewhere else as we need to do it each time the weapon gets modified
+        let mut new_serial_bits = ArbitraryBitVec::<Lsb0, u8>::new();
 
-        Ok(())
+        // Header
+        new_serial_bits.append_le(128, 8);
+        new_serial_bits.append_le(self.data_version, 7);
+        new_serial_bits.append_le(self.balance_part.idx, self.balance_part.bits);
+        new_serial_bits.append_le(self.inv_data_idx, self.inv_data_bits);
+        new_serial_bits.append_le(self.manufacturer_idx, self.manufacturer_bits);
+        new_serial_bits.append_le(self.level, 7);
+
+        // Parts
+        new_serial_bits.append_le(self.parts.len(), 6);
+
+        self.parts.iter().for_each(|p| {
+            new_serial_bits.append_le(p.idx, self.part_bits);
+        });
+
+        // Generics
+        new_serial_bits.append_le(self.generic_parts.len(), 4);
+
+        self.generic_parts.iter().for_each(|gp| {
+            new_serial_bits.append_le(gp.idx, self.generic_part_bits);
+        });
+
+        // Additional data
+        new_serial_bits.append_le(self.additional_data.len(), 8);
+
+        self.additional_data.iter().for_each(|a| {
+            new_serial_bits.append_le(*a, 8);
+        });
+
+        new_serial_bits.append_le(self.num_customs, 4);
+
+        if self.serial_version >= 4 {
+            new_serial_bits.append_le(self.rerolled, 8);
+        }
+
+        let new_decrypted_serial = new_serial_bits.bitvec.into_vec();
+
+        self.decrypted_serial = new_decrypted_serial;
     }
 
     fn xor_data(data: &mut [u8], seed: i32) {
@@ -453,7 +491,7 @@ mod tests {
         let orig_serial_number = serial_number.clone();
 
         let decrypted =
-            Bl3Item::from_serial_number(serial_number).expect("failed to decrypt serial");
+            Bl3Item::from_serial_bytes(serial_number).expect("failed to decrypt serial");
 
         assert_eq!(decrypted.balance_part.ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Balance/InvBalD_Shield_OldGod.InvBalD_Shield_OldGod");
         assert_eq!(
@@ -493,7 +531,5 @@ mod tests {
         let encrypted_from_base64 = Bl3Item::from_serial_base64(&encrypted_serial_base64).unwrap();
 
         assert_eq!(decrypted, encrypted_from_base64);
-
-        dbg!(Bl3Item::from_serial_base64("BL3(AwAAAACEFIC8FVhAEvg9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0BAAA=)"));
     }
 }
