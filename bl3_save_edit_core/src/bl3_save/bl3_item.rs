@@ -343,10 +343,21 @@ impl Bl3Item {
         &self.parts
     }
 
+    pub fn remove_part(&mut self, part: &Bl3Part) {
+        if let Some(part_index) = self.parts.iter_mut().position(|p| p.ident == part.ident) {
+            self.parts.remove(part_index);
+        }
+
+        self.update_weapon_serial();
+    }
+
     pub fn add_part(&mut self, part: Bl3Part) {
         self.parts.push(part);
 
-        // TODO: Should move this to somewhere else as we need to do it each time the weapon gets modified
+        self.update_weapon_serial();
+    }
+
+    pub fn update_weapon_serial(&mut self) {
         let mut new_serial_bits = ArbitraryBitVec::<Lsb0, u8>::new();
 
         // Header

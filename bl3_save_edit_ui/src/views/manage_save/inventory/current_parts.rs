@@ -45,7 +45,7 @@ impl CurrentCategorizedPart {
 pub struct CurrentInventoryPart {
     category_index: usize,
     part_index: usize,
-    part: Bl3Part,
+    pub part: Bl3Part,
     button_state: button::State,
 }
 
@@ -59,7 +59,7 @@ impl CurrentInventoryPart {
         }
     }
 
-    pub fn view(&mut self, is_active: bool) -> Element<Message> {
+    pub fn view(&mut self) -> Element<Message> {
         Button::new(
             &mut self.button_state,
             TextMargin::new(
@@ -80,7 +80,7 @@ impl CurrentInventoryPart {
         ))
         .padding(10)
         .width(Length::Fill)
-        .style(InventoryButtonStyle { is_active })
+        .style(InventoryButtonStyle { is_active: false })
         .into_element()
     }
 }
@@ -94,7 +94,6 @@ pub struct InventoryCategorizedParts {
 #[derive(Debug, Default)]
 pub struct CurrentParts {
     pub scrollable_state: scrollable::State,
-    pub parts_index: CurrentPartsIndex,
     pub parts: Vec<CurrentCategorizedPart>,
 }
 
@@ -104,8 +103,6 @@ impl CurrentParts {
         item: &Bl3Item,
         available_parts: Option<&ResourceItem>,
     ) -> Container<Message> {
-        let selected_current_parts_index = &self.parts_index;
-
         let mut current_parts_column = Column::new();
 
         let mut categorized_parts: BTreeMap<String, Vec<Bl3Part>> = BTreeMap::new();
@@ -157,30 +154,28 @@ impl CurrentParts {
             .map(|(cat_id, cat_p)| CurrentCategorizedPart::new(cat_id, cat_p.category, cat_p.parts))
             .collect();
 
-        let current_parts_list = self.parts.iter_mut().enumerate().fold(
-            Column::new(),
-            |mut curr, (cat_index, cat_parts)| {
-                curr = curr.push(
-                    Container::new(
-                        Text::new(&cat_parts.category)
-                            .font(JETBRAINS_MONO_BOLD)
-                            .size(17)
-                            .color(Color::from_rgb8(242, 203, 5)),
-                    )
-                    .width(Length::Fill)
-                    .style(InventoryCategoryStyle)
-                    .padding(10),
-                );
+        let current_parts_list =
+            self.parts
+                .iter_mut()
+                .fold(Column::new(), |mut curr, cat_parts| {
+                    curr = curr.push(
+                        Container::new(
+                            Text::new(&cat_parts.category)
+                                .font(JETBRAINS_MONO_BOLD)
+                                .size(17)
+                                .color(Color::from_rgb8(242, 203, 5)),
+                        )
+                        .width(Length::Fill)
+                        .style(InventoryCategoryStyle)
+                        .padding(10),
+                    );
 
-                for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
-                    let is_active = selected_current_parts_index.category_index == cat_index
-                        && selected_current_parts_index.part_index == part_index;
-                    curr = curr.push(p.view(is_active))
-                }
+                    for p in cat_parts.parts.iter_mut() {
+                        curr = curr.push(p.view())
+                    }
 
-                curr
-            },
-        );
+                    curr
+                });
 
         current_parts_column = current_parts_column.push(
             Container::new(
@@ -203,15 +198,31 @@ impl CurrentParts {
             .style(Bl3UiStyle),
         );
 
-        current_parts_column = current_parts_column.push(
-            Container::new(
-                Scrollable::new(&mut self.scrollable_state)
-                    .push(current_parts_list)
-                    .height(Length::Fill)
-                    .width(Length::Fill),
-            )
-            .padding(1),
-        );
+        if !item.parts().is_empty() {
+            current_parts_column = current_parts_column.push(
+                Container::new(
+                    Scrollable::new(&mut self.scrollable_state)
+                        .push(current_parts_list)
+                        .height(Length::Fill)
+                        .width(Length::Fill),
+                )
+                .padding(1),
+            );
+        } else {
+            current_parts_column = current_parts_column.push(
+                Container::new(
+                    Text::new("This weapon has no parts.")
+                        .font(JETBRAINS_MONO)
+                        .size(17)
+                        .color(Color::from_rgb8(220, 220, 220)),
+                )
+                .height(Length::Fill)
+                .width(Length::Fill)
+                .align_x(Align::Center)
+                .align_y(Align::Center)
+                .padding(1),
+            );
+        }
 
         Container::new(current_parts_column)
             .width(Length::FillPortion(2))

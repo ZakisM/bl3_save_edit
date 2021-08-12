@@ -28,7 +28,7 @@ use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
 use crate::views::manage_save::inventory::{
-    available_parts, current_parts, InventoryInteractionMessage, InventoryStateExt,
+    available_parts, InventoryInteractionMessage, InventoryStateExt,
 };
 use crate::views::manage_save::main::{MainTabBarInteractionMessage, MainTabBarView};
 use crate::views::manage_save::{
@@ -563,17 +563,6 @@ impl Application for Bl3UiState {
                                         }
                                 });
 
-                            self.manage_save_state
-                                .main_state
-                                .inventory_state
-                                .map_current_item_if_exists(|i| {
-                                    i.editor.current_parts.parts_index =
-                                        current_parts::CurrentPartsIndex {
-                                            category_index: 0,
-                                            part_index: 0,
-                                        }
-                                });
-
                             map_item_to_inventory_state(&mut self.manage_save_state);
                         }
                         InventoryInteractionMessage::AvailablePartPressed(
@@ -617,10 +606,13 @@ impl Application for Bl3UiState {
                                         ) {
                                             current_item.item.add_part(bl3_part);
 
-                                            if let Ok(base_64_serial) =
-                                                current_item.item.get_serial_number_base64(false)
+                                            match current_item.item.get_serial_number_base64(false)
                                             {
-                                                current_item.editor.serial_input = base_64_serial;
+                                                Ok(base_64_serial) => {
+                                                    current_item.editor.serial_input =
+                                                        base_64_serial;
+                                                }
+                                                Err(e) => eprintln!("{}", e),
                                             }
                                         }
                                     }
@@ -628,12 +620,36 @@ impl Application for Bl3UiState {
                             }
                         }
                         InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
-                            self.manage_save_state
+                            if let Some(current_item) = self
+                                .manage_save_state
                                 .main_state
                                 .inventory_state
-                                .map_current_item_if_exists(|i| {
-                                    i.editor.current_parts.parts_index = current_parts_index
-                                });
+                                .items
+                                .get_mut(
+                                    self.manage_save_state
+                                        .main_state
+                                        .inventory_state
+                                        .selected_item_index,
+                                )
+                            {
+                                let part_selected = current_item
+                                    .editor
+                                    .current_parts
+                                    .parts
+                                    .get(current_parts_index.category_index)
+                                    .and_then(|p| p.parts.get(current_parts_index.part_index));
+
+                                if let Some(part_selected) = part_selected {
+                                    current_item.item.remove_part(&part_selected.part);
+
+                                    match current_item.item.get_serial_number_base64(false) {
+                                        Ok(base_64_serial) => {
+                                            current_item.editor.serial_input = base_64_serial;
+                                        }
+                                        Err(e) => eprintln!("{}", e),
+                                    }
+                                }
+                            }
                         }
                         InventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
                             self.manage_save_state
