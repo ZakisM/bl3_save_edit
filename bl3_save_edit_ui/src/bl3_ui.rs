@@ -656,7 +656,8 @@ impl Application for Bl3UiState {
                                 .main_state
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
-                                    i.editor.item_level_input = item_level_input
+                                    i.editor.item_level_input = item_level_input;
+                                    i.item.level = item_level_input as usize;
                                 });
                         }
                         InventoryInteractionMessage::BalanceInputChanged(balance_input) => {
