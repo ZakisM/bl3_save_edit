@@ -15,7 +15,6 @@ use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers::manage_save::fast_travel::map_fast_travel_stations_to_visited_teleporters_list;
-use crate::state_mappers::manage_save::inventory::map_item_to_inventory_state;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -562,19 +561,10 @@ impl Application for Bl3UiState {
                                             part_index: 0,
                                         }
                                 });
-
-                            map_item_to_inventory_state(&mut self.manage_save_state);
                         }
                         InventoryInteractionMessage::AvailablePartPressed(
                             available_parts_index,
                         ) => {
-                            self.manage_save_state
-                                .main_state
-                                .inventory_state
-                                .map_current_item_if_exists(|i| {
-                                    i.editor.available_parts.parts_index = available_parts_index
-                                });
-
                             if let Some(current_item) = self
                                 .manage_save_state
                                 .main_state
@@ -606,14 +596,10 @@ impl Application for Bl3UiState {
                                         ) {
                                             current_item.item.add_part(bl3_part);
 
-                                            match current_item.item.get_serial_number_base64(false)
-                                            {
-                                                Ok(base_64_serial) => {
-                                                    current_item.editor.serial_input =
-                                                        base_64_serial;
-                                                }
-                                                Err(e) => eprintln!("{}", e),
-                                            }
+                                            self.manage_save_state
+                                                .main_state
+                                                .inventory_state
+                                                .map_current_item_if_exists_to_editor_state();
                                         }
                                     }
                                 }
@@ -642,12 +628,10 @@ impl Application for Bl3UiState {
                                 if let Some(part_selected) = part_selected {
                                     current_item.item.remove_part(&part_selected.part);
 
-                                    match current_item.item.get_serial_number_base64(false) {
-                                        Ok(base_64_serial) => {
-                                            current_item.editor.serial_input = base_64_serial;
-                                        }
-                                        Err(e) => eprintln!("{}", e),
-                                    }
+                                    self.manage_save_state
+                                        .main_state
+                                        .inventory_state
+                                        .map_current_item_if_exists_to_editor_state();
                                 }
                             }
                         }
@@ -656,8 +640,7 @@ impl Application for Bl3UiState {
                                 .main_state
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
-                                    i.editor.item_level_input = item_level_input;
-                                    i.item.level = item_level_input as usize;
+                                    i.item.set_level(item_level_input as usize);
                                 });
                         }
                         InventoryInteractionMessage::BalanceInputChanged(balance_input) => {

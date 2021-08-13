@@ -45,7 +45,7 @@ impl InventoryListItem {
         let mut tags_row = Row::new()
             .push(
                 Container::new(
-                    Text::new(format!("Level {}", self.item.level))
+                    Text::new(format!("Level {}", self.item.level()))
                         .font(JETBRAINS_MONO)
                         .size(15),
                 )

@@ -32,7 +32,7 @@ pub struct Bl3Item {
     pub manufacturer_short: Option<String>,
     pub manufacturer_idx: usize,
     pub manufacturer_bits: usize,
-    pub level: usize,
+    level: usize,
     pub part_bits: usize,
     parts: Vec<Bl3Part>,
     pub generic_part_bits: usize,
@@ -337,6 +337,16 @@ impl Bl3Item {
         let res = res_bytes.to_string();
 
         Ok(res)
+    }
+
+    pub fn level(&self) -> usize {
+        self.level
+    }
+
+    pub fn set_level(&mut self, new_level: usize) {
+        self.level = new_level;
+
+        self.update_weapon_serial();
     }
 
     pub fn parts(&self) -> &Vec<Bl3Part> {

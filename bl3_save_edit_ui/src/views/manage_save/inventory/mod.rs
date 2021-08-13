@@ -1,3 +1,5 @@
+use std::convert::TryInto;
+
 use iced::{scrollable, Align, Color, Column, Container, Length, Row, Scrollable, Text};
 
 use bl3_save_edit_core::game_data::GameDataKv;
@@ -28,6 +30,8 @@ pub trait InventoryStateExt {
     fn map_current_item_if_exists<F>(&mut self, f: F)
     where
         F: FnOnce(&mut InventoryListItem);
+
+    fn map_current_item_if_exists_to_editor_state(&mut self);
 }
 
 impl InventoryStateExt for InventoryState {
@@ -36,7 +40,22 @@ impl InventoryStateExt for InventoryState {
         F: FnOnce(&mut InventoryListItem),
     {
         if let Some(item) = self.items.get_mut(self.selected_item_index) {
-            f(item)
+            f(item);
+
+            self.map_current_item_if_exists_to_editor_state();
+        }
+    }
+
+    fn map_current_item_if_exists_to_editor_state(&mut self) {
+        if let Some(curr_item) = self.items.get_mut(self.selected_item_index) {
+            curr_item.editor.item_level_input = curr_item.item.level().try_into().unwrap_or(1);
+            curr_item.editor.serial_input = curr_item
+                .item
+                .get_serial_number_base64(false)
+                .unwrap_or_else(|_| "Unable to read serial, this weapon is invalid.".to_owned());
+            curr_item.editor.balance_input = curr_item.item.balance_part.ident.clone();
+            curr_item.editor.inventory_data_input = curr_item.item.inv_data.clone();
+            curr_item.editor.manufacturer_input = curr_item.item.manufacturer.clone();
         }
     }
 }
