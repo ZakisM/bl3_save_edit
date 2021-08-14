@@ -165,7 +165,7 @@ impl Bl3Item {
         let data_version = bits.eat(7)?;
 
         if data_version > INVENTORY_SERIAL_DB.max_version {
-            bail!("cannot parse item as it is newer than the version of this parser")
+            bail!("cannot parse item as it is newer than the version of this item parser")
         }
 
         let (balance, balance_bits, balance_idx) =

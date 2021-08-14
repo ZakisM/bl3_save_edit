@@ -23,8 +23,6 @@ pub fn map_loaded_file_to_state(main_state: &mut Bl3UiState) {
 
             manage_save::currency::map_currency_state(&mut main_state.manage_save_state);
 
-            manage_save::fast_travel::map_fast_travel_state(&mut main_state.manage_save_state);
-
             if mem::discriminant(&main_state.view_state)
                 != mem::discriminant(&ViewState::ManageSave(ManageSaveView::TabBar(
                     MainTabBarView::General,

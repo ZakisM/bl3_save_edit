@@ -14,7 +14,6 @@ use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::state_mappers::manage_save::fast_travel::map_fast_travel_stations_to_visited_teleporters_list;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -24,7 +23,6 @@ use crate::views::manage_save::character::{
     CharacterSkinSelectedMessage,
 };
 use crate::views::manage_save::currency::CurrencyInteractionMessage;
-use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
 use crate::views::manage_save::inventory::{
     available_parts, InventoryInteractionMessage, InventoryStateExt,
@@ -162,11 +160,6 @@ impl Application for Bl3UiState {
                         MainTabBarInteractionMessage::Currency => {
                             self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
                                 MainTabBarView::Currency,
-                            ))
-                        }
-                        MainTabBarInteractionMessage::FastTravel => {
-                            self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                MainTabBarView::FastTravel,
                             ))
                         }
                     },
@@ -464,47 +457,6 @@ impl Application for Bl3UiState {
                                 .eridium_input = eridium;
                         }
                     },
-                    ManageSaveInteractionMessage::FastTravel(fast_travel_msg) => {
-                        match fast_travel_msg {
-                            FastTravelInteractionMessage::UncheckAllVisitedTeleporterList => {
-                                self.manage_save_state
-                                    .main_state
-                                    .fast_travel_state
-                                    .visited_teleporters_list
-                                    .iter_mut()
-                                    .for_each(|vt| vt.visited = false);
-                            }
-                            FastTravelInteractionMessage::CheckAllVisitedTeleporterList => {
-                                self.manage_save_state
-                                    .main_state
-                                    .fast_travel_state
-                                    .visited_teleporters_list
-                                    .iter_mut()
-                                    .for_each(|vt| vt.visited = true);
-                            }
-                            FastTravelInteractionMessage::LastVisitedTeleporterSelected(
-                                last_visited,
-                            ) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .fast_travel_state
-                                    .last_visited_teleporter_selected = last_visited;
-                            }
-                            FastTravelInteractionMessage::PlaythroughSelected(playthrough_type) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .fast_travel_state
-                                    .playthrough_type_selected = playthrough_type;
-
-                                let playthrough_id = playthrough_type as usize;
-
-                                map_fast_travel_stations_to_visited_teleporters_list(
-                                    playthrough_id,
-                                    &mut self.manage_save_state,
-                                );
-                            }
-                        }
-                    }
                     ManageSaveInteractionMessage::SaveFilePressed => {
                         let current_file = &mut self.manage_save_state.current_file;
 
@@ -635,6 +587,20 @@ impl Application for Bl3UiState {
                                 }
                             }
                         }
+                        InventoryInteractionMessage::SyncItemLevelWithCharacterLevel => {
+                            let character_level =
+                                self.manage_save_state
+                                    .main_state
+                                    .character_state
+                                    .xp_level_input as usize;
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .map_current_item_if_exists(|i| {
+                                    i.item.set_level(character_level);
+                                });
+                        }
                         InventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
                             self.manage_save_state
                                 .main_state
@@ -736,19 +702,6 @@ impl Application for Bl3UiState {
                 ManageSaveMessage::General(general_msg) => match general_msg {
                     GeneralMessage::GenerateRandomGuidCompleted(guid) => {
                         self.manage_save_state.main_state.general_state.guid_input = guid;
-                    }
-                },
-                ManageSaveMessage::FastTravel(fast_travel_msg) => match fast_travel_msg {
-                    FastTravelMessage::VisitedTeleportersListUpdated((index, visited)) => {
-                        self.manage_save_state
-                            .main_state
-                            .fast_travel_state
-                            .visited_teleporters_list
-                            .get_mut(index)
-                            .expect(
-                                "failed to find fast travel station to update in teleporters list",
-                            )
-                            .visited = visited;
                     }
                 },
             },

@@ -6,15 +6,13 @@ use strum::Display;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
-use crate::resources::svgs::{CHARACTER, CURRENCY, FAST_TRAVEL, INVENTORY, SETTINGS};
+use crate::resources::svgs::{CHARACTER, CURRENCY, INVENTORY, SETTINGS};
 use crate::views::manage_save::character::CharacterState;
 use crate::views::manage_save::currency::CurrencyState;
-use crate::views::manage_save::fast_travel::FastTravelState;
 use crate::views::manage_save::general::GeneralState;
 use crate::views::manage_save::inventory::InventoryState;
 use crate::views::manage_save::{
-    character, currency, fast_travel, general, inventory, ManageSaveInteractionMessage,
-    ManageSaveState,
+    character, currency, general, inventory, ManageSaveInteractionMessage, ManageSaveState,
 };
 use crate::views::InteractionExt;
 
@@ -25,7 +23,6 @@ pub struct MainState {
     pub character_state: CharacterState,
     pub currency_state: CurrencyState,
     pub inventory_state: InventoryState,
-    pub fast_travel_state: FastTravelState,
 }
 
 #[derive(Debug, Default)]
@@ -34,7 +31,6 @@ pub struct TabBarState {
     character_button_state: button::State,
     inventory_button_state: button::State,
     currency_button_state: button::State,
-    fast_travel_button_state: button::State,
 }
 
 #[derive(Debug, Clone)]
@@ -43,7 +39,6 @@ pub enum MainTabBarInteractionMessage {
     Character,
     Inventory,
     Currency,
-    FastTravel,
 }
 
 #[derive(Debug, Display, PartialEq)]
@@ -53,7 +48,6 @@ pub enum MainTabBarView {
     Character,
     Inventory,
     Currency,
-    FastTravel,
 }
 
 struct ManageSaveTabBarActiveStyle;
@@ -175,25 +169,12 @@ pub fn view<'a>(
         105,
     );
 
-    let fast_travel = tab_bar_button(
-        &mut manage_save_state
-            .main_state
-            .tab_bar_state
-            .fast_travel_button_state,
-        MainTabBarView::FastTravel,
-        tab_bar_view,
-        MainTabBarInteractionMessage::FastTravel,
-        svg::Handle::from_memory(FAST_TRAVEL),
-        127,
-    );
-
     let tab_bar = Container::new(
         Row::new()
             .push(general_button)
             .push(character_button)
             .push(inventory_button)
-            .push(currency_button)
-            .push(fast_travel),
+            .push(currency_button), // .push(fast_travel_button),
     )
     .width(Length::Fill)
     .style(ManageSaveTabBarStyle);
@@ -209,7 +190,6 @@ pub fn view<'a>(
         MainTabBarView::Inventory => {
             inventory::view(&mut manage_save_state.main_state.inventory_state)
         }
-        _ => fast_travel::view(&mut manage_save_state.main_state.fast_travel_state),
     };
 
     let all_contents = Column::new().push(tab_bar).push(tab_content);

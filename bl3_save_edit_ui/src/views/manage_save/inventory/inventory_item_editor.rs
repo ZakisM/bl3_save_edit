@@ -1,6 +1,6 @@
 use iced::{
-    text_input, text_input_with_picklist, tooltip, Align, Column, Container, Length, Row,
-    TextInput, TextInputWithPickList, Tooltip,
+    button, text_input, text_input_with_picklist, tooltip, Align, Button, Column, Container,
+    Length, Row, Text, TextInput, TextInputWithPickList, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_save::bl3_item::Bl3Item;
@@ -9,7 +9,7 @@ use bl3_save_edit_core::resources::INVENTORY_PARTS_ALL_CATEGORIZED;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
-use crate::resources::fonts::JETBRAINS_MONO;
+use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
 use crate::views::manage_save::inventory::available_parts::AvailableParts;
 use crate::views::manage_save::inventory::current_parts::CurrentParts;
@@ -23,6 +23,7 @@ use crate::widgets::number_input::NumberInput;
 pub struct InventoryItemEditor {
     pub item_level_input: i32,
     pub item_level_input_state: text_input::State,
+    pub sync_item_level_char_level_button: button::State,
     pub serial_input: String,
     pub serial_input_state: text_input::State,
     pub balance_input: String,
@@ -45,47 +46,75 @@ impl InventoryItemEditor {
             .as_ref()
             .and_then(|i| item_part_data.get(i));
 
+        let item_level_editor = Row::new()
+            .push(
+                LabelledElement::create(
+                    "Level",
+                    Length::Units(60),
+                    Tooltip::new(
+                        NumberInput::new(
+                            &mut self.item_level_input_state,
+                            self.item_level_input,
+                            1,
+                            Some(MAX_CHARACTER_LEVEL as i32),
+                            |v| {
+                                InteractionMessage::ManageSaveInteraction(
+                                    ManageSaveInteractionMessage::Inventory(
+                                        InventoryInteractionMessage::ItemLevelInputChanged(v),
+                                    ),
+                                )
+                            },
+                        )
+                        .0
+                        .font(JETBRAINS_MONO)
+                        .padding(10)
+                        .size(17)
+                        .style(Bl3UiStyle)
+                        .into_element(),
+                        "Level must be between 1 and 72",
+                        tooltip::Position::Top,
+                    )
+                    .gap(10)
+                    .padding(10)
+                    .font(JETBRAINS_MONO)
+                    .size(17)
+                    .style(Bl3UiTooltipStyle),
+                )
+                .spacing(15)
+                .width(Length::FillPortion(9))
+                .align_items(Align::Center),
+            )
+            .push(
+                Tooltip::new(
+                    Button::new(
+                        &mut self.sync_item_level_char_level_button,
+                        Text::new("Sync").font(JETBRAINS_MONO_BOLD).size(17),
+                    )
+                    .on_press(InteractionMessage::ManageSaveInteraction(
+                        ManageSaveInteractionMessage::Inventory(
+                            InventoryInteractionMessage::SyncItemLevelWithCharacterLevel,
+                        ),
+                    ))
+                    .padding(10)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                    "Synchronize this item level with your Character level",
+                    tooltip::Position::Top,
+                )
+                .gap(10)
+                .padding(10)
+                .font(JETBRAINS_MONO)
+                .size(17)
+                .style(Bl3UiTooltipStyle),
+            )
+            .align_items(Align::Center);
+
         let level_serial_row = Row::new()
             .push(
-                Container::new(
-                    LabelledElement::create(
-                        "Level",
-                        Length::Units(60),
-                        Tooltip::new(
-                            NumberInput::new(
-                                &mut self.item_level_input_state,
-                                self.item_level_input,
-                                1,
-                                Some(MAX_CHARACTER_LEVEL as i32),
-                                |v| {
-                                    InteractionMessage::ManageSaveInteraction(
-                                        ManageSaveInteractionMessage::Inventory(
-                                            InventoryInteractionMessage::ItemLevelInputChanged(v),
-                                        ),
-                                    )
-                                },
-                            )
-                            .0
-                            .font(JETBRAINS_MONO)
-                            .padding(10)
-                            .size(17)
-                            .style(Bl3UiStyle)
-                            .into_element(),
-                            "Level must be between 1 and 72",
-                            tooltip::Position::Top,
-                        )
-                        .gap(10)
-                        .padding(10)
-                        .font(JETBRAINS_MONO)
-                        .size(17)
-                        .style(Bl3UiTooltipStyle),
-                    )
-                    .spacing(15)
-                    .align_items(Align::Center),
-                )
-                .width(Length::Fill)
-                .height(Length::Units(36))
-                .style(Bl3UiStyle),
+                Container::new(item_level_editor)
+                    .width(Length::Fill)
+                    .height(Length::Units(36))
+                    .style(Bl3UiStyle),
             )
             .push(
                 Container::new(

@@ -19,7 +19,6 @@ pub struct InventoryListItem {
     label: String,
     button_state: button::State,
     pub editor: InventoryItemEditor,
-    pub has_mapped_from_save: bool,
 }
 
 impl InventoryListItem {

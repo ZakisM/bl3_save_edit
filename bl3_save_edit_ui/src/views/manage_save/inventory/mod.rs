@@ -68,6 +68,7 @@ pub enum InventoryInteractionMessage {
     ItemPressed(usize),
     AvailablePartPressed(AvailablePartsIndex),
     CurrentPartPressed(CurrentPartsIndex),
+    SyncItemLevelWithCharacterLevel,
     ItemLevelInputChanged(i32),
     BalanceInputChanged(String),
     BalanceInputSelected(GameDataKv),
