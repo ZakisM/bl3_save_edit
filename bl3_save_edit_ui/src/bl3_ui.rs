@@ -553,7 +553,10 @@ impl Application for Bl3UiState {
                                             self.manage_save_state
                                                 .main_state
                                                 .inventory_state
-                                                .map_current_item_if_exists_to_editor_state();
+                                                .map_current_item_if_exists(|i| {
+                                                    i.editor.available_parts.parts_index =
+                                                        available_parts_index
+                                                });
                                         }
                                     }
                                 }

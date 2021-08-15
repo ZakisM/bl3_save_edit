@@ -101,15 +101,15 @@ impl CurrentParts {
     pub fn view(
         &mut self,
         item: &Bl3Item,
-        available_parts: Option<&ResourceItem>,
+        resource_item: Option<&ResourceItem>,
     ) -> Container<Message> {
         let mut current_parts_column = Column::new();
 
         let mut categorized_parts: BTreeMap<String, Vec<Bl3Part>> = BTreeMap::new();
 
-        if let Some(available_parts) = available_parts {
+        if let Some(resource_item) = resource_item {
             item.parts().iter().for_each(|p| {
-                let known_cat_p = available_parts
+                let known_cat_p = resource_item
                     .inventory_categorized_parts
                     .iter()
                     .find(|cat| {
@@ -211,7 +211,7 @@ impl CurrentParts {
         } else {
             current_parts_column = current_parts_column.push(
                 Container::new(
-                    Text::new("This weapon has no parts.")
+                    Text::new("This item has no parts.")
                         .font(JETBRAINS_MONO)
                         .size(17)
                         .color(Color::from_rgb8(220, 220, 220)),

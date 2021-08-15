@@ -195,11 +195,12 @@ impl Bl3Item {
 
         let level = bits.eat(7)?;
 
-        let balance_short_name = balance.rsplit('.').next().map(|s| s.to_owned());
+        let balance_short_name = balance.rsplit('/').next().map(|s| s.to_owned());
 
         let item_part_data = &INVENTORY_PARTS_ALL_CATEGORIZED;
         let item_part_info = balance_short_name
             .as_ref()
+            .and_then(|bs| bs.rsplit('.').next())
             .and_then(|bs| item_part_data.get(bs));
 
         let rarity = item_part_info

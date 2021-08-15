@@ -52,7 +52,7 @@ impl InventoryStateExt for InventoryState {
             curr_item.editor.serial_input = curr_item
                 .item
                 .get_serial_number_base64(false)
-                .unwrap_or_else(|_| "Unable to read serial, this weapon is invalid.".to_owned());
+                .unwrap_or_else(|_| "Unable to read serial, this item is invalid.".to_owned());
             let balance_part = curr_item.item.balance_part();
             curr_item.editor.balance_input_selected = balance_part.clone();
             curr_item.editor.inventory_data_input = curr_item.item.inv_data.clone();

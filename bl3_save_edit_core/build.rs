@@ -582,7 +582,7 @@ fn gen_inventory_balance_data(inventory_serial_db_json: &JsonValue) -> Vec<Balan
         .par_bridge()
         .map(|(i, part)| {
             let ident = part.to_string();
-            let short_ident = ident.rsplit('.').next().map(|s| s.to_owned());
+            let short_ident = ident.rsplit('/').next().map(|s| s.to_owned());
             let name = balance_to_inv_key
                 .par_iter()
                 .find_first(|gd| ident.to_lowercase().contains(&gd.key))

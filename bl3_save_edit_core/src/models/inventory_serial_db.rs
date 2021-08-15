@@ -114,7 +114,7 @@ impl InventorySerialDb {
                 self.data[category]["assets"]
                     .members()
                     .par_bridge()
-                    .filter_map(|p| p.to_string().rsplit('.').next().map(|s| s.to_owned()))
+                    .filter_map(|p| p.to_string().rsplit('/').next().map(|s| s.to_owned()))
                     .collect::<HashSet<_>>()
             })
             .flatten()

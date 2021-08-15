@@ -87,7 +87,7 @@ pub struct AvailableParts {
 }
 
 impl AvailableParts {
-    pub fn view(&mut self, available_parts: Option<&ResourceItem>) -> Container<Message> {
+    pub fn view(&mut self, resource_item: Option<&ResourceItem>) -> Container<Message> {
         let selected_available_parts_index = &self.parts_index;
 
         let mut available_parts_column = Column::new().push(
@@ -104,8 +104,8 @@ impl AvailableParts {
             .style(Bl3UiStyle),
         );
 
-        if let Some(available_parts) = available_parts {
-            self.parts = available_parts
+        if let Some(resource_item) = resource_item {
+            self.parts = resource_item
                 .inventory_categorized_parts
                 .iter()
                 .cloned()
