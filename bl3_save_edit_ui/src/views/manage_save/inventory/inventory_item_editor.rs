@@ -3,7 +3,7 @@ use iced::{
     Row, Text, TextInput, Tooltip,
 };
 
-use bl3_save_edit_core::bl3_save::bl3_item::Bl3Item;
+use bl3_save_edit_core::bl3_save::bl3_item::{BalancePart, Bl3Item};
 use bl3_save_edit_core::resources::{INVENTORY_BALANCE_DATA, INVENTORY_PARTS_ALL_CATEGORIZED};
 
 use crate::bl3_ui::{InteractionMessage, Message};
@@ -25,8 +25,8 @@ pub struct InventoryItemEditor {
     pub sync_item_level_char_level_button: button::State,
     pub serial_input: String,
     pub serial_input_state: text_input::State,
-    pub balance_input_state: pick_list::State<String>,
-    pub balance_input_selected: String,
+    pub balance_input_state: pick_list::State<BalancePart>,
+    pub balance_input_selected: BalancePart,
     pub inventory_data_input: String,
     pub inventory_data_input_state: text_input::State,
     pub manufacturer_input: String,

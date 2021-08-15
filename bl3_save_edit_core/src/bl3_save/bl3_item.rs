@@ -1,3 +1,4 @@
+use std::fmt::Formatter;
 use std::str::FromStr;
 
 use anyhow::{bail, ensure, Context, Result};
@@ -5,6 +6,7 @@ use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
 use encoding_rs::mem::decode_latin1;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use serde::Deserialize;
 use strum::{Display, EnumString};
 
 use crate::bl3_save::arbitrary_bits::{ArbitraryBitVec, ArbitraryBits};
@@ -23,6 +25,7 @@ pub struct Bl3Item {
     pub orig_seed: i32,
     decrypted_serial: Vec<u8>,
     pub data_version: usize,
+    pub balance_bits: usize,
     balance_part: BalancePart,
     pub part_inv_key: String,
     pub inv_data: String,
@@ -45,13 +48,24 @@ pub struct Bl3Item {
     pub weapon_type: Option<WeaponType>,
 }
 
-#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd, Deserialize)]
 pub struct BalancePart {
     pub ident: String,
     pub short_ident: Option<String>,
     pub name: Option<String>,
     pub idx: usize,
-    pub bits: usize,
+}
+
+impl std::fmt::Display for BalancePart {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.short_ident.as_ref().unwrap_or(&self.ident))?;
+
+        if let Some(name) = &self.name {
+            write!(f, " - ({})", name)?;
+        }
+
+        Ok(())
+    }
 }
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
@@ -209,7 +223,7 @@ impl Bl3Item {
 
         let part_inv_key = BALANCE_TO_INV_KEY
             .par_iter()
-            .find_first(|gd| balance.to_lowercase().contains(gd.ident))
+            .find_first(|gd| balance.to_lowercase() == gd.ident)
             .map(|gd| gd.name.to_owned())
             .with_context(|| format!("failed to read part_inv_key: {}", orig_seed))?;
 
@@ -245,7 +259,6 @@ impl Bl3Item {
             short_ident: balance_short_name,
             name: balance_eng_name,
             idx: balance_idx,
-            bits: balance_bits,
         };
 
         let item_type = ItemType::from_str(&part_inv_key).unwrap_or_default();
@@ -257,6 +270,7 @@ impl Bl3Item {
             orig_seed,
             decrypted_serial,
             data_version,
+            balance_bits,
             balance_part,
             part_inv_key,
             inv_data,
@@ -343,25 +357,26 @@ impl Bl3Item {
         &self.balance_part
     }
 
-    pub fn set_balance(&mut self, balance_short_ident: &str) {
-        let num_bits = self.balance_part.bits;
-
-        match INVENTORY_SERIAL_DB
-            .get_part_by_short_name("InventoryBalanceData", balance_short_ident)
+    pub fn set_balance(&mut self, balance_part: BalancePart) {
+        match BALANCE_TO_INV_KEY
+            .iter()
+            .find(|gd| balance_part.ident.to_lowercase() == gd.ident)
+            .map(|gd| gd.name.to_owned())
+            .with_context(|| format!("failed to read part_inv_key: {}", balance_part.ident))
         {
-            Ok(bl3_part) => {
-                let new_balance_part = BalancePart {
-                    ident: bl3_part.ident,
-                    short_ident: Some(balance_short_ident.to_owned()),
-                    name: None,
-                    idx: bl3_part.idx,
-                    bits: num_bits,
-                };
-
-                self.balance_part = new_balance_part;
+            Ok(part_inv_key) => {
+                self.part_inv_key = part_inv_key;
             }
-            Err(e) => eprintln!("{}", e),
+            Err(e) => {
+                eprintln!("{}", e);
+            }
         }
+
+        self.parts = Vec::new();
+
+        self.balance_part = balance_part;
+
+        self.update_weapon_serial();
     }
 
     pub fn level(&self) -> usize {
@@ -398,7 +413,7 @@ impl Bl3Item {
         // Header
         new_serial_bits.append_le(128, 8);
         new_serial_bits.append_le(self.data_version, 7);
-        new_serial_bits.append_le(self.balance_part.idx, self.balance_part.bits);
+        new_serial_bits.append_le(self.balance_part.idx, self.balance_bits);
         new_serial_bits.append_le(self.inv_data_idx, self.inv_data_bits);
         new_serial_bits.append_le(self.manufacturer_idx, self.manufacturer_bits);
         new_serial_bits.append_le(self.level, 7);

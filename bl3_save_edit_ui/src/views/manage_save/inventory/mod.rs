@@ -2,6 +2,8 @@ use std::convert::TryInto;
 
 use iced::{scrollable, Align, Color, Column, Container, Length, Row, Scrollable, Text};
 
+use bl3_save_edit_core::bl3_save::bl3_item::BalancePart;
+
 use crate::bl3_ui::Message;
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
@@ -52,11 +54,7 @@ impl InventoryStateExt for InventoryState {
                 .get_serial_number_base64(false)
                 .unwrap_or_else(|_| "Unable to read serial, this weapon is invalid.".to_owned());
             let balance_part = curr_item.item.balance_part();
-            curr_item.editor.balance_input_selected = balance_part
-                .short_ident
-                .as_ref()
-                .unwrap_or(&balance_part.ident)
-                .to_owned();
+            curr_item.editor.balance_input_selected = balance_part.clone();
             curr_item.editor.inventory_data_input = curr_item.item.inv_data.clone();
             curr_item.editor.manufacturer_input = curr_item.item.manufacturer.clone();
         }
@@ -73,7 +71,7 @@ pub enum InventoryInteractionMessage {
     CurrentPartPressed(CurrentPartsIndex),
     SyncItemLevelWithCharacterLevel,
     ItemLevelInputChanged(i32),
-    BalanceInputSelected(String),
+    BalanceInputSelected(BalancePart),
     InventoryDataInputChanged(String),
     ManufacturerInputChanged(String),
 }

@@ -4,6 +4,7 @@ use once_cell::sync::Lazy;
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
 
+use crate::bl3_save::bl3_item::BalancePart;
 use crate::models::inventory_serial_db::InventorySerialDb;
 
 type InventoryPartsAll = HashMap<String, ResourceItem>;
@@ -30,7 +31,7 @@ pub static INVENTORY_PARTS_ALL_CATEGORIZED: Lazy<InventoryPartsAll> =
 pub static INVENTORY_SERIAL_DB_PARTS_CATEGORIZED: Lazy<InventorySerialDbCategorizedParts> =
     Lazy::new(|| load_compressed_data(INVENTORY_SERIAL_DB_PARTS_CATEGORIZED_RON_COMPRESSED));
 
-pub static INVENTORY_BALANCE_DATA: Lazy<Vec<String>> =
+pub static INVENTORY_BALANCE_DATA: Lazy<Vec<BalancePart>> =
     Lazy::new(|| load_compressed_data(INVENTORY_BALANCE_DATA_COMPRESSED));
 
 pub fn load_compressed_data<T: DeserializeOwned>(input: &'static [u8]) -> T {

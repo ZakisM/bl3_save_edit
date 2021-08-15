@@ -130,21 +130,9 @@ fn main() {
     let inventory_parts_all_categorized_ron = ron::to_string(&inventory_parts_all).unwrap();
 
     //INVENTORY_BALANCE_DATA
-    let mut inventory_balance_data: Vec<String> = inventory_serial_db_categorized_parts
-        .get("InventoryBalanceData")
-        .unwrap()
-        .par_iter()
-        .map(|i| {
-            i.parts
-                .par_iter()
-                .cloned()
-                .map(|p| p.name)
-                .collect::<Vec<_>>()
-        })
-        .flatten()
-        .collect::<Vec<_>>();
+    let mut inventory_balance_data = gen_inventory_balance_data(&inventory_serial_db_json);
 
-    inventory_balance_data.sort();
+    inventory_balance_data.sort_by(|a, b| a.short_ident.cmp(&b.short_ident));
 
     let inventory_balance_data_ron = ron::to_string(&inventory_balance_data).unwrap();
 
@@ -309,6 +297,14 @@ impl std::cmp::PartialEq for GameDataKv {{
 }}"#
     )
     .unwrap();
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd)]
+pub struct BalancePart {
+    pub ident: String,
+    pub short_ident: Option<String>,
+    pub name: Option<String>,
+    pub idx: usize,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -564,4 +560,40 @@ fn load_inventory_all_parts_categorized(
 
             curr
         })
+}
+
+fn gen_inventory_balance_data(inventory_serial_db_json: &JsonValue) -> Vec<BalancePart> {
+    let mut rdr = csv::ReaderBuilder::new()
+        .has_headers(false)
+        .from_path("game_data/BALANCE_NAME_MAPPING.csv")
+        .unwrap();
+
+    let balance_to_inv_key = rdr
+        .deserialize()
+        .map(|r| {
+            let record: GameDataRecord = r.unwrap();
+            record
+        })
+        .collect::<Vec<_>>();
+
+    inventory_serial_db_json["InventoryBalanceData"]["assets"]
+        .members()
+        .enumerate()
+        .par_bridge()
+        .map(|(i, part)| {
+            let ident = part.to_string();
+            let short_ident = ident.rsplit('.').next().map(|s| s.to_owned());
+            let name = balance_to_inv_key
+                .par_iter()
+                .find_first(|gd| ident.to_lowercase().contains(&gd.key))
+                .map(|gd| gd.value.to_owned());
+
+            BalancePart {
+                ident,
+                short_ident,
+                name,
+                idx: i,
+            }
+        })
+        .collect::<Vec<_>>()
 }

@@ -616,7 +616,7 @@ impl Application for Bl3UiState {
                                 .main_state
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
-                                    i.item.set_balance(&balance_selected);
+                                    i.item.set_balance(balance_selected);
                                 });
                         }
                         InventoryInteractionMessage::InventoryDataInputChanged(
