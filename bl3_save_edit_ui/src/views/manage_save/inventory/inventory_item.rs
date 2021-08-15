@@ -23,7 +23,7 @@ pub struct InventoryListItem {
 
 impl InventoryListItem {
     pub fn new(id: usize, item: Bl3Item) -> Self {
-        let balance_part = &item.balance_part;
+        let balance_part = &item.balance_part();
 
         let label = balance_part.name.clone().unwrap_or_else(|| {
             balance_part

@@ -115,16 +115,38 @@ fn main() {
     let inventory_parts_records =
         inventory_parts_all_records(&inventory_serial_db_json, inventory_parts_all_filename);
 
+    //INVENTORY_SERIAL_DB_PARTS_CATEGORIZED
     let inventory_serial_db_categorized_parts = load_inventory_serial_db_parts_categorized(
         &inventory_serial_db_json,
         &inventory_parts_records,
     );
 
-    let inventory_parts_all = load_inventory_all_parts_categorized(inventory_parts_records);
-
     let inventory_serial_db_categorized_parts_ron =
         ron::to_string(&inventory_serial_db_categorized_parts).unwrap();
+
+    //INVENTORY_PARTS_ALL_CATEGORIZED
+    let inventory_parts_all = load_inventory_all_parts_categorized(inventory_parts_records);
+
     let inventory_parts_all_categorized_ron = ron::to_string(&inventory_parts_all).unwrap();
+
+    //INVENTORY_BALANCE_DATA
+    let mut inventory_balance_data: Vec<String> = inventory_serial_db_categorized_parts
+        .get("InventoryBalanceData")
+        .unwrap()
+        .par_iter()
+        .map(|i| {
+            i.parts
+                .par_iter()
+                .cloned()
+                .map(|p| p.name)
+                .collect::<Vec<_>>()
+        })
+        .flatten()
+        .collect::<Vec<_>>();
+
+    inventory_balance_data.sort();
+
+    let inventory_balance_data_ron = ron::to_string(&inventory_balance_data).unwrap();
 
     for (filename, output_data) in [
         (
@@ -134,6 +156,10 @@ fn main() {
         (
             "resources/INVENTORY_PARTS_ALL_CATEGORIZED",
             inventory_parts_all_categorized_ron,
+        ),
+        (
+            "resources/INVENTORY_BALANCE_DATA",
+            inventory_balance_data_ron,
         ),
     ] {
         let output_file = std::fs::OpenOptions::new()

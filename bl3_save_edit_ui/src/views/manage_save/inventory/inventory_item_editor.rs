@@ -1,11 +1,10 @@
 use iced::{
-    button, text_input, text_input_with_picklist, tooltip, Align, Button, Column, Container,
-    Length, Row, Text, TextInput, TextInputWithPickList, Tooltip,
+    button, pick_list, text_input, tooltip, Align, Button, Column, Container, Length, PickList,
+    Row, Text, TextInput, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_save::bl3_item::Bl3Item;
-use bl3_save_edit_core::game_data::{GameDataKv, BALANCE_NAME_MAPPING};
-use bl3_save_edit_core::resources::INVENTORY_PARTS_ALL_CATEGORIZED;
+use bl3_save_edit_core::resources::{INVENTORY_BALANCE_DATA, INVENTORY_PARTS_ALL_CATEGORIZED};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
@@ -26,9 +25,8 @@ pub struct InventoryItemEditor {
     pub sync_item_level_char_level_button: button::State,
     pub serial_input: String,
     pub serial_input_state: text_input::State,
-    pub balance_input: String,
-    pub balance_input_state: text_input_with_picklist::State<GameDataKv>,
-    pub balance_input_selected: GameDataKv,
+    pub balance_input_state: pick_list::State<String>,
+    pub balance_input_selected: String,
     pub inventory_data_input: String,
     pub inventory_data_input_state: text_input::State,
     pub manufacturer_input: String,
@@ -41,7 +39,7 @@ impl InventoryItemEditor {
     pub fn view(&mut self, item: &Bl3Item) -> Container<Message> {
         let item_part_data = &INVENTORY_PARTS_ALL_CATEGORIZED;
         let resource_item = item
-            .balance_part
+            .balance_part()
             .short_ident
             .as_ref()
             .and_then(|i| item_part_data.get(i));
@@ -148,19 +146,10 @@ impl InventoryItemEditor {
                     LabelledElement::create(
                         "Balance",
                         Length::Units(130),
-                        TextInputWithPickList::new(
+                        PickList::new(
                             &mut self.balance_input_state,
-                            "",
-                            &self.balance_input,
-                            Some(self.balance_input_selected),
-                            &BALANCE_NAME_MAPPING[..],
-                            |s| {
-                                InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::Inventory(
-                                        InventoryInteractionMessage::BalanceInputChanged(s),
-                                    ),
-                                )
-                            },
+                            &INVENTORY_BALANCE_DATA[..],
+                            Some(self.balance_input_selected.clone()),
                             |s| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Inventory(
@@ -170,13 +159,14 @@ impl InventoryItemEditor {
                             },
                         )
                         .font(JETBRAINS_MONO)
+                        .text_size(16)
                         .padding(10)
-                        .size(17)
                         .style(Bl3UiStyle)
+                        .width(Length::Fill)
                         .into_element(),
                     )
                     .spacing(15)
-                    .width(Length::FillPortion(9))
+                    .width(Length::Fill)
                     .align_items(Align::Center),
                 )
                 .style(Bl3UiStyle),

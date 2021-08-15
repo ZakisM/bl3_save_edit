@@ -1,7 +1,7 @@
 use std::collections::HashMap;
-use std::io::Read;
 
 use once_cell::sync::Lazy;
+use serde::de::DeserializeOwned;
 use serde::Deserialize;
 
 use crate::models::inventory_serial_db::InventorySerialDb;
@@ -18,32 +18,26 @@ const INVENTORY_PARTS_ALL_CATEGORIZED_RON_COMPRESSED: &[u8] =
 const INVENTORY_SERIAL_DB_PARTS_CATEGORIZED_RON_COMPRESSED: &[u8] =
     include_bytes!("../../resources/INVENTORY_SERIAL_DB_PARTS_CATEGORIZED.ron.sz");
 
+const INVENTORY_BALANCE_DATA_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_BALANCE_DATA.ron.sz");
+
 pub static INVENTORY_SERIAL_DB: Lazy<InventorySerialDb> =
     Lazy::new(|| InventorySerialDb::load().expect("failed to load inventory serial db"));
 
-pub static INVENTORY_PARTS_ALL_CATEGORIZED: Lazy<InventoryPartsAll> = Lazy::new(|| {
-    let mut rdr = snap::read::FrameDecoder::new(INVENTORY_PARTS_ALL_CATEGORIZED_RON_COMPRESSED);
-
-    let mut decompressed_bytes = String::new();
-
-    rdr.read_to_string(&mut decompressed_bytes)
-        .expect("failed to read decompressed bytes");
-
-    ron::from_str(&decompressed_bytes).expect("failed to read inventory_parts_all_ron")
-});
+pub static INVENTORY_PARTS_ALL_CATEGORIZED: Lazy<InventoryPartsAll> =
+    Lazy::new(|| load_compressed_data(INVENTORY_PARTS_ALL_CATEGORIZED_RON_COMPRESSED));
 
 pub static INVENTORY_SERIAL_DB_PARTS_CATEGORIZED: Lazy<InventorySerialDbCategorizedParts> =
-    Lazy::new(|| {
-        let mut rdr =
-            snap::read::FrameDecoder::new(INVENTORY_SERIAL_DB_PARTS_CATEGORIZED_RON_COMPRESSED);
+    Lazy::new(|| load_compressed_data(INVENTORY_SERIAL_DB_PARTS_CATEGORIZED_RON_COMPRESSED));
 
-        let mut decompressed_bytes = String::new();
+pub static INVENTORY_BALANCE_DATA: Lazy<Vec<String>> =
+    Lazy::new(|| load_compressed_data(INVENTORY_BALANCE_DATA_COMPRESSED));
 
-        rdr.read_to_string(&mut decompressed_bytes)
-            .expect("failed to read decompressed bytes");
+pub fn load_compressed_data<T: DeserializeOwned>(input: &'static [u8]) -> T {
+    let mut rdr = snap::read::FrameDecoder::new(input);
 
-        ron::from_str(&decompressed_bytes).expect("failed to read inventory_serial_db_parts_ron")
-    });
+    ron::de::from_reader(&mut rdr).expect("failed to read inventory_serial_db_parts_ron")
+}
 
 #[derive(Debug, Default, Clone, Deserialize)]
 pub struct ResourceItem {

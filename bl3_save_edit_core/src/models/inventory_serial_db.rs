@@ -68,7 +68,7 @@ impl InventorySerialDb {
         Ok(cur_bits as usize)
     }
 
-    pub fn get_part(&self, category: &str, index: usize) -> Result<String> {
+    pub fn get_part_ident(&self, category: &str, index: usize) -> Result<String> {
         let assets = self.data[category]["assets"].members();
 
         if index > assets.len() {
@@ -78,7 +78,7 @@ impl InventorySerialDb {
         }
     }
 
-    pub fn get_part_by_name(&self, category: &str, name: &str) -> Result<Bl3Part> {
+    pub fn get_part_by_short_name(&self, category: &str, name: &str) -> Result<Bl3Part> {
         let part_info = self.data[category]["assets"]
             .members()
             .into_iter()

@@ -23,7 +23,7 @@ pub struct Bl3Item {
     pub orig_seed: i32,
     decrypted_serial: Vec<u8>,
     pub data_version: usize,
-    pub balance_part: BalancePart,
+    balance_part: BalancePart,
     pub part_inv_key: String,
     pub inv_data: String,
     pub inv_data_idx: usize,
@@ -339,6 +339,31 @@ impl Bl3Item {
         Ok(res)
     }
 
+    pub fn balance_part(&self) -> &BalancePart {
+        &self.balance_part
+    }
+
+    pub fn set_balance(&mut self, balance_short_ident: &str) {
+        let num_bits = self.balance_part.bits;
+
+        match INVENTORY_SERIAL_DB
+            .get_part_by_short_name("InventoryBalanceData", balance_short_ident)
+        {
+            Ok(bl3_part) => {
+                let new_balance_part = BalancePart {
+                    ident: bl3_part.ident,
+                    short_ident: Some(balance_short_ident.to_owned()),
+                    name: None,
+                    idx: bl3_part.idx,
+                    bits: num_bits,
+                };
+
+                self.balance_part = new_balance_part;
+            }
+            Err(e) => eprintln!("{}", e),
+        }
+    }
+
     pub fn level(&self) -> usize {
         self.level
     }
@@ -459,7 +484,7 @@ impl Bl3Item {
         let part_idx = bits.eat(num_bits)?;
 
         let part = INVENTORY_SERIAL_DB
-            .get_part(category, part_idx)
+            .get_part_ident(category, part_idx)
             .unwrap_or_else(|_| "unknown".to_owned());
 
         Ok((part, num_bits, part_idx))
@@ -480,7 +505,7 @@ impl Bl3Item {
             let part_idx = bits.eat(num_bits)?;
 
             let ident = INVENTORY_SERIAL_DB
-                .get_part(category, part_idx)
+                .get_part_ident(category, part_idx)
                 .unwrap_or_else(|_| "unknown".to_owned());
 
             let short_ident = ident.rsplit('.').next().map(|s| s.to_owned());

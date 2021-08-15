@@ -542,10 +542,12 @@ impl Application for Bl3UiState {
                                     if let Some(part_selected) = part_selected {
                                         let part_inv_key = &current_item.item.part_inv_key;
 
-                                        if let Ok(bl3_part) = INVENTORY_SERIAL_DB.get_part_by_name(
-                                            part_inv_key,
-                                            &part_selected.part.name,
-                                        ) {
+                                        if let Ok(bl3_part) = INVENTORY_SERIAL_DB
+                                            .get_part_by_short_name(
+                                                part_inv_key,
+                                                &part_selected.part.name,
+                                            )
+                                        {
                                             current_item.item.add_part(bl3_part);
 
                                             self.manage_save_state
@@ -609,27 +611,12 @@ impl Application for Bl3UiState {
                                     i.item.set_level(item_level_input as usize);
                                 });
                         }
-                        InventoryInteractionMessage::BalanceInputChanged(balance_input) => {
-                            self.manage_save_state
-                                .main_state
-                                .inventory_state
-                                .map_current_item_if_exists(|i| {
-                                    i.editor.balance_input = balance_input
-                                });
-                        }
                         InventoryInteractionMessage::BalanceInputSelected(balance_selected) => {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
-                                    i.editor.balance_input = balance_selected.ident.to_owned()
-                                });
-
-                            self.manage_save_state
-                                .main_state
-                                .inventory_state
-                                .map_current_item_if_exists(|i| {
-                                    i.editor.balance_input_selected = balance_selected
+                                    i.item.set_balance(&balance_selected);
                                 });
                         }
                         InventoryInteractionMessage::InventoryDataInputChanged(
