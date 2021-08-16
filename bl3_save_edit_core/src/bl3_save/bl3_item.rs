@@ -361,18 +361,18 @@ impl Bl3Item {
         &self.balance_part
     }
 
-    pub fn set_balance(&mut self, balance_part: BalancePart) {
+    pub fn set_balance(&mut self, balance_part: BalancePart) -> Result<()> {
         match BALANCE_TO_INV_KEY
             .iter()
             .find(|gd| balance_part.ident.to_lowercase() == gd.ident)
             .map(|gd| gd.name.to_owned())
-            .with_context(|| format!("failed to read part_inv_key: {}", balance_part.ident))
         {
-            Ok(part_inv_key) => {
+            None => println!(
+                "set_balance error: no part_inv_key found for: {}",
+                balance_part.ident
+            ),
+            Some(part_inv_key) => {
                 self.part_inv_key = part_inv_key;
-            }
-            Err(e) => {
-                eprintln!("{}", e);
             }
         }
 
@@ -380,38 +380,56 @@ impl Bl3Item {
 
         self.balance_part = balance_part;
 
-        self.update_weapon_serial();
+        self.update_weapon_serial()?;
+
+        Ok(())
     }
 
     pub fn level(&self) -> usize {
         self.level
     }
 
-    pub fn set_level(&mut self, new_level: usize) {
+    pub fn set_level(&mut self, new_level: usize) -> Result<()> {
         self.level = new_level;
 
-        self.update_weapon_serial();
+        self.update_weapon_serial()?;
+
+        Ok(())
     }
 
     pub fn parts(&self) -> &Vec<Bl3Part> {
         &self.parts
     }
 
-    pub fn remove_part(&mut self, part: &Bl3Part) {
+    pub fn remove_part(&mut self, part: &Bl3Part) -> Result<()> {
         if let Some(part_index) = self.parts.iter_mut().position(|p| p.ident == part.ident) {
             self.parts.remove(part_index);
         }
 
-        self.update_weapon_serial();
+        self.update_weapon_serial()?;
+
+        Ok(())
     }
 
-    pub fn add_part(&mut self, part: Bl3Part) {
+    pub fn add_part(&mut self, part: Bl3Part) -> Result<()> {
         self.parts.push(part);
 
-        self.update_weapon_serial();
+        self.update_weapon_serial()?;
+
+        Ok(())
     }
 
-    pub fn update_weapon_serial(&mut self) {
+    pub fn update_weapon_serial(&mut self) -> Result<()> {
+        let serial_db = &*INVENTORY_SERIAL_DB;
+
+        self.data_version = serial_db.max_version;
+        self.balance_bits = serial_db.get_num_bits("InventoryBalanceData", self.data_version)?;
+        self.inv_data_bits = serial_db.get_num_bits("InventoryData", self.data_version)?;
+        self.manufacturer_bits = serial_db.get_num_bits("ManufacturerData", self.data_version)?;
+        self.part_bits = serial_db.get_num_bits(&self.part_inv_key, self.data_version)?;
+        self.generic_part_bits =
+            serial_db.get_num_bits("InventoryGenericPartData", self.data_version)?;
+
         let mut new_serial_bits = ArbitraryBitVec::<Lsb0, u8>::new();
 
         // Header
@@ -452,6 +470,8 @@ impl Bl3Item {
         let new_decrypted_serial = new_serial_bits.bitvec.into_vec();
 
         self.decrypted_serial = new_decrypted_serial;
+
+        Ok(())
     }
 
     fn xor_data(data: &mut [u8], seed: i32) {

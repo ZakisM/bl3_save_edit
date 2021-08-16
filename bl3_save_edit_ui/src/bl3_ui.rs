@@ -548,7 +548,9 @@ impl Application for Bl3UiState {
                                                 &part_selected.part.name,
                                             )
                                         {
-                                            current_item.item.add_part(bl3_part);
+                                            if let Err(e) = current_item.item.add_part(bl3_part) {
+                                                eprintln!("{}", e);
+                                            }
 
                                             self.manage_save_state
                                                 .main_state
@@ -583,7 +585,11 @@ impl Application for Bl3UiState {
                                     .and_then(|p| p.parts.get(current_parts_index.part_index));
 
                                 if let Some(part_selected) = part_selected {
-                                    current_item.item.remove_part(&part_selected.part);
+                                    if let Err(e) =
+                                        current_item.item.remove_part(&part_selected.part)
+                                    {
+                                        eprintln!("{}", e);
+                                    }
 
                                     self.manage_save_state
                                         .main_state
@@ -603,7 +609,9 @@ impl Application for Bl3UiState {
                                 .main_state
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
-                                    i.item.set_level(character_level);
+                                    if let Err(e) = i.item.set_level(character_level) {
+                                        eprintln!("{}", e);
+                                    }
                                 });
                         }
                         InventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
@@ -611,7 +619,9 @@ impl Application for Bl3UiState {
                                 .main_state
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
-                                    i.item.set_level(item_level_input as usize);
+                                    if let Err(e) = i.item.set_level(item_level_input as usize) {
+                                        eprintln!("{}", e);
+                                    }
                                 });
                         }
                         InventoryInteractionMessage::BalanceInputSelected(balance_selected) => {
@@ -619,7 +629,9 @@ impl Application for Bl3UiState {
                                 .main_state
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
-                                    i.item.set_balance(balance_selected);
+                                    if let Err(e) = i.item.set_balance(balance_selected) {
+                                        eprintln!("{}", e);
+                                    };
                                 });
                         }
                         InventoryInteractionMessage::InventoryDataInputChanged(

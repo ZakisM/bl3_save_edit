@@ -1,8 +1,8 @@
 use anyhow::{bail, Result};
 use bitvec::prelude::*;
 
-// Translated from https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/bl3save/datalib.py
-// All credits to apocalyptech
+// Inspired from https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/bl3save/datalib.py
+// Thanks apocalyptech
 
 #[derive(Debug)]
 pub struct ArbitraryBits<'a> {
@@ -65,9 +65,9 @@ where
     pub fn append_le(&mut self, value: usize, num_bits: usize) {
         self.bitvec.resize(self.bitvec.len() + num_bits, false);
 
-        // fit the value into the smallest bit sized integer
         let index = self.curr_index..num_bits + self.curr_index;
 
+        // fit the value into the smallest bit sized integer
         match num_bits {
             b if b <= 8 => {
                 self.bitvec[index].store_le::<u8>(value as u8);
