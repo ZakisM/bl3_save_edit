@@ -568,7 +568,7 @@ fn gen_inventory_balance_data(inventory_serial_db_json: &JsonValue) -> Vec<Balan
         .from_path("game_data/BALANCE_NAME_MAPPING.csv")
         .unwrap();
 
-    let balance_to_inv_key = rdr
+    let balance_name_mappings = rdr
         .deserialize()
         .map(|r| {
             let record: GameDataRecord = r.unwrap();
@@ -582,8 +582,8 @@ fn gen_inventory_balance_data(inventory_serial_db_json: &JsonValue) -> Vec<Balan
         .par_bridge()
         .map(|(i, part)| {
             let ident = part.to_string();
-            let short_ident = ident.rsplit('/').next().map(|s| s.to_owned());
-            let name = balance_to_inv_key
+            let short_ident = ident.rsplit('.').next().map(|s| s.to_owned());
+            let name = balance_name_mappings
                 .par_iter()
                 .find_first(|gd| ident.to_lowercase().contains(&gd.key))
                 .map(|gd| gd.value.to_owned());

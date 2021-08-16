@@ -43,7 +43,6 @@ impl InventoryItemEditor {
             .balance_part()
             .short_ident
             .as_ref()
-            .and_then(|si| si.rsplit('.').next())
             .and_then(|i| item_part_data.get(i));
 
         let item_level_editor = Row::new()

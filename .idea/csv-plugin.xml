@@ -234,6 +234,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/shields.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\bl3_save_edit_core\game_data\BALANCE_TO_INV_KEY.csv">
           <value>
             <Attribute>

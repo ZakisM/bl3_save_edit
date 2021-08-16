@@ -58,7 +58,11 @@ pub struct BalancePart {
 
 impl std::fmt::Display for BalancePart {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.short_ident.as_ref().unwrap_or(&self.ident))?;
+        write!(
+            f,
+            "{}",
+            self.ident.rsplit('/').next().unwrap_or(&self.ident)
+        )?;
 
         if let Some(name) = &self.name {
             write!(f, " - ({})", name)?;
@@ -195,12 +199,11 @@ impl Bl3Item {
 
         let level = bits.eat(7)?;
 
-        let balance_short_name = balance.rsplit('/').next().map(|s| s.to_owned());
+        let balance_short_name = balance.rsplit('.').next().map(|s| s.to_owned());
 
         let item_part_data = &INVENTORY_PARTS_ALL_CATEGORIZED;
         let item_part_info = balance_short_name
             .as_ref()
-            .and_then(|bs| bs.rsplit('.').next())
             .and_then(|bs| item_part_data.get(bs));
 
         let rarity = item_part_info

@@ -1,4 +1,3 @@
-use std::collections::HashSet;
 use std::convert::TryInto;
 use std::io::Read;
 
@@ -103,21 +102,5 @@ impl InventorySerialDb {
                 name
             )
         }
-    }
-
-    // Use this to ensure we only show Available Parts in the UI that we can actually add to the weapon
-    pub fn par_all_parts(&self) -> HashSet<String> {
-        self.data
-            .entries()
-            .par_bridge()
-            .map(|(category, _)| {
-                self.data[category]["assets"]
-                    .members()
-                    .par_bridge()
-                    .filter_map(|p| p.to_string().rsplit('/').next().map(|s| s.to_owned()))
-                    .collect::<HashSet<_>>()
-            })
-            .flatten()
-            .collect::<HashSet<_>>()
     }
 }
