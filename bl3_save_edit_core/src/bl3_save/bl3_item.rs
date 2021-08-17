@@ -1,7 +1,7 @@
 use std::fmt::Formatter;
 use std::str::FromStr;
 
-use anyhow::{bail, ensure, Context, Result};
+use anyhow::{bail, ensure, Result};
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
 use encoding_rs::mem::decode_latin1;
@@ -27,7 +27,6 @@ pub struct Bl3Item {
     pub data_version: usize,
     pub balance_bits: usize,
     balance_part: BalancePart,
-    pub part_inv_key: String,
     pub inv_data: String,
     pub inv_data_idx: usize,
     pub inv_data_bits: usize,
@@ -36,6 +35,12 @@ pub struct Bl3Item {
     pub manufacturer_idx: usize,
     pub manufacturer_bits: usize,
     level: usize,
+    pub item_parts: Option<Bl3ItemParts>,
+}
+
+#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
+pub struct Bl3ItemParts {
+    pub part_inv_key: String,
     pub part_bits: usize,
     parts: Vec<Bl3Part>,
     pub generic_part_bits: usize,
@@ -46,6 +51,12 @@ pub struct Bl3Item {
     pub item_type: ItemType,
     pub rarity: ItemRarity,
     pub weapon_type: Option<WeaponType>,
+}
+
+impl Bl3ItemParts {
+    pub fn parts(&self) -> &Vec<Bl3Part> {
+        &self.parts
+    }
 }
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd, Deserialize)]
@@ -206,66 +217,84 @@ impl Bl3Item {
             .as_ref()
             .and_then(|bs| item_part_data.get(bs));
 
-        let rarity = item_part_info
-            .and_then(|info| ItemRarity::from_str(&info.rarity).ok())
-            .unwrap_or_default();
-
-        let weapon_type = match &balance {
-            b if b.contains("_PS_") => Some(WeaponType::Pistol),
-            b if b.contains("_SG_") => Some(WeaponType::Shotgun),
-            b if b.contains("_SM_") => Some(WeaponType::Smg),
-            b if b.contains("_AR_") => Some(WeaponType::Ar),
-            b if b.contains("_SR_") => Some(WeaponType::Sniper),
-            b if b.contains("_HW_") => Some(WeaponType::Heavy),
-            _ => None,
-        };
-
         let balance_eng_name = BALANCE_NAME_MAPPING
             .par_iter()
             .find_first(|gd| balance.to_lowercase().contains(gd.ident))
             .map(|gd| gd.name.to_owned());
 
-        let part_inv_key = BALANCE_TO_INV_KEY
-            .par_iter()
-            .find_first(|gd| balance.to_lowercase() == gd.ident)
-            .map(|gd| gd.name.to_owned())
-            .with_context(|| format!("failed to read part_inv_key: {}", orig_seed))?;
-
-        let (part_bits, parts) =
-            Self::inv_db_header_part_repeated(&part_inv_key, &mut bits, data_version, 6)?;
-
-        //generics (anointment + mayhem)
-        let (generic_part_bits, generic_parts) = Self::inv_db_header_part_repeated(
-            "InventoryGenericPartData",
-            &mut bits,
-            data_version,
-            4,
-        )?;
-
-        let additional_count = bits.eat(8)?;
-
-        let additional_data = (0..additional_count)
-            .map(|_| bits.eat(8))
-            .collect::<Result<Vec<_>>>()?;
-
-        let num_customs = bits.eat(4)?;
-
-        ensure!(num_customs == 0);
-
-        let rerolled = if serial_version >= 4 { bits.eat(8)? } else { 0 };
-
-        if bits.len() > 7 || bits.bitslice().count_ones() > 0 {
-            bail!("could not fully parse the weapon data")
-        }
-
         let balance_part = BalancePart {
-            ident: balance,
+            ident: balance.clone(),
             short_ident: balance_short_name,
             name: balance_eng_name,
             idx: balance_idx,
         };
 
-        let item_type = ItemType::from_str(&part_inv_key).unwrap_or_default();
+        let item_parts = if let Some(part_inv_key) = BALANCE_TO_INV_KEY
+            .par_iter()
+            .find_first(|gd| balance.to_lowercase() == gd.ident)
+            .map(|gd| gd.name.to_owned())
+        {
+            let (part_bits, parts) =
+                Self::inv_db_header_part_repeated(&part_inv_key, &mut bits, data_version, 6)?;
+
+            //generics (anointment + mayhem)
+            let (generic_part_bits, generic_parts) = Self::inv_db_header_part_repeated(
+                "InventoryGenericPartData",
+                &mut bits,
+                data_version,
+                4,
+            )?;
+
+            let additional_count = bits.eat(8)?;
+
+            let additional_data = (0..additional_count)
+                .map(|_| bits.eat(8))
+                .collect::<Result<Vec<_>>>()?;
+
+            let num_customs = bits.eat(4)?;
+
+            ensure!(num_customs == 0);
+
+            let rerolled = if serial_version >= 4 { bits.eat(8)? } else { 0 };
+
+            if bits.len() > 7 || bits.bitslice().count_ones() > 0 {
+                bail!("could not fully parse the weapon data")
+            }
+
+            let item_type = ItemType::from_str(&part_inv_key).unwrap_or_default();
+
+            let rarity = item_part_info
+                .and_then(|info| ItemRarity::from_str(&info.rarity).ok())
+                .unwrap_or_default();
+
+            let weapon_type = match &balance {
+                b if b.contains("_PS_") => Some(WeaponType::Pistol),
+                b if b.contains("_SG_") => Some(WeaponType::Shotgun),
+                b if b.contains("_SM_") => Some(WeaponType::Smg),
+                b if b.contains("_AR_") => Some(WeaponType::Ar),
+                b if b.contains("_SR_") => Some(WeaponType::Sniper),
+                b if b.contains("_HW_") => Some(WeaponType::Heavy),
+                _ => None,
+            };
+
+            let item_parts = Bl3ItemParts {
+                part_inv_key,
+                part_bits,
+                parts,
+                generic_part_bits,
+                generic_parts,
+                additional_data,
+                num_customs,
+                rerolled,
+                item_type,
+                rarity,
+                weapon_type,
+            };
+
+            Some(item_parts)
+        } else {
+            None
+        };
 
         let decrypted_serial = decrypted_serial.to_vec();
 
@@ -276,7 +305,6 @@ impl Bl3Item {
             data_version,
             balance_bits,
             balance_part,
-            part_inv_key,
             inv_data,
             inv_data_idx,
             inv_data_bits,
@@ -285,16 +313,7 @@ impl Bl3Item {
             manufacturer_idx,
             manufacturer_bits,
             level,
-            part_bits,
-            parts,
-            generic_part_bits,
-            generic_parts,
-            additional_data,
-            num_customs,
-            rerolled,
-            item_type,
-            rarity,
-            weapon_type,
+            item_parts,
         })
     }
 
@@ -372,11 +391,18 @@ impl Bl3Item {
                 balance_part.ident
             ),
             Some(part_inv_key) => {
-                self.part_inv_key = part_inv_key;
+                if let Some(item_parts) = &mut self.item_parts {
+                    item_parts.part_inv_key = part_inv_key;
+
+                    item_parts.parts = Vec::new();
+                } else {
+                    self.item_parts = Some(Bl3ItemParts {
+                        part_inv_key,
+                        ..Bl3ItemParts::default()
+                    })
+                }
             }
         }
-
-        self.parts = Vec::new();
 
         self.balance_part = balance_part;
 
@@ -397,24 +423,28 @@ impl Bl3Item {
         Ok(())
     }
 
-    pub fn parts(&self) -> &Vec<Bl3Part> {
-        &self.parts
-    }
-
     pub fn remove_part(&mut self, part: &Bl3Part) -> Result<()> {
-        if let Some(part_index) = self.parts.iter_mut().position(|p| p.ident == part.ident) {
-            self.parts.remove(part_index);
-        }
+        if let Some(item_parts) = &mut self.item_parts {
+            if let Some(part_index) = item_parts
+                .parts
+                .iter_mut()
+                .position(|p| p.ident == part.ident)
+            {
+                item_parts.parts.remove(part_index);
+            }
 
-        self.update_weapon_serial()?;
+            self.update_weapon_serial()?;
+        }
 
         Ok(())
     }
 
     pub fn add_part(&mut self, part: Bl3Part) -> Result<()> {
-        self.parts.push(part);
+        if let Some(item_parts) = &mut self.item_parts {
+            item_parts.parts.push(part);
 
-        self.update_weapon_serial()?;
+            self.update_weapon_serial()?;
+        }
 
         Ok(())
     }
@@ -426,45 +456,49 @@ impl Bl3Item {
         self.balance_bits = serial_db.get_num_bits("InventoryBalanceData", self.data_version)?;
         self.inv_data_bits = serial_db.get_num_bits("InventoryData", self.data_version)?;
         self.manufacturer_bits = serial_db.get_num_bits("ManufacturerData", self.data_version)?;
-        self.part_bits = serial_db.get_num_bits(&self.part_inv_key, self.data_version)?;
-        self.generic_part_bits =
-            serial_db.get_num_bits("InventoryGenericPartData", self.data_version)?;
 
         let mut new_serial_bits = ArbitraryBitVec::<Lsb0, u8>::new();
 
-        // Header
-        new_serial_bits.append_le(128, 8);
-        new_serial_bits.append_le(self.data_version, 7);
-        new_serial_bits.append_le(self.balance_part.idx, self.balance_bits);
-        new_serial_bits.append_le(self.inv_data_idx, self.inv_data_bits);
-        new_serial_bits.append_le(self.manufacturer_idx, self.manufacturer_bits);
-        new_serial_bits.append_le(self.level, 7);
+        if let Some(item_parts) = &mut self.item_parts {
+            item_parts.part_bits =
+                serial_db.get_num_bits(&item_parts.part_inv_key, self.data_version)?;
+            item_parts.generic_part_bits =
+                serial_db.get_num_bits("InventoryGenericPartData", self.data_version)?;
 
-        // Parts
-        new_serial_bits.append_le(self.parts.len(), 6);
+            // Header
+            new_serial_bits.append_le(128, 8);
+            new_serial_bits.append_le(self.data_version, 7);
+            new_serial_bits.append_le(self.balance_part.idx, self.balance_bits);
+            new_serial_bits.append_le(self.inv_data_idx, self.inv_data_bits);
+            new_serial_bits.append_le(self.manufacturer_idx, self.manufacturer_bits);
+            new_serial_bits.append_le(self.level, 7);
 
-        self.parts.iter().for_each(|p| {
-            new_serial_bits.append_le(p.idx, self.part_bits);
-        });
+            // Parts
+            new_serial_bits.append_le(item_parts.parts.len(), 6);
 
-        // Generics
-        new_serial_bits.append_le(self.generic_parts.len(), 4);
+            item_parts.parts.iter().for_each(|p| {
+                new_serial_bits.append_le(p.idx, item_parts.part_bits);
+            });
 
-        self.generic_parts.iter().for_each(|gp| {
-            new_serial_bits.append_le(gp.idx, self.generic_part_bits);
-        });
+            // Generics
+            new_serial_bits.append_le(item_parts.generic_parts.len(), 4);
 
-        // Additional data
-        new_serial_bits.append_le(self.additional_data.len(), 8);
+            item_parts.generic_parts.iter().for_each(|gp| {
+                new_serial_bits.append_le(gp.idx, item_parts.generic_part_bits);
+            });
 
-        self.additional_data.iter().for_each(|a| {
-            new_serial_bits.append_le(*a, 8);
-        });
+            // Additional data
+            new_serial_bits.append_le(item_parts.additional_data.len(), 8);
 
-        new_serial_bits.append_le(self.num_customs, 4);
+            item_parts.additional_data.iter().for_each(|a| {
+                new_serial_bits.append_le(*a, 8);
+            });
 
-        if self.serial_version >= 4 {
-            new_serial_bits.append_le(self.rerolled, 8);
+            new_serial_bits.append_le(item_parts.num_customs, 4);
+
+            if self.serial_version >= 4 {
+                new_serial_bits.append_le(item_parts.rerolled, 8);
+            }
         }
 
         let new_decrypted_serial = new_serial_bits.bitvec.into_vec();

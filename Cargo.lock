@@ -177,6 +177,7 @@ dependencies = [
  "derivative",
  "dirs",
  "futures",
+ "heck",
  "iced",
  "native-dialog 0.4.4",
  "native-dialog 0.5.5",

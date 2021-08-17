@@ -1,3 +1,4 @@
+use heck::TitleCase;
 use iced::{
     button, container, Align, Button, Color, Column, Container, Element, Length, Row, Text,
 };
@@ -60,47 +61,53 @@ impl InventoryListItem {
             // Don't Care about Manufacturer class mod as we are showing that in the item_type
             if manufacturer_short != "ClassMod" {
                 tags_row = tags_row.push(
-                    Container::new(Text::new(manufacturer_short).font(JETBRAINS_MONO).size(15))
-                        .padding(5)
-                        .style(ItemInfoStyle),
+                    Container::new(
+                        Text::new(manufacturer_short.to_title_case())
+                            .font(JETBRAINS_MONO)
+                            .size(15),
+                    )
+                    .padding(5)
+                    .style(ItemInfoStyle),
                 )
             }
         }
 
-        match &self.item.item_type {
-            ItemType::Weapon => {
-                if let Some(weapon_type) = &self.item.weapon_type {
-                    tags_row = tags_row.push(
-                        Container::new(
-                            Text::new(weapon_type.to_string())
-                                .font(JETBRAINS_MONO)
-                                .size(15),
+        if let Some(item_parts) = &self.item.item_parts {
+            match &item_parts.item_type {
+                ItemType::Weapon => {
+                    if let Some(weapon_type) = &item_parts.weapon_type {
+                        tags_row = tags_row.push(
+                            Container::new(
+                                Text::new(weapon_type.to_string())
+                                    .font(JETBRAINS_MONO)
+                                    .size(15),
+                            )
+                            .padding(5)
+                            .style(ItemTypeStyle),
                         )
-                        .padding(5)
-                        .style(ItemTypeStyle),
+                    }
+                }
+                other => {
+                    tags_row = tags_row.push(
+                        Container::new(Text::new(other.to_string()).font(JETBRAINS_MONO).size(15))
+                            .padding(5)
+                            .style(ItemTypeStyle),
                     )
                 }
             }
-            other => {
-                tags_row = tags_row.push(
-                    Container::new(Text::new(other.to_string()).font(JETBRAINS_MONO).size(15))
-                        .padding(5)
-                        .style(ItemTypeStyle),
-                )
-            }
-        }
 
-        tags_row = tags_row.push(
-            Container::new(
-                Text::new(self.item.rarity.to_string())
-                    .font(JETBRAINS_MONO)
-                    .size(15),
-            )
-            .padding(5)
-            .style(ItemRarityStyle {
-                rarity: self.item.rarity.clone(),
-            }),
-        );
+            tags_row = tags_row.push(
+                Container::new(
+                    Text::new(item_parts.rarity.to_string())
+                        .font(JETBRAINS_MONO)
+                        .size(15),
+                )
+                .padding(5)
+                .style(ItemRarityStyle {
+                    rarity: item_parts.rarity.clone(),
+                }),
+            );
+        }
 
         let button_content = Column::new()
             .push(

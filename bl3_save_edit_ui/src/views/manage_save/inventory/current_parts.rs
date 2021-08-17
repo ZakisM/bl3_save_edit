@@ -108,32 +108,35 @@ impl CurrentParts {
         let mut categorized_parts: BTreeMap<String, Vec<Bl3Part>> = BTreeMap::new();
 
         if let Some(resource_item) = resource_item {
-            item.parts().iter().for_each(|p| {
-                let known_cat_p = resource_item
-                    .inventory_categorized_parts
-                    .iter()
-                    .find(|cat| {
-                        cat.parts.iter().any(|cat_p| {
-                            part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
-                        })
-                    });
+            if let Some(item_parts) = &item.item_parts {
+                item_parts.parts().iter().for_each(|p| {
+                    let known_cat_p =
+                        resource_item
+                            .inventory_categorized_parts
+                            .iter()
+                            .find(|cat| {
+                                cat.parts.iter().any(|cat_p| {
+                                    part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
+                                })
+                            });
 
-                if let Some(known_cat_p) = known_cat_p {
-                    let curr_cat_parts = categorized_parts
-                        .entry(known_cat_p.category.to_owned())
-                        .or_insert_with(Vec::new);
+                    if let Some(known_cat_p) = known_cat_p {
+                        let curr_cat_parts = categorized_parts
+                            .entry(known_cat_p.category.to_owned())
+                            .or_insert_with(Vec::new);
 
-                    curr_cat_parts.push(p.to_owned());
-                } else {
-                    let curr_cat_parts = categorized_parts
-                        .entry("Unknown Parts".to_owned())
-                        .or_insert_with(Vec::new);
+                        curr_cat_parts.push(p.to_owned());
+                    } else {
+                        let curr_cat_parts = categorized_parts
+                            .entry("Unknown Parts".to_owned())
+                            .or_insert_with(Vec::new);
 
-                    curr_cat_parts.push(p.to_owned());
-                }
-            });
-        } else {
-            item.parts().iter().for_each(|p| {
+                        curr_cat_parts.push(p.to_owned());
+                    }
+                });
+            }
+        } else if let Some(item_parts) = &item.item_parts {
+            item_parts.parts().iter().for_each(|p| {
                 let curr_cat_parts = categorized_parts
                     .entry("Unknown Parts".to_owned())
                     .or_insert_with(Vec::new);
@@ -182,7 +185,10 @@ impl CurrentParts {
                 TextMargin::new(
                     format!(
                         "Current Parts ({}/{})",
-                        item.parts().len(),
+                        item.item_parts
+                            .as_ref()
+                            .map(|ip| ip.parts().len())
+                            .unwrap_or(0),
                         MAX_BL3_ITEM_PARTS
                     ),
                     2,
@@ -198,30 +204,34 @@ impl CurrentParts {
             .style(Bl3UiStyle),
         );
 
-        if !item.parts().is_empty() {
-            current_parts_column = current_parts_column.push(
-                Container::new(
-                    Scrollable::new(&mut self.scrollable_state)
-                        .push(current_parts_list)
-                        .height(Length::Fill)
-                        .width(Length::Fill),
-                )
-                .padding(1),
-            );
+        let no_parts_message = Container::new(
+            Text::new("This item has no parts.")
+                .font(JETBRAINS_MONO)
+                .size(17)
+                .color(Color::from_rgb8(220, 220, 220)),
+        )
+        .height(Length::Fill)
+        .width(Length::Fill)
+        .align_x(Align::Center)
+        .align_y(Align::Center)
+        .padding(1);
+
+        if let Some(item_parts) = &item.item_parts {
+            if !item_parts.parts().is_empty() {
+                current_parts_column = current_parts_column.push(
+                    Container::new(
+                        Scrollable::new(&mut self.scrollable_state)
+                            .push(current_parts_list)
+                            .height(Length::Fill)
+                            .width(Length::Fill),
+                    )
+                    .padding(1),
+                );
+            } else {
+                current_parts_column = current_parts_column.push(no_parts_message);
+            }
         } else {
-            current_parts_column = current_parts_column.push(
-                Container::new(
-                    Text::new("This item has no parts.")
-                        .font(JETBRAINS_MONO)
-                        .size(17)
-                        .color(Color::from_rgb8(220, 220, 220)),
-                )
-                .height(Length::Fill)
-                .width(Length::Fill)
-                .align_x(Align::Center)
-                .align_y(Align::Center)
-                .padding(1),
-            );
+            current_parts_column = current_parts_column.push(no_parts_message);
         }
 
         Container::new(current_parts_column)

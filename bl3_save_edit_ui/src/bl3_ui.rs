@@ -529,39 +529,43 @@ impl Application for Bl3UiState {
                                         .selected_item_index,
                                 )
                             {
-                                if current_item.item.parts().len() < MAX_BL3_ITEM_PARTS {
-                                    let part_selected = current_item
-                                        .editor
-                                        .available_parts
-                                        .parts
-                                        .get(available_parts_index.category_index)
-                                        .and_then(|p| {
-                                            p.parts.get(available_parts_index.part_index)
-                                        });
+                                if let Some(item_parts) = &mut current_item.item.item_parts {
+                                    if item_parts.parts().len() < MAX_BL3_ITEM_PARTS {
+                                        let part_selected = current_item
+                                            .editor
+                                            .available_parts
+                                            .parts
+                                            .get(available_parts_index.category_index)
+                                            .and_then(|p| {
+                                                p.parts.get(available_parts_index.part_index)
+                                            });
 
-                                    if let Some(part_selected) = part_selected {
-                                        let part_inv_key = &current_item.item.part_inv_key;
+                                        if let Some(part_selected) = part_selected {
+                                            let part_inv_key = &item_parts.part_inv_key;
 
-                                        if let Ok(bl3_part) = INVENTORY_SERIAL_DB
-                                            .get_part_by_short_name(
-                                                part_inv_key,
-                                                &part_selected.part.name,
-                                            )
-                                        {
-                                            if let Err(e) = current_item.item.add_part(bl3_part) {
-                                                eprintln!("{}", e);
+                                            if let Ok(bl3_part) = INVENTORY_SERIAL_DB
+                                                .get_part_by_short_name(
+                                                    part_inv_key,
+                                                    &part_selected.part.name,
+                                                )
+                                            {
+                                                if let Err(e) = current_item.item.add_part(bl3_part)
+                                                {
+                                                    eprintln!("{}", e);
+                                                }
+
+                                                self.manage_save_state
+                                                    .main_state
+                                                    .inventory_state
+                                                    .map_current_item_if_exists(|i| {
+                                                        i.editor.available_parts.parts_index =
+                                                            available_parts_index
+                                                    });
                                             }
-
-                                            self.manage_save_state
-                                                .main_state
-                                                .inventory_state
-                                                .map_current_item_if_exists(|i| {
-                                                    i.editor.available_parts.parts_index =
-                                                        available_parts_index
-                                                });
                                         }
                                     }
                                 }
+                            } else {
                             }
                         }
                         InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
