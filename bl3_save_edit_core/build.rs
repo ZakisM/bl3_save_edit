@@ -126,15 +126,22 @@ fn main() {
 
     //INVENTORY_PARTS_ALL_CATEGORIZED
     let inventory_parts_all = load_inventory_all_parts_categorized(inventory_parts_records);
-
     let inventory_parts_all_categorized_ron = ron::to_string(&inventory_parts_all).unwrap();
 
-    //INVENTORY_BALANCE_DATA
-    let mut inventory_balance_data = gen_inventory_balance_data(&inventory_serial_db_json);
+    //INVENTORY_BALANCE_PARTS
+    let mut inventory_balance_parts = gen_balance_parts(&inventory_serial_db_json);
+    inventory_balance_parts.sort_by(|a, b| a.short_ident.cmp(&b.short_ident));
+    let inventory_balance_parts_ron = ron::to_string(&inventory_balance_parts).unwrap();
 
-    inventory_balance_data.sort_by(|a, b| a.short_ident.cmp(&b.short_ident));
+    //INVENTORY_INV_DATA_PARTS
+    let mut inventory_inv_data_parts = gen_inventory_data_parts(&inventory_serial_db_json);
+    inventory_inv_data_parts.sort_by(|a, b| a.ident.cmp(&b.ident));
+    let inventory_inv_data_parts_ron = ron::to_string(&inventory_inv_data_parts).unwrap();
 
-    let inventory_balance_data_ron = ron::to_string(&inventory_balance_data).unwrap();
+    //INVENTORY_MANUFACTURER_PARTS
+    let mut inventory_manufacturer_parts = gen_manufacturer_parts(&inventory_serial_db_json);
+    inventory_manufacturer_parts.sort_by(|a, b| a.ident.cmp(&b.ident));
+    let inventory_manufacturer_parts_ron = ron::to_string(&inventory_manufacturer_parts).unwrap();
 
     for (filename, output_data) in [
         (
@@ -146,8 +153,16 @@ fn main() {
             inventory_parts_all_categorized_ron,
         ),
         (
-            "resources/INVENTORY_BALANCE_DATA",
-            inventory_balance_data_ron,
+            "resources/INVENTORY_BALANCE_PARTS",
+            inventory_balance_parts_ron,
+        ),
+        (
+            "resources/INVENTORY_INV_DATA_PARTS",
+            inventory_inv_data_parts_ron,
+        ),
+        (
+            "resources/INVENTORY_MANUFACTURER_PARTS",
+            inventory_manufacturer_parts_ron,
         ),
     ] {
         let output_file = std::fs::OpenOptions::new()
@@ -299,11 +314,24 @@ impl std::cmp::PartialEq for GameDataKv {{
     .unwrap();
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize)]
 pub struct BalancePart {
     pub ident: String,
     pub short_ident: Option<String>,
     pub name: Option<String>,
+    pub idx: usize,
+}
+
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize)]
+pub struct InvDataPart {
+    pub ident: String,
+    pub idx: usize,
+}
+
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize)]
+pub struct ManufacturerPart {
+    pub ident: String,
+    pub short_ident: Option<String>,
     pub idx: usize,
 }
 
@@ -562,7 +590,7 @@ fn load_inventory_all_parts_categorized(
         })
 }
 
-fn gen_inventory_balance_data(inventory_serial_db_json: &JsonValue) -> Vec<BalancePart> {
+fn gen_balance_parts(inventory_serial_db_json: &JsonValue) -> Vec<BalancePart> {
     let mut rdr = csv::ReaderBuilder::new()
         .has_headers(false)
         .from_path("game_data/BALANCE_NAME_MAPPING.csv")
@@ -592,7 +620,38 @@ fn gen_inventory_balance_data(inventory_serial_db_json: &JsonValue) -> Vec<Balan
                 ident,
                 short_ident,
                 name,
-                idx: i,
+                idx: i + 1,
+            }
+        })
+        .collect::<Vec<_>>()
+}
+
+fn gen_inventory_data_parts(inventory_serial_db_json: &JsonValue) -> Vec<InvDataPart> {
+    inventory_serial_db_json["InventoryData"]["assets"]
+        .members()
+        .enumerate()
+        .par_bridge()
+        .map(|(i, part)| {
+            let ident = part.to_string();
+
+            InvDataPart { ident, idx: i + 1 }
+        })
+        .collect::<Vec<_>>()
+}
+
+fn gen_manufacturer_parts(inventory_serial_db_json: &JsonValue) -> Vec<ManufacturerPart> {
+    inventory_serial_db_json["ManufacturerData"]["assets"]
+        .members()
+        .enumerate()
+        .par_bridge()
+        .map(|(i, part)| {
+            let ident = part.to_string();
+            let short_ident = ident.rsplit('.').next().map(|s| s.to_owned());
+
+            ManufacturerPart {
+                ident,
+                short_ident,
+                idx: i + 1,
             }
         })
         .collect::<Vec<_>>()

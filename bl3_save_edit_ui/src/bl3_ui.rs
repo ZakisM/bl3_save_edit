@@ -638,24 +638,26 @@ impl Application for Bl3UiState {
                                     };
                                 });
                         }
-                        InventoryInteractionMessage::InventoryDataInputChanged(
-                            inventory_data_input,
-                        ) => {
+                        InventoryInteractionMessage::InvDataInputSelected(inv_data_selected) => {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
-                                    i.editor.inventory_data_input = inventory_data_input
+                                    if let Err(e) = i.item.set_inv_data(inv_data_selected) {
+                                        eprintln!("{}", e);
+                                    }
                                 });
                         }
-                        InventoryInteractionMessage::ManufacturerInputChanged(
-                            manufacturer_input,
+                        InventoryInteractionMessage::ManufacturerInputSelected(
+                            manufacturer_selected,
                         ) => {
                             self.manage_save_state
                                 .main_state
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
-                                    i.editor.manufacturer_input = manufacturer_input
+                                    if let Err(e) = i.item.set_manufacturer(manufacturer_selected) {
+                                        eprintln!("{}", e);
+                                    }
                                 });
                         }
                     },

@@ -2,7 +2,7 @@ use std::convert::TryInto;
 
 use iced::{scrollable, Align, Color, Column, Container, Length, Row, Scrollable, Text};
 
-use bl3_save_edit_core::bl3_save::bl3_item::BalancePart;
+use bl3_save_edit_core::bl3_save::bl3_item::{BalancePart, InvDataPart, ManufacturerPart};
 
 use crate::bl3_ui::Message;
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -53,10 +53,10 @@ impl InventoryStateExt for InventoryState {
                 .item
                 .get_serial_number_base64(false)
                 .unwrap_or_else(|_| "Unable to read serial, this item is invalid.".to_owned());
-            let balance_part = curr_item.item.balance_part();
-            curr_item.editor.balance_input_selected = balance_part.clone();
-            curr_item.editor.inventory_data_input = curr_item.item.inv_data.clone();
-            curr_item.editor.manufacturer_input = curr_item.item.manufacturer.clone();
+            curr_item.editor.balance_input_selected = curr_item.item.balance_part().clone();
+            curr_item.editor.inv_data_input_selected = curr_item.item.inv_data_part().clone();
+            curr_item.editor.manufacturer_input_selected =
+                curr_item.item.manufacturer_part().clone();
         }
     }
 }
@@ -72,8 +72,8 @@ pub enum InventoryInteractionMessage {
     SyncItemLevelWithCharacterLevel,
     ItemLevelInputChanged(i32),
     BalanceInputSelected(BalancePart),
-    InventoryDataInputChanged(String),
-    ManufacturerInputChanged(String),
+    InvDataInputSelected(InvDataPart),
+    ManufacturerInputSelected(ManufacturerPart),
 }
 
 pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {

@@ -1,4 +1,2 @@
 /target
-/bl3_save_edit_core/resources/INVENTORY_PARTS_ALL_CATEGORIZED.ron.sz
-/bl3_save_edit_core/resources/INVENTORY_SERIAL_DB_PARTS_CATEGORIZED.ron.sz
-/bl3_save_edit_core/resources/INVENTORY_BALANCE_DATA.ron.sz
+/bl3_save_edit_core/resources/*.ron.sz

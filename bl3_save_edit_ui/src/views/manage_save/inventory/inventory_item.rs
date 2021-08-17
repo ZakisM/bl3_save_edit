@@ -17,14 +17,21 @@ use crate::views::InteractionExt;
 pub struct InventoryListItem {
     id: usize,
     pub item: Bl3Item,
-    label: String,
     button_state: button::State,
     pub editor: InventoryItemEditor,
 }
 
 impl InventoryListItem {
     pub fn new(id: usize, item: Bl3Item) -> Self {
-        let balance_part = &item.balance_part();
+        InventoryListItem {
+            id,
+            item,
+            ..Default::default()
+        }
+    }
+
+    pub fn view(&mut self, is_active: bool) -> (Element<Message>, Option<Container<Message>>) {
+        let balance_part = self.item.balance_part();
 
         let label = balance_part.name.clone().unwrap_or_else(|| {
             balance_part
@@ -33,15 +40,6 @@ impl InventoryListItem {
                 .unwrap_or_else(|| balance_part.ident.clone())
         });
 
-        InventoryListItem {
-            id,
-            label,
-            item,
-            ..Default::default()
-        }
-    }
-
-    pub fn view(&mut self, is_active: bool) -> (Element<Message>, Option<Container<Message>>) {
         let mut tags_row = Row::new()
             .push(
                 Container::new(
@@ -55,21 +53,16 @@ impl InventoryListItem {
             .width(Length::Fill)
             .spacing(10);
 
-        if let Some(manufacturer_short) = &self.item.manufacturer_short {
-            let manufacturer_short = manufacturer_short.replace("_NoMinGamestage", "");
+        if let Some(mut manufacturer_short) = self.item.manufacturer_part().short_ident.clone() {
+            if manufacturer_short != "CoV" {
+                manufacturer_short = manufacturer_short.to_title_case();
+            }
 
-            // Don't Care about Manufacturer class mod as we are showing that in the item_type
-            if manufacturer_short != "ClassMod" {
-                tags_row = tags_row.push(
-                    Container::new(
-                        Text::new(manufacturer_short.to_title_case())
-                            .font(JETBRAINS_MONO)
-                            .size(15),
-                    )
+            tags_row = tags_row.push(
+                Container::new(Text::new(manufacturer_short).font(JETBRAINS_MONO).size(15))
                     .padding(5)
                     .style(ItemInfoStyle),
-                )
-            }
+            )
         }
 
         if let Some(item_parts) = &self.item.item_parts {
@@ -111,8 +104,7 @@ impl InventoryListItem {
 
         let button_content = Column::new()
             .push(
-                Container::new(Text::new(&self.label).font(JETBRAINS_MONO).size(17))
-                    .width(Length::Fill),
+                Container::new(Text::new(&label).font(JETBRAINS_MONO).size(17)).width(Length::Fill),
             )
             .push(tags_row)
             .width(Length::Fill)

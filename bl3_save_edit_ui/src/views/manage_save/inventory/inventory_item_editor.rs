@@ -3,8 +3,11 @@ use iced::{
     Row, Text, TextInput, Tooltip,
 };
 
-use bl3_save_edit_core::bl3_save::bl3_item::{BalancePart, Bl3Item};
-use bl3_save_edit_core::resources::{INVENTORY_BALANCE_DATA, INVENTORY_PARTS_ALL_CATEGORIZED};
+use bl3_save_edit_core::bl3_save::bl3_item::{BalancePart, Bl3Item, InvDataPart, ManufacturerPart};
+use bl3_save_edit_core::resources::{
+    INVENTORY_BALANCE_PARTS, INVENTORY_INV_DATA_PARTS, INVENTORY_MANUFACTURER_PARTS,
+    INVENTORY_PARTS_ALL_CATEGORIZED,
+};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
@@ -27,10 +30,10 @@ pub struct InventoryItemEditor {
     pub serial_input_state: text_input::State,
     pub balance_input_state: pick_list::State<BalancePart>,
     pub balance_input_selected: BalancePart,
-    pub inventory_data_input: String,
-    pub inventory_data_input_state: text_input::State,
-    pub manufacturer_input: String,
-    pub manufacturer_input_state: text_input::State,
+    pub inv_data_input_state: pick_list::State<InvDataPart>,
+    pub inv_data_input_selected: InvDataPart,
+    pub manufacturer_input_state: pick_list::State<ManufacturerPart>,
+    pub manufacturer_input_selected: ManufacturerPart,
     pub available_parts: AvailableParts,
     pub current_parts: CurrentParts,
 }
@@ -149,7 +152,7 @@ impl InventoryItemEditor {
                         Length::Units(130),
                         PickList::new(
                             &mut self.balance_input_state,
-                            &INVENTORY_BALANCE_DATA[..],
+                            &INVENTORY_BALANCE_PARTS[..],
                             Some(self.balance_input_selected.clone()),
                             |s| {
                                 InteractionMessage::ManageSaveInteraction(
@@ -177,22 +180,23 @@ impl InventoryItemEditor {
                     LabelledElement::create(
                         "Inventory Data",
                         Length::Units(130),
-                        TextInput::new(
-                            &mut self.inventory_data_input_state,
-                            "",
-                            &self.inventory_data_input,
+                        PickList::new(
+                            &mut self.inv_data_input_state,
+                            &INVENTORY_INV_DATA_PARTS[..],
+                            Some(self.inv_data_input_selected.clone()),
                             |s| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Inventory(
-                                        InventoryInteractionMessage::InventoryDataInputChanged(s),
+                                        InventoryInteractionMessage::InvDataInputSelected(s),
                                     ),
                                 )
                             },
                         )
                         .font(JETBRAINS_MONO)
+                        .text_size(16)
                         .padding(10)
-                        .size(17)
                         .style(Bl3UiStyle)
+                        .width(Length::Fill)
                         .into_element(),
                     )
                     .spacing(15)
@@ -206,22 +210,23 @@ impl InventoryItemEditor {
                     LabelledElement::create(
                         "Manufacturer",
                         Length::Units(130),
-                        TextInput::new(
+                        PickList::new(
                             &mut self.manufacturer_input_state,
-                            "",
-                            &self.manufacturer_input,
+                            &INVENTORY_MANUFACTURER_PARTS[..],
+                            Some(self.manufacturer_input_selected.clone()),
                             |s| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Inventory(
-                                        InventoryInteractionMessage::ManufacturerInputChanged(s),
+                                        InventoryInteractionMessage::ManufacturerInputSelected(s),
                                     ),
                                 )
                             },
                         )
                         .font(JETBRAINS_MONO)
+                        .text_size(16)
                         .padding(10)
-                        .size(17)
                         .style(Bl3UiStyle)
+                        .width(Length::Fill)
                         .into_element(),
                     )
                     .spacing(15)

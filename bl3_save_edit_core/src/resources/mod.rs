@@ -4,7 +4,7 @@ use once_cell::sync::Lazy;
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
 
-use crate::bl3_save::bl3_item::BalancePart;
+use crate::bl3_save::bl3_item::{BalancePart, InvDataPart, ManufacturerPart};
 use crate::models::inventory_serial_db::InventorySerialDb;
 
 type InventoryPartsAll = HashMap<String, ResourceItem>;
@@ -19,8 +19,14 @@ const INVENTORY_PARTS_ALL_CATEGORIZED_RON_COMPRESSED: &[u8] =
 const INVENTORY_SERIAL_DB_PARTS_CATEGORIZED_RON_COMPRESSED: &[u8] =
     include_bytes!("../../resources/INVENTORY_SERIAL_DB_PARTS_CATEGORIZED.ron.sz");
 
-const INVENTORY_BALANCE_DATA_COMPRESSED: &[u8] =
-    include_bytes!("../../resources/INVENTORY_BALANCE_DATA.ron.sz");
+const INVENTORY_BALANCE_PARTS_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_BALANCE_PARTS.ron.sz");
+
+const INVENTORY_INV_DATA_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_INV_DATA_PARTS.ron.sz");
+
+const INVENTORY_MANUFACTURER_PARTS_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_MANUFACTURER_PARTS.ron.sz");
 
 pub static INVENTORY_SERIAL_DB: Lazy<InventorySerialDb> =
     Lazy::new(|| InventorySerialDb::load().expect("failed to load inventory serial db"));
@@ -31,8 +37,14 @@ pub static INVENTORY_PARTS_ALL_CATEGORIZED: Lazy<InventoryPartsAll> =
 pub static INVENTORY_SERIAL_DB_PARTS_CATEGORIZED: Lazy<InventorySerialDbCategorizedParts> =
     Lazy::new(|| load_compressed_data(INVENTORY_SERIAL_DB_PARTS_CATEGORIZED_RON_COMPRESSED));
 
-pub static INVENTORY_BALANCE_DATA: Lazy<Vec<BalancePart>> =
-    Lazy::new(|| load_compressed_data(INVENTORY_BALANCE_DATA_COMPRESSED));
+pub static INVENTORY_BALANCE_PARTS: Lazy<Vec<BalancePart>> =
+    Lazy::new(|| load_compressed_data(INVENTORY_BALANCE_PARTS_COMPRESSED));
+
+pub static INVENTORY_INV_DATA_PARTS: Lazy<Vec<InvDataPart>> =
+    Lazy::new(|| load_compressed_data(INVENTORY_INV_DATA_COMPRESSED));
+
+pub static INVENTORY_MANUFACTURER_PARTS: Lazy<Vec<ManufacturerPart>> =
+    Lazy::new(|| load_compressed_data(INVENTORY_MANUFACTURER_PARTS_COMPRESSED));
 
 pub fn load_compressed_data<T: DeserializeOwned>(input: &'static [u8]) -> T {
     let mut rdr = snap::read::FrameDecoder::new(input);

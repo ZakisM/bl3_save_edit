@@ -1,7 +1,7 @@
 use std::fmt::Formatter;
 use std::str::FromStr;
 
-use anyhow::{bail, ensure, Result};
+use anyhow::{bail, ensure, Context, Result};
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
 use encoding_rs::mem::decode_latin1;
@@ -12,7 +12,9 @@ use strum::{Display, EnumString};
 use crate::bl3_save::arbitrary_bits::{ArbitraryBitVec, ArbitraryBits};
 use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
 use crate::parser::read_be_signed_int;
-use crate::resources::{INVENTORY_PARTS_ALL_CATEGORIZED, INVENTORY_SERIAL_DB};
+use crate::resources::{
+    INVENTORY_INV_DATA_PARTS, INVENTORY_PARTS_ALL_CATEGORIZED, INVENTORY_SERIAL_DB,
+};
 
 pub const MAX_BL3_ITEM_PARTS: usize = 63;
 
@@ -27,13 +29,10 @@ pub struct Bl3Item {
     pub data_version: usize,
     pub balance_bits: usize,
     balance_part: BalancePart,
-    pub inv_data: String,
-    pub inv_data_idx: usize,
     pub inv_data_bits: usize,
-    pub manufacturer: String,
-    pub manufacturer_short: Option<String>,
-    pub manufacturer_idx: usize,
+    inv_data_part: InvDataPart,
     pub manufacturer_bits: usize,
+    manufacturer_part: ManufacturerPart,
     level: usize,
     pub item_parts: Option<Bl3ItemParts>,
 }
@@ -83,6 +82,43 @@ impl std::fmt::Display for BalancePart {
     }
 }
 
+#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd, Deserialize)]
+pub struct InvDataPart {
+    pub ident: String,
+    pub idx: usize,
+}
+
+impl std::fmt::Display for InvDataPart {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.ident.rsplit('/').next().unwrap_or(&self.ident)
+        )?;
+
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd, Deserialize)]
+pub struct ManufacturerPart {
+    pub ident: String,
+    pub short_ident: Option<String>,
+    pub idx: usize,
+}
+
+impl std::fmt::Display for ManufacturerPart {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.ident.rsplit('/').next().unwrap_or(&self.ident)
+        )?;
+
+        Ok(())
+    }
+}
+
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Bl3Part {
     pub ident: String,
@@ -94,8 +130,6 @@ pub struct Bl3Part {
 pub enum ItemType {
     #[strum(serialize = "BPInvPart_Artifact_C", to_string = "Artifact")]
     Artifact,
-    #[strum(serialize = "BPInvPart_ClassMod_C", to_string = "Class Mod")]
-    ClassMod,
     #[strum(serialize = "BPInvPart_GrenadeMod_C", to_string = "Grenade Mod")]
     GrenadeMod,
     #[strum(serialize = "BPInvPart_Shield_C", to_string = "Shield")]
@@ -229,6 +263,17 @@ impl Bl3Item {
             idx: balance_idx,
         };
 
+        let inv_data_part = InvDataPart {
+            ident: inv_data,
+            idx: inv_data_idx,
+        };
+
+        let manufacturer_part = ManufacturerPart {
+            ident: manufacturer,
+            short_ident: manufacturer_short,
+            idx: manufacturer_idx,
+        };
+
         let item_parts = if let Some(part_inv_key) = BALANCE_TO_INV_KEY
             .par_iter()
             .find_first(|gd| balance.to_lowercase() == gd.ident)
@@ -305,13 +350,10 @@ impl Bl3Item {
             data_version,
             balance_bits,
             balance_part,
-            inv_data,
-            inv_data_idx,
             inv_data_bits,
-            manufacturer,
-            manufacturer_short,
-            manufacturer_idx,
+            inv_data_part,
             manufacturer_bits,
+            manufacturer_part,
             level,
             item_parts,
         })
@@ -380,16 +422,28 @@ impl Bl3Item {
         &self.balance_part
     }
 
+    pub fn inv_data_part(&self) -> &InvDataPart {
+        &self.inv_data_part
+    }
+
+    pub fn manufacturer_part(&self) -> &ManufacturerPart {
+        &self.manufacturer_part
+    }
+
     pub fn set_balance(&mut self, balance_part: BalancePart) -> Result<()> {
         match BALANCE_TO_INV_KEY
             .iter()
             .find(|gd| balance_part.ident.to_lowercase() == gd.ident)
             .map(|gd| gd.name.to_owned())
         {
-            None => println!(
-                "set_balance error: no part_inv_key found for: {}",
-                balance_part.ident
-            ),
+            None => {
+                println!(
+                    "set_balance error: no part_inv_key found for: {}",
+                    balance_part.ident
+                );
+
+                self.item_parts = None;
+            }
             Some(part_inv_key) => {
                 if let Some(item_parts) = &mut self.item_parts {
                     item_parts.part_inv_key = part_inv_key;
@@ -406,7 +460,38 @@ impl Bl3Item {
 
         self.balance_part = balance_part;
 
-        self.update_weapon_serial()?;
+        //try to find a matching manufacturer_part
+        if let Some(short_ident) = &self.balance_part.short_ident {
+            let short_ident_s = short_ident.replace("InvBal", "");
+
+            if let Some(inv_data_part) = INVENTORY_INV_DATA_PARTS
+                .iter()
+                .find(|inv_part| inv_part.ident.contains(&short_ident_s))
+            {
+                self.inv_data_part = inv_data_part.to_owned();
+            }
+        }
+
+        self.update_weapon_serial()
+            .with_context(|| "set_balance update_weapon_serial failed")?;
+
+        Ok(())
+    }
+
+    pub fn set_inv_data(&mut self, inv_data_part: InvDataPart) -> Result<()> {
+        self.inv_data_part = inv_data_part;
+
+        self.update_weapon_serial()
+            .with_context(|| "set_inv_data update_weapon_serial failed")?;
+
+        Ok(())
+    }
+
+    pub fn set_manufacturer(&mut self, manufacturer_part: ManufacturerPart) -> Result<()> {
+        self.manufacturer_part = manufacturer_part;
+
+        self.update_weapon_serial()
+            .with_context(|| "set_manufacturer_part update_weapon_serial failed")?;
 
         Ok(())
     }
@@ -418,7 +503,8 @@ impl Bl3Item {
     pub fn set_level(&mut self, new_level: usize) -> Result<()> {
         self.level = new_level;
 
-        self.update_weapon_serial()?;
+        self.update_weapon_serial()
+            .with_context(|| "set_level update_weapon_serial failed")?;
 
         Ok(())
     }
@@ -433,7 +519,8 @@ impl Bl3Item {
                 item_parts.parts.remove(part_index);
             }
 
-            self.update_weapon_serial()?;
+            self.update_weapon_serial()
+                .with_context(|| "remove_part update_weapon_serial failed")?;
         }
 
         Ok(())
@@ -443,7 +530,8 @@ impl Bl3Item {
         if let Some(item_parts) = &mut self.item_parts {
             item_parts.parts.push(part);
 
-            self.update_weapon_serial()?;
+            self.update_weapon_serial()
+                .with_context(|| "add_part update_weapon_serial failed")?;
         }
 
         Ok(())
@@ -459,19 +547,19 @@ impl Bl3Item {
 
         let mut new_serial_bits = ArbitraryBitVec::<Lsb0, u8>::new();
 
+        // Header
+        new_serial_bits.append_le(128, 8);
+        new_serial_bits.append_le(self.data_version, 7);
+        new_serial_bits.append_le(self.balance_part.idx, self.balance_bits);
+        new_serial_bits.append_le(self.inv_data_part.idx, self.inv_data_bits);
+        new_serial_bits.append_le(self.manufacturer_part.idx, self.manufacturer_bits);
+        new_serial_bits.append_le(self.level, 7);
+
         if let Some(item_parts) = &mut self.item_parts {
             item_parts.part_bits =
                 serial_db.get_num_bits(&item_parts.part_inv_key, self.data_version)?;
             item_parts.generic_part_bits =
                 serial_db.get_num_bits("InventoryGenericPartData", self.data_version)?;
-
-            // Header
-            new_serial_bits.append_le(128, 8);
-            new_serial_bits.append_le(self.data_version, 7);
-            new_serial_bits.append_le(self.balance_part.idx, self.balance_bits);
-            new_serial_bits.append_le(self.inv_data_idx, self.inv_data_bits);
-            new_serial_bits.append_le(self.manufacturer_idx, self.manufacturer_bits);
-            new_serial_bits.append_le(self.level, 7);
 
             // Parts
             new_serial_bits.append_le(item_parts.parts.len(), 6);
@@ -504,6 +592,10 @@ impl Bl3Item {
         let new_decrypted_serial = new_serial_bits.bitvec.into_vec();
 
         self.decrypted_serial = new_decrypted_serial;
+
+        let full_serial = self.encrypt_serial(0)?;
+
+        *self = Bl3Item::from_serial_bytes(full_serial)?;
 
         Ok(())
     }
