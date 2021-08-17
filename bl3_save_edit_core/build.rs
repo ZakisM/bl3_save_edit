@@ -135,12 +135,13 @@ fn main() {
 
     //INVENTORY_INV_DATA_PARTS
     let mut inventory_inv_data_parts = gen_inventory_data_parts(&inventory_serial_db_json);
-    inventory_inv_data_parts.sort_by(|a, b| a.ident.cmp(&b.ident));
+    inventory_inv_data_parts
+        .sort_by(|a, b| a.ident.rsplit('.').next().cmp(&b.ident.rsplit('.').next()));
     let inventory_inv_data_parts_ron = ron::to_string(&inventory_inv_data_parts).unwrap();
 
     //INVENTORY_MANUFACTURER_PARTS
     let mut inventory_manufacturer_parts = gen_manufacturer_parts(&inventory_serial_db_json);
-    inventory_manufacturer_parts.sort_by(|a, b| a.ident.cmp(&b.ident));
+    inventory_manufacturer_parts.sort_by(|a, b| a.short_ident.cmp(&b.short_ident));
     let inventory_manufacturer_parts_ron = ron::to_string(&inventory_manufacturer_parts).unwrap();
 
     for (filename, output_data) in [
