@@ -706,21 +706,24 @@ mod tests {
 
         assert_eq!(decrypted.balance_part.ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Balance/InvBalD_Shield_OldGod.InvBalD_Shield_OldGod");
         assert_eq!(
-            decrypted.inv_data,
+            decrypted.inv_data_part.ident,
             "/Game/Gear/Shields/_Design/A_Data/Shield_Default.Shield_Default"
         );
         assert_eq!(
-            decrypted.manufacturer,
+            decrypted.manufacturer_part.ident,
             "/Game/Gear/Manufacturers/_Design/Hyperion.Hyperion"
         );
-        assert_eq!(decrypted.parts[0].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Manufacturer/Shield_Part_Body_03_Hyperion.Shield_Part_Body_03_Hyperion");
-        assert_eq!(decrypted.parts[1].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Rarity/Shield_Part_Rarity_Hyperion_05_Legendary.Shield_Part_Rarity_Hyperion_05_Legendary");
-        assert_eq!(decrypted.parts[2].ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Part_Shield_Aug_OldGod.Part_Shield_Aug_OldGod");
-        assert_eq!(decrypted.parts[3].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/RechargeRate/Part_Shield_Aug_RechargeRate.Part_Shield_Aug_RechargeRate");
-        assert_eq!(decrypted.parts[4].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/Spike/Part_Shield_Aug_Spike.Part_Shield_Aug_Spike");
-        assert_eq!(decrypted.parts[5].ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Element_Fire_OldGod.Shield_Part_Element_Fire_OldGod");
-        assert_eq!(decrypted.parts[6].ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Mat_OldGod.Shield_Part_Mat_OldGod");
-        assert_eq!(decrypted.generic_parts[0].ident, "/Game/PatchDLC/Raid1/Gear/Anointed/Generic/SkillEnd_BonusEleDamage_Radiation/GPart_EG_SkillEndBonusEleDamage_Radiation.GPart_EG_SkillEndBonusEleDamage_Radiation");
+
+        let item_parts = decrypted.item_parts.as_ref().unwrap();
+
+        assert_eq!(item_parts.parts[0].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Manufacturer/Shield_Part_Body_03_Hyperion.Shield_Part_Body_03_Hyperion");
+        assert_eq!(item_parts.parts[1].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Rarity/Shield_Part_Rarity_Hyperion_05_Legendary.Shield_Part_Rarity_Hyperion_05_Legendary");
+        assert_eq!(item_parts.parts[2].ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Part_Shield_Aug_OldGod.Part_Shield_Aug_OldGod");
+        assert_eq!(item_parts.parts[3].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/RechargeRate/Part_Shield_Aug_RechargeRate.Part_Shield_Aug_RechargeRate");
+        assert_eq!(item_parts.parts[4].ident, "/Game/Gear/Shields/_Design/PartSets/Part_Augment/Spike/Part_Shield_Aug_Spike.Part_Shield_Aug_Spike");
+        assert_eq!(item_parts.parts[5].ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Element_Fire_OldGod.Shield_Part_Element_Fire_OldGod");
+        assert_eq!(item_parts.parts[6].ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Parts/Shield_Part_Mat_OldGod.Shield_Part_Mat_OldGod");
+        assert_eq!(item_parts.generic_parts[0].ident, "/Game/PatchDLC/Raid1/Gear/Anointed/Generic/SkillEnd_BonusEleDamage_Radiation/GPart_EG_SkillEndBonusEleDamage_Radiation.GPart_EG_SkillEndBonusEleDamage_Radiation");
 
         let encrypted = decrypted.get_serial_number(true).unwrap();
 
@@ -734,8 +737,18 @@ mod tests {
             Bl3Item::from_serial_base64(unencrypted_base64_serial_number).unwrap();
 
         assert_eq!(decrypted.balance_part, decrypted_from_base64.balance_part);
-        assert_eq!(decrypted.parts, decrypted_from_base64.parts);
-        assert_eq!(decrypted.generic_parts, decrypted_from_base64.generic_parts);
+        assert_eq!(
+            item_parts.parts,
+            decrypted_from_base64.item_parts.as_ref().unwrap().parts
+        );
+        assert_eq!(
+            item_parts.generic_parts,
+            decrypted_from_base64
+                .item_parts
+                .as_ref()
+                .unwrap()
+                .generic_parts
+        );
 
         let encrypted_serial_base64 = decrypted.get_serial_number_base64(true).unwrap();
 

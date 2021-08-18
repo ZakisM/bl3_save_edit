@@ -83,7 +83,7 @@ impl InventoryItemEditor {
                         .size(17)
                         .style(Bl3UiStyle)
                         .into_element(),
-                        "Level must be between 1 and 72",
+                        format!("Level must be between 1 and {}", MAX_CHARACTER_LEVEL),
                         tooltip::Position::Top,
                     )
                     .gap(10)
@@ -104,7 +104,7 @@ impl InventoryItemEditor {
                     )
                     .on_press(InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::Inventory(
-                            InventoryInteractionMessage::SyncItemLevelWithCharacterLevel,
+                            InventoryInteractionMessage::SyncItemLevelWithCharacterLevelPressed,
                         ),
                     ))
                     .padding(10)

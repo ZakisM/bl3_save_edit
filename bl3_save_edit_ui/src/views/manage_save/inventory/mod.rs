@@ -1,21 +1,23 @@
 use std::convert::TryInto;
 
 use iced::{
-    button, scrollable, text_input, Align, Button, Color, Column, Container, Length, Row,
-    Scrollable, Text, TextInput,
+    button, scrollable, text_input, tooltip, Align, Button, Color, Column, Container, Length, Row,
+    Scrollable, Text, TextInput, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_save::bl3_item::{BalancePart, Bl3Item, InvDataPart, ManufacturerPart};
 
 use crate::bl3_ui::{InteractionMessage, Message};
-use crate::bl3_ui_style::Bl3UiStyle;
+use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
 use crate::views::manage_save::inventory::available_parts::AvailablePartsIndex;
 use crate::views::manage_save::inventory::current_parts::CurrentPartsIndex;
 use crate::views::manage_save::inventory::inventory_item::InventoryListItem;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
+use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_margin::TextMargin;
 
 pub mod available_parts;
@@ -29,8 +31,12 @@ pub mod inventory_item_editor;
 #[derive(Debug, Default)]
 pub struct InventoryState {
     pub selected_item_index: usize,
+    pub create_item_button_state: button::State,
     pub import_serial_input: String,
     pub import_serial_input_state: text_input::State,
+    pub all_item_levels_input: i32,
+    pub all_item_levels_input_state: text_input::State,
+    pub all_item_levels_button_state: button::State,
     pub import_serial_button_state: button::State,
     items: Vec<InventoryListItem>,
     pub item_list_scrollable_state: scrollable::State,
@@ -108,9 +114,12 @@ pub enum InventoryInteractionMessage {
     ShowAllAvailablePartsSelected(bool),
     AvailablePartPressed(AvailablePartsIndex),
     CurrentPartPressed(CurrentPartsIndex),
-    SyncItemLevelWithCharacterLevel,
+    SyncItemLevelWithCharacterLevelPressed,
     ImportItemInputChanged(String),
-    ImportItemFromSerial,
+    CreateItemPressed,
+    ImportItemFromSerialPressed,
+    SyncAllItemLevelsWithCharacterLevelPressed,
+    AllItemLevelInputChanged(i32),
     ItemLevelInputChanged(i32),
     DeleteItem(usize),
     BalanceInputSelected(BalancePart),
@@ -126,7 +135,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         .push(
             LabelledElement::create(
                 "Import Serial",
-                Length::Units(140),
+                Length::Units(120),
                 TextInput::new(
                     &mut inventory_state.import_serial_input_state,
                     "BL3(AwAAAABmboC7I9xAEzwShMJVX8nPYwsAAA==)",
@@ -156,7 +165,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
             )
             .on_press(InteractionMessage::ManageSaveInteraction(
                 ManageSaveInteractionMessage::Inventory(
-                    InventoryInteractionMessage::ImportItemFromSerial,
+                    InventoryInteractionMessage::ImportItemFromSerialPressed,
                 ),
             ))
             .padding(10)
@@ -165,12 +174,97 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         )
         .align_items(Align::Center);
 
-    let general_options_row = Row::new().push(
-        Container::new(serial_importer)
-            .width(Length::Fill)
-            .height(Length::Units(36))
-            .style(Bl3UiStyle),
+    let create_item_button = Container::new(
+        Button::new(
+            &mut inventory_state.create_item_button_state,
+            Text::new("Create Item").font(JETBRAINS_MONO_BOLD).size(17),
+        )
+        .on_press(InteractionMessage::ManageSaveInteraction(
+            ManageSaveInteractionMessage::Inventory(InventoryInteractionMessage::CreateItemPressed),
+        ))
+        .padding(10)
+        .style(Bl3UiStyle)
+        .into_element(),
     );
+
+    let edit_all_item_levels_input = Row::new()
+        .push(
+            LabelledElement::create(
+                "All Levels",
+                Length::Units(95),
+                Tooltip::new(
+                    NumberInput::new(
+                        &mut inventory_state.all_item_levels_input_state,
+                        inventory_state.all_item_levels_input,
+                        1,
+                        Some(MAX_CHARACTER_LEVEL as i32),
+                        |v| {
+                            InteractionMessage::ManageSaveInteraction(
+                                ManageSaveInteractionMessage::Inventory(
+                                    InventoryInteractionMessage::AllItemLevelInputChanged(v),
+                                ),
+                            )
+                        },
+                    )
+                    .0
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                    format!("Level must be between 1 and {}", MAX_CHARACTER_LEVEL),
+                    tooltip::Position::Top,
+                )
+                .gap(10)
+                .padding(10)
+                .font(JETBRAINS_MONO)
+                .size(17)
+                .style(Bl3UiTooltipStyle),
+            )
+            .spacing(15)
+            .width(Length::FillPortion(9))
+            .align_items(Align::Center),
+        )
+        .push(
+            Tooltip::new(
+                Button::new(
+                    &mut inventory_state.all_item_levels_button_state,
+                    Text::new("Sync").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(InteractionMessage::ManageSaveInteraction(
+                    ManageSaveInteractionMessage::Inventory(
+                        InventoryInteractionMessage::SyncAllItemLevelsWithCharacterLevelPressed,
+                    ),
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+                "Synchronize every item level with your Character level",
+                tooltip::Position::Top,
+            )
+            .gap(10)
+            .padding(10)
+            .font(JETBRAINS_MONO)
+            .size(17)
+            .style(Bl3UiTooltipStyle),
+        )
+        .align_items(Align::Center);
+
+    let general_options_row = Row::new()
+        .push(create_item_button)
+        .push(
+            Container::new(serial_importer)
+                .width(Length::FillPortion(4))
+                .height(Length::Units(36))
+                .style(Bl3UiStyle),
+        )
+        .push(
+            Container::new(edit_all_item_levels_input)
+                .width(Length::FillPortion(4))
+                .height(Length::Units(36))
+                .style(Bl3UiStyle),
+        )
+        .spacing(20);
 
     let mut item_editor = None;
 

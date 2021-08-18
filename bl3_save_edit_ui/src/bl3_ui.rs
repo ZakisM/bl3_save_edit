@@ -618,7 +618,34 @@ impl Application for Bl3UiState {
                                 .inventory_state
                                 .import_serial_input = s;
                         }
-                        InventoryInteractionMessage::ImportItemFromSerial => {
+                        InventoryInteractionMessage::CreateItemPressed => {
+                            self.manage_save_state.main_state.inventory_state.add_item(
+                                Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap(),
+                            );
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .selected_item_index = self
+                                .manage_save_state
+                                .main_state
+                                .inventory_state
+                                .items()
+                                .len()
+                                - 1;
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .map_current_item_if_exists_to_editor_state();
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .item_list_scrollable_state
+                                .snap_to(1.0)
+                        }
+                        InventoryInteractionMessage::ImportItemFromSerialPressed => {
                             let item_serial = self
                                 .manage_save_state
                                 .main_state
@@ -658,7 +685,32 @@ impl Application for Bl3UiState {
                                 Err(e) => eprintln!("{}", e),
                             }
                         }
-                        InventoryInteractionMessage::SyncItemLevelWithCharacterLevel => {
+                        InventoryInteractionMessage::SyncAllItemLevelsWithCharacterLevelPressed => {
+                            let character_level = self
+                                .manage_save_state
+                                .main_state
+                                .character_state
+                                .xp_level_input;
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .all_item_levels_input = character_level;
+
+                            let character_level = character_level as usize;
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .items_mut()
+                                .iter_mut()
+                                .for_each(|i| {
+                                    if let Err(e) = i.item.set_level(character_level) {
+                                        eprintln!("{}", e);
+                                    }
+                                });
+                        }
+                        InventoryInteractionMessage::SyncItemLevelWithCharacterLevelPressed => {
                             let character_level =
                                 self.manage_save_state
                                     .main_state
@@ -670,6 +722,25 @@ impl Application for Bl3UiState {
                                 .inventory_state
                                 .map_current_item_if_exists(|i| {
                                     if let Err(e) = i.item.set_level(character_level) {
+                                        eprintln!("{}", e);
+                                    }
+                                });
+                        }
+                        InventoryInteractionMessage::AllItemLevelInputChanged(item_level_input) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .all_item_levels_input = item_level_input;
+
+                            let item_level = item_level_input as usize;
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .items_mut()
+                                .iter_mut()
+                                .for_each(|i| {
+                                    if let Err(e) = i.item.set_level(item_level) {
                                         eprintln!("{}", e);
                                     }
                                 });

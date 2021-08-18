@@ -183,7 +183,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 .size(17)
                 .style(Bl3UiStyle)
                 .into_element(),
-                "Level must be between 1 and 72",
+                format!("Level must be between 1 and {}", MAX_CHARACTER_LEVEL),
                 tooltip::Position::Top,
             )
             .gap(10)
