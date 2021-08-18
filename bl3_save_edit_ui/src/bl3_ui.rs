@@ -164,11 +164,17 @@ impl Application for Bl3UiState {
                         }
                     },
                     ManageSaveInteractionMessage::General(general_msg) => match general_msg {
-                        GeneralInteractionMessage::GuidInputChanged(guid_input) => {
-                            self.manage_save_state.main_state.general_state.guid_input = guid_input;
+                        GeneralInteractionMessage::FileInputChanged(filename) => {
+                            self.manage_save_state
+                                .main_state
+                                .general_state
+                                .filename_input = filename;
                         }
-                        GeneralInteractionMessage::SlotInputChanged(slot_input) => {
-                            self.manage_save_state.main_state.general_state.slot_input = slot_input;
+                        GeneralInteractionMessage::GuidInputChanged(guid) => {
+                            self.manage_save_state.main_state.general_state.guid_input = guid;
+                        }
+                        GeneralInteractionMessage::SlotInputChanged(slot) => {
+                            self.manage_save_state.main_state.general_state.slot_input = slot;
                         }
                         GeneralInteractionMessage::GenerateGuidPressed => {
                             return Command::perform(

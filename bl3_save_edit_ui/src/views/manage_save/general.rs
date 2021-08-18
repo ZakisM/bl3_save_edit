@@ -15,6 +15,8 @@ use crate::widgets::number_input::NumberInput;
 
 #[derive(Debug, Default)]
 pub struct GeneralState {
+    pub filename_input: String,
+    pub filename_input_state: text_input::State,
     pub guid_input: String,
     pub guid_input_state: text_input::State,
     pub slot_input: u32,
@@ -31,6 +33,7 @@ pub enum GeneralMessage {
 
 #[derive(Debug, Clone)]
 pub enum GeneralInteractionMessage {
+    FileInputChanged(String),
     GuidInputChanged(String),
     SlotInputChanged(u32),
     GenerateGuidPressed,
@@ -38,6 +41,40 @@ pub enum GeneralInteractionMessage {
 }
 
 pub fn view(general_state: &mut GeneralState) -> Container<Message> {
+    let file = Container::new(
+        Row::new()
+            .push(
+                LabelledElement::create(
+                    "File",
+                    Length::Units(90),
+                    TextInput::new(
+                        &mut general_state.filename_input_state,
+                        "1.sav",
+                        &general_state.filename_input,
+                        |s| {
+                            InteractionMessage::ManageSaveInteraction(
+                                ManageSaveInteractionMessage::General(
+                                    GeneralInteractionMessage::FileInputChanged(s),
+                                ),
+                            )
+                        },
+                    )
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                )
+                .spacing(15)
+                .width(Length::FillPortion(9))
+                .align_items(Align::Center),
+            )
+            .align_items(Align::Center),
+    )
+    .width(Length::Fill)
+    .height(Length::Units(36))
+    .style(Bl3UiStyle);
+
     let save_guid = Container::new(
         Row::new()
             .push(
@@ -157,6 +194,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
     .style(Bl3UiStyle);
 
     let all_contents = Column::new()
+        .push(file)
         .push(save_guid)
         .push(save_slot)
         .push(save_type)
