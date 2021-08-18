@@ -514,6 +514,14 @@ impl Application for Bl3UiState {
                                         }
                                 });
                         }
+                        InventoryInteractionMessage::ShowAllAvailablePartsSelected(selected) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .map_current_item_if_exists(|i| {
+                                    i.editor.available_parts.show_all_available_parts = selected;
+                                })
+                        }
                         InventoryInteractionMessage::AvailablePartPressed(
                             available_parts_index,
                         ) => {

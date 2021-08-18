@@ -1,8 +1,9 @@
 use iced::{
-    button, scrollable, Align, Button, Color, Column, Container, Element, Length, Scrollable, Text,
+    button, scrollable, Align, Button, Checkbox, Color, Column, Container, Element, Length, Row,
+    Scrollable, Text,
 };
 
-use bl3_save_edit_core::resources::{ResourceItem, ResourcePart};
+use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -35,6 +36,17 @@ impl AvailableCategorizedPart {
             .collect();
 
         Self { category, parts }
+    }
+
+    pub fn from_resource_categorized_parts(parts: &[ResourceCategorizedParts]) -> Vec<Self> {
+        parts
+            .iter()
+            .cloned()
+            .enumerate()
+            .map(|(cat_id, cat_p)| {
+                AvailableCategorizedPart::new(cat_id, cat_p.category, cat_p.parts)
+            })
+            .collect::<Vec<_>>()
     }
 }
 
@@ -84,36 +96,64 @@ pub struct AvailableParts {
     pub scrollable_state: scrollable::State,
     pub parts_index: AvailablePartsIndex,
     pub parts: Vec<AvailableCategorizedPart>,
+    pub show_all_available_parts: bool,
 }
 
 impl AvailableParts {
-    pub fn view(&mut self, resource_item: Option<&ResourceItem>) -> Container<Message> {
+    pub fn view(
+        &mut self,
+        specific_parts_list: Option<&Vec<ResourceCategorizedParts>>,
+        all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
+    ) -> Container<Message> {
         let selected_available_parts_index = &self.parts_index;
 
-        let mut available_parts_column = Column::new().push(
+        let mut title_row = Row::new().push(
             Container::new(
-                TextMargin::new("Available Parts", 2)
+                TextMargin::new("Available Parts", 10)
                     .0
                     .font(JETBRAINS_MONO_BOLD)
                     .size(17)
                     .color(Color::from_rgb8(242, 203, 5)),
             )
-            .padding(10)
             .align_x(Align::Center)
-            .width(Length::FillPortion(2))
-            .style(Bl3UiStyle),
+            .width(Length::Fill),
         );
 
-        if let Some(resource_item) = resource_item {
-            self.parts = resource_item
-                .inventory_categorized_parts
-                .iter()
-                .cloned()
-                .enumerate()
-                .map(|(cat_id, cat_p)| {
-                    AvailableCategorizedPart::new(cat_id, cat_p.category, cat_p.parts)
+        let specific_parts = specific_parts_list
+            .map(|i| AvailableCategorizedPart::from_resource_categorized_parts(i));
+
+        let all_parts =
+            all_parts_list.map(|i| AvailableCategorizedPart::from_resource_categorized_parts(i));
+
+        if specific_parts.is_some() {
+            title_row = title_row.push(Container::new(
+                Checkbox::new(self.show_all_available_parts, "All", |c| {
+                    InteractionMessage::ManageSaveInteraction(
+                        ManageSaveInteractionMessage::Inventory(
+                            InventoryInteractionMessage::ShowAllAvailablePartsSelected(c),
+                        ),
+                    )
                 })
-                .collect();
+                .size(17)
+                .font(JETBRAINS_MONO_BOLD)
+                .text_color(Color::from_rgb8(220, 220, 220))
+                .text_size(17)
+                .style(Bl3UiStyle)
+                .into_element(),
+            ));
+        }
+
+        let available_parts = if self.show_all_available_parts || specific_parts.is_none() {
+            all_parts
+        } else {
+            specific_parts
+        };
+
+        let mut available_parts_column =
+            Column::new().push(Container::new(title_row).padding(11).style(Bl3UiStyle));
+
+        if let Some(available_parts) = available_parts {
+            self.parts = available_parts;
 
             let available_parts_list = self.parts.iter_mut().enumerate().fold(
                 Column::new(),

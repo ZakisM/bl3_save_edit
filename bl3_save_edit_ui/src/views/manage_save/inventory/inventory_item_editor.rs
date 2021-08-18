@@ -6,7 +6,7 @@ use iced::{
 use bl3_save_edit_core::bl3_save::bl3_item::{BalancePart, Bl3Item, InvDataPart, ManufacturerPart};
 use bl3_save_edit_core::resources::{
     INVENTORY_BALANCE_PARTS, INVENTORY_INV_DATA_PARTS, INVENTORY_MANUFACTURER_PARTS,
-    INVENTORY_PARTS_ALL_CATEGORIZED,
+    INVENTORY_PARTS_ALL_CATEGORIZED, INVENTORY_SERIAL_DB_PARTS_CATEGORIZED,
 };
 
 use crate::bl3_ui::{InteractionMessage, Message};
@@ -42,13 +42,21 @@ pub struct InventoryItemEditor {
 
 impl InventoryItemEditor {
     pub fn view(&mut self, item_id: usize, item: &Bl3Item) -> Container<Message> {
-        let item_part_data = &INVENTORY_PARTS_ALL_CATEGORIZED;
+        let inventory_serial_db_parts_categorized = &*INVENTORY_SERIAL_DB_PARTS_CATEGORIZED;
+        let inventory_parts_all_categorized = &INVENTORY_PARTS_ALL_CATEGORIZED;
 
-        let resource_item = item
+        let specific_parts_list = item
             .balance_part()
             .short_ident
             .as_ref()
-            .and_then(|i| item_part_data.get(i));
+            .and_then(|i| inventory_parts_all_categorized.get(i))
+            .map(|i| &i.inventory_categorized_parts);
+
+        let all_parts_list = item
+            .item_parts
+            .as_ref()
+            .map(|ip| ip.part_inv_key.as_str())
+            .and_then(|p| inventory_serial_db_parts_categorized.get(p));
 
         let item_level_editor = Row::new()
             .push(
@@ -253,9 +261,11 @@ impl InventoryItemEditor {
             )
             .spacing(20);
 
-        let available_parts_contents = self.available_parts.view(resource_item);
+        let available_parts_contents = self
+            .available_parts
+            .view(specific_parts_list, all_parts_list);
 
-        let current_parts_contents = self.current_parts.view(item, resource_item);
+        let current_parts_contents = self.current_parts.view(item, all_parts_list);
 
         let parts_editor_contents = Container::new(
             Row::new()

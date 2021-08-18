@@ -105,6 +105,7 @@ pub enum InventoryMessage {}
 #[derive(Debug, Clone)]
 pub enum InventoryInteractionMessage {
     ItemPressed(usize),
+    ShowAllAvailablePartsSelected(bool),
     AvailablePartPressed(AvailablePartsIndex),
     CurrentPartPressed(CurrentPartsIndex),
     SyncItemLevelWithCharacterLevel,

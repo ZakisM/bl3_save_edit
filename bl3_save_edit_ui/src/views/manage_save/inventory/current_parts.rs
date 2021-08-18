@@ -5,7 +5,7 @@ use iced::{
 };
 
 use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, Bl3Part, MAX_BL3_ITEM_PARTS};
-use bl3_save_edit_core::resources::ResourceItem;
+use bl3_save_edit_core::resources::ResourceCategorizedParts;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -101,24 +101,20 @@ impl CurrentParts {
     pub fn view(
         &mut self,
         item: &Bl3Item,
-        resource_item: Option<&ResourceItem>,
+        all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
     ) -> Container<Message> {
         let mut current_parts_column = Column::new();
 
         let mut categorized_parts: BTreeMap<String, Vec<Bl3Part>> = BTreeMap::new();
 
-        if let Some(resource_item) = resource_item {
+        if let Some(all_parts_list) = all_parts_list {
             if let Some(item_parts) = &item.item_parts {
                 item_parts.parts().iter().for_each(|p| {
-                    let known_cat_p =
-                        resource_item
-                            .inventory_categorized_parts
-                            .iter()
-                            .find(|cat| {
-                                cat.parts.iter().any(|cat_p| {
-                                    part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
-                                })
-                            });
+                    let known_cat_p = all_parts_list.iter().find(|cat| {
+                        cat.parts.iter().any(|cat_p| {
+                            part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
+                        })
+                    });
 
                     if let Some(known_cat_p) = known_cat_p {
                         let curr_cat_parts = categorized_parts
@@ -198,7 +194,7 @@ impl CurrentParts {
                 .size(17)
                 .color(Color::from_rgb8(242, 203, 5)),
             )
-            .padding(10)
+            .padding(11)
             .align_x(Align::Center)
             .width(Length::FillPortion(2))
             .style(Bl3UiStyle),
