@@ -19,8 +19,8 @@ use crate::views::choose_save_directory::{
 };
 use crate::views::initialization::InitializationMessage;
 use crate::views::manage_save::character::{
-    CharacterGearUnlockedMessage, CharacterInteractionMessage, CharacterSduInputChangedMessage,
-    CharacterSkinSelectedMessage,
+    CharacterAmmoInputChangedMessage, CharacterGearUnlockedMessage, CharacterInteractionMessage,
+    CharacterSduInputChangedMessage, CharacterSkinSelectedMessage,
 };
 use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
@@ -350,6 +350,116 @@ impl Application for Bl3UiState {
                                 .sdu_unlocker
                                 .heavy
                                 .input = SaveSduSlot::Heavy.maximum();
+                        }
+                        CharacterInteractionMessage::AmmoMessage(ammo_message) => {
+                            match ammo_message {
+                                CharacterAmmoInputChangedMessage::Sniper(amount) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .ammo_setter
+                                        .sniper
+                                        .input = amount;
+                                }
+                                CharacterAmmoInputChangedMessage::Shotgun(amount) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .ammo_setter
+                                        .shotgun
+                                        .input = amount;
+                                }
+                                CharacterAmmoInputChangedMessage::Pistol(amount) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .ammo_setter
+                                        .pistol
+                                        .input = amount;
+                                }
+                                CharacterAmmoInputChangedMessage::Grenade(amount) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .ammo_setter
+                                        .grenade
+                                        .input = amount;
+                                }
+                                CharacterAmmoInputChangedMessage::Smg(amount) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .ammo_setter
+                                        .smg
+                                        .input = amount;
+                                }
+                                CharacterAmmoInputChangedMessage::AssaultRifle(amount) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .ammo_setter
+                                        .assault_rifle
+                                        .input = amount;
+                                }
+                                CharacterAmmoInputChangedMessage::Heavy(amount) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .character_state
+                                        .ammo_setter
+                                        .heavy
+                                        .input = amount;
+                                }
+                            }
+                        }
+                        CharacterInteractionMessage::MaxAmmoAmountsPressed => {
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .ammo_setter
+                                .sniper
+                                .input = 9999;
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .ammo_setter
+                                .shotgun
+                                .input = 9999;
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .ammo_setter
+                                .pistol
+                                .input = 9999;
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .ammo_setter
+                                .grenade
+                                .input = 9999;
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .ammo_setter
+                                .smg
+                                .input = 9999;
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .ammo_setter
+                                .assault_rifle
+                                .input = 9999;
+
+                            self.manage_save_state
+                                .main_state
+                                .character_state
+                                .ammo_setter
+                                .heavy
+                                .input = 9999;
                         }
                         CharacterInteractionMessage::PlayerClassSelected(player_class) => {
                             self.manage_save_state

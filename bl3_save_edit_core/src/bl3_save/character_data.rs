@@ -6,7 +6,7 @@ use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 use strum::IntoEnumIterator;
 
-use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
+use crate::bl3_save::ammo::{AmmoPoolData, AmmoType};
 use crate::bl3_save::bl3_item::Bl3Item;
 use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
@@ -180,7 +180,7 @@ impl CharacterData {
             .par_iter()
             .filter(|rp| !rp.resource_path.contains("Eridium"))
             .map(|rp| {
-                let ammo = Ammo::from_str(&rp.resource_path)
+                let ammo = AmmoType::from_str(&rp.resource_path)
                     .with_context(|| format!("failed to read ammo: {}", &rp.resource_path))?;
 
                 Ok(AmmoPoolData {

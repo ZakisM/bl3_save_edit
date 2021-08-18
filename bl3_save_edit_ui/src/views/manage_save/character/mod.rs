@@ -10,6 +10,7 @@ use bl3_save_edit_core::game_data::GameDataKv;
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::JETBRAINS_MONO;
+use crate::views::manage_save::character::ammo::AmmoSetter;
 use crate::views::manage_save::character::gear::GearUnlocker;
 use crate::views::manage_save::character::sdu::SduUnlocker;
 use crate::views::manage_save::character::skins::SkinSelectors;
@@ -18,6 +19,7 @@ use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
 
+mod ammo;
 mod gear;
 mod sdu;
 mod skins;
@@ -36,6 +38,7 @@ pub struct CharacterState {
     pub xp_points_input_state: text_input::State,
     pub skin_selectors: SkinSelectors,
     pub gear_unlocker: GearUnlocker,
+    pub ammo_setter: AmmoSetter,
     pub sdu_unlocker: SduUnlocker,
 }
 
@@ -48,7 +51,9 @@ pub enum CharacterInteractionMessage {
     SkinMessage(CharacterSkinSelectedMessage),
     GearMessage(CharacterGearUnlockedMessage),
     SduMessage(CharacterSduInputChangedMessage),
+    AmmoMessage(CharacterAmmoInputChangedMessage),
     MaxSduSlotsPressed,
+    MaxAmmoAmountsPressed,
 }
 
 #[derive(Debug, Default)]
@@ -85,6 +90,17 @@ pub enum CharacterGearUnlockedMessage {
 #[derive(Debug, Clone)]
 pub enum CharacterSduInputChangedMessage {
     Backpack(i32),
+    Sniper(i32),
+    Shotgun(i32),
+    Pistol(i32),
+    Grenade(i32),
+    Smg(i32),
+    AssaultRifle(i32),
+    Heavy(i32),
+}
+
+#[derive(Debug, Clone)]
+pub enum CharacterAmmoInputChangedMessage {
     Sniper(i32),
     Shotgun(i32),
     Pistol(i32),
@@ -248,6 +264,11 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
         .view()
         .width(Length::FillPortion(3));
 
+    let ammo_setter = character_state
+        .ammo_setter
+        .view()
+        .width(Length::FillPortion(2));
+
     let sdu_unlocker = character_state
         .sdu_unlocker
         .view()
@@ -255,6 +276,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
 
     let slot_sdu_row = Row::new()
         .push(gear_unlocker)
+        .push(ammo_setter)
         .push(sdu_unlocker)
         .spacing(20);
 

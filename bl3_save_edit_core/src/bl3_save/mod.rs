@@ -277,7 +277,7 @@ impl std::fmt::Display for Bl3Save {
 mod tests {
     use std::fs;
 
-    use crate::bl3_save::ammo::{Ammo, AmmoPoolData};
+    use crate::bl3_save::ammo::{AmmoPoolData, AmmoType};
     use crate::bl3_save::challenge_data::{Challenge, ChallengeData};
     use crate::bl3_save::inventory_slot::InventorySlotData;
     use crate::bl3_save::player_class::PlayerClass;
@@ -470,31 +470,31 @@ mod tests {
             bl3_save.character_data.ammo_pools,
             vec![
                 AmmoPoolData {
-                    ammo: Ammo::Grenade,
+                    ammo: AmmoType::Grenade,
                     current: 11,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Pistol,
+                    ammo: AmmoType::Pistol,
                     current: 201,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Shotgun,
+                    ammo: AmmoType::Shotgun,
                     current: 110,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Smg,
+                    ammo: AmmoType::Smg,
                     current: 1800,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Ar,
+                    ammo: AmmoType::Ar,
                     current: 705,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Sniper,
+                    ammo: AmmoType::Sniper,
                     current: 41,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Heavy,
+                    ammo: AmmoType::Heavy,
                     current: 51,
                 },
             ]
@@ -698,31 +698,31 @@ mod tests {
             bl3_save.character_data.ammo_pools,
             vec![
                 AmmoPoolData {
-                    ammo: Ammo::Grenade,
+                    ammo: AmmoType::Grenade,
                     current: 5,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Pistol,
+                    ammo: AmmoType::Pistol,
                     current: 238,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Shotgun,
+                    ammo: AmmoType::Shotgun,
                     current: 160,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Smg,
+                    ammo: AmmoType::Smg,
                     current: 1080,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Ar,
+                    ammo: AmmoType::Ar,
                     current: 672,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Sniper,
+                    ammo: AmmoType::Sniper,
                     current: 84,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Heavy,
+                    ammo: AmmoType::Heavy,
                     current: 21,
                 },
             ]
@@ -929,31 +929,31 @@ mod tests {
             bl3_save.character_data.ammo_pools,
             vec![
                 AmmoPoolData {
-                    ammo: Ammo::Grenade,
+                    ammo: AmmoType::Grenade,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Pistol,
+                    ammo: AmmoType::Pistol,
                     current: 173,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Shotgun,
+                    ammo: AmmoType::Shotgun,
                     current: 64,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Smg,
+                    ammo: AmmoType::Smg,
                     current: 138,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Ar,
+                    ammo: AmmoType::Ar,
                     current: 280,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Sniper,
+                    ammo: AmmoType::Sniper,
                     current: 27,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Heavy,
+                    ammo: AmmoType::Heavy,
                     current: 0,
                 },
             ]
@@ -1157,31 +1157,31 @@ mod tests {
             bl3_save.character_data.ammo_pools,
             vec![
                 AmmoPoolData {
-                    ammo: Ammo::Grenade,
+                    ammo: AmmoType::Grenade,
                     current: 3,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Pistol,
+                    ammo: AmmoType::Pistol,
                     current: 145,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Shotgun,
+                    ammo: AmmoType::Shotgun,
                     current: 80,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Smg,
+                    ammo: AmmoType::Smg,
                     current: 360,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Ar,
+                    ammo: AmmoType::Ar,
                     current: 280,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Sniper,
+                    ammo: AmmoType::Sniper,
                     current: 48,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Heavy,
+                    ammo: AmmoType::Heavy,
                     current: 0,
                 },
             ]
@@ -1388,31 +1388,31 @@ mod tests {
             bl3_save.character_data.ammo_pools,
             vec![
                 AmmoPoolData {
-                    ammo: Ammo::Grenade,
+                    ammo: AmmoType::Grenade,
                     current: 11,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Pistol,
+                    ammo: AmmoType::Pistol,
                     current: 1000,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Shotgun,
+                    ammo: AmmoType::Shotgun,
                     current: 240,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Smg,
+                    ammo: AmmoType::Smg,
                     current: 1368,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Ar,
+                    ammo: AmmoType::Ar,
                     current: 1400,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Sniper,
+                    ammo: AmmoType::Sniper,
                     current: 144,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Heavy,
+                    ammo: AmmoType::Heavy,
                     current: 36,
                 },
             ]
@@ -1613,31 +1613,31 @@ mod tests {
             bl3_save.character_data.ammo_pools,
             vec![
                 AmmoPoolData {
-                    ammo: Ammo::Grenade,
+                    ammo: AmmoType::Grenade,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Pistol,
+                    ammo: AmmoType::Pistol,
                     current: 48,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Shotgun,
+                    ammo: AmmoType::Shotgun,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Smg,
+                    ammo: AmmoType::Smg,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Ar,
+                    ammo: AmmoType::Ar,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Sniper,
+                    ammo: AmmoType::Sniper,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Heavy,
+                    ammo: AmmoType::Heavy,
                     current: 0,
                 },
             ]
@@ -1838,31 +1838,31 @@ mod tests {
             bl3_save.character_data.ammo_pools,
             vec![
                 AmmoPoolData {
-                    ammo: Ammo::Grenade,
+                    ammo: AmmoType::Grenade,
                     current: 11,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Pistol,
+                    ammo: AmmoType::Pistol,
                     current: 1000,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Shotgun,
+                    ammo: AmmoType::Shotgun,
                     current: 240,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Smg,
+                    ammo: AmmoType::Smg,
                     current: 1800,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Ar,
+                    ammo: AmmoType::Ar,
                     current: 662,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Sniper,
+                    ammo: AmmoType::Sniper,
                     current: 144,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Heavy,
+                    ammo: AmmoType::Heavy,
                     current: 36,
                 },
             ]
@@ -2066,31 +2066,31 @@ mod tests {
             bl3_save.character_data.ammo_pools,
             vec![
                 AmmoPoolData {
-                    ammo: Ammo::Grenade,
+                    ammo: AmmoType::Grenade,
                     current: 3,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Pistol,
+                    ammo: AmmoType::Pistol,
                     current: 145,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Shotgun,
+                    ammo: AmmoType::Shotgun,
                     current: 80,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Smg,
+                    ammo: AmmoType::Smg,
                     current: 360,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Ar,
+                    ammo: AmmoType::Ar,
                     current: 280,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Sniper,
+                    ammo: AmmoType::Sniper,
                     current: 48,
                 },
                 AmmoPoolData {
-                    ammo: Ammo::Heavy,
+                    ammo: AmmoType::Heavy,
                     current: 0,
                 },
             ]

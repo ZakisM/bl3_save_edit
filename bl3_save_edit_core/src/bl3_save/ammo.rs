@@ -2,12 +2,12 @@ use strum::{Display, EnumString};
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct AmmoPoolData {
-    pub ammo: Ammo,
+    pub ammo: AmmoType,
     pub current: usize,
 }
 
 #[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd, Clone)]
-pub enum Ammo {
+pub enum AmmoType {
     #[strum(
         serialize = "/Game/GameData/Weapons/Ammo/Resource_Ammo_Grenade.Resource_Ammo_Grenade",
         to_string = "Grenade"
@@ -43,4 +43,10 @@ pub enum Ammo {
         to_string = "Heavy"
     )]
     Heavy,
+}
+
+impl std::default::Default for AmmoType {
+    fn default() -> Self {
+        Self::Grenade
+    }
 }

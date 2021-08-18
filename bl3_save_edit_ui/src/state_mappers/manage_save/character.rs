@@ -1,3 +1,6 @@
+use std::convert::TryInto;
+
+use bl3_save_edit_core::bl3_save::ammo::AmmoType;
 use bl3_save_edit_core::bl3_save::inventory_slot::InventorySlot;
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 
@@ -96,4 +99,22 @@ pub fn map_character_state(manage_save_state: &mut ManageSaveState) {
         });
 
     manage_save_state.main_state.character_state.sdu_unlocker = sdu_unlocker;
+
+    let mut ammo_setter =
+        std::mem::take(&mut manage_save_state.main_state.character_state.ammo_setter);
+
+    save.character_data
+        .ammo_pools
+        .iter()
+        .for_each(|s| match s.ammo {
+            AmmoType::Sniper => ammo_setter.sniper.input = s.current.try_into().unwrap_or(0),
+            AmmoType::Shotgun => ammo_setter.shotgun.input = s.current.try_into().unwrap_or(0),
+            AmmoType::Pistol => ammo_setter.pistol.input = s.current.try_into().unwrap_or(0),
+            AmmoType::Grenade => ammo_setter.grenade.input = s.current.try_into().unwrap_or(0),
+            AmmoType::Smg => ammo_setter.smg.input = s.current.try_into().unwrap_or(0),
+            AmmoType::Ar => ammo_setter.assault_rifle.input = s.current.try_into().unwrap_or(0),
+            AmmoType::Heavy => ammo_setter.heavy.input = s.current.try_into().unwrap_or(0),
+        });
+
+    manage_save_state.main_state.character_state.ammo_setter = ammo_setter;
 }
