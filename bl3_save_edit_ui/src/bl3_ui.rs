@@ -5,7 +5,7 @@ use iced::{
     Element, HorizontalAlignment, Length, PickList, Row, Text,
 };
 
-use bl3_save_edit_core::bl3_save::bl3_item::MAX_BL3_ITEM_PARTS;
+use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, MAX_BL3_ITEM_PARTS};
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
@@ -517,17 +517,18 @@ impl Application for Bl3UiState {
                         InventoryInteractionMessage::AvailablePartPressed(
                             available_parts_index,
                         ) => {
+                            let selected_item_index = self
+                                .manage_save_state
+                                .main_state
+                                .inventory_state
+                                .selected_item_index;
+
                             if let Some(current_item) = self
                                 .manage_save_state
                                 .main_state
                                 .inventory_state
-                                .items
-                                .get_mut(
-                                    self.manage_save_state
-                                        .main_state
-                                        .inventory_state
-                                        .selected_item_index,
-                                )
+                                .items_mut()
+                                .get_mut(selected_item_index)
                             {
                                 if let Some(item_parts) = &mut current_item.item.item_parts {
                                     if item_parts.parts().len() < MAX_BL3_ITEM_PARTS {
@@ -569,17 +570,18 @@ impl Application for Bl3UiState {
                             }
                         }
                         InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
+                            let selected_item_index = self
+                                .manage_save_state
+                                .main_state
+                                .inventory_state
+                                .selected_item_index;
+
                             if let Some(current_item) = self
                                 .manage_save_state
                                 .main_state
                                 .inventory_state
-                                .items
-                                .get_mut(
-                                    self.manage_save_state
-                                        .main_state
-                                        .inventory_state
-                                        .selected_item_index,
-                                )
+                                .items_mut()
+                                .get_mut(selected_item_index)
                             {
                                 let part_selected = current_item
                                     .editor
@@ -600,6 +602,52 @@ impl Application for Bl3UiState {
                                         .inventory_state
                                         .map_current_item_if_exists_to_editor_state();
                                 }
+                            }
+                        }
+                        InventoryInteractionMessage::ImportItemInputChanged(s) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .import_serial_input = s;
+                        }
+                        InventoryInteractionMessage::ImportItemFromSerial => {
+                            let item_serial = self
+                                .manage_save_state
+                                .main_state
+                                .inventory_state
+                                .import_serial_input
+                                .trim();
+
+                            match Bl3Item::from_serial_base64(item_serial) {
+                                Ok(bl3_item) => {
+                                    self.manage_save_state
+                                        .main_state
+                                        .inventory_state
+                                        .add_item(bl3_item);
+
+                                    self.manage_save_state
+                                        .main_state
+                                        .inventory_state
+                                        .selected_item_index = self
+                                        .manage_save_state
+                                        .main_state
+                                        .inventory_state
+                                        .items()
+                                        .len()
+                                        - 1;
+
+                                    self.manage_save_state
+                                        .main_state
+                                        .inventory_state
+                                        .map_current_item_if_exists_to_editor_state();
+
+                                    self.manage_save_state
+                                        .main_state
+                                        .inventory_state
+                                        .item_list_scrollable_state
+                                        .snap_to(1.0)
+                                }
+                                Err(e) => eprintln!("{}", e),
                             }
                         }
                         InventoryInteractionMessage::SyncItemLevelWithCharacterLevel => {
@@ -627,6 +675,28 @@ impl Application for Bl3UiState {
                                         eprintln!("{}", e);
                                     }
                                 });
+                        }
+                        InventoryInteractionMessage::DeleteItem(id) => {
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .remove_item(id);
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .selected_item_index = 0;
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .map_current_item_if_exists_to_editor_state();
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .item_list_scrollable_state
+                                .snap_to(0.0)
                         }
                         InventoryInteractionMessage::BalanceInputSelected(balance_selected) => {
                             self.manage_save_state

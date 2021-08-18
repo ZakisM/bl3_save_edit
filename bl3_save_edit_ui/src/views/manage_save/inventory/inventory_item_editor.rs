@@ -15,6 +15,7 @@ use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
 use crate::views::manage_save::inventory::available_parts::AvailableParts;
 use crate::views::manage_save::inventory::current_parts::CurrentParts;
+use crate::views::manage_save::inventory::delete_item_button_style::DeleteItemButtonStyle;
 use crate::views::manage_save::inventory::InventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -28,6 +29,7 @@ pub struct InventoryItemEditor {
     pub sync_item_level_char_level_button: button::State,
     pub serial_input: String,
     pub serial_input_state: text_input::State,
+    pub delete_item_button: button::State,
     pub balance_input_state: pick_list::State<BalancePart>,
     pub balance_input_selected: BalancePart,
     pub inv_data_input_state: pick_list::State<InvDataPart>,
@@ -39,7 +41,7 @@ pub struct InventoryItemEditor {
 }
 
 impl InventoryItemEditor {
-    pub fn view(&mut self, item: &Bl3Item) -> Container<Message> {
+    pub fn view(&mut self, item_id: usize, item: &Bl3Item) -> Container<Message> {
         let item_part_data = &INVENTORY_PARTS_ALL_CATEGORIZED;
 
         let resource_item = item
@@ -111,7 +113,7 @@ impl InventoryItemEditor {
             )
             .align_items(Align::Center);
 
-        let level_serial_row = Row::new()
+        let level_serial_delete_row = Row::new()
             .push(
                 Container::new(item_level_editor)
                     .width(Length::Fill)
@@ -141,10 +143,24 @@ impl InventoryItemEditor {
                 .height(Length::Units(36))
                 .style(Bl3UiStyle),
             )
+            .push(
+                Button::new(
+                    &mut self.delete_item_button,
+                    Text::new("Delete Item").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(InteractionMessage::ManageSaveInteraction(
+                    ManageSaveInteractionMessage::Inventory(
+                        InventoryInteractionMessage::DeleteItem(item_id),
+                    ),
+                ))
+                .padding(10)
+                .style(DeleteItemButtonStyle)
+                .into_element(),
+            )
             .spacing(20);
 
         let item_editor_contents = Column::new()
-            .push(level_serial_row)
+            .push(level_serial_delete_row)
             .push(
                 Container::new(
                     LabelledElement::create(

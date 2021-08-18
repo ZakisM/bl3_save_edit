@@ -155,7 +155,7 @@ impl button::StyleSheet for Bl3UiStyle {
     fn active(&self) -> button::Style {
         button::Style {
             background: Some(Color::from_rgb8(23, 23, 23).into()),
-            text_color: Color::from_rgb8(210, 210, 210),
+            text_color: Color::from_rgb8(220, 220, 220),
             border_width: 1.0,
             border_radius: 1.0,
             border_color: Color::from_rgb8(35, 35, 35),

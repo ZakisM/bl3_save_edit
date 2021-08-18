@@ -95,7 +95,7 @@ impl button::StyleSheet for ManageSaveTabBarStyle {
     fn active(&self) -> button::Style {
         button::Style {
             background: Some(Color::from_rgb8(30, 30, 30).into()),
-            text_color: Color::from_rgb8(210, 210, 210),
+            text_color: Color::from_rgb8(220, 220, 220),
             ..button::Style::default()
         }
     }

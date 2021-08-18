@@ -15,7 +15,7 @@ use crate::views::InteractionExt;
 
 #[derive(Debug, Default)]
 pub struct InventoryListItem {
-    id: usize,
+    pub id: usize,
     pub item: Bl3Item,
     button_state: button::State,
     pub editor: InventoryItemEditor,
@@ -111,7 +111,7 @@ impl InventoryListItem {
             .align_items(Align::Start);
 
         let item_editor = if is_active {
-            Some(self.editor.view(&self.item))
+            Some(self.editor.view(self.id, &self.item))
         } else {
             None
         };

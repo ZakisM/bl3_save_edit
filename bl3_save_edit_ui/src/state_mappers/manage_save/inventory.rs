@@ -10,7 +10,7 @@ pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
         .inventory_state
         .selected_item_index = 0;
 
-    manage_save_state.main_state.inventory_state.items = save
+    *manage_save_state.main_state.inventory_state.items_mut() = save
         .character_data
         .inventory_items
         .iter()
