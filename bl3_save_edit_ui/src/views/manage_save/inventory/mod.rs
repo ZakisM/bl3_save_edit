@@ -191,7 +191,15 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
     let item_editor = if let Some(item_editor) = item_editor {
         item_editor
     } else {
-        Container::new(Text::new("Select something mate"))
+        Container::new(
+            Text::new("Please Import/Create an item to get started.")
+                .font(JETBRAINS_MONO_BOLD)
+                .size(17)
+                .color(Color::from_rgb8(220, 220, 220)),
+        )
+        .align_x(Align::Center)
+        .align_y(Align::Center)
+        .style(Bl3UiStyle)
     }
     .width(Length::FillPortion(7))
     .height(Length::Fill);
