@@ -825,6 +825,11 @@ impl Application for Bl3UiState {
                                         eprintln!("{}", e);
                                     }
                                 });
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .map_current_item_if_exists_to_editor_state();
                         }
                         InventoryInteractionMessage::SyncItemLevelWithCharacterLevelPressed => {
                             let character_level =
@@ -860,6 +865,11 @@ impl Application for Bl3UiState {
                                         eprintln!("{}", e);
                                     }
                                 });
+
+                            self.manage_save_state
+                                .main_state
+                                .inventory_state
+                                .map_current_item_if_exists_to_editor_state();
                         }
                         InventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
                             self.manage_save_state
