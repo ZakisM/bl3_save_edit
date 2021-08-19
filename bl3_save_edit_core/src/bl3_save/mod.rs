@@ -1,6 +1,7 @@
 use std::io::Write;
+use std::path::Path;
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use byteorder::{LittleEndian, WriteBytesExt};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
@@ -25,7 +26,7 @@ pub mod playthrough;
 pub mod sdu;
 pub mod util;
 
-#[derive(Debug, Clone, Default, Eq, Ord, PartialOrd)]
+#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Bl3Save {
     pub file_name: String,
     pub save_game_version: u32,
@@ -43,12 +44,6 @@ pub struct Bl3Save {
     pub character_data: CharacterData,
 }
 
-impl std::cmp::PartialEq for Bl3Save {
-    fn eq(&self, other: &Self) -> bool {
-        self.file_name == other.file_name && self.character_data == other.character_data
-    }
-}
-
 impl Bl3Save {
     pub fn from_file_data(file_data: &FileData, header_type: HeaderType) -> Result<Self> {
         let remaining_data = file_data.remaining_data;
@@ -58,7 +53,7 @@ impl Bl3Save {
         let character_data = CharacterData::from_character(character)?;
 
         let FileData {
-            file_name,
+            file_location,
             file_version,
             package_version,
             engine_major,
@@ -73,8 +68,13 @@ impl Bl3Save {
             ..
         } = file_data.clone();
 
+        let file_name = file_location
+            .file_name()
+            .map(|s| s.to_string_lossy().to_string())
+            .context("failed to read file name")?;
+
         Ok(Self {
-            file_name: file_name.to_owned(),
+            file_name,
             save_game_version: file_version,
             package_version,
             engine_major,
@@ -91,7 +91,7 @@ impl Bl3Save {
         })
     }
 
-    pub fn from_bytes(file_name: &str, data: &[u8], header_type: HeaderType) -> Result<Self> {
+    pub fn from_bytes(file_name: &Path, data: &[u8], header_type: HeaderType) -> Result<Self> {
         let file_data = file_helper::read_bytes(file_name, data)?;
 
         Self::from_file_data(&file_data, header_type)

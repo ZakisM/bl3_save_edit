@@ -148,11 +148,13 @@ impl CharacterData {
                 let slot = SaveSduSlot::from_str(&s.sdu_data_path).with_context(|| {
                     format!("failed to read save sdu slot: {}", &s.sdu_data_path)
                 })?;
+                let additional_amount = slot.additional_amount();
                 let max = slot.maximum();
 
                 Ok(SaveSduSlotData {
                     slot,
                     current: s.sdu_level,
+                    additional_amount,
                     max,
                 })
             })
@@ -164,11 +166,16 @@ impl CharacterData {
                 std::mem::discriminant(&sdu) == std::mem::discriminant(&save_sdu.slot)
             });
 
+            let slot = sdu;
+            let additional_amount = slot.additional_amount();
+            let max = slot.maximum();
+
             if !contains_sdu_slot {
                 sdu_slots.push(SaveSduSlotData {
-                    slot: sdu.to_owned(),
+                    slot,
                     current: 0,
-                    max: sdu.maximum(),
+                    additional_amount,
+                    max,
                 })
             }
         });
@@ -183,9 +190,12 @@ impl CharacterData {
                 let ammo = AmmoPool::from_str(&rp.resource_path)
                     .with_context(|| format!("failed to read ammo: {}", &rp.resource_path))?;
 
+                let max = ammo.maximum();
+
                 Ok(AmmoPoolData {
                     pool: ammo,
-                    current: rp.amount as usize,
+                    current: rp.amount as i32,
+                    max,
                 })
             })
             .collect::<Result<Vec<_>>>()?;
@@ -582,6 +592,7 @@ impl CharacterData {
             self.sdu_slots.push(SaveSduSlotData {
                 slot: sdu_slot.to_owned(),
                 current: level,
+                additional_amount: sdu_slot.additional_amount(),
                 max: sdu_slot.maximum(),
             });
         }
@@ -606,11 +617,12 @@ impl CharacterData {
         pool.amount = amount as f32;
 
         if let Some(current_pool) = self.ammo_pools.iter_mut().find(|i| i.pool == *ammo_pool) {
-            current_pool.current = amount as usize;
+            current_pool.current = amount;
         } else {
             self.ammo_pools.push(AmmoPoolData {
                 pool: ammo_pool.to_owned(),
-                current: amount as usize,
+                current: amount,
+                max: ammo_pool.maximum(),
             });
         }
 

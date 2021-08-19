@@ -52,7 +52,7 @@ impl AmmoSetterField {
     pub fn view(&mut self) -> Row<Message> {
         let on_changed = self.on_changed.clone();
         let minimum = 0;
-        // let maximum = self.ammo_type.maximum();
+        let maximum = self.ammo_pool.maximum();
 
         Row::new()
             .push(
@@ -69,8 +69,7 @@ impl AmmoSetterField {
                         &mut self.input_state,
                         self.input,
                         minimum,
-                        // Some(maximum),
-                        None,
+                        Some(maximum),
                         move |v| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::Character(
@@ -86,8 +85,7 @@ impl AmmoSetterField {
                     .size(17)
                     .style(Bl3UiStyle)
                     .into_element(),
-                    // format!("Amount must be between {} and {}", minimum, maximum),
-                    format!("Amount must be between {} and 100", minimum),
+                    format!("Amount must be between {} and {}", minimum, maximum),
                     tooltip::Position::Top,
                 )
                 .gap(10)

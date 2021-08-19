@@ -33,7 +33,6 @@ pub enum GeneralMessage {
 
 #[derive(Debug, Clone)]
 pub enum GeneralInteractionMessage {
-    FileInputChanged(String),
     GuidInputChanged(String),
     SlotInputChanged(u32),
     GenerateGuidPressed,
@@ -51,13 +50,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                         &mut general_state.filename_input_state,
                         "1.sav",
                         &general_state.filename_input,
-                        |s| {
-                            InteractionMessage::ManageSaveInteraction(
-                                ManageSaveInteractionMessage::General(
-                                    GeneralInteractionMessage::FileInputChanged(s),
-                                ),
-                            )
-                        },
+                        |_| InteractionMessage::Ignore,
                     )
                     .font(JETBRAINS_MONO)
                     .padding(10)

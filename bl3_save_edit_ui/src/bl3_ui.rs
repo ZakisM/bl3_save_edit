@@ -5,6 +5,7 @@ use iced::{
     Element, HorizontalAlignment, Length, PickList, Row, Text,
 };
 
+use bl3_save_edit_core::bl3_save::ammo::AmmoPool;
 use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, MAX_BL3_ITEM_PARTS};
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
@@ -165,17 +166,18 @@ impl Application for Bl3UiState {
                         }
                     },
                     ManageSaveInteractionMessage::General(general_msg) => match general_msg {
-                        GeneralInteractionMessage::FileInputChanged(filename) => {
-                            self.manage_save_state
-                                .main_state
-                                .general_state
-                                .filename_input = filename;
-                        }
                         GeneralInteractionMessage::GuidInputChanged(guid) => {
                             self.manage_save_state.main_state.general_state.guid_input = guid;
                         }
                         GeneralInteractionMessage::SlotInputChanged(slot) => {
+                            let filename = format!("{}.sav", slot);
+
                             self.manage_save_state.main_state.general_state.slot_input = slot;
+                            self.manage_save_state
+                                .main_state
+                                .general_state
+                                .filename_input = filename.clone();
+                            self.manage_save_state.current_file.file_name = filename;
                         }
                         GeneralInteractionMessage::GenerateGuidPressed => {
                             return Command::perform(
@@ -418,49 +420,49 @@ impl Application for Bl3UiState {
                                 .character_state
                                 .ammo_setter
                                 .sniper
-                                .input = 9999;
+                                .input = AmmoPool::Sniper.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .ammo_setter
                                 .shotgun
-                                .input = 9999;
+                                .input = AmmoPool::Shotgun.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .ammo_setter
                                 .pistol
-                                .input = 9999;
+                                .input = AmmoPool::Pistol.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .ammo_setter
                                 .grenade
-                                .input = 9999;
+                                .input = AmmoPool::Grenade.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .ammo_setter
                                 .smg
-                                .input = 9999;
+                                .input = AmmoPool::Smg.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .ammo_setter
                                 .assault_rifle
-                                .input = 9999;
+                                .input = AmmoPool::Ar.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .ammo_setter
                                 .heavy
-                                .input = 9999;
+                                .input = AmmoPool::Heavy.maximum();
                         }
                         CharacterInteractionMessage::PlayerClassSelected(player_class) => {
                             self.manage_save_state
@@ -588,24 +590,10 @@ impl Application for Bl3UiState {
                         )
                         .unwrap();
 
-                        // current_file.character_data.
-
-                        // current_file.character_data.set_active_travel_stations(
-                        //     self.manage_save_state
-                        //         .main_state
-                        //         .fast_travel_state
-                        //         .playthrough_type_selected as usize,
-                        //     &self
-                        //         .manage_save_state
-                        //         .main_state
-                        //         .fast_travel_state
-                        //         .visited_teleporters_list,
-                        // );
-
                         let output_file = self
                             .choose_save_directory_state
                             .saves_dir
-                            .join("test_file_zak.sav");
+                            .join(&self.manage_save_state.current_file.file_name);
 
                         match current_file.to_bytes() {
                             Ok(output) => {

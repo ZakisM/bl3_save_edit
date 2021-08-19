@@ -4,6 +4,7 @@ use strum::{Display, EnumIter, EnumMessage, EnumString};
 pub struct SaveSduSlotData {
     pub slot: SaveSduSlot,
     pub current: i32,
+    pub additional_amount: i32,
     pub max: i32,
 }
 
@@ -57,6 +58,19 @@ impl std::default::Default for SaveSduSlot {
 }
 
 impl SaveSduSlot {
+    pub fn additional_amount(&self) -> i32 {
+        match *self {
+            SaveSduSlot::Backpack => 3,
+            SaveSduSlot::Sniper => 12,
+            SaveSduSlot::Shotgun => 20,
+            SaveSduSlot::Pistol => 100,
+            SaveSduSlot::Grenade => 1,
+            SaveSduSlot::Smg => 180,
+            SaveSduSlot::Ar => 140,
+            SaveSduSlot::Heavy => 3,
+        }
+    }
+
     pub fn maximum(&self) -> i32 {
         match *self {
             SaveSduSlot::Backpack | SaveSduSlot::Sniper | SaveSduSlot::Heavy => 13,

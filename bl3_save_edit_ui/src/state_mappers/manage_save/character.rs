@@ -1,5 +1,3 @@
-use std::convert::TryInto;
-
 use anyhow::Result;
 
 use bl3_save_edit_core::bl3_save::ammo::AmmoPool;
@@ -100,13 +98,13 @@ pub fn map_save_to_character_state(manage_save_state: &mut ManageSaveState) {
         .ammo_pools()
         .iter()
         .for_each(|s| match s.pool {
-            AmmoPool::Sniper => ammo_setter.sniper.input = s.current.try_into().unwrap_or(0),
-            AmmoPool::Shotgun => ammo_setter.shotgun.input = s.current.try_into().unwrap_or(0),
-            AmmoPool::Pistol => ammo_setter.pistol.input = s.current.try_into().unwrap_or(0),
-            AmmoPool::Grenade => ammo_setter.grenade.input = s.current.try_into().unwrap_or(0),
-            AmmoPool::Smg => ammo_setter.smg.input = s.current.try_into().unwrap_or(0),
-            AmmoPool::Ar => ammo_setter.assault_rifle.input = s.current.try_into().unwrap_or(0),
-            AmmoPool::Heavy => ammo_setter.heavy.input = s.current.try_into().unwrap_or(0),
+            AmmoPool::Sniper => ammo_setter.sniper.input = s.current,
+            AmmoPool::Shotgun => ammo_setter.shotgun.input = s.current,
+            AmmoPool::Pistol => ammo_setter.pistol.input = s.current,
+            AmmoPool::Grenade => ammo_setter.grenade.input = s.current,
+            AmmoPool::Smg => ammo_setter.smg.input = s.current,
+            AmmoPool::Ar => ammo_setter.assault_rifle.input = s.current,
+            AmmoPool::Heavy => ammo_setter.heavy.input = s.current,
         });
 
     manage_save_state.main_state.character_state.ammo_setter = ammo_setter;
