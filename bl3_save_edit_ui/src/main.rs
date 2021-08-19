@@ -1,6 +1,6 @@
 use iced::{window, Application, Settings};
 
-use crate::bl3_ui::Bl3UiState;
+use crate::bl3_ui::Bl3Ui;
 
 mod bl3_ui;
 mod bl3_ui_style;
@@ -24,7 +24,7 @@ fn main() {
         ..Settings::default()
     };
 
-    if let Err(e) = Bl3UiState::run(settings) {
+    if let Err(e) = Bl3Ui::run(settings) {
         eprintln!("{:?}", e);
     }
 }

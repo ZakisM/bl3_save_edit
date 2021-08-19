@@ -37,7 +37,7 @@ use crate::views::InteractionExt;
 use crate::{state_mappers, views, VERSION};
 
 #[derive(Debug, Default)]
-pub struct Bl3UiState {
+pub struct Bl3Ui {
     pub view_state: ViewState,
     choose_save_directory_state: ChooseSaveDirectoryState,
     pub manage_save_state: ManageSaveState,
@@ -93,7 +93,7 @@ impl std::default::Default for ViewState {
     }
 }
 
-impl Application for Bl3UiState {
+impl Application for Bl3Ui {
     type Executor = tokio::runtime::Runtime;
     type Message = Message;
     type Flags = ();
@@ -104,9 +104,9 @@ impl Application for Bl3UiState {
         })];
 
         (
-            Bl3UiState {
+            Bl3Ui {
                 view_state: ViewState::Initializing,
-                ..Bl3UiState::default()
+                ..Bl3Ui::default()
             },
             Command::batch(initialization_tasks),
         )
