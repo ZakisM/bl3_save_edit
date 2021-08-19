@@ -1,6 +1,6 @@
-use strum::{Display, EnumString};
+use strum::{Display, EnumMessage, EnumString};
 
-#[derive(Clone, Copy, Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Clone, Copy, Debug, Display, EnumString, EnumMessage, Eq, PartialEq, Ord, PartialOrd)]
 pub enum PlayerClass {
     #[strum(
         serialize = "/Game/PlayerCharacters/Beastmaster/PlayerClassId_Beastmaster.PlayerClassId_Beastmaster",

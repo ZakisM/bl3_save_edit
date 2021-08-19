@@ -1,4 +1,4 @@
-use strum::{Display, EnumString};
+use strum::{Display, EnumMessage, EnumString};
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct InventorySlotData {
@@ -6,7 +6,7 @@ pub struct InventorySlotData {
     pub unlocked: bool,
 }
 
-#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd, Clone)]
+#[derive(Debug, Display, EnumString, EnumMessage, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub enum InventorySlot {
     #[strum(
         serialize = "/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon1.BPInvSlot_Weapon1",
@@ -48,4 +48,10 @@ pub enum InventorySlot {
         to_string = "Artifact"
     )]
     Artifact,
+}
+
+impl std::default::Default for InventorySlot {
+    fn default() -> Self {
+        Self::Grenade
+    }
 }

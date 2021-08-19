@@ -15,9 +15,9 @@ pub fn map_loaded_file_to_state(main_state: &mut Bl3UiState) {
             //This file will be the one that gets modified when we press save.
             main_state.manage_save_state.current_file = save.clone();
 
-            manage_save::general::map_general_state(&mut main_state.manage_save_state);
+            manage_save::general::map_save_to_general_state(&mut main_state.manage_save_state);
 
-            manage_save::character::map_character_state(&mut main_state.manage_save_state);
+            manage_save::character::map_save_to_character_state(&mut main_state.manage_save_state);
 
             manage_save::inventory::map_inventory_state(&mut main_state.manage_save_state);
 

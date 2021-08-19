@@ -18,6 +18,7 @@ pub mod challenge_data;
 pub mod character_data;
 pub mod fast_travel_unlock_data;
 pub mod inventory_slot;
+pub mod level_data;
 pub mod models;
 pub mod player_class;
 pub mod playthrough;
@@ -119,7 +120,7 @@ impl Bl3Save {
 
         let mut data = protobuf::Message::write_to_bytes(&self.character_data.character)?;
 
-        encrypt(&mut data, HeaderType::PcSave)?;
+        encrypt(&mut data, self.header_type)?;
 
         output.write_u32::<LittleEndian>(data.len() as u32)?;
         output.append(&mut data);
@@ -161,19 +162,19 @@ impl std::fmt::Display for Bl3Save {
             "Savegame GUID: {}",
             self.character_data.character.save_game_guid
         )?;
-        writeln!(f, "Player Class: {}", self.character_data.player_class)?;
+        writeln!(f, "Player Class: {}", self.character_data.player_class())?;
         writeln!(f, "XP: {}", self.character_data.character.experience_points)?;
-        writeln!(f, "Level: {}", self.character_data.player_level)?;
-        writeln!(f, "Guardian Rank: {}", self.character_data.guardian_rank)?;
-        writeln!(f, "Money: {}", self.character_data.money)?;
-        writeln!(f, "Eridium: {}", self.character_data.eridium)?;
+        writeln!(f, "Level: {}", self.character_data.player_level())?;
+        writeln!(f, "Guardian Rank: {}", self.character_data.guardian_rank())?;
+        writeln!(f, "Money: {}", self.character_data.money())?;
+        writeln!(f, "Eridium: {}", self.character_data.eridium())?;
         writeln!(
             f,
             "Playthroughs Completed: {}",
             self.character_data.character.playthroughs_completed
         )?;
 
-        for (i, pt) in self.character_data.playthroughs.iter().enumerate() {
+        for (i, pt) in self.character_data.playthroughs().iter().enumerate() {
             writeln!(f, "Playthrough {} Info:", i + 1)?;
             writeln!(f, "{:>1}- Mayhem Level: {}", " ", pt.mayhem_level)?;
             writeln!(
@@ -218,7 +219,7 @@ impl std::fmt::Display for Bl3Save {
         ] {
             if let Some(slot) = self
                 .character_data
-                .unlockable_inventory_slots
+                .unlockable_inventory_slots()
                 .par_iter()
                 .find_first(|is| is.slot == i)
             {
@@ -228,7 +229,7 @@ impl std::fmt::Display for Bl3Save {
 
         writeln!(f, "SDUs:")?;
 
-        for slot in &self.character_data.sdu_slots {
+        for slot in self.character_data.sdu_slots() {
             writeln!(
                 f,
                 "{:>1}- {}: {}/{}",
@@ -238,13 +239,13 @@ impl std::fmt::Display for Bl3Save {
 
         writeln!(f, "Ammo Pools:")?;
 
-        for ammo in &self.character_data.ammo_pools {
-            writeln!(f, "{:>1}- {}: {}", " ", ammo.ammo, ammo.current)?;
+        for ammo in self.character_data.ammo_pools() {
+            writeln!(f, "{:>1}- {}: {}", " ", ammo.pool, ammo.current)?;
         }
 
         writeln!(f, "Challenge Milestones:")?;
 
-        for challenge in &self.character_data.challenge_milestones {
+        for challenge in self.character_data.challenge_milestones() {
             writeln!(
                 f,
                 "{:>1}- {}: {}",
@@ -254,7 +255,7 @@ impl std::fmt::Display for Bl3Save {
 
         writeln!(f, "Unlocked Vehicle Parts:")?;
 
-        for v_stat in &self.character_data.vehicle_stats {
+        for v_stat in self.character_data.vehicle_stats() {
             writeln!(
                 f,
                 "{:>1}- {} - Chassis (wheels): {}/{}, Parts: {}/{}, Skins: {}/{}",
@@ -277,11 +278,11 @@ impl std::fmt::Display for Bl3Save {
 mod tests {
     use std::fs;
 
-    use crate::bl3_save::ammo::{AmmoPoolData, AmmoType};
+    use crate::bl3_save::ammo::{AmmoPool, AmmoPoolData};
     use crate::bl3_save::challenge_data::{Challenge, ChallengeData};
     use crate::bl3_save::inventory_slot::InventorySlotData;
     use crate::bl3_save::player_class::PlayerClass;
-    use crate::bl3_save::sdu::{SaveSduSlot, SaveSduSlotData};
+    use crate::bl3_save::sdu::{SaveSduSlotData, SduSlot};
     use crate::game_data::{
         VEHICLE_CHASSIS_CYCLONE, VEHICLE_CHASSIS_JETBEAST, VEHICLE_CHASSIS_OUTRUNNER,
         VEHICLE_CHASSIS_TECHNICAL, VEHICLE_PARTS_CYCLONE, VEHICLE_PARTS_JETBEAST,
@@ -310,17 +311,17 @@ mod tests {
             bl3_save.character_data.character.save_game_guid,
             "65FAB86B4A165E6F6E844DA346BB75E2"
         );
-        assert_eq!(bl3_save.character_data.player_class, PlayerClass::Siren);
+        assert_eq!(bl3_save.character_data.player_class(), PlayerClass::Siren);
         assert_eq!(bl3_save.character_data.character.experience_points, 7149982);
-        assert_eq!(bl3_save.character_data.player_level, 65);
-        assert_eq!(bl3_save.character_data.guardian_rank, 226);
-        assert_eq!(bl3_save.character_data.money, 36575378);
-        assert_eq!(bl3_save.character_data.eridium, 48130);
+        assert_eq!(bl3_save.character_data.player_level(), 65);
+        assert_eq!(bl3_save.character_data.guardian_rank(), 226);
+        assert_eq!(bl3_save.character_data.money(), 36575378);
+        assert_eq!(bl3_save.character_data.eridium(), 48130);
         assert_eq!(bl3_save.character_data.character.playthroughs_completed, 2);
 
         let first_playthrough = bl3_save
             .character_data
-            .playthroughs
+            .playthroughs()
             .get(0)
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
@@ -348,7 +349,7 @@ mod tests {
 
         let second_playthrough = bl3_save
             .character_data
-            .playthroughs
+            .playthroughs()
             .get(1)
             .expect("failed to read second playthrough");
 
@@ -383,7 +384,7 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.unlockable_inventory_slots,
+            *bl3_save.character_data.unlockable_inventory_slots(),
             vec![
                 InventorySlotData {
                     slot: InventorySlot::Weapon1,
@@ -421,45 +422,45 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.sdu_slots,
+            *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    slot: SduSlot::Backpack,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    slot: SduSlot::Sniper,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    slot: SduSlot::Shotgun,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    slot: SduSlot::Pistol,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    slot: SduSlot::Grenade,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    slot: SduSlot::Smg,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    slot: SduSlot::Ar,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    slot: SduSlot::Heavy,
                     current: 13,
                     max: 13,
                 },
@@ -467,41 +468,41 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.ammo_pools,
+            *bl3_save.character_data.ammo_pools(),
             vec![
                 AmmoPoolData {
-                    ammo: AmmoType::Grenade,
+                    pool: AmmoPool::Grenade,
                     current: 11,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Pistol,
+                    pool: AmmoPool::Pistol,
                     current: 201,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Shotgun,
+                    pool: AmmoPool::Shotgun,
                     current: 110,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Smg,
+                    pool: AmmoPool::Smg,
                     current: 1800,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Ar,
+                    pool: AmmoPool::Ar,
                     current: 705,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Sniper,
+                    pool: AmmoPool::Sniper,
                     current: 41,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Heavy,
+                    pool: AmmoPool::Heavy,
                     current: 51,
                 },
             ]
         );
 
         assert_eq!(
-            bl3_save.character_data.challenge_milestones,
+            *bl3_save.character_data.challenge_milestones(),
             vec![
                 ChallengeData {
                     challenge: Challenge::ArtifactSlot,
@@ -527,7 +528,7 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.vehicle_stats,
+            *bl3_save.character_data.vehicle_stats(),
             vec![
                 VehicleStats {
                     name: VehicleName::Outrunner,
@@ -587,17 +588,17 @@ mod tests {
             bl3_save.character_data.character.save_game_guid,
             "2DF92B8B41E9A19BF98AEAB6E176B094"
         );
-        assert_eq!(bl3_save.character_data.player_class, PlayerClass::Siren);
+        assert_eq!(bl3_save.character_data.player_class(), PlayerClass::Siren);
         assert_eq!(bl3_save.character_data.character.experience_points, 1253222);
-        assert_eq!(bl3_save.character_data.player_level, 34);
-        assert_eq!(bl3_save.character_data.guardian_rank, 200);
-        assert_eq!(bl3_save.character_data.money, 89828);
-        assert_eq!(bl3_save.character_data.eridium, 367);
+        assert_eq!(bl3_save.character_data.player_level(), 34);
+        assert_eq!(bl3_save.character_data.guardian_rank(), 200);
+        assert_eq!(bl3_save.character_data.money(), 89828);
+        assert_eq!(bl3_save.character_data.eridium(), 367);
         assert_eq!(bl3_save.character_data.character.playthroughs_completed, 1);
 
         let first_playthrough = bl3_save
             .character_data
-            .playthroughs
+            .playthroughs()
             .get(0)
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 1);
@@ -611,7 +612,7 @@ mod tests {
         assert_eq!(first_playthrough.mission_milestones, vec!["Main Game"]);
 
         assert_eq!(
-            bl3_save.character_data.unlockable_inventory_slots,
+            *bl3_save.character_data.unlockable_inventory_slots(),
             vec![
                 InventorySlotData {
                     slot: InventorySlot::Weapon1,
@@ -649,45 +650,45 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.sdu_slots,
+            *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    slot: SduSlot::Backpack,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    slot: SduSlot::Sniper,
                     current: 3,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    slot: SduSlot::Shotgun,
                     current: 4,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    slot: SduSlot::Pistol,
                     current: 3,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    slot: SduSlot::Grenade,
                     current: 2,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    slot: SduSlot::Smg,
                     current: 4,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    slot: SduSlot::Ar,
                     current: 3,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    slot: SduSlot::Heavy,
                     current: 3,
                     max: 13,
                 },
@@ -695,41 +696,41 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.ammo_pools,
+            *bl3_save.character_data.ammo_pools(),
             vec![
                 AmmoPoolData {
-                    ammo: AmmoType::Grenade,
+                    pool: AmmoPool::Grenade,
                     current: 5,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Pistol,
+                    pool: AmmoPool::Pistol,
                     current: 238,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Shotgun,
+                    pool: AmmoPool::Shotgun,
                     current: 160,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Smg,
+                    pool: AmmoPool::Smg,
                     current: 1080,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Ar,
+                    pool: AmmoPool::Ar,
                     current: 672,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Sniper,
+                    pool: AmmoPool::Sniper,
                     current: 84,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Heavy,
+                    pool: AmmoPool::Heavy,
                     current: 21,
                 },
             ]
         );
 
         assert_eq!(
-            bl3_save.character_data.challenge_milestones,
+            *bl3_save.character_data.challenge_milestones(),
             vec![
                 ChallengeData {
                     challenge: Challenge::ArtifactSlot,
@@ -755,7 +756,7 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.vehicle_stats,
+            *bl3_save.character_data.vehicle_stats(),
             vec![
                 VehicleStats {
                     name: VehicleName::Outrunner,
@@ -816,19 +817,19 @@ mod tests {
             "4874AB774067B699E964DCAD69E5272E"
         );
         assert_eq!(
-            bl3_save.character_data.player_class,
+            bl3_save.character_data.player_class(),
             PlayerClass::BeastMaster
         );
         assert_eq!(bl3_save.character_data.character.experience_points, 305);
-        assert_eq!(bl3_save.character_data.player_level, 1);
-        assert_eq!(bl3_save.character_data.guardian_rank, 200);
-        assert_eq!(bl3_save.character_data.money, 35);
-        assert_eq!(bl3_save.character_data.eridium, 0);
+        assert_eq!(bl3_save.character_data.player_level(), 1);
+        assert_eq!(bl3_save.character_data.guardian_rank(), 200);
+        assert_eq!(bl3_save.character_data.money(), 35);
+        assert_eq!(bl3_save.character_data.eridium(), 0);
         assert_eq!(bl3_save.character_data.character.playthroughs_completed, 0);
 
         let first_playthrough = bl3_save
             .character_data
-            .playthroughs
+            .playthroughs()
             .get(0)
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
@@ -842,7 +843,7 @@ mod tests {
         assert_eq!(first_playthrough.mission_milestones.len(), 0);
 
         assert_eq!(
-            bl3_save.character_data.unlockable_inventory_slots,
+            *bl3_save.character_data.unlockable_inventory_slots(),
             vec![
                 InventorySlotData {
                     slot: InventorySlot::Weapon1,
@@ -880,45 +881,45 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.sdu_slots,
+            *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    slot: SduSlot::Backpack,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    slot: SduSlot::Sniper,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    slot: SduSlot::Shotgun,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    slot: SduSlot::Pistol,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    slot: SduSlot::Grenade,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    slot: SduSlot::Smg,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    slot: SduSlot::Ar,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    slot: SduSlot::Heavy,
                     current: 0,
                     max: 13,
                 },
@@ -926,41 +927,41 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.ammo_pools,
+            *bl3_save.character_data.ammo_pools(),
             vec![
                 AmmoPoolData {
-                    ammo: AmmoType::Grenade,
+                    pool: AmmoPool::Grenade,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Pistol,
+                    pool: AmmoPool::Pistol,
                     current: 173,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Shotgun,
+                    pool: AmmoPool::Shotgun,
                     current: 64,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Smg,
+                    pool: AmmoPool::Smg,
                     current: 138,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Ar,
+                    pool: AmmoPool::Ar,
                     current: 280,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Sniper,
+                    pool: AmmoPool::Sniper,
                     current: 27,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Heavy,
+                    pool: AmmoPool::Heavy,
                     current: 0,
                 },
             ]
         );
 
         assert_eq!(
-            bl3_save.character_data.challenge_milestones,
+            *bl3_save.character_data.challenge_milestones(),
             vec![
                 ChallengeData {
                     challenge: Challenge::ArtifactSlot,
@@ -986,7 +987,7 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.vehicle_stats,
+            *bl3_save.character_data.vehicle_stats(),
             vec![
                 VehicleStats {
                     name: VehicleName::Outrunner,
@@ -1046,17 +1047,20 @@ mod tests {
             bl3_save.character_data.character.save_game_guid,
             "E1D65E314B7FC8009A31B483A6B83F21"
         );
-        assert_eq!(bl3_save.character_data.player_class, PlayerClass::Operative);
+        assert_eq!(
+            bl3_save.character_data.player_class(),
+            PlayerClass::Operative
+        );
         assert_eq!(bl3_save.character_data.character.experience_points, 5714393);
-        assert_eq!(bl3_save.character_data.player_level, 60);
-        assert_eq!(bl3_save.character_data.guardian_rank, 0);
-        assert_eq!(bl3_save.character_data.money, 100000000);
-        assert_eq!(bl3_save.character_data.eridium, 0);
+        assert_eq!(bl3_save.character_data.player_level(), 60);
+        assert_eq!(bl3_save.character_data.guardian_rank(), 0);
+        assert_eq!(bl3_save.character_data.money(), 100000000);
+        assert_eq!(bl3_save.character_data.eridium(), 0);
         assert_eq!(bl3_save.character_data.character.playthroughs_completed, 0);
 
         let first_playthrough = bl3_save
             .character_data
-            .playthroughs
+            .playthroughs()
             .get(0)
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
@@ -1070,7 +1074,7 @@ mod tests {
         assert_eq!(first_playthrough.mission_milestones.len(), 0);
 
         assert_eq!(
-            bl3_save.character_data.unlockable_inventory_slots,
+            *bl3_save.character_data.unlockable_inventory_slots(),
             vec![
                 InventorySlotData {
                     slot: InventorySlot::Weapon1,
@@ -1108,45 +1112,45 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.sdu_slots,
+            *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    slot: SduSlot::Backpack,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    slot: SduSlot::Sniper,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    slot: SduSlot::Shotgun,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    slot: SduSlot::Pistol,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    slot: SduSlot::Grenade,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    slot: SduSlot::Smg,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    slot: SduSlot::Ar,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    slot: SduSlot::Heavy,
                     current: 13,
                     max: 13,
                 },
@@ -1154,41 +1158,41 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.ammo_pools,
+            *bl3_save.character_data.ammo_pools(),
             vec![
                 AmmoPoolData {
-                    ammo: AmmoType::Grenade,
+                    pool: AmmoPool::Grenade,
                     current: 3,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Pistol,
+                    pool: AmmoPool::Pistol,
                     current: 145,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Shotgun,
+                    pool: AmmoPool::Shotgun,
                     current: 80,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Smg,
+                    pool: AmmoPool::Smg,
                     current: 360,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Ar,
+                    pool: AmmoPool::Ar,
                     current: 280,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Sniper,
+                    pool: AmmoPool::Sniper,
                     current: 48,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Heavy,
+                    pool: AmmoPool::Heavy,
                     current: 0,
                 },
             ]
         );
 
         assert_eq!(
-            bl3_save.character_data.challenge_milestones,
+            *bl3_save.character_data.challenge_milestones(),
             vec![
                 ChallengeData {
                     challenge: Challenge::ArtifactSlot,
@@ -1214,7 +1218,7 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.vehicle_stats,
+            *bl3_save.character_data.vehicle_stats(),
             vec![
                 VehicleStats {
                     name: VehicleName::Outrunner,
@@ -1275,19 +1279,19 @@ mod tests {
             "DBA7CF0B4B0997E60920419B4E0C7D7A"
         );
         assert_eq!(
-            bl3_save.character_data.player_class,
+            bl3_save.character_data.player_class(),
             PlayerClass::BeastMaster
         );
         assert_eq!(bl3_save.character_data.character.experience_points, 3429728);
-        assert_eq!(bl3_save.character_data.player_level, 50);
-        assert_eq!(bl3_save.character_data.guardian_rank, 0);
-        assert_eq!(bl3_save.character_data.money, 733664);
-        assert_eq!(bl3_save.character_data.eridium, 10046);
+        assert_eq!(bl3_save.character_data.player_level(), 50);
+        assert_eq!(bl3_save.character_data.guardian_rank(), 0);
+        assert_eq!(bl3_save.character_data.money(), 733664);
+        assert_eq!(bl3_save.character_data.eridium(), 10046);
         assert_eq!(bl3_save.character_data.character.playthroughs_completed, 0);
 
         let first_playthrough = bl3_save
             .character_data
-            .playthroughs
+            .playthroughs()
             .get(0)
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
@@ -1301,7 +1305,7 @@ mod tests {
         assert_eq!(first_playthrough.mission_milestones.len(), 0);
 
         assert_eq!(
-            bl3_save.character_data.unlockable_inventory_slots,
+            *bl3_save.character_data.unlockable_inventory_slots(),
             vec![
                 InventorySlotData {
                     slot: InventorySlot::Weapon1,
@@ -1339,45 +1343,45 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.sdu_slots,
+            *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    slot: SduSlot::Backpack,
                     current: 8,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    slot: SduSlot::Sniper,
                     current: 8,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    slot: SduSlot::Shotgun,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    slot: SduSlot::Pistol,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    slot: SduSlot::Grenade,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    slot: SduSlot::Smg,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    slot: SduSlot::Ar,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    slot: SduSlot::Heavy,
                     current: 8,
                     max: 13,
                 },
@@ -1385,41 +1389,41 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.ammo_pools,
+            *bl3_save.character_data.ammo_pools(),
             vec![
                 AmmoPoolData {
-                    ammo: AmmoType::Grenade,
+                    pool: AmmoPool::Grenade,
                     current: 11,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Pistol,
+                    pool: AmmoPool::Pistol,
                     current: 1000,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Shotgun,
+                    pool: AmmoPool::Shotgun,
                     current: 240,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Smg,
+                    pool: AmmoPool::Smg,
                     current: 1368,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Ar,
+                    pool: AmmoPool::Ar,
                     current: 1400,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Sniper,
+                    pool: AmmoPool::Sniper,
                     current: 144,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Heavy,
+                    pool: AmmoPool::Heavy,
                     current: 36,
                 },
             ]
         );
 
         assert_eq!(
-            bl3_save.character_data.challenge_milestones,
+            *bl3_save.character_data.challenge_milestones(),
             vec![
                 ChallengeData {
                     challenge: Challenge::ArtifactSlot,
@@ -1445,7 +1449,7 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.vehicle_stats,
+            *bl3_save.character_data.vehicle_stats(),
             vec![
                 VehicleStats {
                     name: VehicleName::Outrunner,
@@ -1502,17 +1506,17 @@ mod tests {
         );
         assert_eq!(bl3_save.character_data.character.save_game_id, 1);
         assert_eq!(bl3_save.character_data.character.save_game_guid, "");
-        assert_eq!(bl3_save.character_data.player_class, PlayerClass::Siren);
+        assert_eq!(bl3_save.character_data.player_class(), PlayerClass::Siren);
         assert_eq!(bl3_save.character_data.character.experience_points, 0);
-        assert_eq!(bl3_save.character_data.player_level, 1);
-        assert_eq!(bl3_save.character_data.guardian_rank, 0);
-        assert_eq!(bl3_save.character_data.money, 0);
-        assert_eq!(bl3_save.character_data.eridium, 0);
+        assert_eq!(bl3_save.character_data.player_level(), 1);
+        assert_eq!(bl3_save.character_data.guardian_rank(), 0);
+        assert_eq!(bl3_save.character_data.money(), 0);
+        assert_eq!(bl3_save.character_data.eridium(), 0);
         assert_eq!(bl3_save.character_data.character.playthroughs_completed, 0);
 
         let first_playthrough = bl3_save
             .character_data
-            .playthroughs
+            .playthroughs()
             .get(0)
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
@@ -1526,7 +1530,7 @@ mod tests {
         assert_eq!(first_playthrough.mission_milestones.len(), 0);
 
         assert_eq!(
-            bl3_save.character_data.unlockable_inventory_slots,
+            *bl3_save.character_data.unlockable_inventory_slots(),
             vec![
                 InventorySlotData {
                     slot: InventorySlot::Weapon1,
@@ -1564,45 +1568,45 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.sdu_slots,
+            *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    slot: SduSlot::Backpack,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    slot: SduSlot::Sniper,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    slot: SduSlot::Shotgun,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    slot: SduSlot::Pistol,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    slot: SduSlot::Grenade,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    slot: SduSlot::Smg,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    slot: SduSlot::Ar,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    slot: SduSlot::Heavy,
                     current: 0,
                     max: 13,
                 },
@@ -1610,41 +1614,41 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.ammo_pools,
+            *bl3_save.character_data.ammo_pools(),
             vec![
                 AmmoPoolData {
-                    ammo: AmmoType::Grenade,
+                    pool: AmmoPool::Grenade,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Pistol,
+                    pool: AmmoPool::Pistol,
                     current: 48,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Shotgun,
+                    pool: AmmoPool::Shotgun,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Smg,
+                    pool: AmmoPool::Smg,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Ar,
+                    pool: AmmoPool::Ar,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Sniper,
+                    pool: AmmoPool::Sniper,
                     current: 0,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Heavy,
+                    pool: AmmoPool::Heavy,
                     current: 0,
                 },
             ]
         );
 
         assert_eq!(
-            bl3_save.character_data.challenge_milestones,
+            *bl3_save.character_data.challenge_milestones(),
             vec![
                 ChallengeData {
                     challenge: Challenge::ArtifactSlot,
@@ -1670,7 +1674,7 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.vehicle_stats,
+            *bl3_save.character_data.vehicle_stats(),
             vec![
                 VehicleStats {
                     name: VehicleName::Outrunner,
@@ -1730,17 +1734,17 @@ mod tests {
             bl3_save.character_data.character.save_game_guid,
             "072F929508D737DDFEB3AE9A060A23D7"
         );
-        assert_eq!(bl3_save.character_data.player_class, PlayerClass::Siren);
+        assert_eq!(bl3_save.character_data.player_class(), PlayerClass::Siren);
         assert_eq!(bl3_save.character_data.character.experience_points, 7149982);
-        assert_eq!(bl3_save.character_data.player_level, 65);
-        assert_eq!(bl3_save.character_data.guardian_rank, 0);
-        assert_eq!(bl3_save.character_data.money, 999999999);
-        assert_eq!(bl3_save.character_data.eridium, 1000000879);
+        assert_eq!(bl3_save.character_data.player_level(), 65);
+        assert_eq!(bl3_save.character_data.guardian_rank(), 0);
+        assert_eq!(bl3_save.character_data.money(), 999999999);
+        assert_eq!(bl3_save.character_data.eridium(), 1000000879);
         assert_eq!(bl3_save.character_data.character.playthroughs_completed, 1);
 
         let first_playthrough = bl3_save
             .character_data
-            .playthroughs
+            .playthroughs()
             .get(0)
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
@@ -1751,7 +1755,7 @@ mod tests {
         assert_eq!(first_playthrough.mission_milestones, vec!["Main Game"]);
 
         assert_eq!(
-            bl3_save.character_data.unlockable_inventory_slots,
+            *bl3_save.character_data.unlockable_inventory_slots(),
             vec![
                 InventorySlotData {
                     slot: InventorySlot::Weapon1,
@@ -1789,45 +1793,45 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.sdu_slots,
+            *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    slot: SduSlot::Backpack,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    slot: SduSlot::Sniper,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    slot: SduSlot::Shotgun,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    slot: SduSlot::Pistol,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    slot: SduSlot::Grenade,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    slot: SduSlot::Smg,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    slot: SduSlot::Ar,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    slot: SduSlot::Heavy,
                     current: 13,
                     max: 13,
                 },
@@ -1835,41 +1839,41 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.ammo_pools,
+            *bl3_save.character_data.ammo_pools(),
             vec![
                 AmmoPoolData {
-                    ammo: AmmoType::Grenade,
+                    pool: AmmoPool::Grenade,
                     current: 11,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Pistol,
+                    pool: AmmoPool::Pistol,
                     current: 1000,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Shotgun,
+                    pool: AmmoPool::Shotgun,
                     current: 240,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Smg,
+                    pool: AmmoPool::Smg,
                     current: 1800,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Ar,
+                    pool: AmmoPool::Ar,
                     current: 662,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Sniper,
+                    pool: AmmoPool::Sniper,
                     current: 144,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Heavy,
+                    pool: AmmoPool::Heavy,
                     current: 36,
                 },
             ]
         );
 
         assert_eq!(
-            bl3_save.character_data.challenge_milestones,
+            *bl3_save.character_data.challenge_milestones(),
             vec![
                 ChallengeData {
                     challenge: Challenge::ArtifactSlot,
@@ -1895,7 +1899,7 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.vehicle_stats,
+            *bl3_save.character_data.vehicle_stats(),
             vec![
                 VehicleStats {
                     name: VehicleName::Outrunner,
@@ -1955,17 +1959,20 @@ mod tests {
             bl3_save.character_data.character.save_game_guid,
             "E1D65E314B7FC8009A31B483A6B83F21"
         );
-        assert_eq!(bl3_save.character_data.player_class, PlayerClass::Operative);
+        assert_eq!(
+            bl3_save.character_data.player_class(),
+            PlayerClass::Operative
+        );
         assert_eq!(bl3_save.character_data.character.experience_points, 5714393);
-        assert_eq!(bl3_save.character_data.player_level, 60);
-        assert_eq!(bl3_save.character_data.guardian_rank, 0);
-        assert_eq!(bl3_save.character_data.money, 100000000);
-        assert_eq!(bl3_save.character_data.eridium, 0);
+        assert_eq!(bl3_save.character_data.player_level(), 60);
+        assert_eq!(bl3_save.character_data.guardian_rank(), 0);
+        assert_eq!(bl3_save.character_data.money(), 100000000);
+        assert_eq!(bl3_save.character_data.eridium(), 0);
         assert_eq!(bl3_save.character_data.character.playthroughs_completed, 0);
 
         let first_playthrough = bl3_save
             .character_data
-            .playthroughs
+            .playthroughs()
             .get(0)
             .expect("failed to read first playthrough");
         assert_eq!(first_playthrough.mayhem_level, 0);
@@ -1979,7 +1986,7 @@ mod tests {
         assert_eq!(first_playthrough.mission_milestones.len(), 0);
 
         assert_eq!(
-            bl3_save.character_data.unlockable_inventory_slots,
+            *bl3_save.character_data.unlockable_inventory_slots(),
             vec![
                 InventorySlotData {
                     slot: InventorySlot::Weapon1,
@@ -2017,45 +2024,45 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.sdu_slots,
+            *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    slot: SduSlot::Backpack,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    slot: SduSlot::Sniper,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    slot: SduSlot::Shotgun,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    slot: SduSlot::Pistol,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    slot: SduSlot::Grenade,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    slot: SduSlot::Smg,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    slot: SduSlot::Ar,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    slot: SduSlot::Heavy,
                     current: 13,
                     max: 13,
                 },
@@ -2063,41 +2070,41 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.ammo_pools,
+            *bl3_save.character_data.ammo_pools(),
             vec![
                 AmmoPoolData {
-                    ammo: AmmoType::Grenade,
+                    pool: AmmoPool::Grenade,
                     current: 3,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Pistol,
+                    pool: AmmoPool::Pistol,
                     current: 145,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Shotgun,
+                    pool: AmmoPool::Shotgun,
                     current: 80,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Smg,
+                    pool: AmmoPool::Smg,
                     current: 360,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Ar,
+                    pool: AmmoPool::Ar,
                     current: 280,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Sniper,
+                    pool: AmmoPool::Sniper,
                     current: 48,
                 },
                 AmmoPoolData {
-                    ammo: AmmoType::Heavy,
+                    pool: AmmoPool::Heavy,
                     current: 0,
                 },
             ]
         );
 
         assert_eq!(
-            bl3_save.character_data.challenge_milestones,
+            *bl3_save.character_data.challenge_milestones(),
             vec![
                 ChallengeData {
                     challenge: Challenge::ArtifactSlot,
@@ -2123,7 +2130,7 @@ mod tests {
         );
 
         assert_eq!(
-            bl3_save.character_data.vehicle_stats,
+            *bl3_save.character_data.vehicle_stats(),
             vec![
                 VehicleStats {
                     name: VehicleName::Outrunner,

@@ -3,6 +3,8 @@ use std::rc::Rc;
 use derivative::Derivative;
 use iced::{Align, Checkbox, Color, Column, Container, Element, Length};
 
+use bl3_save_edit_core::bl3_save::inventory_slot::InventorySlot;
+
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
@@ -17,6 +19,7 @@ use crate::widgets::text_margin::TextMargin;
 #[derivative(Debug, Default)]
 pub struct GearUnlockCheckbox {
     name: String,
+    pub inv_slot: InventorySlot,
     pub is_unlocked: bool,
     #[derivative(
         Debug = "ignore",
@@ -33,6 +36,7 @@ impl GearUnlockCheckbox {
     {
         GearUnlockCheckbox {
             name: name.as_ref().to_owned(),
+            inv_slot: InventorySlot::default(),
             is_unlocked: false,
             on_checked: Rc::new(on_checked),
         }

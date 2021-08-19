@@ -1,13 +1,13 @@
-use strum::{Display, EnumString};
+use strum::{Display, EnumMessage, EnumString};
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct AmmoPoolData {
-    pub ammo: AmmoType,
+    pub pool: AmmoPool,
     pub current: usize,
 }
 
-#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd, Clone)]
-pub enum AmmoType {
+#[derive(Debug, Display, EnumString, EnumMessage, Eq, PartialEq, Ord, PartialOrd, Clone)]
+pub enum AmmoPool {
     #[strum(
         serialize = "/Game/GameData/Weapons/Ammo/Resource_Ammo_Grenade.Resource_Ammo_Grenade",
         to_string = "Grenade"
@@ -45,7 +45,7 @@ pub enum AmmoType {
     Heavy,
 }
 
-impl std::default::Default for AmmoType {
+impl std::default::Default for AmmoPool {
     fn default() -> Self {
         Self::Grenade
     }

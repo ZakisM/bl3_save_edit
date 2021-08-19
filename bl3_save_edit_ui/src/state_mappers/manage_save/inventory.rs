@@ -12,7 +12,7 @@ pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
 
     *manage_save_state.main_state.inventory_state.items_mut() = save
         .character_data
-        .inventory_items
+        .inventory_items()
         .iter()
         .cloned()
         .enumerate()

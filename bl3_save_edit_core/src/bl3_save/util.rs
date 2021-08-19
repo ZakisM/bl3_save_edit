@@ -109,41 +109,6 @@ pub const IMPORTANT_MISSIONS: [[&str; 2]; 7] = [
     ],
 ];
 
-pub const IMPORTANT_CHALLENGES: [[&str; 2]; 8] = [
-    [
-        "/Game/GameData/Challenges/Account/Challenge_VaultReward_Analyzer.Challenge_VaultReward_Analyzer_C",
-        "Eridian Analyzer",
-    ],
-    [
-        "/Game/GameData/Challenges/Account/Challenge_VaultReward_Resonator.Challenge_VaultReward_Resonator_C",
-        "Eridian Resonator",
-    ],
-    [
-        "/Game/GameData/Challenges/Account/Challenge_VaultReward_Mayhem.Challenge_VaultReward_Mayhem_C",
-        "Mayhem Mode",
-    ],
-    [
-        "/Game/GameData/Challenges/Account/Challenge_VaultReward_ArtifactSlot.Challenge_VaultReward_ArtifactSlot_C",
-        "Artifact Slot",
-    ],
-    [
-        "/Game/GameData/Challenges/Character/Beastmaster/BP_Challenge_Beastmaster_ClassMod.BP_Challenge_Beastmaster_ClassMod_C",
-        "BeastMaster Class Mod Slot",
-    ],
-    [
-        "/Game/GameData/Challenges/Character/Gunner/BP_Challenge_Gunner_ClassMod.BP_Challenge_Gunner_ClassMod_C",
-        "Gunner Class Mod Slot",
-    ],
-    [
-        "/Game/GameData/Challenges/Character/Operative/BP_Challenge_Operative_ClassMod.BP_Challenge_Operative_ClassMod_C",
-        "Operative Class Mod Slot",
-    ],
-    [
-        "/Game/GameData/Challenges/Character/Siren/BP_Challenge_Siren_ClassMod.BP_Challenge_Siren_ClassMod_C",
-        "Siren Class Mod Slot",
-    ],
-];
-
 pub fn currency_amount_from_character(character: &Character, currency: &Currency) -> i32 {
     character
         .inventory_category_list

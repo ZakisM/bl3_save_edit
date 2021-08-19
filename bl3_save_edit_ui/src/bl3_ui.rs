@@ -6,7 +6,7 @@ use iced::{
 };
 
 use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, MAX_BL3_ITEM_PARTS};
-use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
+use bl3_save_edit_core::bl3_save::sdu::SduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
 use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
@@ -14,6 +14,7 @@ use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::state_mappers::manage_save;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -300,56 +301,56 @@ impl Application for Bl3UiState {
                                 .character_state
                                 .sdu_unlocker
                                 .backpack
-                                .input = SaveSduSlot::Backpack.maximum();
+                                .input = SduSlot::Backpack.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .sniper
-                                .input = SaveSduSlot::Sniper.maximum();
+                                .input = SduSlot::Sniper.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .shotgun
-                                .input = SaveSduSlot::Shotgun.maximum();
+                                .input = SduSlot::Shotgun.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .pistol
-                                .input = SaveSduSlot::Pistol.maximum();
+                                .input = SduSlot::Pistol.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .grenade
-                                .input = SaveSduSlot::Grenade.maximum();
+                                .input = SduSlot::Grenade.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .smg
-                                .input = SaveSduSlot::Smg.maximum();
+                                .input = SduSlot::Smg.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .assault_rifle
-                                .input = SaveSduSlot::Ar.maximum();
+                                .input = SduSlot::Ar.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .heavy
-                                .input = SaveSduSlot::Heavy.maximum();
+                                .input = SduSlot::Heavy.maximum();
                         }
                         CharacterInteractionMessage::AmmoMessage(ammo_message) => {
                             match ammo_message {
@@ -574,16 +575,20 @@ impl Application for Bl3UiState {
                         }
                     },
                     ManageSaveInteractionMessage::SaveFilePressed => {
-                        let current_file = &mut self.manage_save_state.current_file;
+                        //Lets not make any modifications to the current file just in case we have any errors
+                        let mut current_file = self.manage_save_state.current_file.clone();
 
-                        // current_file.character_data.set_head_skin_selected(
-                        //     &self
-                        //         .manage_save_state
-                        //         .main_state
-                        //         .character_state
-                        //         .skin_state
-                        //         .head_skin_selected,
-                        // );
+                        manage_save::general::map_general_state_to_save(
+                            &mut self.manage_save_state,
+                            &mut current_file,
+                        );
+                        manage_save::character::map_character_state_to_save(
+                            &mut self.manage_save_state,
+                            &mut current_file,
+                        )
+                        .unwrap();
+
+                        // current_file.character_data.
 
                         // current_file.character_data.set_active_travel_stations(
                         //     self.manage_save_state

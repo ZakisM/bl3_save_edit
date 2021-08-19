@@ -6,7 +6,7 @@ use iced::{
     Tooltip,
 };
 
-use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
+use bl3_save_edit_core::bl3_save::sdu::SduSlot;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
@@ -24,7 +24,7 @@ use crate::widgets::text_margin::TextMargin;
 pub struct SduUnlockField {
     name: String,
     text_margin: usize,
-    sdu_slot_type: SaveSduSlot,
+    pub sdu_slot: SduSlot,
     pub input: i32,
     input_state: text_input::State,
     #[derivative(
@@ -35,7 +35,7 @@ pub struct SduUnlockField {
 }
 
 impl SduUnlockField {
-    pub fn new<S, F>(name: S, text_margin: usize, sdu_slot_type: SaveSduSlot, on_changed: F) -> Self
+    pub fn new<S, F>(name: S, text_margin: usize, sdu_slot_type: SduSlot, on_changed: F) -> Self
     where
         S: AsRef<str>,
         F: 'static + Fn(i32) -> CharacterSduInputChangedMessage,
@@ -43,7 +43,7 @@ impl SduUnlockField {
         SduUnlockField {
             name: name.as_ref().to_owned(),
             text_margin,
-            sdu_slot_type,
+            sdu_slot: sdu_slot_type,
             on_changed: Rc::new(on_changed),
             ..Default::default()
         }
@@ -52,7 +52,7 @@ impl SduUnlockField {
     pub fn view(&mut self) -> Row<Message> {
         let on_changed = self.on_changed.clone();
         let minimum = 0;
-        let maximum = self.sdu_slot_type.maximum();
+        let maximum = self.sdu_slot.maximum();
 
         Row::new()
             .push(
@@ -118,49 +118,44 @@ impl std::default::Default for SduUnlocker {
             backpack: SduUnlockField::new(
                 "Backpack",
                 0,
-                SaveSduSlot::Backpack,
+                SduSlot::Backpack,
                 CharacterSduInputChangedMessage::Backpack,
             ),
             sniper: SduUnlockField::new(
                 "Sniper",
                 4,
-                SaveSduSlot::Sniper,
+                SduSlot::Sniper,
                 CharacterSduInputChangedMessage::Sniper,
             ),
             heavy: SduUnlockField::new(
                 "Heavy",
                 0,
-                SaveSduSlot::Heavy,
+                SduSlot::Heavy,
                 CharacterSduInputChangedMessage::Heavy,
             ),
             shotgun: SduUnlockField::new(
                 "Shotgun",
                 4,
-                SaveSduSlot::Shotgun,
+                SduSlot::Shotgun,
                 CharacterSduInputChangedMessage::Shotgun,
             ),
             grenade: SduUnlockField::new(
                 "Grenade",
                 0,
-                SaveSduSlot::Grenade,
+                SduSlot::Grenade,
                 CharacterSduInputChangedMessage::Grenade,
             ),
-            smg: SduUnlockField::new(
-                "SMG",
-                4,
-                SaveSduSlot::Smg,
-                CharacterSduInputChangedMessage::Smg,
-            ),
+            smg: SduUnlockField::new("SMG", 4, SduSlot::Smg, CharacterSduInputChangedMessage::Smg),
             assault_rifle: SduUnlockField::new(
                 "AR",
                 0,
-                SaveSduSlot::Ar,
+                SduSlot::Ar,
                 CharacterSduInputChangedMessage::AssaultRifle,
             ),
             pistol: SduUnlockField::new(
                 "Pistol",
                 4,
-                SaveSduSlot::Pistol,
+                SduSlot::Pistol,
                 CharacterSduInputChangedMessage::Pistol,
             ),
             unlock_all_button_state: button::State::default(),

@@ -90,8 +90,8 @@ impl std::fmt::Display for Bl3FileType {
                 "[{}] {} ({}) - Level {}",
                 save.header_type,
                 save.character_data.character.preferred_character_name,
-                save.character_data.player_class,
-                save.character_data.player_level
+                save.character_data.player_class(),
+                save.character_data.player_level()
             ),
             Bl3FileType::PcProfile(profile) | Bl3FileType::Ps4Profile(profile) => {
                 write!(

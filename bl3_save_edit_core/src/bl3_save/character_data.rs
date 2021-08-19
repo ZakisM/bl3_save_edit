@@ -4,20 +4,19 @@ use anyhow::{Context, Result};
 use derivative::Derivative;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
-use strum::IntoEnumIterator;
+use strum::{EnumMessage, IntoEnumIterator};
 
-use crate::bl3_save::ammo::{AmmoPoolData, AmmoType};
+use crate::bl3_save::ammo::{AmmoPool, AmmoPoolData};
 use crate::bl3_save::bl3_item::Bl3Item;
 use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};
+use crate::bl3_save::level_data::{LEVEL_CHALLENGES, LEVEL_STAT};
 use crate::bl3_save::models::{Currency, VisitedTeleporter};
 use crate::bl3_save::player_class::PlayerClass;
 use crate::bl3_save::playthrough::Playthrough;
-use crate::bl3_save::sdu::{SaveSduSlot, SaveSduSlotData};
-use crate::bl3_save::util::{
-    currency_amount_from_character, experience_to_level, IMPORTANT_CHALLENGES,
-};
+use crate::bl3_save::sdu::{SaveSduSlotData, SduSlot};
+use crate::bl3_save::util::{currency_amount_from_character, experience_to_level};
 use crate::game_data::{
     GameDataKv, PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_HEADS,
     PROFILE_HEADS_DEFAULTS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS, VEHICLE_CHASSIS_CYCLONE,
@@ -27,6 +26,7 @@ use crate::game_data::{
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
 use crate::protos::oak_save::Character;
+use crate::protos::oak_shared::{GameStatSaveGameData, OakSDUSaveGameData};
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
 #[derive(Derivative)]
@@ -34,21 +34,21 @@ use crate::vehicle_data::{VehicleName, VehicleStats};
 pub struct CharacterData {
     #[derivative(PartialEq = "ignore", Ord = "ignore", PartialOrd = "ignore")]
     pub character: Character,
-    pub player_class: PlayerClass,
-    pub player_level: i32,
-    pub guardian_rank: i32,
-    pub head_skin_selected: GameDataKv,
-    pub character_skin_selected: GameDataKv,
-    pub echo_theme_selected: GameDataKv,
-    pub money: i32,
-    pub eridium: i32,
-    pub playthroughs: Vec<Playthrough>,
-    pub unlockable_inventory_slots: Vec<InventorySlotData>,
-    pub sdu_slots: Vec<SaveSduSlotData>,
-    pub ammo_pools: Vec<AmmoPoolData>,
-    pub challenge_milestones: Vec<ChallengeData>,
-    pub vehicle_stats: Vec<VehicleStats>,
-    pub inventory_items: Vec<Bl3Item>,
+    player_class: PlayerClass,
+    player_level: i32,
+    guardian_rank: i32,
+    head_skin_selected: GameDataKv,
+    character_skin_selected: GameDataKv,
+    echo_theme_selected: GameDataKv,
+    money: i32,
+    eridium: i32,
+    playthroughs: Vec<Playthrough>,
+    unlockable_inventory_slots: Vec<InventorySlotData>,
+    sdu_slots: Vec<SaveSduSlotData>,
+    ammo_pools: Vec<AmmoPoolData>,
+    challenge_milestones: Vec<ChallengeData>,
+    vehicle_stats: Vec<VehicleStats>,
+    inventory_items: Vec<Bl3Item>,
 }
 
 impl CharacterData {
@@ -145,7 +145,7 @@ impl CharacterData {
             .sdu_list
             .par_iter()
             .map(|s| {
-                let slot = SaveSduSlot::from_str(&s.sdu_data_path).with_context(|| {
+                let slot = SduSlot::from_str(&s.sdu_data_path).with_context(|| {
                     format!("failed to read save sdu slot: {}", &s.sdu_data_path)
                 })?;
                 let max = slot.maximum();
@@ -159,7 +159,7 @@ impl CharacterData {
             .collect::<Result<Vec<_>>>()?;
 
         // make sure that we include all sdu slots that might not be in our save
-        SaveSduSlot::iter().for_each(|sdu| {
+        SduSlot::iter().for_each(|sdu| {
             let contains_sdu_slot = sdu_slots.par_iter().any(|save_sdu| {
                 std::mem::discriminant(&sdu) == std::mem::discriminant(&save_sdu.slot)
             });
@@ -180,11 +180,11 @@ impl CharacterData {
             .par_iter()
             .filter(|rp| !rp.resource_path.contains("Eridium"))
             .map(|rp| {
-                let ammo = AmmoType::from_str(&rp.resource_path)
+                let ammo = AmmoPool::from_str(&rp.resource_path)
                     .with_context(|| format!("failed to read ammo: {}", &rp.resource_path))?;
 
                 Ok(AmmoPoolData {
-                    ammo,
+                    pool: ammo,
                     current: rp.amount as usize,
                 })
             })
@@ -192,28 +192,28 @@ impl CharacterData {
 
         ammo_pools.par_sort();
 
-        let mut challenge_milestones = IMPORTANT_CHALLENGES
-            .par_iter()
-            .filter(|[k, _]| {
-                let k = k.to_lowercase();
+        let mut challenge_milestones = Challenge::iter()
+            .filter(|challenge| {
+                let challenge_path = challenge.get_serializations()[0].to_lowercase();
 
-                if k.contains("character") {
-                    k.contains(&player_class.to_string().to_lowercase())
+                if challenge_path.contains("character") {
+                    challenge_path.contains(&player_class.to_string().to_lowercase())
                 } else {
                     true
                 }
             })
-            .map(|[k, v]| {
+            .map(|challenge| {
+                let chall_path = challenge.get_serializations()[0];
+
                 let unlocked = character
                     .challenge_data
                     .par_iter()
-                    .find_first(|cd| cd.challenge_class_path.contains(k))
+                    .find_first(|cd| cd.challenge_class_path.contains(&chall_path))
                     .map(|cd| cd.currently_completed)
                     .context("failed to read challenge milestones")?;
 
                 Ok(ChallengeData {
-                    challenge: Challenge::from_str(v)
-                        .with_context(|| format!("failed to read challenge: {}", v))?,
+                    challenge,
                     unlocked,
                 })
             })
@@ -355,6 +355,68 @@ impl CharacterData {
         })
     }
 
+    pub fn player_class(&self) -> PlayerClass {
+        self.player_class
+    }
+
+    pub fn set_player_class(&mut self, player_class: PlayerClass) -> Result<()> {
+        self.player_class = player_class;
+
+        let player_class_data = self
+            .character
+            .player_class_data
+            .as_mut()
+            .with_context(|| "failed to read Player Class data")?;
+
+        player_class_data.player_class_path = player_class.get_serializations()[0].to_string();
+
+        Ok(())
+    }
+
+    pub fn player_level(&self) -> i32 {
+        self.player_level
+    }
+
+    pub fn set_player_level(&mut self, experience_points: i32) -> Result<()> {
+        self.player_level = experience_to_level(experience_points).with_context(|| {
+            format!(
+                "failed to set level for experience points: {}",
+                experience_points
+            )
+        })?;
+
+        self.character.experience_points = experience_points;
+
+        self.set_game_stat(LEVEL_STAT, self.player_level);
+
+        let ability_data = self
+            .character
+            .ability_data
+            .as_mut()
+            .context("failed to read Player ability data")?;
+
+        //Unlock skill tree
+        if self.player_level > 1 && ability_data.tree_grade == 0 {
+            ability_data.tree_grade = 2;
+        }
+
+        for (challenge_level, challenge_obj) in LEVEL_CHALLENGES {
+            if self.player_level >= challenge_level {
+                self.unlock_challenge_obj(challenge_obj, 1, 0)?;
+            }
+        }
+
+        Ok(())
+    }
+
+    pub fn guardian_rank(&self) -> i32 {
+        self.guardian_rank
+    }
+
+    pub fn head_skin_selected(&self) -> GameDataKv {
+        self.head_skin_selected
+    }
+
     pub fn set_head_skin_selected(&mut self, head_skin_selected: &GameDataKv) {
         let curr_head_skin_selected = self.head_skin_selected.ident;
         let head_skin_selected_id = head_skin_selected.ident.to_owned();
@@ -370,6 +432,202 @@ impl CharacterData {
             self.character
                 .selected_customizations
                 .push(head_skin_selected_id)
+        }
+    }
+
+    pub fn character_skin_selected(&self) -> GameDataKv {
+        self.character_skin_selected
+    }
+
+    pub fn set_character_skin_selected(&mut self, character_skin_selected: &GameDataKv) {
+        let curr_character_skin_selected = self.character_skin_selected.ident;
+        let character_skin_selected_id = character_skin_selected.ident.to_owned();
+
+        if let Some(curr_skin) = self
+            .character
+            .selected_customizations
+            .iter_mut()
+            .find(|curr| curr_character_skin_selected == *curr)
+        {
+            *curr_skin = character_skin_selected_id;
+        } else {
+            self.character
+                .selected_customizations
+                .push(character_skin_selected_id)
+        }
+    }
+
+    pub fn echo_theme_selected(&self) -> GameDataKv {
+        self.echo_theme_selected
+    }
+
+    pub fn set_echo_theme_selected(&mut self, echo_theme_selected: &GameDataKv) {
+        let curr_echo_theme_selected = self.echo_theme_selected.ident;
+        let echo_theme_selected_id = echo_theme_selected.ident.to_owned();
+
+        if let Some(echo_theme) = self
+            .character
+            .selected_customizations
+            .iter_mut()
+            .find(|curr| curr_echo_theme_selected == *curr)
+        {
+            *echo_theme = echo_theme_selected_id;
+        } else {
+            self.character
+                .selected_customizations
+                .push(echo_theme_selected_id)
+        }
+    }
+
+    pub fn money(&self) -> i32 {
+        self.money
+    }
+
+    pub fn eridium(&self) -> i32 {
+        self.eridium
+    }
+
+    pub fn playthroughs(&self) -> &Vec<Playthrough> {
+        &self.playthroughs
+    }
+
+    pub fn unlockable_inventory_slots(&self) -> &Vec<InventorySlotData> {
+        &self.unlockable_inventory_slots
+    }
+
+    pub fn unlock_inventory_slot(&mut self, inventory_slot: &InventorySlot) -> Result<()> {
+        let slot_path = inventory_slot.get_serializations()[0];
+
+        let slot = self
+            .character
+            .equipped_inventory_list
+            .iter_mut()
+            .find(|s| s.slot_data_path == slot_path)
+            .with_context(|| {
+                format!(
+                    "failed to find inventory slot: {}",
+                    inventory_slot.to_string()
+                )
+            })?;
+
+        slot.enabled = true;
+
+        let class_mod_challenge = match self.player_class {
+            PlayerClass::BeastMaster => Challenge::BeastMasterClassModSlot,
+            PlayerClass::Gunner => Challenge::GunnerClassModSlot,
+            PlayerClass::Operative => Challenge::OperativeClassModSlot,
+            PlayerClass::Siren => Challenge::SirenClassModSlot,
+        };
+
+        let class_mod_challenge_path = class_mod_challenge.get_serializations()[0];
+
+        match inventory_slot {
+            InventorySlot::ClassMod => {
+                self.unlock_challenge_obj(class_mod_challenge_path, 1, 0)?;
+            }
+            InventorySlot::Artifact => {
+                self.unlock_challenge_obj(Challenge::ArtifactSlot.get_serializations()[0], 1, 0)?;
+            }
+            _ => (),
+        }
+
+        Ok(())
+    }
+
+    pub fn sdu_slots(&self) -> &Vec<SaveSduSlotData> {
+        &self.sdu_slots
+    }
+
+    pub fn set_sdu_slots(&mut self, sdu_slot: &SduSlot, level: i32) -> Result<()> {
+        let sdu_path = sdu_slot.get_serializations()[0];
+
+        if let Some(sdu) = self
+            .character
+            .sdu_list
+            .iter_mut()
+            .find(|s| s.sdu_data_path == sdu_path)
+        {
+            sdu.sdu_level = level;
+        } else {
+            self.character.sdu_list.push(OakSDUSaveGameData {
+                sdu_level: level,
+                sdu_data_path: sdu_path.to_string(),
+                unknown_fields: Default::default(),
+                cached_size: Default::default(),
+            })
+        }
+
+        Ok(())
+    }
+
+    pub fn ammo_pools(&self) -> &Vec<AmmoPoolData> {
+        &self.ammo_pools
+    }
+
+    pub fn set_ammo_pool(&mut self, ammo_pool: &AmmoPool, amount: i32) -> Result<()> {
+        let pool_path = ammo_pool.get_serializations()[0];
+
+        let pool = self
+            .character
+            .resource_pools
+            .iter_mut()
+            .find(|rp| rp.resource_path == pool_path)
+            .with_context(|| format!("failed to find ammo pool: {}", ammo_pool.to_string()))?;
+
+        pool.amount = amount as f32;
+
+        Ok(())
+    }
+
+    pub fn challenge_milestones(&self) -> &Vec<ChallengeData> {
+        &self.challenge_milestones
+    }
+
+    pub fn vehicle_stats(&self) -> &Vec<VehicleStats> {
+        &self.vehicle_stats
+    }
+
+    pub fn inventory_items(&self) -> &Vec<Bl3Item> {
+        &self.inventory_items
+    }
+
+    pub fn unlock_challenge_obj(
+        &mut self,
+        challenge_obj: &str,
+        completed_count: i32,
+        progress_level: i32,
+    ) -> Result<()> {
+        let challenge = self
+            .character
+            .challenge_data
+            .iter_mut()
+            .find(|c| c.challenge_class_path == challenge_obj)
+            .with_context(|| format!("failed to read challenge_obj: {}", challenge_obj))?;
+
+        challenge.currently_completed = true;
+        challenge.is_active = false;
+        challenge.completed_count = completed_count;
+        challenge.progress_counter = 0;
+        challenge.completed_progress_level = progress_level;
+
+        Ok(())
+    }
+
+    pub fn set_game_stat(&mut self, stat_path: &str, stat_value: i32) {
+        if let Some(game_stat) = self
+            .character
+            .game_stats_data
+            .iter_mut()
+            .find(|s| s.stat_path == stat_path)
+        {
+            game_stat.stat_value = stat_value;
+        } else {
+            self.character.game_stats_data.push(GameStatSaveGameData {
+                stat_path: stat_path.to_owned(),
+                stat_value,
+                unknown_fields: Default::default(),
+                cached_size: Default::default(),
+            });
         }
     }
 
