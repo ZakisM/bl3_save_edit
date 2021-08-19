@@ -25,7 +25,7 @@ use crate::game_data::{
     VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST,
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
-use crate::protos::oak_save::Character;
+use crate::protos::oak_save::{Character, OakInventoryItemSaveGameData};
 use crate::protos::oak_shared::{GameStatSaveGameData, OakSDUSaveGameData};
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
@@ -639,6 +639,50 @@ impl CharacterData {
 
     pub fn inventory_items(&self) -> &Vec<Bl3Item> {
         &self.inventory_items
+    }
+
+    pub fn create_inventory_item(
+        item: &Bl3Item,
+        pickup_order_index: i32,
+        is_seen: bool,
+        is_favourite: bool,
+        is_trash: bool,
+    ) -> Result<OakInventoryItemSaveGameData> {
+        let mut flags = 0;
+
+        if is_seen {
+            flags |= 0x1;
+        }
+
+        if is_favourite {
+            flags |= 0x2
+        } else if is_trash {
+            flags |= 0x4
+        }
+
+        let item_serial_number = item.get_serial_number(true)?;
+
+        let res = OakInventoryItemSaveGameData {
+            item_serial_number,
+            pickup_order_index,
+            flags,
+            weapon_skin_path: "".to_string(),
+            development_save_data: Default::default(),
+            unknown_fields: Default::default(),
+            cached_size: Default::default(),
+        };
+
+        Ok(res)
+    }
+
+    pub fn add_inventory_item(&mut self, pickup_order_index: i32, item: &Bl3Item) -> Result<()> {
+        let new_item = Self::create_inventory_item(item, pickup_order_index, true, true, false)?;
+
+        self.character.inventory_items.push(new_item);
+
+        self.inventory_items.push(item.to_owned());
+
+        Ok(())
     }
 
     pub fn unlock_challenge_obj(

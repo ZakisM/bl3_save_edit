@@ -107,23 +107,26 @@ impl AvailableParts {
     ) -> Container<Message> {
         let selected_available_parts_index = &self.parts_index;
 
-        let mut title_row = Row::new().push(
-            Container::new(
-                TextMargin::new("Available Parts", 10)
-                    .0
-                    .font(JETBRAINS_MONO_BOLD)
-                    .size(17)
-                    .color(Color::from_rgb8(242, 203, 5)),
-            )
-            .align_x(Align::Center)
-            .width(Length::Fill),
-        );
-
         let specific_parts = specific_parts_list
             .map(|i| AvailableCategorizedPart::from_resource_categorized_parts(i));
 
         let all_parts =
             all_parts_list.map(|i| AvailableCategorizedPart::from_resource_categorized_parts(i));
+
+        let mut title_row = Row::new().push(
+            Container::new(
+                TextMargin::new(
+                    "Available Parts",
+                    if specific_parts.is_some() { 8 } else { 0 },
+                )
+                .0
+                .font(JETBRAINS_MONO_BOLD)
+                .size(17)
+                .color(Color::from_rgb8(242, 203, 5)),
+            )
+            .align_x(Align::Center)
+            .width(Length::Fill),
+        );
 
         if specific_parts.is_some() {
             title_row = title_row.push(Container::new(

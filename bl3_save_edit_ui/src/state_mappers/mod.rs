@@ -19,7 +19,7 @@ pub fn map_loaded_file_to_state(main_state: &mut Bl3UiState) {
 
             manage_save::character::map_save_to_character_state(&mut main_state.manage_save_state);
 
-            manage_save::inventory::map_inventory_state(&mut main_state.manage_save_state);
+            manage_save::inventory::map_save_to_inventory_state(&mut main_state.manage_save_state);
 
             manage_save::currency::map_currency_state(&mut main_state.manage_save_state);
 

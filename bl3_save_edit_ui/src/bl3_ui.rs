@@ -589,6 +589,11 @@ impl Application for Bl3UiState {
                             &mut current_file,
                         )
                         .unwrap();
+                        manage_save::inventory::map_inventory_state_to_save(
+                            &mut self.manage_save_state,
+                            &mut current_file,
+                        )
+                        .unwrap();
 
                         let output_file = self
                             .choose_save_directory_state
