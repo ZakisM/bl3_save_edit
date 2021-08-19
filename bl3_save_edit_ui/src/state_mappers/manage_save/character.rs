@@ -4,7 +4,7 @@ use anyhow::Result;
 
 use bl3_save_edit_core::bl3_save::ammo::AmmoPool;
 use bl3_save_edit_core::bl3_save::inventory_slot::InventorySlot;
-use bl3_save_edit_core::bl3_save::sdu::SduSlot;
+use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::Bl3Save;
 
 use crate::views::manage_save::ManageSaveState;
@@ -118,14 +118,14 @@ pub fn map_save_to_character_state(manage_save_state: &mut ManageSaveState) {
         .sdu_slots()
         .iter()
         .for_each(|s| match s.slot {
-            SduSlot::Backpack => sdu_unlocker.backpack.input = s.current,
-            SduSlot::Sniper => sdu_unlocker.sniper.input = s.current,
-            SduSlot::Shotgun => sdu_unlocker.shotgun.input = s.current,
-            SduSlot::Pistol => sdu_unlocker.pistol.input = s.current,
-            SduSlot::Grenade => sdu_unlocker.grenade.input = s.current,
-            SduSlot::Smg => sdu_unlocker.smg.input = s.current,
-            SduSlot::Ar => sdu_unlocker.assault_rifle.input = s.current,
-            SduSlot::Heavy => sdu_unlocker.heavy.input = s.current,
+            SaveSduSlot::Backpack => sdu_unlocker.backpack.input = s.current,
+            SaveSduSlot::Sniper => sdu_unlocker.sniper.input = s.current,
+            SaveSduSlot::Shotgun => sdu_unlocker.shotgun.input = s.current,
+            SaveSduSlot::Pistol => sdu_unlocker.pistol.input = s.current,
+            SaveSduSlot::Grenade => sdu_unlocker.grenade.input = s.current,
+            SaveSduSlot::Smg => sdu_unlocker.smg.input = s.current,
+            SaveSduSlot::Ar => sdu_unlocker.assault_rifle.input = s.current,
+            SaveSduSlot::Heavy => sdu_unlocker.heavy.input = s.current,
         });
 
     manage_save_state.main_state.character_state.sdu_unlocker = sdu_unlocker;

@@ -15,7 +15,7 @@ use crate::bl3_save::level_data::{LEVEL_CHALLENGES, LEVEL_STAT};
 use crate::bl3_save::models::{Currency, VisitedTeleporter};
 use crate::bl3_save::player_class::PlayerClass;
 use crate::bl3_save::playthrough::Playthrough;
-use crate::bl3_save::sdu::{SaveSduSlotData, SduSlot};
+use crate::bl3_save::sdu::{SaveSduSlot, SaveSduSlotData};
 use crate::bl3_save::util::{currency_amount_from_character, experience_to_level};
 use crate::game_data::{
     GameDataKv, PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_HEADS,
@@ -145,7 +145,7 @@ impl CharacterData {
             .sdu_list
             .par_iter()
             .map(|s| {
-                let slot = SduSlot::from_str(&s.sdu_data_path).with_context(|| {
+                let slot = SaveSduSlot::from_str(&s.sdu_data_path).with_context(|| {
                     format!("failed to read save sdu slot: {}", &s.sdu_data_path)
                 })?;
                 let max = slot.maximum();
@@ -159,7 +159,7 @@ impl CharacterData {
             .collect::<Result<Vec<_>>>()?;
 
         // make sure that we include all sdu slots that might not be in our save
-        SduSlot::iter().for_each(|sdu| {
+        SaveSduSlot::iter().for_each(|sdu| {
             let contains_sdu_slot = sdu_slots.par_iter().any(|save_sdu| {
                 std::mem::discriminant(&sdu) == std::mem::discriminant(&save_sdu.slot)
             });
@@ -433,6 +433,8 @@ impl CharacterData {
                 .selected_customizations
                 .push(head_skin_selected_id)
         }
+
+        self.head_skin_selected = head_skin_selected.to_owned();
     }
 
     pub fn character_skin_selected(&self) -> GameDataKv {
@@ -455,6 +457,8 @@ impl CharacterData {
                 .selected_customizations
                 .push(character_skin_selected_id)
         }
+
+        self.character_skin_selected = character_skin_selected.to_owned();
     }
 
     pub fn echo_theme_selected(&self) -> GameDataKv {
@@ -477,6 +481,8 @@ impl CharacterData {
                 .selected_customizations
                 .push(echo_theme_selected_id)
         }
+
+        self.echo_theme_selected = echo_theme_selected.to_owned();
     }
 
     pub fn money(&self) -> i32 {
@@ -531,6 +537,19 @@ impl CharacterData {
             _ => (),
         }
 
+        if let Some(current_slot) = self
+            .unlockable_inventory_slots
+            .iter_mut()
+            .find(|i| i.slot == *inventory_slot)
+        {
+            current_slot.unlocked = true;
+        } else {
+            self.unlockable_inventory_slots.push(InventorySlotData {
+                slot: inventory_slot.to_owned(),
+                unlocked: true,
+            });
+        }
+
         Ok(())
     }
 
@@ -538,7 +557,7 @@ impl CharacterData {
         &self.sdu_slots
     }
 
-    pub fn set_sdu_slots(&mut self, sdu_slot: &SduSlot, level: i32) -> Result<()> {
+    pub fn set_sdu_slots(&mut self, sdu_slot: &SaveSduSlot, level: i32) -> Result<()> {
         let sdu_path = sdu_slot.get_serializations()[0];
 
         if let Some(sdu) = self
@@ -555,6 +574,16 @@ impl CharacterData {
                 unknown_fields: Default::default(),
                 cached_size: Default::default(),
             })
+        }
+
+        if let Some(current_slot) = self.sdu_slots.iter_mut().find(|i| i.slot == *sdu_slot) {
+            current_slot.current = level;
+        } else {
+            self.sdu_slots.push(SaveSduSlotData {
+                slot: sdu_slot.to_owned(),
+                current: level,
+                max: sdu_slot.maximum(),
+            });
         }
 
         Ok(())
@@ -575,6 +604,15 @@ impl CharacterData {
             .with_context(|| format!("failed to find ammo pool: {}", ammo_pool.to_string()))?;
 
         pool.amount = amount as f32;
+
+        if let Some(current_pool) = self.ammo_pools.iter_mut().find(|i| i.pool == *ammo_pool) {
+            current_pool.current = amount as usize;
+        } else {
+            self.ammo_pools.push(AmmoPoolData {
+                pool: ammo_pool.to_owned(),
+                current: amount as usize,
+            });
+        }
 
         Ok(())
     }

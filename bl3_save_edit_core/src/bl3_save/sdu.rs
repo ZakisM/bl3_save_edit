@@ -2,7 +2,7 @@ use strum::{Display, EnumIter, EnumMessage, EnumString};
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct SaveSduSlotData {
-    pub slot: SduSlot,
+    pub slot: SaveSduSlot,
     pub current: i32,
     pub max: i32,
 }
@@ -10,7 +10,7 @@ pub struct SaveSduSlotData {
 #[derive(
     Debug, Display, EnumString, EnumIter, EnumMessage, Eq, PartialEq, Ord, PartialOrd, Clone,
 )]
-pub enum SduSlot {
+pub enum SaveSduSlot {
     #[strum(
         serialize = "/Game/Pickups/SDU/SDU_Backpack.SDU_Backpack",
         to_string = "Backpack"
@@ -50,19 +50,21 @@ pub enum SduSlot {
     Heavy,
 }
 
-impl std::default::Default for SduSlot {
+impl std::default::Default for SaveSduSlot {
     fn default() -> Self {
         Self::Backpack
     }
 }
 
-impl SduSlot {
+impl SaveSduSlot {
     pub fn maximum(&self) -> i32 {
         match *self {
-            SduSlot::Backpack | SduSlot::Sniper | SduSlot::Heavy => 13,
-            SduSlot::Shotgun | SduSlot::Pistol | SduSlot::Grenade | SduSlot::Smg | SduSlot::Ar => {
-                10
-            }
+            SaveSduSlot::Backpack | SaveSduSlot::Sniper | SaveSduSlot::Heavy => 13,
+            SaveSduSlot::Shotgun
+            | SaveSduSlot::Pistol
+            | SaveSduSlot::Grenade
+            | SaveSduSlot::Smg
+            | SaveSduSlot::Ar => 10,
         }
     }
 }

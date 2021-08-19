@@ -6,7 +6,7 @@ use iced::{
 };
 
 use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, MAX_BL3_ITEM_PARTS};
-use bl3_save_edit_core::bl3_save::sdu::SduSlot;
+use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
 use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
@@ -301,56 +301,56 @@ impl Application for Bl3UiState {
                                 .character_state
                                 .sdu_unlocker
                                 .backpack
-                                .input = SduSlot::Backpack.maximum();
+                                .input = SaveSduSlot::Backpack.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .sniper
-                                .input = SduSlot::Sniper.maximum();
+                                .input = SaveSduSlot::Sniper.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .shotgun
-                                .input = SduSlot::Shotgun.maximum();
+                                .input = SaveSduSlot::Shotgun.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .pistol
-                                .input = SduSlot::Pistol.maximum();
+                                .input = SaveSduSlot::Pistol.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .grenade
-                                .input = SduSlot::Grenade.maximum();
+                                .input = SaveSduSlot::Grenade.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .smg
-                                .input = SduSlot::Smg.maximum();
+                                .input = SaveSduSlot::Smg.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .assault_rifle
-                                .input = SduSlot::Ar.maximum();
+                                .input = SaveSduSlot::Ar.maximum();
 
                             self.manage_save_state
                                 .main_state
                                 .character_state
                                 .sdu_unlocker
                                 .heavy
-                                .input = SduSlot::Heavy.maximum();
+                                .input = SaveSduSlot::Heavy.maximum();
                         }
                         CharacterInteractionMessage::AmmoMessage(ammo_message) => {
                             match ammo_message {
