@@ -499,8 +499,38 @@ impl CharacterData {
         self.money
     }
 
+    pub fn set_money(&mut self, amount: i32) -> Result<()> {
+        self.money = amount;
+
+        let money = self
+            .character
+            .inventory_category_list
+            .iter_mut()
+            .find(|i| i.base_category_definition_hash == Currency::Money.hash_value())
+            .context("failed to find money hash to update")?;
+
+        money.quantity = amount;
+
+        Ok(())
+    }
+
     pub fn eridium(&self) -> i32 {
         self.eridium
+    }
+
+    pub fn set_eridium(&mut self, amount: i32) -> Result<()> {
+        self.eridium = amount;
+
+        let eridium = self
+            .character
+            .inventory_category_list
+            .iter_mut()
+            .find(|i| i.base_category_definition_hash == Currency::Eridium.hash_value())
+            .context("failed to find eridium hash to update")?;
+
+        eridium.quantity = amount;
+
+        Ok(())
     }
 
     pub fn playthroughs(&self) -> &Vec<Playthrough> {
@@ -676,7 +706,7 @@ impl CharacterData {
     }
 
     pub fn add_inventory_item(&mut self, pickup_order_index: i32, item: &Bl3Item) -> Result<()> {
-        let new_item = Self::create_inventory_item(item, pickup_order_index, true, true, false)?;
+        let new_item = Self::create_inventory_item(item, pickup_order_index, true, false, false)?;
 
         self.character.inventory_items.push(new_item);
 

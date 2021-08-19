@@ -39,7 +39,7 @@ pub fn map_inventory_state_to_save(
     manage_save_state: &mut ManageSaveState,
     save: &mut Bl3Save,
 ) -> Result<()> {
-    // Remove all items first?
+    // TODO: Remove all items first?
     save.character_data.character.inventory_items.clear();
 
     for (i, item) in manage_save_state

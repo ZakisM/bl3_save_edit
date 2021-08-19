@@ -21,7 +21,7 @@ pub fn map_loaded_file_to_state(main_state: &mut Bl3UiState) {
 
             manage_save::inventory::map_save_to_inventory_state(&mut main_state.manage_save_state);
 
-            manage_save::currency::map_currency_state(&mut main_state.manage_save_state);
+            manage_save::currency::map_save_to_currency_state(&mut main_state.manage_save_state);
 
             if mem::discriminant(&main_state.view_state)
                 != mem::discriminant(&ViewState::ManageSave(ManageSaveView::TabBar(

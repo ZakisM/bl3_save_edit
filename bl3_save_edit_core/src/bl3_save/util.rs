@@ -110,16 +110,12 @@ pub const IMPORTANT_MISSIONS: [[&str; 2]; 7] = [
 ];
 
 pub fn currency_amount_from_character(character: &Character, currency: &Currency) -> i32 {
+    let currency_hash = currency.hash_value();
+
     character
         .inventory_category_list
         .par_iter()
-        .find_first(|i| {
-            i.base_category_definition_hash
-                == match currency {
-                    Currency::Money => 618814354,
-                    Currency::Eridium => 3679636065,
-                }
-        })
+        .find_first(|i| i.base_category_definition_hash == currency_hash)
         .map(|i| i.quantity)
         .unwrap_or(0)
 }

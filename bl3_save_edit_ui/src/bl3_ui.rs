@@ -584,12 +584,20 @@ impl Application for Bl3UiState {
                             &mut self.manage_save_state,
                             &mut current_file,
                         );
+
                         manage_save::character::map_character_state_to_save(
                             &mut self.manage_save_state,
                             &mut current_file,
                         )
                         .unwrap();
+
                         manage_save::inventory::map_inventory_state_to_save(
+                            &mut self.manage_save_state,
+                            &mut current_file,
+                        )
+                        .unwrap();
+
+                        manage_save::currency::map_inventory_state_to_save(
                             &mut self.manage_save_state,
                             &mut current_file,
                         )
