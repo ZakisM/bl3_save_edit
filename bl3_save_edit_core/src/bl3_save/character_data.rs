@@ -26,7 +26,9 @@ use crate::game_data::{
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
 use crate::protos::oak_save::{Character, OakInventoryItemSaveGameData};
-use crate::protos::oak_shared::{GameStatSaveGameData, OakSDUSaveGameData};
+use crate::protos::oak_shared::{
+    GameStatSaveGameData, InventoryCategorySaveData, OakSDUSaveGameData,
+};
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
 #[derive(Derivative)]
@@ -502,14 +504,16 @@ impl CharacterData {
     pub fn set_money(&mut self, amount: i32) -> Result<()> {
         self.money = amount;
 
-        let money = self
+        if let Some(money) = self
             .character
             .inventory_category_list
             .iter_mut()
             .find(|i| i.base_category_definition_hash == Currency::Money.hash_value())
-            .context("failed to find money hash to update")?;
-
-        money.quantity = amount;
+        {
+            money.quantity = amount;
+        } else {
+            self.add_inventory_category_item(Currency::Money.hash_value(), amount);
+        }
 
         Ok(())
     }
@@ -521,14 +525,16 @@ impl CharacterData {
     pub fn set_eridium(&mut self, amount: i32) -> Result<()> {
         self.eridium = amount;
 
-        let eridium = self
+        if let Some(eridium) = self
             .character
             .inventory_category_list
             .iter_mut()
             .find(|i| i.base_category_definition_hash == Currency::Eridium.hash_value())
-            .context("failed to find eridium hash to update")?;
-
-        eridium.quantity = amount;
+        {
+            eridium.quantity = amount;
+        } else {
+            self.add_inventory_category_item(Currency::Eridium.hash_value(), amount);
+        }
 
         Ok(())
     }
@@ -706,8 +712,13 @@ impl CharacterData {
     }
 
     pub fn remove_inventory_item(&mut self, index: usize) {
-        self.character.inventory_items.remove(index);
-        self.inventory_items.remove(index);
+        if index < self.character.inventory_items.len() {
+            self.character.inventory_items.remove(index);
+        }
+
+        if index < self.inventory_items.len() {
+            self.inventory_items.remove(index);
+        }
     }
 
     pub fn add_inventory_item(&mut self, pickup_order_index: i32, item: &Bl3Item) -> Result<()> {
@@ -751,6 +762,21 @@ impl CharacterData {
         self.remove_inventory_item(item_index + 1);
 
         Ok(())
+    }
+
+    pub fn add_inventory_category_item(
+        &mut self,
+        base_category_definition_hash: u32,
+        quantity: i32,
+    ) {
+        self.character
+            .inventory_category_list
+            .push(InventoryCategorySaveData {
+                base_category_definition_hash,
+                quantity,
+                unknown_fields: Default::default(),
+                cached_size: Default::default(),
+            });
     }
 
     pub fn unlock_challenge_obj(
