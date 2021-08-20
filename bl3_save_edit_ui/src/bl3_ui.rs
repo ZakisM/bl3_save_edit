@@ -722,7 +722,7 @@ impl Application for Bl3Ui {
 
                                 if let Some(part_selected) = part_selected {
                                     if let Err(e) =
-                                        current_item.item.remove_part(&part_selected.part)
+                                        current_item.item.remove_part(&part_selected.part.part)
                                     {
                                         eprintln!("{}", e);
                                     }

@@ -8,6 +8,7 @@ use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart};
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::views::manage_save::inventory::extra_part_info::add_extra_part_info;
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
 use crate::views::manage_save::inventory::inventory_category_style::InventoryCategoryStyle;
 use crate::views::manage_save::inventory::InventoryInteractionMessage;
@@ -69,25 +70,32 @@ impl AvailableResourcePart {
     }
 
     pub fn view(&mut self, is_active: bool) -> Element<Message> {
-        Button::new(
-            &mut self.button_state,
-            TextMargin::new(&self.part.name, 2)
-                .0
-                .font(JETBRAINS_MONO)
-                .size(16),
-        )
-        .on_press(InteractionMessage::ManageSaveInteraction(
-            ManageSaveInteractionMessage::Inventory(
-                InventoryInteractionMessage::AvailablePartPressed(AvailablePartsIndex {
-                    category_index: self.category_index,
-                    part_index: self.part_index,
-                }),
-            ),
-        ))
-        .padding(10)
-        .width(Length::Fill)
-        .style(InventoryButtonStyle { is_active })
-        .into_element()
+        let part_contents_col = Column::new()
+            .push(
+                TextMargin::new(&self.part.name, 2)
+                    .0
+                    .font(JETBRAINS_MONO)
+                    .size(16),
+            )
+            .spacing(10);
+
+        let part_contents_col = add_extra_part_info(part_contents_col, &self.part.info);
+
+        let part_contents = Container::new(part_contents_col).align_x(Align::Start);
+
+        Button::new(&mut self.button_state, part_contents)
+            .on_press(InteractionMessage::ManageSaveInteraction(
+                ManageSaveInteractionMessage::Inventory(
+                    InventoryInteractionMessage::AvailablePartPressed(AvailablePartsIndex {
+                        category_index: self.category_index,
+                        part_index: self.part_index,
+                    }),
+                ),
+            ))
+            .padding(10)
+            .width(Length::Fill)
+            .style(InventoryButtonStyle { is_active })
+            .into_element()
     }
 }
 

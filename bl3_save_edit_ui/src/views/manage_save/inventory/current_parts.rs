@@ -5,11 +5,12 @@ use iced::{
 };
 
 use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, Bl3Part, MAX_BL3_ITEM_PARTS};
-use bl3_save_edit_core::resources::ResourceCategorizedParts;
+use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart, ResourcePartInfo};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::views::manage_save::inventory::extra_part_info::add_extra_part_info;
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
 use crate::views::manage_save::inventory::inventory_category_style::InventoryCategoryStyle;
 use crate::views::manage_save::inventory::InventoryInteractionMessage;
@@ -30,7 +31,7 @@ pub struct CurrentCategorizedPart {
 }
 
 impl CurrentCategorizedPart {
-    pub fn new(category_id: usize, category: String, parts: Vec<Bl3Part>) -> Self {
+    pub fn new(category_id: usize, category: String, parts: Vec<Bl3PartWithInfo>) -> Self {
         let parts = parts
             .into_iter()
             .enumerate()
@@ -45,12 +46,12 @@ impl CurrentCategorizedPart {
 pub struct CurrentInventoryPart {
     category_index: usize,
     part_index: usize,
-    pub part: Bl3Part,
+    pub part: Bl3PartWithInfo,
     button_state: button::State,
 }
 
 impl CurrentInventoryPart {
-    pub fn new(category_index: usize, part_index: usize, part: Bl3Part) -> Self {
+    pub fn new(category_index: usize, part_index: usize, part: Bl3PartWithInfo) -> Self {
         Self {
             category_index,
             part_index,
@@ -60,35 +61,52 @@ impl CurrentInventoryPart {
     }
 
     pub fn view(&mut self) -> Element<Message> {
-        Button::new(
-            &mut self.button_state,
-            TextMargin::new(
-                self.part.short_ident.as_ref().unwrap_or(&self.part.ident),
-                2,
+        let part_contents_col = Column::new()
+            .push(
+                TextMargin::new(
+                    self.part
+                        .part
+                        .short_ident
+                        .as_ref()
+                        .unwrap_or(&self.part.part.ident),
+                    2,
+                )
+                .0
+                .font(JETBRAINS_MONO)
+                .size(16),
             )
-            .0
-            .font(JETBRAINS_MONO)
-            .size(16),
-        )
-        .on_press(InteractionMessage::ManageSaveInteraction(
-            ManageSaveInteractionMessage::Inventory(
-                InventoryInteractionMessage::CurrentPartPressed(CurrentPartsIndex {
-                    category_index: self.category_index,
-                    part_index: self.part_index,
-                }),
-            ),
-        ))
-        .padding(10)
-        .width(Length::Fill)
-        .style(InventoryButtonStyle { is_active: false })
-        .into_element()
+            .spacing(10);
+
+        let part_contents_col = add_extra_part_info(part_contents_col, &self.part.info);
+
+        let part_contents = Container::new(part_contents_col).align_x(Align::Start);
+
+        Button::new(&mut self.button_state, part_contents)
+            .on_press(InteractionMessage::ManageSaveInteraction(
+                ManageSaveInteractionMessage::Inventory(
+                    InventoryInteractionMessage::CurrentPartPressed(CurrentPartsIndex {
+                        category_index: self.category_index,
+                        part_index: self.part_index,
+                    }),
+                ),
+            ))
+            .padding(10)
+            .width(Length::Fill)
+            .style(InventoryButtonStyle { is_active: false })
+            .into_element()
     }
 }
 
 #[derive(Debug, Clone)]
 pub struct InventoryCategorizedParts {
     pub category: String,
-    pub parts: Vec<Bl3Part>,
+    pub parts: Vec<Bl3PartWithInfo>,
+}
+
+#[derive(Debug, Clone, Default, Ord, PartialOrd, Eq, PartialEq)]
+pub struct Bl3PartWithInfo {
+    pub part: Bl3Part,
+    info: ResourcePartInfo,
 }
 
 #[derive(Debug, Default)]
@@ -105,29 +123,38 @@ impl CurrentParts {
     ) -> Container<Message> {
         let mut current_parts_column = Column::new();
 
-        let mut categorized_parts: BTreeMap<String, Vec<Bl3Part>> = BTreeMap::new();
+        let mut categorized_parts: BTreeMap<String, Vec<Bl3PartWithInfo>> = BTreeMap::new();
 
         if let Some(all_parts_list) = all_parts_list {
             if let Some(item_parts) = &item.item_parts {
                 item_parts.parts().iter().for_each(|p| {
-                    let known_cat_p = all_parts_list.iter().find(|cat| {
-                        cat.parts.iter().any(|cat_p| {
-                            part_contains(p.short_ident.as_ref(), &p.ident, &cat_p.name)
-                        })
-                    });
+                    let resource_part: Option<(&String, &ResourcePart)> =
+                        all_parts_list.iter().find_map(|cat_resource| {
+                            let part = cat_resource.parts.iter().find(|cat_part| {
+                                part_contains(p.short_ident.as_ref(), &p.ident, &cat_part.name)
+                            });
 
-                    if let Some(known_cat_p) = known_cat_p {
+                            part.map(|part| (&cat_resource.category, part))
+                        });
+
+                    if let Some((category, resource_part)) = resource_part {
                         let curr_cat_parts = categorized_parts
-                            .entry(known_cat_p.category.to_owned())
+                            .entry(category.to_owned())
                             .or_insert_with(Vec::new);
 
-                        curr_cat_parts.push(p.to_owned());
+                        curr_cat_parts.push(Bl3PartWithInfo {
+                            part: p.to_owned(),
+                            info: resource_part.info.to_owned(),
+                        });
                     } else {
                         let curr_cat_parts = categorized_parts
                             .entry("Unknown Parts".to_owned())
                             .or_insert_with(Vec::new);
 
-                        curr_cat_parts.push(p.to_owned());
+                        curr_cat_parts.push(Bl3PartWithInfo {
+                            part: p.to_owned(),
+                            info: ResourcePartInfo::default(),
+                        });
                     }
                 });
             }
@@ -137,7 +164,10 @@ impl CurrentParts {
                     .entry("Unknown Parts".to_owned())
                     .or_insert_with(Vec::new);
 
-                curr_cat_parts.push(p.to_owned());
+                curr_cat_parts.push(Bl3PartWithInfo {
+                    part: p.to_owned(),
+                    info: ResourcePartInfo::default(),
+                });
             })
         }
 

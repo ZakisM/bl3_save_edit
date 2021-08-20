@@ -109,6 +109,15 @@ fn main() {
 
     println!("cargo:rerun-if-changed={}", inventory_parts_all_filename);
 
+    let inventory_parts_info_all_filename = "resources/INVENTORY_PARTS_INFO_ALL.csv";
+
+    println!(
+        "cargo:rerun-if-changed={}",
+        inventory_parts_info_all_filename
+    );
+
+    let inventory_parts_info_all = load_inventory_parts_info_all(inventory_parts_info_all_filename);
+
     //Generate RON resources
     let inventory_serial_db_json = load_inventory_serial_db_json();
 
@@ -119,13 +128,15 @@ fn main() {
     let inventory_serial_db_categorized_parts = load_inventory_serial_db_parts_categorized(
         &inventory_serial_db_json,
         &inventory_parts_records,
+        &inventory_parts_info_all,
     );
 
     let inventory_serial_db_categorized_parts_ron =
         ron::to_string(&inventory_serial_db_categorized_parts).unwrap();
 
     //INVENTORY_PARTS_ALL_CATEGORIZED
-    let inventory_parts_all = load_inventory_all_parts_categorized(inventory_parts_records);
+    let inventory_parts_all =
+        load_inventory_all_parts_categorized(inventory_parts_records, &inventory_parts_info_all);
     let inventory_parts_all_categorized_ron = ron::to_string(&inventory_parts_all).unwrap();
 
     //INVENTORY_BALANCE_PARTS
@@ -382,6 +393,26 @@ pub struct ResourcePart {
     pub max_parts: u8,
     pub dependencies: Option<Vec<String>>,
     pub excluders: Option<Vec<String>>,
+    pub info: ResourcePartInfo,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct ResourcePartInfoRecord {
+    #[serde(rename = "Part")]
+    part: String,
+    #[serde(rename = "Positives")]
+    positives: Option<String>,
+    #[serde(rename = "Negatives")]
+    negatives: Option<String>,
+    #[serde(rename = "Effects")]
+    effects: Option<String>,
+}
+
+#[derive(Debug, Default, Clone, Serialize, Deserialize, Ord, PartialOrd, Eq, PartialEq, Hash)]
+pub struct ResourcePartInfo {
+    pub positives: Option<String>,
+    pub negatives: Option<String>,
+    pub effects: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Ord, PartialOrd, Eq, PartialEq, Hash)]
@@ -389,6 +420,20 @@ struct TempHeader {
     manufacturer: String,
     rarity: String,
     balance: String,
+}
+
+fn load_inventory_parts_info_all(filename: &str) -> Vec<ResourcePartInfoRecord> {
+    let mut rdr = csv::ReaderBuilder::new()
+        .has_headers(false)
+        .from_path(filename)
+        .unwrap();
+
+    rdr.deserialize()
+        .map(|r| {
+            let record: ResourcePartInfoRecord = r.unwrap();
+            record
+        })
+        .collect::<Vec<_>>()
 }
 
 pub fn load_inventory_serial_db_json() -> JsonValue {
@@ -466,6 +511,7 @@ fn inventory_parts_all_records(
 fn load_inventory_serial_db_parts_categorized(
     inventory_serial_db: &JsonValue,
     records: &[ResourceItemRecord],
+    inventory_parts_info_all: &[ResourcePartInfoRecord],
 ) -> HashMap<String, Vec<ResourceCategorizedParts>> {
     let records = records;
 
@@ -482,6 +528,24 @@ fn load_inventory_serial_db_parts_categorized(
                         .find_first(|r| r.part == inv_db_part_name)
                         .map(|r| r.to_owned());
 
+                    let part_info = inventory_parts_info_all
+                        .par_iter()
+                        .find_first(|i| i.part == inv_db_part_name);
+
+                    let info = if let Some(part_info) = part_info {
+                        ResourcePartInfo {
+                            positives: part_info.positives.clone(),
+                            negatives: part_info.negatives.clone(),
+                            effects: part_info.effects.clone(),
+                        }
+                    } else {
+                        ResourcePartInfo {
+                            positives: None,
+                            negatives: None,
+                            effects: None,
+                        }
+                    };
+
                     if let Some(curr_record) = curr_record {
                         let curr_group = curr
                             .entry(curr_record.category.to_title_case())
@@ -493,6 +557,7 @@ fn load_inventory_serial_db_parts_categorized(
                             max_parts: curr_record.max_parts,
                             dependencies: curr_record.dependencies,
                             excluders: curr_record.excluders,
+                            info,
                         };
 
                         curr_group.insert(inventory_part);
@@ -507,6 +572,7 @@ fn load_inventory_serial_db_parts_categorized(
                             max_parts: 0,
                             dependencies: None,
                             excluders: None,
+                            info,
                         };
 
                         curr_group.insert(inventory_part);
@@ -528,6 +594,7 @@ fn load_inventory_serial_db_parts_categorized(
 
 fn load_inventory_all_parts_categorized(
     records: Vec<ResourceItemRecord>,
+    inventory_parts_info_all: &[ResourcePartInfoRecord],
 ) -> HashMap<String, ResourceItem> {
     let parts_grouped = records
         .into_iter()
@@ -538,12 +605,33 @@ fn load_inventory_all_parts_categorized(
                 balance: inv_part.balance,
             };
 
+            let inv_part_s = inv_part.part.as_str();
+
+            let part_info = inventory_parts_info_all
+                .par_iter()
+                .find_first(|i| i.part == inv_part_s);
+
+            let info = if let Some(part_info) = part_info {
+                ResourcePartInfo {
+                    positives: part_info.positives.clone(),
+                    negatives: part_info.negatives.clone(),
+                    effects: part_info.effects.clone(),
+                }
+            } else {
+                ResourcePartInfo {
+                    positives: None,
+                    negatives: None,
+                    effects: None,
+                }
+            };
+
             let inventory_part = ResourcePart {
                 name: inv_part.part,
                 min_parts: inv_part.min_parts,
                 max_parts: inv_part.max_parts,
                 dependencies: inv_part.dependencies,
                 excluders: inv_part.excluders,
+                info,
             };
 
             let curr_group = curr
@@ -574,6 +662,7 @@ fn load_inventory_all_parts_categorized(
                             max_parts: p.max_parts,
                             dependencies: p.dependencies.clone(),
                             excluders: p.excluders.clone(),
+                            info: p.info.clone(),
                         })
                         .collect::<Vec<_>>(),
                 })

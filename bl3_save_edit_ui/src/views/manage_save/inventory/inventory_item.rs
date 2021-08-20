@@ -1,7 +1,5 @@
 use heck::TitleCase;
-use iced::{
-    button, container, Align, Button, Color, Column, Container, Element, Length, Row, Text,
-};
+use iced::{button, container, Button, Color, Column, Container, Element, Length, Row, Text};
 
 use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, ItemRarity, ItemType};
 
@@ -103,12 +101,9 @@ impl InventoryListItem {
         }
 
         let button_content = Column::new()
-            .push(
-                Container::new(Text::new(&label).font(JETBRAINS_MONO).size(17)).width(Length::Fill),
-            )
+            .push(Text::new(&label).font(JETBRAINS_MONO).size(17))
             .push(tags_row)
-            .width(Length::Fill)
-            .align_items(Align::Start);
+            .spacing(10);
 
         let item_editor = if is_active {
             Some(self.editor.view(self.id, &self.item))
@@ -117,19 +112,16 @@ impl InventoryListItem {
         };
 
         (
-            Button::new(
-                &mut self.button_state,
-                button_content.align_items(Align::Center).spacing(10),
-            )
-            .on_press(InteractionMessage::ManageSaveInteraction(
-                ManageSaveInteractionMessage::Inventory(InventoryInteractionMessage::ItemPressed(
-                    self.id,
-                )),
-            ))
-            .padding(10)
-            .width(Length::Fill)
-            .style(InventoryButtonStyle { is_active })
-            .into_element(),
+            Button::new(&mut self.button_state, Container::new(button_content))
+                .on_press(InteractionMessage::ManageSaveInteraction(
+                    ManageSaveInteractionMessage::Inventory(
+                        InventoryInteractionMessage::ItemPressed(self.id),
+                    ),
+                ))
+                .padding(10)
+                .width(Length::Fill)
+                .style(InventoryButtonStyle { is_active })
+                .into_element(),
             item_editor,
         )
     }

@@ -72,4 +72,12 @@ pub struct ResourcePart {
     pub max_parts: u8,
     pub dependencies: Option<Vec<String>>,
     pub excluders: Option<Vec<String>>,
+    pub info: ResourcePartInfo,
+}
+
+#[derive(Debug, Default, Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Deserialize)]
+pub struct ResourcePartInfo {
+    pub positives: Option<String>,
+    pub negatives: Option<String>,
+    pub effects: Option<String>,
 }
