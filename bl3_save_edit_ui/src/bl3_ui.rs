@@ -893,10 +893,22 @@ impl Application for Bl3Ui {
                                 .inventory_state
                                 .remove_item(id);
 
-                            self.manage_save_state
+                            let current_file = &mut self.manage_save_state.current_file;
+
+                            current_file.character_data.remove_inventory_item(id);
+
+                            if self
+                                .manage_save_state
                                 .main_state
                                 .inventory_state
-                                .selected_item_index = 0;
+                                .selected_item_index
+                                != 0
+                            {
+                                self.manage_save_state
+                                    .main_state
+                                    .inventory_state
+                                    .selected_item_index -= 1;
+                            }
 
                             self.manage_save_state
                                 .main_state

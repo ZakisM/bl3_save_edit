@@ -39,18 +39,33 @@ pub fn map_inventory_state_to_save(
     manage_save_state: &mut ManageSaveState,
     save: &mut Bl3Save,
 ) -> Result<()> {
-    // TODO: Remove all items first?
-    save.character_data.character.inventory_items.clear();
-
-    for (i, item) in manage_save_state
+    for (i, edited_item) in manage_save_state
         .main_state
         .inventory_state
         .items()
         .iter()
         .enumerate()
     {
-        save.character_data
-            .add_inventory_item(i as i32, &item.item)?;
+        if let Some(original_item) = save.character_data.character.inventory_items.get(i) {
+            let original_serial_number = &original_item.item_serial_number;
+
+            let edited_serial_number = edited_item.item.get_serial_number(true)?;
+
+            // If the item we have edited has different serial number
+            // Then we replace it
+            if *original_serial_number != edited_serial_number {
+                println!("Replacing item at index: {}", i);
+                save.character_data
+                    .replace_inventory_item(i as i32, i, &edited_item.item)?;
+            } else {
+                println!("Keeping existing item at index: {}", i);
+            }
+        } else {
+            // Otherwise insert our new item in this slot
+            println!("Inserting item at index: {}", i);
+            save.character_data
+                .insert_inventory_item(i as i32, i, &edited_item.item)?;
+        }
     }
 
     Ok(())

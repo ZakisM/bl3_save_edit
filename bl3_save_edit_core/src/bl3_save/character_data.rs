@@ -705,12 +705,50 @@ impl CharacterData {
         Ok(res)
     }
 
-    pub fn add_inventory_item(&mut self, pickup_order_index: i32, item: &Bl3Item) -> Result<()> {
-        let new_item = Self::create_inventory_item(item, pickup_order_index, true, false, false)?;
+    pub fn remove_inventory_item(&mut self, index: usize) {
+        self.character.inventory_items.remove(index);
+        self.inventory_items.remove(index);
+    }
 
-        self.character.inventory_items.push(new_item);
+    pub fn add_inventory_item(&mut self, pickup_order_index: i32, item: &Bl3Item) -> Result<()> {
+        let new_oak_item =
+            Self::create_inventory_item(item, pickup_order_index, true, true, false)?;
+
+        self.character.inventory_items.push(new_oak_item);
 
         self.inventory_items.push(item.to_owned());
+
+        Ok(())
+    }
+
+    pub fn insert_inventory_item(
+        &mut self,
+        pickup_order_index: i32,
+        item_index: usize,
+        item: &Bl3Item,
+    ) -> Result<()> {
+        let new_oak_item =
+            Self::create_inventory_item(item, pickup_order_index, true, true, false)?;
+
+        self.character
+            .inventory_items
+            .insert(item_index, new_oak_item);
+
+        self.inventory_items.insert(item_index, item.to_owned());
+
+        Ok(())
+    }
+
+    pub fn replace_inventory_item(
+        &mut self,
+        pickup_order_index: i32,
+        item_index: usize,
+        new_item: &Bl3Item,
+    ) -> Result<()> {
+        self.insert_inventory_item(pickup_order_index, item_index, new_item)?;
+
+        // Remove old item
+        self.remove_inventory_item(item_index + 1);
 
         Ok(())
     }
