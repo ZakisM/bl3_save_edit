@@ -72,7 +72,7 @@ impl AvailableResourcePart {
     pub fn view(&mut self, is_active: bool) -> Element<Message> {
         let part_contents_col = Column::new()
             .push(
-                TextMargin::new(&self.part.name, 2)
+                TextMargin::new(&self.part.name, 1)
                     .0
                     .font(JETBRAINS_MONO)
                     .size(16),

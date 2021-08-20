@@ -69,7 +69,7 @@ impl CurrentInventoryPart {
                         .short_ident
                         .as_ref()
                         .unwrap_or(&self.part.part.ident),
-                    2,
+                    1,
                 )
                 .0
                 .font(JETBRAINS_MONO)
