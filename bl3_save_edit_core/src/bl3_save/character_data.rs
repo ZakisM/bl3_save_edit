@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use anyhow::{Context, Result};
 use derivative::Derivative;
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 use strum::{EnumMessage, IntoEnumIterator};
 
@@ -205,6 +205,7 @@ impl CharacterData {
         ammo_pools.par_sort();
 
         let mut challenge_milestones = Challenge::iter()
+            .par_bridge()
             .filter(|challenge| {
                 let challenge_path = challenge.get_serializations()[0].to_lowercase();
 

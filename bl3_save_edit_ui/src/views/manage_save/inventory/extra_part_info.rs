@@ -12,11 +12,7 @@ pub fn add_extra_part_info<'a>(
 ) -> Column<'a, InteractionMessage> {
     let mut part_contents_col = part_contents_col;
 
-    let mut has_extra_info = false;
-
     if let Some(effects) = &part_info.effects {
-        has_extra_info = true;
-
         part_contents_col = part_contents_col.push(RowMargin::create(
             Container::new(Text::new(effects).font(JETBRAINS_MONO).size(15))
                 .padding(5)
@@ -25,32 +21,66 @@ pub fn add_extra_part_info<'a>(
         ));
     }
 
-    let mut positives_negatives_row = Row::new().width(Length::Fill).spacing(2);
+    let mut has_positive_negatives = false;
 
-    if let Some(positives) = &part_info.positives {
-        has_extra_info = true;
+    let mut should_use_separate_rows = false;
 
-        positives_negatives_row = positives_negatives_row.push(RowMargin::create(
+    let positives_element = if let Some(positives) = &part_info.positives {
+        has_positive_negatives = true;
+
+        if positives.chars().count() > 50 {
+            should_use_separate_rows = true;
+        }
+
+        Some(RowMargin::create(
             Container::new(Text::new(positives).font(JETBRAINS_MONO).size(15))
                 .padding(5)
                 .style(PartInfoPositiveStyle),
             2,
-        ));
-    }
+        ))
+    } else {
+        None
+    };
 
-    if let Some(negatives) = &part_info.negatives {
-        has_extra_info = true;
+    let negatives_element = if let Some(negatives) = &part_info.negatives {
+        has_positive_negatives = true;
 
-        positives_negatives_row = positives_negatives_row.push(RowMargin::create(
+        if negatives.chars().count() > 50 {
+            should_use_separate_rows = true;
+        }
+
+        Some(RowMargin::create(
             Container::new(Text::new(negatives).font(JETBRAINS_MONO).size(15))
                 .padding(5)
                 .style(PartInfoNegativeStyle),
             2,
-        ));
-    }
+        ))
+    } else {
+        None
+    };
 
-    if has_extra_info {
-        part_contents_col = part_contents_col.push(positives_negatives_row);
+    if has_positive_negatives {
+        if should_use_separate_rows {
+            if let Some(p) = positives_element {
+                part_contents_col = part_contents_col.push(p);
+            }
+
+            if let Some(n) = negatives_element {
+                part_contents_col = part_contents_col.push(n);
+            }
+        } else {
+            let mut positives_negatives_row = Row::new().width(Length::Fill).spacing(2);
+
+            if let Some(p) = positives_element {
+                positives_negatives_row = positives_negatives_row.push(p);
+            }
+
+            if let Some(n) = negatives_element {
+                positives_negatives_row = positives_negatives_row.push(n);
+            }
+
+            part_contents_col = part_contents_col.push(positives_negatives_row);
+        }
     }
 
     part_contents_col
