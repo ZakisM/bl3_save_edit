@@ -185,12 +185,14 @@ impl Bl3Item {
         // first decrypt the serial
         let mut serial = serial;
 
-        ensure!(serial.len() >= 5);
+        if serial.len() < 5 {
+            bail!("Serial length must be longer than 4 characters.");
+        }
 
         let initial_byte = serial[0];
 
         if initial_byte != 3 && initial_byte != 4 {
-            bail!("serial version was not correct so we will not decrypt this item");
+            bail!("Serial version was not 3 or 4 so we do not know how to decrypt this item.");
         }
 
         let serial_version = initial_byte;
@@ -360,12 +362,10 @@ impl Bl3Item {
     }
 
     pub fn from_serial_base64(serial: &str) -> Result<Self> {
-        ensure!(serial.len() > 5);
-
         let serial_lower = serial.to_lowercase();
 
         if !serial_lower.starts_with("bl3(") || !serial_lower.ends_with(')') {
-            bail!("invalid item serial")
+            bail!("Serial must start with 'BL3(' and end with ')'.")
         }
 
         let decoded = base64::decode(&serial[4..serial.len() - 1])?;

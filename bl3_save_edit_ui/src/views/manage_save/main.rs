@@ -174,7 +174,7 @@ pub fn view<'a>(
             .push(general_button)
             .push(character_button)
             .push(inventory_button)
-            .push(currency_button), // .push(fast_travel_button),
+            .push(currency_button),
     )
     .width(Length::Fill)
     .style(ManageSaveTabBarStyle);
