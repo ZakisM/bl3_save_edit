@@ -589,28 +589,13 @@ impl Application for Bl3Ui {
                             //Lets not make any modifications to the current file just in case we have any errors
                             let mut current_file = self.manage_save_state.current_file.clone();
 
-                            manage_save::general::map_general_state_to_save(
-                                &mut self.manage_save_state,
-                                &mut current_file,
-                            );
+                            if let Err(e) = manage_save::map_all_states_to_save(&mut self.manage_save_state, &mut current_file) {
+                                let msg = format!("Failed to save file: {}", e);
 
-                            manage_save::character::map_character_state_to_save(
-                                &mut self.manage_save_state,
-                                &mut current_file,
-                            )
-                                .unwrap();
+                                self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
 
-                            manage_save::inventory::map_inventory_state_to_save(
-                                &mut self.manage_save_state,
-                                &mut current_file,
-                            )
-                                .unwrap();
-
-                            manage_save::currency::map_inventory_state_to_save(
-                                &mut self.manage_save_state,
-                                &mut current_file,
-                            )
-                                .unwrap();
+                                return Command::none();
+                            }
 
                             let output_file = self
                                 .choose_save_directory_state
