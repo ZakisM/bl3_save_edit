@@ -269,7 +269,9 @@ impl InventoryItemEditor {
             self.available_parts
                 .view(anointments_list, specific_parts_list, all_parts_list);
 
-        let current_parts_contents = self.current_parts.view(item, all_parts_list);
+        let current_parts_contents =
+            self.current_parts
+                .view(item, anointments_list, all_parts_list);
 
         let parts_editor_contents = Container::new(
             Row::new()

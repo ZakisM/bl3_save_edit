@@ -12,7 +12,7 @@ use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
 use crate::views::manage_save::inventory::available_parts::AvailablePartTypeIndex;
-use crate::views::manage_save::inventory::current_parts::CurrentPartsIndex;
+use crate::views::manage_save::inventory::current_parts::CurrentPartTypeIndex;
 use crate::views::manage_save::inventory::inventory_item::InventoryListItem;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -115,9 +115,12 @@ pub enum InventoryInteractionMessage {
     ShowAllAvailablePartsSelected(bool),
     AvailablePartsTabPressed,
     AvailableAnointmentsTabPressed,
+    CurrentPartsTabPressed,
+    CurrentAnointmentsTabPressed,
     AvailablePartPressed(AvailablePartTypeIndex),
     AvailableAnointmentPressed(AvailablePartTypeIndex),
-    CurrentPartPressed(CurrentPartsIndex),
+    CurrentPartPressed(CurrentPartTypeIndex),
+    CurrentAnointmentPressed(CurrentPartTypeIndex),
     SyncItemLevelWithCharacterLevelPressed,
     ImportItemInputChanged(String),
     CreateItemPressed,

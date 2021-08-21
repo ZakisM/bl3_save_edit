@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use iced::{button, Button, Color, Element, HorizontalAlignment, Length, Text};
 use strum::Display;
 
@@ -8,28 +10,49 @@ use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 
 #[derive(Debug, Display, Clone, Eq, PartialEq)]
-pub enum PartType {
+pub enum AvailablePartType {
     #[strum(to_string = "Available Parts")]
-    AvailableParts,
-    #[strum(to_string = "Available Anointment's")]
-    AvailableAnointments,
+    Parts,
+    #[strum(to_string = "Available Anointments")]
+    Anointments,
 }
 
-impl std::default::Default for PartType {
+impl std::default::Default for AvailablePartType {
     fn default() -> Self {
-        Self::AvailableParts
+        Self::Parts
     }
 }
 
-pub fn parts_tab_bar_button<'a>(
+#[derive(Debug, Display, Clone, Eq, PartialEq)]
+pub enum CurrentPartType {
+    #[strum(to_string = "Current Parts")]
+    Parts,
+    #[strum(to_string = "Current Anointments")]
+    Anointments,
+}
+
+impl std::default::Default for CurrentPartType {
+    fn default() -> Self {
+        Self::Parts
+    }
+}
+
+pub fn parts_tab_bar_button<'a, T: Display + PartialEq>(
     state: &'a mut button::State,
-    tab_bar_view: PartType,
-    current_tab_bar_view: &PartType,
+    tab_bar_view: T,
+    current_tab_bar_view: &T,
     on_press_message: InventoryInteractionMessage,
+    extra_title_content: Option<String>,
 ) -> Element<'a, Message> {
+    let title = if let Some(extra_content) = extra_title_content {
+        format!("{} {}", tab_bar_view, extra_content)
+    } else {
+        tab_bar_view.to_string()
+    };
+
     let button = Button::new(
         state,
-        Text::new(tab_bar_view.to_string())
+        Text::new(title)
             .font(JETBRAINS_MONO_BOLD)
             .size(17)
             .color(Color::from_rgb8(242, 203, 5))

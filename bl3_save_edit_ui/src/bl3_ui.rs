@@ -6,7 +6,9 @@ use iced::{
 };
 
 use bl3_save_edit_core::bl3_save::ammo::AmmoPool;
-use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, MAX_BL3_ITEM_PARTS};
+use bl3_save_edit_core::bl3_save::bl3_item::{
+    Bl3Item, MAX_BL3_ITEM_ANOINTMENTS, MAX_BL3_ITEM_PARTS,
+};
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
@@ -26,7 +28,7 @@ use crate::views::manage_save::character::{
 };
 use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
-use crate::views::manage_save::inventory::parts_tab_bar::PartType;
+use crate::views::manage_save::inventory::parts_tab_bar::{AvailablePartType, CurrentPartType};
 use crate::views::manage_save::inventory::{
     available_parts, InventoryInteractionMessage, InventoryStateExt,
 };
@@ -622,7 +624,11 @@ impl Application for Bl3Ui {
                                         |r| Message::SaveFileCompleted(MessageResult::handle_result(r)),
                                     );
                                 }
-                                Err(e) => eprintln!("{}", e),
+                                Err(e) => {
+                                    let msg = format!("Failed to save file: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
                             };
                         }
                         ManageSaveInteractionMessage::Inventory(inventory_msg) => match inventory_msg {
@@ -656,7 +662,7 @@ impl Application for Bl3Ui {
                                     .main_state
                                     .inventory_state
                                     .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.parts_tab_view = PartType::AvailableParts
+                                        i.editor.available_parts.parts_tab_view = AvailablePartType::Parts
                                     })
                             }
                             InventoryInteractionMessage::AvailableAnointmentsTabPressed => {
@@ -664,14 +670,12 @@ impl Application for Bl3Ui {
                                     .main_state
                                     .inventory_state
                                     .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.parts_tab_view = PartType::AvailableAnointments
+                                        i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments
                                     })
                             }
                             InventoryInteractionMessage::AvailablePartPressed(
                                 available_part_type_index,
                             ) => {
-                                dbg!("Available Part Pressed");
-
                                 let selected_item_index = self
                                     .manage_save_state
                                     .main_state
@@ -707,7 +711,9 @@ impl Application for Bl3Ui {
                                                 {
                                                     if let Err(e) = current_item.item.add_part(bl3_part)
                                                     {
-                                                        eprintln!("{}", e);
+                                                        let msg = format!("Failed to add part to item: {}", e);
+
+                                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
                                                     }
 
                                                     self.manage_save_state
@@ -721,12 +727,77 @@ impl Application for Bl3Ui {
                                             }
                                         }
                                     }
-                                } else {}
+                                }
                             }
                             InventoryInteractionMessage::AvailableAnointmentPressed(available_part_type_index) => {
-                                dbg!("Available Anointment Pressed");
+                                let selected_item_index = self
+                                    .manage_save_state
+                                    .main_state
+                                    .inventory_state
+                                    .selected_item_index;
+
+                                if let Some(current_item) = self
+                                    .manage_save_state
+                                    .main_state
+                                    .inventory_state
+                                    .items_mut()
+                                    .get_mut(selected_item_index)
+                                {
+                                    if let Some(item_parts) = &mut current_item.item.item_parts {
+                                        if item_parts.generic_parts().len() < MAX_BL3_ITEM_ANOINTMENTS {
+                                            let anointment_selected = current_item
+                                                .editor
+                                                .available_parts
+                                                .parts
+                                                .get(available_part_type_index.category_index)
+                                                .and_then(|p| {
+                                                    p.parts.get(available_part_type_index.part_index)
+                                                });
+
+                                            if let Some(anointment_selected) = anointment_selected {
+                                                if let Ok(bl3_part) = INVENTORY_SERIAL_DB
+                                                    .get_part_by_short_name(
+                                                        "InventoryGenericPartData",
+                                                        &anointment_selected.part.name,
+                                                    )
+                                                {
+                                                    if let Err(e) = current_item.item.add_generic_part(bl3_part)
+                                                    {
+                                                        let msg = format!("Failed to add part to item: {}", e);
+
+                                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                                    }
+
+                                                    self.manage_save_state
+                                                        .main_state
+                                                        .inventory_state
+                                                        .map_current_item_if_exists(|i| {
+                                                            i.editor.available_parts.part_type_index =
+                                                                available_part_type_index
+                                                        });
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
-                            InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
+                            InventoryInteractionMessage::CurrentPartsTabPressed => {
+                                self.manage_save_state
+                                    .main_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.current_parts.parts_tab_view = CurrentPartType::Parts
+                                    })
+                            }
+                            InventoryInteractionMessage::CurrentAnointmentsTabPressed => {
+                                self.manage_save_state
+                                    .main_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.current_parts.parts_tab_view = CurrentPartType::Anointments
+                                    })
+                            }
+                            InventoryInteractionMessage::CurrentPartPressed(current_part_type_index) => {
                                 let selected_item_index = self
                                     .manage_save_state
                                     .main_state
@@ -744,14 +815,53 @@ impl Application for Bl3Ui {
                                         .editor
                                         .current_parts
                                         .parts
-                                        .get(current_parts_index.category_index)
-                                        .and_then(|p| p.parts.get(current_parts_index.part_index));
+                                        .get(current_part_type_index.category_index)
+                                        .and_then(|p| p.parts.get(current_part_type_index.part_index));
 
                                     if let Some(part_selected) = part_selected {
                                         if let Err(e) =
                                         current_item.item.remove_part(&part_selected.part.part)
                                         {
-                                            eprintln!("{}", e);
+                                            let msg = format!("Failed to remove part from item: {}", e);
+
+                                            self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                        }
+
+                                        self.manage_save_state
+                                            .main_state
+                                            .inventory_state
+                                            .map_current_item_if_exists_to_editor_state();
+                                    }
+                                }
+                            }
+                            InventoryInteractionMessage::CurrentAnointmentPressed(current_part_type_index) => {
+                                let selected_item_index = self
+                                    .manage_save_state
+                                    .main_state
+                                    .inventory_state
+                                    .selected_item_index;
+
+                                if let Some(current_item) = self
+                                    .manage_save_state
+                                    .main_state
+                                    .inventory_state
+                                    .items_mut()
+                                    .get_mut(selected_item_index)
+                                {
+                                    let part_selected = current_item
+                                        .editor
+                                        .current_parts
+                                        .parts
+                                        .get(current_part_type_index.category_index)
+                                        .and_then(|p| p.parts.get(current_part_type_index.part_index));
+
+                                    if let Some(part_selected) = part_selected {
+                                        if let Err(e) =
+                                        current_item.item.remove_generic_part(&part_selected.part.part)
+                                        {
+                                            let msg = format!("Failed to remove part from item: {}", e);
+
+                                            self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
                                         }
 
                                         self.manage_save_state

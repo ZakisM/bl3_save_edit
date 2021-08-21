@@ -1,7 +1,7 @@
 use std::fmt::Formatter;
 use std::str::FromStr;
 
-use anyhow::{bail, ensure, Context, Result};
+use anyhow::{bail, Result};
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
 use encoding_rs::mem::decode_latin1;
@@ -17,6 +17,7 @@ use crate::resources::{
 };
 
 pub const MAX_BL3_ITEM_PARTS: usize = 63;
+pub const MAX_BL3_ITEM_ANOINTMENTS: usize = 15;
 
 // Translated from https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/bl3save/datalib.py
 // All credits to apocalyptech
@@ -43,7 +44,7 @@ pub struct Bl3ItemParts {
     pub part_bits: usize,
     parts: Vec<Bl3Part>,
     pub generic_part_bits: usize,
-    pub generic_parts: Vec<Bl3Part>,
+    generic_parts: Vec<Bl3Part>,
     pub additional_data: Vec<usize>,
     pub num_customs: usize,
     pub rerolled: usize,
@@ -55,6 +56,10 @@ pub struct Bl3ItemParts {
 impl Bl3ItemParts {
     pub fn parts(&self) -> &Vec<Bl3Part> {
         &self.parts
+    }
+
+    pub fn generic_parts(&self) -> &Vec<Bl3Part> {
+        &self.generic_parts
     }
 }
 
@@ -214,7 +219,9 @@ impl Bl3Item {
         computed_checksum
             .write_u16::<BigEndian>((((computed_crc >> 16) ^ computed_crc) & 0xFFFF) as u16)?;
 
-        ensure!(orig_checksum == computed_checksum);
+        if orig_checksum != computed_checksum {
+            bail!("The expected checksum when deserializing this weapon does not match the original checksum");
+        }
 
         // What we will actually store
         let decrypted_serial = &decrypted_serial[2..];
@@ -225,12 +232,17 @@ impl Bl3Item {
         let ident = bits.eat(8)?;
 
         // Ident will be 0 if is item is not obfuscated
-        ensure!(ident == 128 || ident == 0);
+        if ident != 128 && ident != 0 {
+            bail!(
+                "The 'ident' header of this item should be 128 or 0, but instead it is: {}",
+                ident
+            )
+        }
 
         let data_version = bits.eat(7)?;
 
         if data_version > INVENTORY_SERIAL_DB.max_version {
-            bail!("cannot parse item as it is newer than the version of this item parser")
+            bail!("Cannot parse item as it is newer than the version of this item parser, expected: {}, found: {}", INVENTORY_SERIAL_DB.max_version, data_version);
         }
 
         let (balance, balance_bits, balance_idx) =
@@ -281,6 +293,8 @@ impl Bl3Item {
             .find_first(|gd| balance.to_lowercase() == gd.ident)
             .map(|gd| gd.name.to_owned())
         {
+            let mut should_not_allow_parts_parsing = false;
+
             let (part_bits, parts) =
                 Self::inv_db_header_part_repeated(&part_inv_key, &mut bits, data_version, 6)?;
 
@@ -300,12 +314,18 @@ impl Bl3Item {
 
             let num_customs = bits.eat(4)?;
 
-            ensure!(num_customs == 0);
+            if num_customs != 0 {
+                println!(
+                    "Number of customs should be 0 for this item but it is: {}",
+                    num_customs
+                );
+                should_not_allow_parts_parsing = true;
+            }
 
             let rerolled = if serial_version >= 4 { bits.eat(8)? } else { 0 };
 
             if bits.len() > 7 || bits.bitslice().count_ones() > 0 {
-                bail!("could not fully parse the weapon data")
+                bail!("Could not fully parse the weapon data, there was unexpected data left.")
             }
 
             let item_type = ItemType::from_str(&part_inv_key).unwrap_or_default();
@@ -338,7 +358,11 @@ impl Bl3Item {
                 weapon_type,
             };
 
-            Some(item_parts)
+            if should_not_allow_parts_parsing {
+                None
+            } else {
+                Some(item_parts)
+            }
         } else {
             None
         };
@@ -472,8 +496,7 @@ impl Bl3Item {
             }
         }
 
-        self.update_weapon_serial()
-            .with_context(|| "set_balance update_weapon_serial failed")?;
+        self.update_weapon_serial()?;
 
         Ok(())
     }
@@ -481,8 +504,7 @@ impl Bl3Item {
     pub fn set_inv_data(&mut self, inv_data_part: InvDataPart) -> Result<()> {
         self.inv_data_part = inv_data_part;
 
-        self.update_weapon_serial()
-            .with_context(|| "set_inv_data update_weapon_serial failed")?;
+        self.update_weapon_serial()?;
 
         Ok(())
     }
@@ -490,8 +512,7 @@ impl Bl3Item {
     pub fn set_manufacturer(&mut self, manufacturer_part: ManufacturerPart) -> Result<()> {
         self.manufacturer_part = manufacturer_part;
 
-        self.update_weapon_serial()
-            .with_context(|| "set_manufacturer_part update_weapon_serial failed")?;
+        self.update_weapon_serial()?;
 
         Ok(())
     }
@@ -503,8 +524,7 @@ impl Bl3Item {
     pub fn set_level(&mut self, new_level: usize) -> Result<()> {
         self.level = new_level;
 
-        self.update_weapon_serial()
-            .with_context(|| "set_level update_weapon_serial failed")?;
+        self.update_weapon_serial()?;
 
         Ok(())
     }
@@ -519,8 +539,7 @@ impl Bl3Item {
                 item_parts.parts.remove(part_index);
             }
 
-            self.update_weapon_serial()
-                .with_context(|| "remove_part update_weapon_serial failed")?;
+            self.update_weapon_serial()?;
         }
 
         Ok(())
@@ -530,8 +549,33 @@ impl Bl3Item {
         if let Some(item_parts) = &mut self.item_parts {
             item_parts.parts.push(part);
 
-            self.update_weapon_serial()
-                .with_context(|| "add_part update_weapon_serial failed")?;
+            self.update_weapon_serial()?;
+        }
+
+        Ok(())
+    }
+
+    pub fn remove_generic_part(&mut self, part: &Bl3Part) -> Result<()> {
+        if let Some(item_parts) = &mut self.item_parts {
+            if let Some(part_index) = item_parts
+                .generic_parts
+                .iter_mut()
+                .position(|p| p.ident == part.ident)
+            {
+                item_parts.generic_parts.remove(part_index);
+            }
+
+            self.update_weapon_serial()?;
+        }
+
+        Ok(())
+    }
+
+    pub fn add_generic_part(&mut self, part: Bl3Part) -> Result<()> {
+        if let Some(item_parts) = &mut self.item_parts {
+            item_parts.generic_parts.push(part);
+
+            self.update_weapon_serial()?;
         }
 
         Ok(())

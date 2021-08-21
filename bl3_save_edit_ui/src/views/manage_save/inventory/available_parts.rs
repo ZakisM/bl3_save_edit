@@ -10,7 +10,9 @@ use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::inventory::extra_part_info::add_extra_part_info;
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
-use crate::views::manage_save::inventory::parts_tab_bar::{parts_tab_bar_button, PartType};
+use crate::views::manage_save::inventory::parts_tab_bar::{
+    parts_tab_bar_button, AvailablePartType,
+};
 use crate::views::manage_save::inventory::InventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -32,7 +34,7 @@ impl AvailableCategorizedPart {
     pub fn new(
         category_id: usize,
         category: String,
-        part_type: PartType,
+        part_type: AvailablePartType,
         parts: Vec<ResourcePart>,
     ) -> Self {
         let parts = parts
@@ -45,7 +47,7 @@ impl AvailableCategorizedPart {
     }
 
     pub fn from_resource_categorized_parts(
-        part_type: PartType,
+        part_type: AvailablePartType,
         parts: &[ResourceCategorizedParts],
     ) -> Vec<Self> {
         parts
@@ -68,7 +70,7 @@ impl AvailableCategorizedPart {
 pub struct AvailableResourcePart {
     category_index: usize,
     part_index: usize,
-    part_type: PartType,
+    part_type: AvailablePartType,
     pub part: ResourcePart,
     button_state: button::State,
 }
@@ -77,7 +79,7 @@ impl AvailableResourcePart {
     pub fn new(
         category_index: usize,
         part_index: usize,
-        part_type: PartType,
+        part_type: AvailablePartType,
         part: ResourcePart,
     ) -> Self {
         Self {
@@ -106,13 +108,13 @@ impl AvailableResourcePart {
         Button::new(&mut self.button_state, part_contents)
             .on_press(InteractionMessage::ManageSaveInteraction(
                 ManageSaveInteractionMessage::Inventory(match self.part_type {
-                    PartType::AvailableParts => {
+                    AvailablePartType::Parts => {
                         InventoryInteractionMessage::AvailablePartPressed(AvailablePartTypeIndex {
                             category_index: self.category_index,
                             part_index: self.part_index,
                         })
                     }
-                    PartType::AvailableAnointments => {
+                    AvailablePartType::Anointments => {
                         InventoryInteractionMessage::AvailableAnointmentPressed(
                             AvailablePartTypeIndex {
                                 category_index: self.category_index,
@@ -135,7 +137,7 @@ pub struct AvailableParts {
     pub part_type_index: AvailablePartTypeIndex,
     pub parts: Vec<AvailableCategorizedPart>,
     pub show_all_available_parts: bool,
-    pub parts_tab_view: PartType,
+    pub parts_tab_view: AvailablePartType,
     pub available_parts_tab_button_state: button::State,
     pub available_anointments_tab_button_state: button::State,
 }
@@ -154,9 +156,10 @@ impl AvailableParts {
         title_row = title_row.push(
             Container::new(parts_tab_bar_button(
                 &mut self.available_parts_tab_button_state,
-                PartType::AvailableParts,
+                AvailablePartType::Parts,
                 &self.parts_tab_view,
                 InventoryInteractionMessage::AvailablePartsTabPressed,
+                None,
             ))
             .padding(1)
             .width(Length::FillPortion(2)),
@@ -165,9 +168,10 @@ impl AvailableParts {
         title_row = title_row.push(
             Container::new(parts_tab_bar_button(
                 &mut self.available_anointments_tab_button_state,
-                PartType::AvailableAnointments,
+                AvailablePartType::Anointments,
                 &self.parts_tab_view,
                 InventoryInteractionMessage::AvailableAnointmentsTabPressed,
+                None,
             ))
             .padding(1)
             .width(Length::FillPortion(2)),
@@ -176,17 +180,17 @@ impl AvailableParts {
         let mut available_parts_column = Column::new().push(Container::new(title_row));
 
         let available_parts = match self.parts_tab_view {
-            PartType::AvailableParts => {
+            AvailablePartType::Parts => {
                 let specific_parts = specific_parts_list.map(|i| {
                     AvailableCategorizedPart::from_resource_categorized_parts(
-                        PartType::AvailableParts,
+                        AvailablePartType::Parts,
                         i,
                     )
                 });
 
                 let all_parts = all_parts_list.map(|i| {
                     AvailableCategorizedPart::from_resource_categorized_parts(
-                        PartType::AvailableParts,
+                        AvailablePartType::Parts,
                         i,
                     )
                 });
@@ -200,26 +204,26 @@ impl AvailableParts {
                                     "Show All Parts",
                                     |c| {
                                         InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::Inventory(
-                                        InventoryInteractionMessage::ShowAllAvailablePartsSelected(
-                                            c,
-                                        ),
-                                    ),
-                                )
+                                            ManageSaveInteractionMessage::Inventory(
+                                                InventoryInteractionMessage::ShowAllAvailablePartsSelected(
+                                                    c,
+                                                ),
+                                            ),
+                                        )
                                     },
                                 )
-                                .size(17)
-                                .font(JETBRAINS_MONO_BOLD)
-                                .text_color(Color::from_rgb8(220, 220, 220))
-                                .text_size(17)
-                                .style(Bl3UiStyle)
-                                .into_element(),
+                                    .size(17)
+                                    .font(JETBRAINS_MONO_BOLD)
+                                    .text_color(Color::from_rgb8(220, 220, 220))
+                                    .text_size(17)
+                                    .style(Bl3UiStyle)
+                                    .into_element(),
                             )
-                            .padding(15)
-                            .width(Length::Fill)
-                            .style(Bl3UiStyleNoBorder),
+                                .padding(15)
+                                .width(Length::Fill)
+                                .style(Bl3UiStyleNoBorder),
                         )
-                        .padding(1),
+                            .padding(1),
                     );
                 }
 
@@ -229,9 +233,9 @@ impl AvailableParts {
                     specific_parts
                 }
             }
-            PartType::AvailableAnointments => {
+            AvailablePartType::Anointments => {
                 Some(AvailableCategorizedPart::from_resource_categorized_parts(
-                    PartType::AvailableAnointments,
+                    AvailablePartType::Anointments,
                     anointments_list,
                 ))
             }
