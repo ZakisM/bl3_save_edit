@@ -40,15 +40,16 @@ const BORDERLANDS_SCIENCE_LEVELS: [(i32, ScienceLevel); 10] = [
 impl ScienceLevel {
     pub fn from_solves(progression: &[i32]) -> Result<ScienceLevel> {
         for (i, completions) in progression.iter().enumerate() {
-            let (required_completions, science_level) = BORDERLANDS_SCIENCE_LEVELS
-                .get(i)
-                .with_context(|| format!("failed to read science level for index: {}", i))?;
+            let (required_completions, science_level) =
+                BORDERLANDS_SCIENCE_LEVELS.get(i).with_context(|| {
+                    format!("Failed to read Borderlands Science Level for index: {}", i)
+                })?;
 
             if completions < required_completions || *required_completions == 0 {
                 return Ok(science_level.to_owned());
             }
         }
 
-        bail!("unknown science level")
+        bail!("Failed to read Borderlands Science Level.")
     }
 }

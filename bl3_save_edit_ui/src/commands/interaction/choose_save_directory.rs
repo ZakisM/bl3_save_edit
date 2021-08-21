@@ -92,7 +92,7 @@ pub async fn load_files_in_directory(dir: PathBuf) -> Result<Vec<Bl3FileType>> {
     .await;
 
     if all_files.is_empty() {
-        bail!("no valid files were found")
+        bail!("No Save files or Profiles were found.")
     }
 
     if let Some(end_time) = tokio::time::Instant::now().checked_duration_since(start_time) {

@@ -48,7 +48,7 @@ pub fn read_bytes<'a>(file_location: &'a Path, data: &'a [u8]) -> Result<FileDat
     let remaining_data = &data[data_read..];
 
     if remaining_data.len() != remaining_data_len as usize {
-        bail!("failed to parse the first part of the file")
+        bail!("Failed to parse the first part of the file.")
     }
 
     Ok(FileData {
@@ -117,7 +117,7 @@ impl Bl3FileType {
         } else if let Ok(profile) = Bl3Profile::from_file_data(&file_data, HeaderType::Ps4Profile) {
             Ok(Bl3FileType::Ps4Profile(profile))
         } else {
-            bail!("could not recognize file type")
+            bail!("Could not recognize file type.")
         }
     }
 }

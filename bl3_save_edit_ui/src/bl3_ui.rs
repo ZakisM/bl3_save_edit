@@ -962,16 +962,21 @@ impl Application for Bl3Ui {
 
                                 let character_level = character_level as usize;
 
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .iter_mut()
-                                    .for_each(|i| {
-                                        if let Err(e) = i.item.set_level(character_level) {
-                                            eprintln!("{}", e);
-                                        }
-                                    });
+                                let mut error_notification = None;
+
+                                for (i, item) in self.manage_save_state.main_state.inventory_state.items_mut().iter_mut().enumerate() {
+                                    if let Err(e) = item.item.set_level(character_level) {
+                                        let msg = format!("Failed to set level for item number: {} - {}", i, e);
+
+                                        error_notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+
+                                        break;
+                                    }
+                                }
+
+                                if let Some(error_notification) = error_notification {
+                                    self.notification = Some(error_notification)
+                                }
 
                                 self.manage_save_state
                                     .main_state
@@ -985,14 +990,16 @@ impl Application for Bl3Ui {
                                         .character_state
                                         .xp_level_input as usize;
 
-                                self.manage_save_state
+                                if let Err(e) = self.manage_save_state
                                     .main_state
                                     .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        if let Err(e) = i.item.set_level(character_level) {
-                                            eprintln!("{}", e);
-                                        }
-                                    });
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_level(character_level)
+                                    }) {
+                                    let msg = format!("Failed to set level for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
                             }
                             InventoryInteractionMessage::AllItemLevelInputChanged(item_level_input) => {
                                 self.manage_save_state
@@ -1002,16 +1009,21 @@ impl Application for Bl3Ui {
 
                                 let item_level = item_level_input as usize;
 
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .iter_mut()
-                                    .for_each(|i| {
-                                        if let Err(e) = i.item.set_level(item_level) {
-                                            eprintln!("{}", e);
-                                        }
-                                    });
+                                let mut error_notification = None;
+
+                                for (i, item) in self.manage_save_state.main_state.inventory_state.items_mut().iter_mut().enumerate() {
+                                    if let Err(e) = item.item.set_level(item_level) {
+                                        let msg = format!("Failed to set level for item number: {} - {}", i, e);
+
+                                        error_notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+
+                                        break;
+                                    }
+                                }
+
+                                if let Some(error_notification) = error_notification {
+                                    self.notification = Some(error_notification)
+                                }
 
                                 self.manage_save_state
                                     .main_state
@@ -1019,14 +1031,16 @@ impl Application for Bl3Ui {
                                     .map_current_item_if_exists_to_editor_state();
                             }
                             InventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
-                                self.manage_save_state
+                                if let Err(e) = self.manage_save_state
                                     .main_state
                                     .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        if let Err(e) = i.item.set_level(item_level_input as usize) {
-                                            eprintln!("{}", e);
-                                        }
-                                    });
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_level(item_level_input as usize)
+                                    }) {
+                                    let msg = format!("Failed to set level for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
                             }
                             InventoryInteractionMessage::DeleteItem(id) => {
                                 self.manage_save_state
@@ -1057,36 +1071,42 @@ impl Application for Bl3Ui {
                                     .map_current_item_if_exists_to_editor_state();
                             }
                             InventoryInteractionMessage::BalanceInputSelected(balance_selected) => {
-                                self.manage_save_state
+                                if let Err(e) = self.manage_save_state
                                     .main_state
                                     .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        if let Err(e) = i.item.set_balance(balance_selected) {
-                                            eprintln!("{}", e);
-                                        };
-                                    });
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_balance(balance_selected)
+                                    }) {
+                                    let msg = format!("Failed to set balance for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
                             }
                             InventoryInteractionMessage::InvDataInputSelected(inv_data_selected) => {
-                                self.manage_save_state
+                                if let Err(e) = self.manage_save_state
                                     .main_state
                                     .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        if let Err(e) = i.item.set_inv_data(inv_data_selected) {
-                                            eprintln!("{}", e);
-                                        }
-                                    });
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_inv_data(inv_data_selected)
+                                    }) {
+                                    let msg = format!("Failed to set inventory data for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
                             }
                             InventoryInteractionMessage::ManufacturerInputSelected(
                                 manufacturer_selected,
                             ) => {
-                                self.manage_save_state
+                                if let Err(e) = self.manage_save_state
                                     .main_state
                                     .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        if let Err(e) = i.item.set_manufacturer(manufacturer_selected) {
-                                            eprintln!("{}", e);
-                                        }
-                                    });
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_manufacturer(manufacturer_selected)
+                                    }) {
+                                    let msg = format!("Failed to set manufacturer for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
                             }
                         },
                     },
@@ -1115,7 +1135,12 @@ impl Application for Bl3Ui {
                                 },
                             );
                         }
-                        MessageResult::Error(e) => eprintln!("{}", e),
+                        MessageResult::Error(e) => {
+                            let msg = format!("Failed to choose save directory: {}", e);
+
+                            self.notification =
+                                Some(Notification::new(msg, NotificationSentiment::Negative));
+                        }
                     }
                 }
                 ChooseSaveMessage::LoadedFiles(loaded_files) => match loaded_files {
@@ -1132,7 +1157,12 @@ impl Application for Bl3Ui {
 
                         state_mappers::map_loaded_file_to_state(self);
                     }
-                    MessageResult::Error(e) => eprintln!("{}", e),
+                    MessageResult::Error(e) => {
+                        let msg = format!("Failed to load save directory: {}", e);
+
+                        self.notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    }
                 },
             },
             Message::ManageSave(manage_save_msg) => match manage_save_msg {
@@ -1160,7 +1190,12 @@ impl Application for Bl3Ui {
                         },
                     );
                 }
-                MessageResult::Error(e) => eprintln!("{}", e),
+                MessageResult::Error(e) => {
+                    let msg = format!("Failed to save file: {}", e);
+
+                    self.notification =
+                        Some(Notification::new(msg, NotificationSentiment::Negative));
+                }
             },
             Message::ClearNotification => {
                 self.notification = None;

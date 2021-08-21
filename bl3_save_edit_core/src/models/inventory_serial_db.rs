@@ -71,7 +71,7 @@ impl InventorySerialDb {
         let assets = self.data[category]["assets"].members();
 
         if index > assets.len() {
-            bail!("index was greater than assets length")
+            bail!("Index was greater than assets length.")
         } else {
             Ok(self.data[category]["assets"][index - 1].to_string())
         }
@@ -97,7 +97,7 @@ impl InventorySerialDb {
         } else {
             //This should never happen but lets leave it here just in case
             bail!(
-                "failed to find part from inventory serial db - category: {}, name: {}",
+                "Failed to find part from inventory serial db - category: {}, name: {}",
                 category,
                 name
             )

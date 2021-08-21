@@ -30,7 +30,7 @@ impl<'a> ArbitraryBits<'a> {
 
     pub fn eat(&mut self, num_bits: usize) -> Result<usize> {
         if num_bits > self.bitslice.len() {
-            bail!("invalid range passed to bit slice")
+            bail!("Invalid range passed to bit slice.")
         } else {
             let res = self.bitslice[0..num_bits].load_le::<usize>();
             self.bitslice = &self.bitslice[num_bits..];

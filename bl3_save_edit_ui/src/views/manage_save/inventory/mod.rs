@@ -1,5 +1,6 @@
 use std::convert::TryInto;
 
+use anyhow::Result;
 use iced::{
     button, scrollable, text_input, tooltip, Align, Button, Color, Column, Container, Length, Row,
     Scrollable, Text, TextInput, Tooltip,
@@ -76,6 +77,10 @@ pub trait InventoryStateExt {
     where
         F: FnOnce(&mut InventoryListItem);
 
+    fn map_current_item_if_exists_result<F>(&mut self, f: F) -> Result<()>
+    where
+        F: FnOnce(&mut InventoryListItem) -> Result<()>;
+
     fn map_current_item_if_exists_to_editor_state(&mut self);
 }
 
@@ -89,6 +94,19 @@ impl InventoryStateExt for InventoryState {
 
             self.map_current_item_if_exists_to_editor_state();
         }
+    }
+
+    fn map_current_item_if_exists_result<F>(&mut self, f: F) -> Result<()>
+    where
+        F: FnOnce(&mut InventoryListItem) -> Result<()>,
+    {
+        if let Some(item) = self.items.get_mut(self.selected_item_index) {
+            f(item)?;
+
+            self.map_current_item_if_exists_to_editor_state();
+        }
+
+        Ok(())
     }
 
     fn map_current_item_if_exists_to_editor_state(&mut self) {
