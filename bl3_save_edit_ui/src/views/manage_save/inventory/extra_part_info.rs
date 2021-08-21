@@ -17,7 +17,7 @@ pub fn add_extra_part_info<'a>(
             Text::new(effects)
                 .font(JETBRAINS_MONO_LIGHT_ITALIC)
                 .color(Color::from_rgb8(180, 180, 180))
-                .size(15),
+                .size(16),
             2,
         ));
     }
@@ -38,7 +38,7 @@ pub fn add_extra_part_info<'a>(
             Text::new(positives_negatives)
                 .font(JETBRAINS_MONO_LIGHT_ITALIC)
                 .color(Color::from_rgb8(180, 180, 180))
-                .size(15),
+                .size(16),
             2,
         ));
     }

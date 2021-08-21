@@ -26,7 +26,7 @@ pub async fn choose() -> Result<PathBuf> {
 
     let res = file_dialog
         .show_open_single_dir()?
-        .context("no directory was selected")?;
+        .context("No directory was selected.")?;
 
     Ok(res)
 }
@@ -51,7 +51,7 @@ pub async fn choose() -> Result<PathBuf> {
 
     let dialog = OpenSingleDir { dir: default_dir };
 
-    let res = dialog.show()?.context("no directory was selected")?;
+    let res = dialog.show()?.context("No directory was selected.")?;
 
     Ok(res)
 }
