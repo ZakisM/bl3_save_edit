@@ -1,10 +1,10 @@
-use iced::{container, Color, Column, Text};
+use iced::{container, Color, Column};
 
 use bl3_save_edit_core::resources::ResourcePartInfo;
 
 use crate::bl3_ui::InteractionMessage;
 use crate::resources::fonts::JETBRAINS_MONO_LIGHT_ITALIC;
-use crate::widgets::row_margin::RowMargin;
+use crate::widgets::text_margin::TextMargin;
 
 pub fn add_extra_part_info<'a>(
     part_contents_col: Column<'a, InteractionMessage>,
@@ -13,13 +13,13 @@ pub fn add_extra_part_info<'a>(
     let mut part_contents_col = part_contents_col;
 
     if let Some(effects) = &part_info.effects {
-        part_contents_col = part_contents_col.push(RowMargin::create(
-            Text::new(effects)
+        part_contents_col = part_contents_col.push(
+            TextMargin::new(effects, 2)
+                .0
                 .font(JETBRAINS_MONO_LIGHT_ITALIC)
                 .color(Color::from_rgb8(180, 180, 180))
                 .size(16),
-            2,
-        ));
+        );
     }
 
     let mut positives_negatives = String::new();
@@ -34,13 +34,13 @@ pub fn add_extra_part_info<'a>(
     }
 
     if !positives_negatives.is_empty() {
-        part_contents_col = part_contents_col.push(RowMargin::create(
-            Text::new(positives_negatives)
+        part_contents_col = part_contents_col.push(
+            TextMargin::new(positives_negatives, 2)
+                .0
                 .font(JETBRAINS_MONO_LIGHT_ITALIC)
                 .color(Color::from_rgb8(180, 180, 180))
                 .size(16),
-            2,
-        ));
+        );
     }
 
     part_contents_col
