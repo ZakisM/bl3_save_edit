@@ -6,18 +6,18 @@ use iced::{
 use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart};
 
 use crate::bl3_ui::{InteractionMessage, Message};
-use crate::bl3_ui_style::Bl3UiStyle;
+use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::inventory::extra_part_info::add_extra_part_info;
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
-use crate::views::manage_save::inventory::inventory_category_style::InventoryCategoryStyle;
+use crate::views::manage_save::inventory::parts_tab_bar::{parts_tab_bar_button, PartType};
 use crate::views::manage_save::inventory::InventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::text_margin::TextMargin;
 
 #[derive(Debug, Copy, Clone, Default)]
-pub struct AvailablePartsIndex {
+pub struct AvailablePartTypeIndex {
     pub category_index: usize,
     pub part_index: usize,
 }
@@ -29,23 +29,36 @@ pub struct AvailableCategorizedPart {
 }
 
 impl AvailableCategorizedPart {
-    pub fn new(category_id: usize, category: String, parts: Vec<ResourcePart>) -> Self {
+    pub fn new(
+        category_id: usize,
+        category: String,
+        part_type: PartType,
+        parts: Vec<ResourcePart>,
+    ) -> Self {
         let parts = parts
             .into_iter()
             .enumerate()
-            .map(|(id, p)| AvailableResourcePart::new(category_id, id, p))
+            .map(|(id, p)| AvailableResourcePart::new(category_id, id, part_type.clone(), p))
             .collect();
 
         Self { category, parts }
     }
 
-    pub fn from_resource_categorized_parts(parts: &[ResourceCategorizedParts]) -> Vec<Self> {
+    pub fn from_resource_categorized_parts(
+        part_type: PartType,
+        parts: &[ResourceCategorizedParts],
+    ) -> Vec<Self> {
         parts
             .iter()
             .cloned()
             .enumerate()
             .map(|(cat_id, cat_p)| {
-                AvailableCategorizedPart::new(cat_id, cat_p.category, cat_p.parts)
+                AvailableCategorizedPart::new(
+                    cat_id,
+                    cat_p.category,
+                    part_type.clone(),
+                    cat_p.parts,
+                )
             })
             .collect::<Vec<_>>()
     }
@@ -55,15 +68,22 @@ impl AvailableCategorizedPart {
 pub struct AvailableResourcePart {
     category_index: usize,
     part_index: usize,
+    part_type: PartType,
     pub part: ResourcePart,
     button_state: button::State,
 }
 
 impl AvailableResourcePart {
-    pub fn new(category_index: usize, part_index: usize, part: ResourcePart) -> Self {
+    pub fn new(
+        category_index: usize,
+        part_index: usize,
+        part_type: PartType,
+        part: ResourcePart,
+    ) -> Self {
         Self {
             category_index,
             part_index,
+            part_type,
             part,
             button_state: button::State::new(),
         }
@@ -85,12 +105,22 @@ impl AvailableResourcePart {
 
         Button::new(&mut self.button_state, part_contents)
             .on_press(InteractionMessage::ManageSaveInteraction(
-                ManageSaveInteractionMessage::Inventory(
-                    InventoryInteractionMessage::AvailablePartPressed(AvailablePartsIndex {
-                        category_index: self.category_index,
-                        part_index: self.part_index,
-                    }),
-                ),
+                ManageSaveInteractionMessage::Inventory(match self.part_type {
+                    PartType::AvailableParts => {
+                        InventoryInteractionMessage::AvailablePartPressed(AvailablePartTypeIndex {
+                            category_index: self.category_index,
+                            part_index: self.part_index,
+                        })
+                    }
+                    PartType::AvailableAnointments => {
+                        InventoryInteractionMessage::AvailableAnointmentPressed(
+                            AvailablePartTypeIndex {
+                                category_index: self.category_index,
+                                part_index: self.part_index,
+                            },
+                        )
+                    }
+                }),
             ))
             .padding(10)
             .width(Length::Fill)
@@ -102,66 +132,110 @@ impl AvailableResourcePart {
 #[derive(Debug, Default)]
 pub struct AvailableParts {
     pub scrollable_state: scrollable::State,
-    pub parts_index: AvailablePartsIndex,
+    pub part_type_index: AvailablePartTypeIndex,
     pub parts: Vec<AvailableCategorizedPart>,
     pub show_all_available_parts: bool,
+    pub parts_tab_view: PartType,
+    pub available_parts_tab_button_state: button::State,
+    pub available_anointments_tab_button_state: button::State,
 }
 
 impl AvailableParts {
     pub fn view(
         &mut self,
+        anointments_list: &[ResourceCategorizedParts],
         specific_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
     ) -> Container<Message> {
-        let selected_available_parts_index = &self.parts_index;
+        let selected_available_part_type_index = &self.part_type_index;
 
-        let specific_parts = specific_parts_list
-            .map(|i| AvailableCategorizedPart::from_resource_categorized_parts(i));
+        let mut title_row = Row::new().align_items(Align::Center);
 
-        let all_parts =
-            all_parts_list.map(|i| AvailableCategorizedPart::from_resource_categorized_parts(i));
-
-        let mut title_row = Row::new().push(
-            Container::new(
-                TextMargin::new(
-                    "Available Parts",
-                    if specific_parts.is_some() { 8 } else { 0 },
-                )
-                .0
-                .font(JETBRAINS_MONO_BOLD)
-                .size(17)
-                .color(Color::from_rgb8(242, 203, 5)),
-            )
-            .align_x(Align::Center)
-            .width(Length::Fill),
+        title_row = title_row.push(
+            Container::new(parts_tab_bar_button(
+                &mut self.available_parts_tab_button_state,
+                PartType::AvailableParts,
+                &self.parts_tab_view,
+                InventoryInteractionMessage::AvailablePartsTabPressed,
+            ))
+            .padding(1)
+            .width(Length::FillPortion(2)),
         );
 
-        if specific_parts.is_some() {
-            title_row = title_row.push(Container::new(
-                Checkbox::new(self.show_all_available_parts, "All", |c| {
-                    InteractionMessage::ManageSaveInteraction(
-                        ManageSaveInteractionMessage::Inventory(
-                            InventoryInteractionMessage::ShowAllAvailablePartsSelected(c),
-                        ),
+        title_row = title_row.push(
+            Container::new(parts_tab_bar_button(
+                &mut self.available_anointments_tab_button_state,
+                PartType::AvailableAnointments,
+                &self.parts_tab_view,
+                InventoryInteractionMessage::AvailableAnointmentsTabPressed,
+            ))
+            .padding(1)
+            .width(Length::FillPortion(2)),
+        );
+
+        let mut available_parts_column = Column::new().push(Container::new(title_row));
+
+        let available_parts = match self.parts_tab_view {
+            PartType::AvailableParts => {
+                let specific_parts = specific_parts_list.map(|i| {
+                    AvailableCategorizedPart::from_resource_categorized_parts(
+                        PartType::AvailableParts,
+                        i,
                     )
-                })
-                .size(17)
-                .font(JETBRAINS_MONO_BOLD)
-                .text_color(Color::from_rgb8(220, 220, 220))
-                .text_size(17)
-                .style(Bl3UiStyle)
-                .into_element(),
-            ));
-        }
+                });
 
-        let available_parts = if self.show_all_available_parts || specific_parts.is_none() {
-            all_parts
-        } else {
-            specific_parts
+                let all_parts = all_parts_list.map(|i| {
+                    AvailableCategorizedPart::from_resource_categorized_parts(
+                        PartType::AvailableParts,
+                        i,
+                    )
+                });
+
+                if specific_parts.is_some() {
+                    available_parts_column = available_parts_column.push(
+                        Container::new(
+                            Container::new(
+                                Checkbox::new(
+                                    self.show_all_available_parts,
+                                    "Show All Parts",
+                                    |c| {
+                                        InteractionMessage::ManageSaveInteraction(
+                                    ManageSaveInteractionMessage::Inventory(
+                                        InventoryInteractionMessage::ShowAllAvailablePartsSelected(
+                                            c,
+                                        ),
+                                    ),
+                                )
+                                    },
+                                )
+                                .size(17)
+                                .font(JETBRAINS_MONO_BOLD)
+                                .text_color(Color::from_rgb8(220, 220, 220))
+                                .text_size(17)
+                                .style(Bl3UiStyle)
+                                .into_element(),
+                            )
+                            .padding(15)
+                            .width(Length::Fill)
+                            .style(Bl3UiStyleNoBorder),
+                        )
+                        .padding(1),
+                    );
+                }
+
+                if self.show_all_available_parts || specific_parts.is_none() {
+                    all_parts
+                } else {
+                    specific_parts
+                }
+            }
+            PartType::AvailableAnointments => {
+                Some(AvailableCategorizedPart::from_resource_categorized_parts(
+                    PartType::AvailableAnointments,
+                    anointments_list,
+                ))
+            }
         };
-
-        let mut available_parts_column =
-            Column::new().push(Container::new(title_row).padding(11).style(Bl3UiStyle));
 
         if let Some(available_parts) = available_parts {
             self.parts = available_parts;
@@ -177,13 +251,14 @@ impl AvailableParts {
                                 .color(Color::from_rgb8(242, 203, 5)),
                         )
                         .width(Length::Fill)
-                        .style(InventoryCategoryStyle)
+                        .style(Bl3UiStyleNoBorder)
                         .padding(10),
                     );
 
                     for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
-                        let is_active = selected_available_parts_index.category_index == cat_index
-                            && selected_available_parts_index.part_index == part_index;
+                        let is_active = selected_available_part_type_index.category_index
+                            == cat_index
+                            && selected_available_part_type_index.part_index == part_index;
                         curr = curr.push(p.view(is_active));
                     }
 

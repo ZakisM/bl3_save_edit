@@ -11,7 +11,7 @@ use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
-use crate::views::manage_save::inventory::available_parts::AvailablePartsIndex;
+use crate::views::manage_save::inventory::available_parts::AvailablePartTypeIndex;
 use crate::views::manage_save::inventory::current_parts::CurrentPartsIndex;
 use crate::views::manage_save::inventory::inventory_item::InventoryListItem;
 use crate::views::manage_save::ManageSaveInteractionMessage;
@@ -25,9 +25,9 @@ pub mod current_parts;
 pub mod delete_item_button_style;
 pub mod extra_part_info;
 pub mod inventory_button_style;
-pub mod inventory_category_style;
 pub mod inventory_item;
 pub mod inventory_item_editor;
+pub mod parts_tab_bar;
 
 #[derive(Debug, Default)]
 pub struct InventoryState {
@@ -113,7 +113,10 @@ pub enum InventoryMessage {}
 pub enum InventoryInteractionMessage {
     ItemPressed(usize),
     ShowAllAvailablePartsSelected(bool),
-    AvailablePartPressed(AvailablePartsIndex),
+    AvailablePartsTabPressed,
+    AvailableAnointmentsTabPressed,
+    AvailablePartPressed(AvailablePartTypeIndex),
+    AvailableAnointmentPressed(AvailablePartTypeIndex),
     CurrentPartPressed(CurrentPartsIndex),
     SyncItemLevelWithCharacterLevelPressed,
     ImportItemInputChanged(String),
@@ -255,13 +258,13 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
         .push(create_item_button)
         .push(
             Container::new(serial_importer)
-                .width(Length::FillPortion(4))
+                .width(Length::FillPortion(8))
                 .height(Length::Units(36))
                 .style(Bl3UiStyle),
         )
         .push(
             Container::new(edit_all_item_levels_input)
-                .width(Length::FillPortion(4))
+                .width(Length::FillPortion(2))
                 .height(Length::Units(36))
                 .style(Bl3UiStyle),
         )

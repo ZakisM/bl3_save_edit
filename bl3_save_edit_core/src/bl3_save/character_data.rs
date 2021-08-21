@@ -150,13 +150,11 @@ impl CharacterData {
                 let slot = SaveSduSlot::from_str(&s.sdu_data_path).with_context(|| {
                     format!("failed to read save sdu slot: {}", &s.sdu_data_path)
                 })?;
-                let additional_amount = slot.additional_amount();
                 let max = slot.maximum();
 
                 Ok(SaveSduSlotData {
                     slot,
                     current: s.sdu_level,
-                    additional_amount,
                     max,
                 })
             })
@@ -169,14 +167,12 @@ impl CharacterData {
             });
 
             let slot = sdu;
-            let additional_amount = slot.additional_amount();
             let max = slot.maximum();
 
             if !contains_sdu_slot {
                 sdu_slots.push(SaveSduSlotData {
                     slot,
                     current: 0,
-                    additional_amount,
                     max,
                 })
             }
@@ -629,7 +625,6 @@ impl CharacterData {
             self.sdu_slots.push(SaveSduSlotData {
                 slot: sdu_slot.to_owned(),
                 current: level,
-                additional_amount: sdu_slot.additional_amount(),
                 max: sdu_slot.maximum(),
             });
         }

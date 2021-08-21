@@ -26,6 +26,7 @@ use crate::views::manage_save::character::{
 };
 use crate::views::manage_save::currency::CurrencyInteractionMessage;
 use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
+use crate::views::manage_save::inventory::parts_tab_bar::PartType;
 use crate::views::manage_save::inventory::{
     available_parts, InventoryInteractionMessage, InventoryStateExt,
 };
@@ -635,8 +636,8 @@ impl Application for Bl3Ui {
                                     .main_state
                                     .inventory_state
                                     .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.parts_index =
-                                            available_parts::AvailablePartsIndex {
+                                        i.editor.available_parts.part_type_index =
+                                            available_parts::AvailablePartTypeIndex {
                                                 category_index: 0,
                                                 part_index: 0,
                                             }
@@ -650,9 +651,27 @@ impl Application for Bl3Ui {
                                         i.editor.available_parts.show_all_available_parts = selected;
                                     })
                             }
+                            InventoryInteractionMessage::AvailablePartsTabPressed => {
+                                self.manage_save_state
+                                    .main_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.available_parts.parts_tab_view = PartType::AvailableParts
+                                    })
+                            }
+                            InventoryInteractionMessage::AvailableAnointmentsTabPressed => {
+                                self.manage_save_state
+                                    .main_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.available_parts.parts_tab_view = PartType::AvailableAnointments
+                                    })
+                            }
                             InventoryInteractionMessage::AvailablePartPressed(
-                                available_parts_index,
+                                available_part_type_index,
                             ) => {
+                                dbg!("Available Part Pressed");
+
                                 let selected_item_index = self
                                     .manage_save_state
                                     .main_state
@@ -672,9 +691,9 @@ impl Application for Bl3Ui {
                                                 .editor
                                                 .available_parts
                                                 .parts
-                                                .get(available_parts_index.category_index)
+                                                .get(available_part_type_index.category_index)
                                                 .and_then(|p| {
-                                                    p.parts.get(available_parts_index.part_index)
+                                                    p.parts.get(available_part_type_index.part_index)
                                                 });
 
                                             if let Some(part_selected) = part_selected {
@@ -695,14 +714,17 @@ impl Application for Bl3Ui {
                                                         .main_state
                                                         .inventory_state
                                                         .map_current_item_if_exists(|i| {
-                                                            i.editor.available_parts.parts_index =
-                                                                available_parts_index
+                                                            i.editor.available_parts.part_type_index =
+                                                                available_part_type_index
                                                         });
                                                 }
                                             }
                                         }
                                     }
                                 } else {}
+                            }
+                            InventoryInteractionMessage::AvailableAnointmentPressed(available_part_type_index) => {
+                                dbg!("Available Anointment Pressed");
                             }
                             InventoryInteractionMessage::CurrentPartPressed(current_parts_index) => {
                                 let selected_item_index = self
@@ -808,8 +830,6 @@ impl Application for Bl3Ui {
                                             .inventory_state
                                             .item_list_scrollable_state
                                             .snap_to(1.0);
-
-                                        self.notification = Some(Notification::new("Successfully imported item!", NotificationSentiment::Positive));
                                     }
                                     Err(e) => {
                                         let msg = format!("Failed to import serial: {}", e);

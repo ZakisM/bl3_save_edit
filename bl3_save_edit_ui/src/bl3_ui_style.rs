@@ -1,6 +1,17 @@
 use iced::pick_list::Menu;
 use iced::{button, checkbox, container, pick_list, text_input, text_input_with_picklist, Color};
 
+pub struct Bl3UiStyleNoBorder;
+
+impl container::StyleSheet for Bl3UiStyleNoBorder {
+    fn style(&self) -> container::Style {
+        container::Style {
+            background: Color::from_rgb8(22, 22, 22).into(),
+            ..container::Style::default()
+        }
+    }
+}
+
 pub struct Bl3UiStyle;
 
 impl container::StyleSheet for Bl3UiStyle {

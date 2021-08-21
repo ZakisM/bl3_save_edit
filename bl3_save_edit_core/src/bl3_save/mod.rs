@@ -295,7 +295,7 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_1() {
-        let filename = "./test_files/19.sav";
+        let filename = Path::new("./test_files/19.sav");
 
         let mut save_file_data = fs::read(&filename).expect("failed to read test_file");
 
@@ -473,30 +473,37 @@ mod tests {
                 AmmoPoolData {
                     pool: AmmoPool::Grenade,
                     current: 11,
+                    max: AmmoPool::Grenade.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Pistol,
                     current: 201,
+                    max: AmmoPool::Pistol.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Shotgun,
                     current: 110,
+                    max: AmmoPool::Shotgun.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Smg,
                     current: 1800,
+                    max: AmmoPool::Smg.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Ar,
                     current: 705,
+                    max: AmmoPool::Ar.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Sniper,
                     current: 41,
+                    max: AmmoPool::Sniper.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Heavy,
                     current: 51,
+                    max: AmmoPool::Heavy.maximum(),
                 },
             ]
         );
@@ -572,7 +579,7 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_2() {
-        let filename = "./test_files/1.sav";
+        let filename = Path::new("./test_files/1.sav");
 
         let mut save_file_data = fs::read(&filename).expect("failed to read mut test_file");
 
@@ -701,30 +708,37 @@ mod tests {
                 AmmoPoolData {
                     pool: AmmoPool::Grenade,
                     current: 5,
+                    max: AmmoPool::Grenade.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Pistol,
                     current: 238,
+                    max: AmmoPool::Pistol.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Shotgun,
                     current: 160,
+                    max: AmmoPool::Shotgun.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Smg,
                     current: 1080,
+                    max: AmmoPool::Smg.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Ar,
                     current: 672,
+                    max: AmmoPool::Ar.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Sniper,
                     current: 84,
+                    max: AmmoPool::Sniper.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Heavy,
                     current: 21,
+                    max: AmmoPool::Heavy.maximum(),
                 },
             ]
         );
@@ -800,7 +814,7 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_3() {
-        let filename = "./test_files/5.sav";
+        let filename = Path::new("./test_files/5.sav");
 
         let mut save_file_data = fs::read(&filename).expect("failed to read mut test_file");
 
@@ -932,30 +946,37 @@ mod tests {
                 AmmoPoolData {
                     pool: AmmoPool::Grenade,
                     current: 0,
+                    max: AmmoPool::Grenade.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Pistol,
                     current: 173,
+                    max: AmmoPool::Pistol.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Shotgun,
                     current: 64,
+                    max: AmmoPool::Shotgun.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Smg,
                     current: 138,
+                    max: AmmoPool::Smg.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Ar,
                     current: 280,
+                    max: AmmoPool::Ar.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Sniper,
                     current: 27,
+                    max: AmmoPool::Sniper.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Heavy,
                     current: 0,
+                    max: AmmoPool::Heavy.maximum(),
                 },
             ]
         );
@@ -1031,7 +1052,7 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_4() {
-        let filename = "./test_files/310pc.sav";
+        let filename = Path::new("./test_files/310pc.sav");
 
         let mut save_file_data = fs::read(&filename).expect("failed to read mut test_file");
 
@@ -1163,30 +1184,37 @@ mod tests {
                 AmmoPoolData {
                     pool: AmmoPool::Grenade,
                     current: 3,
+                    max: AmmoPool::Grenade.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Pistol,
                     current: 145,
+                    max: AmmoPool::Pistol.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Shotgun,
                     current: 80,
+                    max: AmmoPool::Shotgun.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Smg,
                     current: 360,
+                    max: AmmoPool::Smg.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Ar,
                     current: 280,
+                    max: AmmoPool::Ar.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Sniper,
                     current: 48,
+                    max: AmmoPool::Sniper.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Heavy,
                     current: 0,
+                    max: AmmoPool::Heavy.maximum(),
                 },
             ]
         );
@@ -1262,7 +1290,7 @@ mod tests {
 
     #[test]
     fn test_from_data_pc_5() {
-        let filename = "./test_files/quick.sav";
+        let filename = Path::new("./test_files/quick.sav");
 
         let mut save_file_data = fs::read(&filename).expect("failed to read mut test_file");
 
@@ -1394,30 +1422,37 @@ mod tests {
                 AmmoPoolData {
                     pool: AmmoPool::Grenade,
                     current: 11,
+                    max: AmmoPool::Grenade.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Pistol,
                     current: 1000,
+                    max: AmmoPool::Pistol.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Shotgun,
                     current: 240,
+                    max: AmmoPool::Shotgun.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Smg,
                     current: 1368,
+                    max: AmmoPool::Smg.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Ar,
                     current: 1400,
+                    max: AmmoPool::Ar.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Sniper,
                     current: 144,
+                    max: AmmoPool::Sniper.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Heavy,
                     current: 36,
+                    max: AmmoPool::Heavy.maximum(),
                 },
             ]
         );
@@ -1493,7 +1528,7 @@ mod tests {
 
     #[test]
     fn test_from_data_ps4_1() {
-        let filename = "./test_files/1ps4_v100.sav";
+        let filename = Path::new("./test_files/1ps4_v100.sav");
 
         let mut save_file_data = fs::read(&filename).expect("failed to read test_file");
 
@@ -1619,30 +1654,37 @@ mod tests {
                 AmmoPoolData {
                     pool: AmmoPool::Grenade,
                     current: 0,
+                    max: AmmoPool::Grenade.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Pistol,
                     current: 48,
+                    max: AmmoPool::Pistol.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Shotgun,
                     current: 0,
+                    max: AmmoPool::Shotgun.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Smg,
                     current: 0,
+                    max: AmmoPool::Smg.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Ar,
                     current: 0,
+                    max: AmmoPool::Ar.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Sniper,
                     current: 0,
+                    max: AmmoPool::Sniper.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Heavy,
                     current: 0,
+                    max: AmmoPool::Heavy.maximum(),
                 },
             ]
         );
@@ -1718,7 +1760,7 @@ mod tests {
 
     #[test]
     fn test_from_data_ps4_2() {
-        let filename = "./test_files/69ps4_v103.sav";
+        let filename = Path::new("./test_files/69ps4_v103.sav");
 
         let mut save_file_data = fs::read(&filename).expect("failed to read test_file");
 
@@ -1844,30 +1886,37 @@ mod tests {
                 AmmoPoolData {
                     pool: AmmoPool::Grenade,
                     current: 11,
+                    max: AmmoPool::Grenade.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Pistol,
                     current: 1000,
+                    max: AmmoPool::Pistol.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Shotgun,
                     current: 240,
+                    max: AmmoPool::Shotgun.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Smg,
                     current: 1800,
+                    max: AmmoPool::Smg.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Ar,
                     current: 662,
+                    max: AmmoPool::Ar.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Sniper,
                     current: 144,
+                    max: AmmoPool::Sniper.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Heavy,
                     current: 36,
+                    max: AmmoPool::Heavy.maximum(),
                 },
             ]
         );
@@ -1943,7 +1992,7 @@ mod tests {
 
     #[test]
     fn test_from_data_ps4_3() {
-        let filename = "./test_files/310ps4.sav";
+        let filename = Path::new("./test_files/310ps4.sav");
 
         let mut save_file_data = fs::read(&filename).expect("failed to read test_file");
 
@@ -2075,30 +2124,37 @@ mod tests {
                 AmmoPoolData {
                     pool: AmmoPool::Grenade,
                     current: 3,
+                    max: AmmoPool::Grenade.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Pistol,
                     current: 145,
+                    max: AmmoPool::Pistol.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Shotgun,
                     current: 80,
+                    max: AmmoPool::Shotgun.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Smg,
                     current: 360,
+                    max: AmmoPool::Smg.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Ar,
                     current: 280,
+                    max: AmmoPool::Ar.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Sniper,
                     current: 48,
+                    max: AmmoPool::Sniper.maximum(),
                 },
                 AmmoPoolData {
                     pool: AmmoPool::Heavy,
                     current: 0,
+                    max: AmmoPool::Heavy.maximum(),
                 },
             ]
         );

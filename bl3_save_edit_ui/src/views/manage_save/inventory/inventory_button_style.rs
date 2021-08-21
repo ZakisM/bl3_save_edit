@@ -13,7 +13,7 @@ impl button::StyleSheet for InventoryButtonStyle {
             )
         } else {
             (
-                Some(Color::from_rgb8(23, 23, 23).into()),
+                Some(Color::from_rgb8(22, 22, 22).into()),
                 Color::from_rgb8(220, 220, 220),
             )
         };

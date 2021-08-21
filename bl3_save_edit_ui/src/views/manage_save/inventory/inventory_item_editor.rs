@@ -45,6 +45,10 @@ impl InventoryItemEditor {
         let inventory_serial_db_parts_categorized = &*INVENTORY_SERIAL_DB_PARTS_CATEGORIZED;
         let inventory_parts_all_categorized = &INVENTORY_PARTS_ALL_CATEGORIZED;
 
+        let anointments_list = inventory_serial_db_parts_categorized
+            .get("InventoryGenericPartData")
+            .expect("Missing generic part data.");
+
         let specific_parts_list = item
             .balance_part()
             .short_ident
@@ -261,9 +265,9 @@ impl InventoryItemEditor {
             )
             .spacing(20);
 
-        let available_parts_contents = self
-            .available_parts
-            .view(specific_parts_list, all_parts_list);
+        let available_parts_contents =
+            self.available_parts
+                .view(anointments_list, specific_parts_list, all_parts_list);
 
         let current_parts_contents = self.current_parts.view(item, all_parts_list);
 

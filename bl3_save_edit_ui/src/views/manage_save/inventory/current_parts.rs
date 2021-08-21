@@ -8,11 +8,10 @@ use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, Bl3Part, MAX_BL3_ITEM_PART
 use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart, ResourcePartInfo};
 
 use crate::bl3_ui::{InteractionMessage, Message};
-use crate::bl3_ui_style::Bl3UiStyle;
+use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::inventory::extra_part_info::add_extra_part_info;
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
-use crate::views::manage_save::inventory::inventory_category_style::InventoryCategoryStyle;
 use crate::views::manage_save::inventory::InventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -195,7 +194,7 @@ impl CurrentParts {
                                 .color(Color::from_rgb8(242, 203, 5)),
                         )
                         .width(Length::Fill)
-                        .style(InventoryCategoryStyle)
+                        .style(Bl3UiStyleNoBorder)
                         .padding(10),
                     );
 

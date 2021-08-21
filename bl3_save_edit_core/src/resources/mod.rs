@@ -49,7 +49,7 @@ pub static INVENTORY_MANUFACTURER_PARTS: Lazy<Vec<ManufacturerPart>> =
 pub fn load_compressed_data<T: DeserializeOwned>(input: &'static [u8]) -> T {
     let mut rdr = snap::read::FrameDecoder::new(input);
 
-    ron::de::from_reader(&mut rdr).expect("failed to read inventory_serial_db_parts_ron")
+    ron::de::from_reader(&mut rdr).expect("failed to read compressed data")
 }
 
 #[derive(Debug, Default, Clone, Deserialize)]

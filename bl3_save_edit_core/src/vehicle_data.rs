@@ -1,4 +1,4 @@
-use strum::{Display, EnumString};
+use strum::Display;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct VehicleStats {
@@ -11,7 +11,7 @@ pub struct VehicleStats {
     pub total_skins_count: usize,
 }
 
-#[derive(Debug, Eq, Display, EnumString, PartialEq, Ord, PartialOrd, Clone)]
+#[derive(Debug, Eq, Display, PartialEq, Ord, PartialOrd, Clone)]
 pub enum VehicleName {
     Outrunner,
     Jetbeast,
