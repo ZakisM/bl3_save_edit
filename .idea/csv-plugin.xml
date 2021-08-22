@@ -311,13 +311,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\bl3_save_edit_core\game_data\test.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\bl3_save_edit_core\resources\INVENTORY_PARTS_ALL.csv">
           <value>
             <Attribute>

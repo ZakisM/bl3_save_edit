@@ -4,5 +4,3 @@ pub const INVENTORY: &[u8] = include_bytes!("../../resources/svg/inventory.svg")
 pub const CURRENCY: &[u8] = include_bytes!("../../resources/svg/currency.svg");
 pub const POSITIVE_CLOSE: &[u8] = include_bytes!("../../resources/svg/positive_close.svg");
 pub const NEGATIVE_CLOSE: &[u8] = include_bytes!("../../resources/svg/negative_close.svg");
-pub const POSITIVE_ICON: &[u8] = include_bytes!("../../resources/svg/positive_icon.svg");
-pub const NEGATIVE_ICON: &[u8] = include_bytes!("../../resources/svg/negative_icon.svg");

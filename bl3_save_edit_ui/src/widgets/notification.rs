@@ -2,7 +2,7 @@ use iced::{button, container, svg, Align, Button, Color, Container, Length, Row,
 
 use crate::bl3_ui::Message;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
-use crate::resources::svgs::{NEGATIVE_CLOSE, NEGATIVE_ICON, POSITIVE_CLOSE, POSITIVE_ICON};
+use crate::resources::svgs::{NEGATIVE_CLOSE, POSITIVE_CLOSE};
 
 #[derive(Debug, Default)]
 pub struct Notification {
@@ -42,29 +42,17 @@ impl Notification {
             .height(Length::Units(18))
             .width(Length::Units(18));
 
-        let handle = match self.sentiment {
-            NotificationSentiment::Positive => svg::Handle::from_memory(POSITIVE_ICON),
-            NotificationSentiment::Negative => svg::Handle::from_memory(NEGATIVE_ICON),
-        };
-
-        let icon = Svg::new(handle)
-            .height(Length::Units(18))
-            .width(Length::Units(18));
-
         let close_button = Button::new(&mut self.close_button_state, close_icon)
             .on_press(Message::ClearNotification)
             .style(NotificationStyle {
                 sentiment: self.sentiment,
             });
 
-        let header = Row::new()
-            .push(icon)
-            .push(Text::new(&self.message).font(JETBRAINS_MONO_BOLD).size(18))
-            .spacing(15)
-            .align_items(Align::Center);
-
         let contents_row = Row::new()
-            .push(Container::new(header).width(Length::Fill))
+            .push(
+                Container::new(Text::new(&self.message).font(JETBRAINS_MONO_BOLD).size(18))
+                    .width(Length::Fill),
+            )
             .push(close_button)
             .align_items(Align::Center);
 
