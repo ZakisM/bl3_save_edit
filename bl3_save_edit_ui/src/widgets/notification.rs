@@ -48,8 +48,8 @@ impl Notification {
         };
 
         let icon = Svg::new(handle)
-            .height(Length::Units(20))
-            .width(Length::Units(20));
+            .height(Length::Units(18))
+            .width(Length::Units(18));
 
         let close_button = Button::new(&mut self.close_button_state, close_icon)
             .on_press(Message::ClearNotification)

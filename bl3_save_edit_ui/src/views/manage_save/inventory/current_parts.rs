@@ -339,7 +339,7 @@ impl CurrentParts {
         let mut current_parts_column = Column::new().push(Container::new(title_row));
 
         let no_parts_message = Container::new(
-            Text::new("Cannot add parts to this item.")
+            Text::new("This item has no parts or anointments.")
                 .font(JETBRAINS_MONO)
                 .size(17)
                 .color(Color::from_rgb8(220, 220, 220)),
