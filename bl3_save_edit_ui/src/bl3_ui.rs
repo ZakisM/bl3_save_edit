@@ -1138,6 +1138,12 @@ impl Application for Bl3Ui {
                                     .profile_state
                                     .guardian_rank_tokens_input = guardian_rank_tokens;
                             }
+                            ProfileProfileInteractionMessage::ScienceLevelSelected(science_level) => {
+                                self.manage_profile_state
+                                    .profile_view_state
+                                    .profile_state
+                                    .science_level_selected = science_level;
+                            }
                         },
                         ManageProfileInteractionMessage::SaveFilePressed => {}
                     }

@@ -229,7 +229,7 @@ impl fmt::Display for Bl3Profile {
 mod tests {
     use std::fs;
 
-    use crate::bl3_profile::science_levels::ScienceLevel;
+    use crate::bl3_profile::science_levels::BorderlandsScienceLevel;
     use crate::bl3_profile::sdu::{ProfSduSlot, ProfSduSlotData};
 
     use super::*;
@@ -255,7 +255,7 @@ mod tests {
                 .profile_data
                 .borderlands_science_info
                 .science_level,
-            ScienceLevel::Claptrap
+            BorderlandsScienceLevel::Claptrap
         );
         assert_eq!(bl3_profile.profile_data.borderlands_science_info.solves, 0);
         assert_eq!(bl3_profile.profile_data.borderlands_science_info.tokens, 0);
@@ -307,7 +307,7 @@ mod tests {
                 .profile_data
                 .borderlands_science_info
                 .science_level,
-            ScienceLevel::Unknown
+            BorderlandsScienceLevel::None
         );
         assert_eq!(bl3_profile.profile_data.borderlands_science_info.solves, 0);
         assert_eq!(bl3_profile.profile_data.borderlands_science_info.tokens, 0);
@@ -359,7 +359,7 @@ mod tests {
                 .profile_data
                 .borderlands_science_info
                 .science_level,
-            ScienceLevel::Unknown
+            BorderlandsScienceLevel::None
         );
         assert_eq!(bl3_profile.profile_data.borderlands_science_info.solves, 0);
         assert_eq!(

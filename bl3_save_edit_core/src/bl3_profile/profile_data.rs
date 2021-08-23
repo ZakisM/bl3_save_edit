@@ -6,7 +6,7 @@ use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 
 use crate::bl3_profile::profile_currency::ProfileCurrency;
-use crate::bl3_profile::science_levels::{BorderlandsScienceInfo, ScienceLevel};
+use crate::bl3_profile::science_levels::{BorderlandsScienceInfo, BorderlandsScienceLevel};
 use crate::bl3_profile::sdu::{ProfSduSlot, ProfSduSlotData};
 use crate::bl3_profile::util::get_checksum_hash;
 use crate::game_data::{
@@ -80,8 +80,8 @@ impl ProfileData {
         let borderlands_science_info = {
             let solves = borderlands_science_level_solves.par_iter().sum();
 
-            let level = ScienceLevel::from_solves(borderlands_science_level_solves)
-                .unwrap_or(ScienceLevel::Unknown);
+            let level = BorderlandsScienceLevel::from_solves(borderlands_science_level_solves)
+                .unwrap_or(BorderlandsScienceLevel::None);
 
             BorderlandsScienceInfo {
                 science_level: level,
