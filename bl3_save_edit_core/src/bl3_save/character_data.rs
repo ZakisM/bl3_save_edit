@@ -34,7 +34,7 @@ use crate::vehicle_data::{VehicleName, VehicleStats};
 #[derive(Derivative)]
 #[derivative(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct CharacterData {
-    #[derivative(PartialEq = "ignore", Ord = "ignore", PartialOrd = "ignore")]
+    #[derivative(Ord = "ignore", PartialOrd = "ignore")]
     pub character: Character,
     player_class: PlayerClass,
     player_level: i32,

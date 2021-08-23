@@ -4,9 +4,12 @@ use bl3_save_edit_core::file_helper::Bl3FileType;
 
 use crate::bl3_ui::Bl3Ui;
 use crate::bl3_ui::ViewState;
-use crate::views::manage_save::main::MainTabBarView;
+use crate::views::manage_profile::main::ProfileTabBarView;
+use crate::views::manage_profile::ManageProfileView;
+use crate::views::manage_save::main::SaveTabBarView;
 use crate::views::manage_save::ManageSaveView;
 
+pub mod manage_profile;
 pub mod manage_save;
 
 pub fn map_loaded_file_to_state(main_state: &mut Bl3Ui) {
@@ -25,13 +28,32 @@ pub fn map_loaded_file_to_state(main_state: &mut Bl3Ui) {
 
             if mem::discriminant(&main_state.view_state)
                 != mem::discriminant(&ViewState::ManageSave(ManageSaveView::TabBar(
-                    MainTabBarView::General,
+                    SaveTabBarView::General,
                 )))
             {
                 main_state.view_state =
-                    ViewState::ManageSave(ManageSaveView::TabBar(MainTabBarView::General));
+                    ViewState::ManageSave(ManageSaveView::TabBar(SaveTabBarView::General));
             }
         }
-        Bl3FileType::PcProfile(p) | Bl3FileType::Ps4Profile(p) => (),
+        Bl3FileType::PcProfile(profile) | Bl3FileType::Ps4Profile(profile) => {
+            main_state.manage_profile_state.current_file = profile.clone();
+
+            manage_profile::general::map_profile_to_general_state(
+                &mut main_state.manage_profile_state,
+            );
+
+            manage_profile::profile::map_profile_to_profile_state(
+                &mut main_state.manage_profile_state,
+            );
+
+            if mem::discriminant(&main_state.view_state)
+                != mem::discriminant(&ViewState::ManageProfile(ManageProfileView::TabBar(
+                    ProfileTabBarView::General,
+                )))
+            {
+                main_state.view_state =
+                    ViewState::ManageProfile(ManageProfileView::TabBar(ProfileTabBarView::General));
+            }
+        }
     }
 }

@@ -128,7 +128,7 @@ impl InventoryStateExt for InventoryState {
 pub enum InventoryMessage {}
 
 #[derive(Debug, Clone)]
-pub enum InventoryInteractionMessage {
+pub enum SaveInventoryInteractionMessage {
     ItemPressed(usize),
     ShowAllAvailablePartsSelected(bool),
     AvailablePartsTabPressed,
@@ -168,7 +168,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                     |s| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Inventory(
-                                InventoryInteractionMessage::ImportItemInputChanged(s),
+                                SaveInventoryInteractionMessage::ImportItemInputChanged(s),
                             ),
                         )
                     },
@@ -190,7 +190,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
             )
             .on_press(InteractionMessage::ManageSaveInteraction(
                 ManageSaveInteractionMessage::Inventory(
-                    InventoryInteractionMessage::ImportItemFromSerialPressed,
+                    SaveInventoryInteractionMessage::ImportItemFromSerialPressed,
                 ),
             ))
             .padding(10)
@@ -205,7 +205,9 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
             Text::new("Create Item").font(JETBRAINS_MONO_BOLD).size(17),
         )
         .on_press(InteractionMessage::ManageSaveInteraction(
-            ManageSaveInteractionMessage::Inventory(InventoryInteractionMessage::CreateItemPressed),
+            ManageSaveInteractionMessage::Inventory(
+                SaveInventoryInteractionMessage::CreateItemPressed,
+            ),
         ))
         .padding(10)
         .style(Bl3UiStyle)
@@ -226,7 +228,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                         |v| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::Inventory(
-                                    InventoryInteractionMessage::AllItemLevelInputChanged(v),
+                                    SaveInventoryInteractionMessage::AllItemLevelInputChanged(v),
                                 ),
                             )
                         },
@@ -258,7 +260,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                 )
                 .on_press(InteractionMessage::ManageSaveInteraction(
                     ManageSaveInteractionMessage::Inventory(
-                        InventoryInteractionMessage::SyncAllItemLevelsWithCharacterLevelPressed,
+                        SaveInventoryInteractionMessage::SyncAllItemLevelsWithCharacterLevelPressed,
                     ),
                 ))
                 .padding(10)

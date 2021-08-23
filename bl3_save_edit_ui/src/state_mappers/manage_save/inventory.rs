@@ -10,11 +10,14 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
     let save = &manage_save_state.current_file;
 
     manage_save_state
-        .main_state
+        .save_view_state
         .inventory_state
         .selected_item_index = 0;
 
-    *manage_save_state.main_state.inventory_state.items_mut() = save
+    *manage_save_state
+        .save_view_state
+        .inventory_state
+        .items_mut() = save
         .character_data
         .inventory_items()
         .iter()
@@ -24,13 +27,13 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
         .collect();
 
     manage_save_state
-        .main_state
+        .save_view_state
         .inventory_state
         .item_list_scrollable_state
         .snap_to(0.0);
 
     manage_save_state
-        .main_state
+        .save_view_state
         .inventory_state
         .map_current_item_if_exists(|i| i.editor.available_parts.scrollable_state.snap_to(0.0));
 }
@@ -40,7 +43,7 @@ pub fn map_inventory_state_to_save(
     save: &mut Bl3Save,
 ) -> Result<()> {
     for (i, edited_item) in manage_save_state
-        .main_state
+        .save_view_state
         .inventory_state
         .items()
         .iter()

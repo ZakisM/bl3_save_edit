@@ -13,7 +13,7 @@ use crate::views::manage_save::inventory::inventory_button_style::InventoryButto
 use crate::views::manage_save::inventory::parts_tab_bar::{
     parts_tab_bar_button, AvailablePartType,
 };
-use crate::views::manage_save::inventory::InventoryInteractionMessage;
+use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::text_margin::TextMargin;
@@ -109,13 +109,15 @@ impl AvailableResourcePart {
             .on_press(InteractionMessage::ManageSaveInteraction(
                 ManageSaveInteractionMessage::Inventory(match self.part_type {
                     AvailablePartType::Parts => {
-                        InventoryInteractionMessage::AvailablePartPressed(AvailablePartTypeIndex {
-                            category_index: self.category_index,
-                            part_index: self.part_index,
-                        })
+                        SaveInventoryInteractionMessage::AvailablePartPressed(
+                            AvailablePartTypeIndex {
+                                category_index: self.category_index,
+                                part_index: self.part_index,
+                            },
+                        )
                     }
                     AvailablePartType::Anointments => {
-                        InventoryInteractionMessage::AvailableAnointmentPressed(
+                        SaveInventoryInteractionMessage::AvailableAnointmentPressed(
                             AvailablePartTypeIndex {
                                 category_index: self.category_index,
                                 part_index: self.part_index,
@@ -158,7 +160,7 @@ impl AvailableParts {
                 &mut self.available_parts_tab_button_state,
                 AvailablePartType::Parts,
                 &self.parts_tab_view,
-                InventoryInteractionMessage::AvailablePartsTabPressed,
+                SaveInventoryInteractionMessage::AvailablePartsTabPressed,
                 None,
             ))
             .padding(1)
@@ -170,7 +172,7 @@ impl AvailableParts {
                 &mut self.available_anointments_tab_button_state,
                 AvailablePartType::Anointments,
                 &self.parts_tab_view,
-                InventoryInteractionMessage::AvailableAnointmentsTabPressed,
+                SaveInventoryInteractionMessage::AvailableAnointmentsTabPressed,
                 None,
             ))
             .padding(1)
@@ -205,7 +207,7 @@ impl AvailableParts {
                                     |c| {
                                         InteractionMessage::ManageSaveInteraction(
                                             ManageSaveInteractionMessage::Inventory(
-                                                InventoryInteractionMessage::ShowAllAvailablePartsSelected(
+                                                SaveInventoryInteractionMessage::ShowAllAvailablePartsSelected(
                                                     c,
                                                 ),
                                             ),

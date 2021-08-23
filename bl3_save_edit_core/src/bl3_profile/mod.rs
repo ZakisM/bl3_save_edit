@@ -2,7 +2,7 @@ use std::fmt;
 use std::fmt::Formatter;
 use std::path::Path;
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 
 use crate::bl3_profile::profile_data::ProfileData;
 use crate::file_helper;
@@ -22,8 +22,9 @@ pub mod science_levels;
 pub mod sdu;
 pub mod util;
 
-#[derive(Debug, Clone, Eq, Ord, PartialOrd)]
+#[derive(Debug, Clone, Default, Eq, Ord, PartialOrd)]
 pub struct Bl3Profile {
+    pub file_name: String,
     pub profile_version: u32,
     pub package_version: u32,
     pub engine_major: u16,
@@ -54,6 +55,7 @@ impl Bl3Profile {
         let profile_data = ProfileData::from_profile(profile)?;
 
         let FileData {
+            file_location,
             file_version,
             package_version,
             engine_major,
@@ -68,7 +70,13 @@ impl Bl3Profile {
             ..
         } = file_data.clone();
 
+        let file_name = file_location
+            .file_name()
+            .map(|s| s.to_string_lossy().to_string())
+            .context("failed to read file name")?;
+
         Ok(Self {
+            file_name,
             profile_version: file_version,
             package_version,
             engine_major,

@@ -9,7 +9,7 @@ use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::character::{
-    CharacterGearUnlockedMessage, CharacterInteractionMessage,
+    CharacterGearUnlockedMessage, SaveCharacterInteractionMessage,
 };
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -47,7 +47,7 @@ impl GearUnlockCheckbox {
 
         Checkbox::new(self.is_unlocked, &self.name, move |c| {
             InteractionMessage::ManageSaveInteraction(ManageSaveInteractionMessage::Character(
-                CharacterInteractionMessage::GearMessage(on_checked(c)),
+                SaveCharacterInteractionMessage::GearMessage(on_checked(c)),
             ))
         })
         .size(20)

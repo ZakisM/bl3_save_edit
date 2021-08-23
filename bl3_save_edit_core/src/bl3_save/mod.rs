@@ -125,6 +125,11 @@ impl Bl3Save {
         output.write_u32::<LittleEndian>(data.len() as u32)?;
         output.append(&mut data);
 
+        //Now try re-reading it also - there's no point making an invalid save
+        //TODO: Instead of refreshing dir after save - reload only this save using below
+        let file_name = Path::new(&self.file_name);
+        let _ = Self::from_bytes(file_name, &output, self.header_type)?;
+
         Ok(output)
     }
 }

@@ -10,46 +10,54 @@ use crate::views::manage_save::ManageSaveState;
 pub fn map_save_to_character_state(manage_save_state: &mut ManageSaveState) {
     let save = &manage_save_state.current_file;
 
-    manage_save_state.main_state.character_state.name_input = save
+    manage_save_state.save_view_state.character_state.name_input = save
         .character_data
         .character
         .preferred_character_name
         .clone();
 
     manage_save_state
-        .main_state
+        .save_view_state
         .character_state
         .player_class_selected_class = save.character_data.player_class();
 
-    manage_save_state.main_state.character_state.xp_level_input =
-        save.character_data.player_level();
-
-    manage_save_state.main_state.character_state.xp_points_input =
-        save.character_data.character.experience_points;
+    manage_save_state
+        .save_view_state
+        .character_state
+        .xp_level_input = save.character_data.player_level();
 
     manage_save_state
-        .main_state
+        .save_view_state
+        .character_state
+        .xp_points_input = save.character_data.character.experience_points;
+
+    manage_save_state
+        .save_view_state
         .character_state
         .skin_selectors
         .head_skin
         .selected = save.character_data.head_skin_selected();
 
     manage_save_state
-        .main_state
+        .save_view_state
         .character_state
         .skin_selectors
         .character_skin
         .selected = save.character_data.character_skin_selected();
 
     manage_save_state
-        .main_state
+        .save_view_state
         .character_state
         .skin_selectors
         .echo_theme
         .selected = save.character_data.echo_theme_selected();
 
-    let mut gear_unlocker =
-        std::mem::take(&mut manage_save_state.main_state.character_state.gear_unlocker);
+    let mut gear_unlocker = std::mem::take(
+        &mut manage_save_state
+            .save_view_state
+            .character_state
+            .gear_unlocker,
+    );
 
     save.character_data
         .unlockable_inventory_slots()
@@ -89,10 +97,17 @@ pub fn map_save_to_character_state(manage_save_state: &mut ManageSaveState) {
             }
         });
 
-    manage_save_state.main_state.character_state.gear_unlocker = gear_unlocker;
+    manage_save_state
+        .save_view_state
+        .character_state
+        .gear_unlocker = gear_unlocker;
 
-    let mut ammo_setter =
-        std::mem::take(&mut manage_save_state.main_state.character_state.ammo_setter);
+    let mut ammo_setter = std::mem::take(
+        &mut manage_save_state
+            .save_view_state
+            .character_state
+            .ammo_setter,
+    );
 
     save.character_data
         .ammo_pools()
@@ -107,10 +122,17 @@ pub fn map_save_to_character_state(manage_save_state: &mut ManageSaveState) {
             AmmoPool::Heavy => ammo_setter.heavy.input = s.current,
         });
 
-    manage_save_state.main_state.character_state.ammo_setter = ammo_setter;
+    manage_save_state
+        .save_view_state
+        .character_state
+        .ammo_setter = ammo_setter;
 
-    let mut sdu_unlocker =
-        std::mem::take(&mut manage_save_state.main_state.character_state.sdu_unlocker);
+    let mut sdu_unlocker = std::mem::take(
+        &mut manage_save_state
+            .save_view_state
+            .character_state
+            .sdu_unlocker,
+    );
 
     save.character_data
         .sdu_slots()
@@ -126,7 +148,10 @@ pub fn map_save_to_character_state(manage_save_state: &mut ManageSaveState) {
             SaveSduSlot::Heavy => sdu_unlocker.heavy.input = s.current,
         });
 
-    manage_save_state.main_state.character_state.sdu_unlocker = sdu_unlocker;
+    manage_save_state
+        .save_view_state
+        .character_state
+        .sdu_unlocker = sdu_unlocker;
 }
 
 pub fn map_character_state_to_save(
@@ -134,24 +159,28 @@ pub fn map_character_state_to_save(
     save: &mut Bl3Save,
 ) -> Result<()> {
     save.character_data.character.preferred_character_name = manage_save_state
-        .main_state
+        .save_view_state
         .character_state
         .name_input
         .clone();
 
     save.character_data.set_player_class(
         manage_save_state
-            .main_state
+            .save_view_state
             .character_state
             .player_class_selected_class,
     )?;
 
-    save.character_data
-        .set_player_level(manage_save_state.main_state.character_state.xp_points_input)?;
+    save.character_data.set_player_level(
+        manage_save_state
+            .save_view_state
+            .character_state
+            .xp_points_input,
+    )?;
 
     save.character_data.set_head_skin_selected(
         &manage_save_state
-            .main_state
+            .save_view_state
             .character_state
             .skin_selectors
             .head_skin
@@ -160,7 +189,7 @@ pub fn map_character_state_to_save(
 
     save.character_data.set_character_skin_selected(
         &manage_save_state
-            .main_state
+            .save_view_state
             .character_state
             .skin_selectors
             .character_skin
@@ -169,14 +198,17 @@ pub fn map_character_state_to_save(
 
     save.character_data.set_echo_theme_selected(
         &manage_save_state
-            .main_state
+            .save_view_state
             .character_state
             .skin_selectors
             .echo_theme
             .selected,
     );
 
-    let gear_unlocker = &manage_save_state.main_state.character_state.gear_unlocker;
+    let gear_unlocker = &manage_save_state
+        .save_view_state
+        .character_state
+        .gear_unlocker;
 
     let all_gear_slots = [
         &gear_unlocker.artifact,
@@ -190,7 +222,6 @@ pub fn map_character_state_to_save(
     ];
 
     for s in all_gear_slots {
-        // Do we want to handle removing item slots? - Doesn't make sense to do so
         if s.is_unlocked {
             save.character_data.unlock_inventory_slot(&s.inv_slot)?;
         } else {
@@ -199,7 +230,10 @@ pub fn map_character_state_to_save(
         }
     }
 
-    let ammo_setter = &manage_save_state.main_state.character_state.ammo_setter;
+    let ammo_setter = &manage_save_state
+        .save_view_state
+        .character_state
+        .ammo_setter;
 
     let all_ammo_pools = [
         &ammo_setter.grenade,
@@ -215,7 +249,10 @@ pub fn map_character_state_to_save(
         save.character_data.set_ammo_pool(&a.ammo_pool, a.input)?;
     }
 
-    let sdu_unlocker = &manage_save_state.main_state.character_state.sdu_unlocker;
+    let sdu_unlocker = &manage_save_state
+        .save_view_state
+        .character_state
+        .sdu_unlocker;
 
     let all_sdu_slots = [
         &sdu_unlocker.grenade,

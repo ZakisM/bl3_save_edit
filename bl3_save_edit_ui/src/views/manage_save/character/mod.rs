@@ -43,7 +43,7 @@ pub struct CharacterState {
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterInteractionMessage {
+pub enum SaveCharacterInteractionMessage {
     NameInputChanged(String),
     XpLevelInputChanged(i32),
     XpPointsInputChanged(i32),
@@ -124,7 +124,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 |c| {
                     InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::Character(
-                            CharacterInteractionMessage::NameInputChanged(c),
+                            SaveCharacterInteractionMessage::NameInputChanged(c),
                         ),
                     )
                 },
@@ -152,7 +152,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 |c| {
                     InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::Character(
-                            CharacterInteractionMessage::PlayerClassSelected(c),
+                            SaveCharacterInteractionMessage::PlayerClassSelected(c),
                         ),
                     )
                 },
@@ -188,7 +188,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                CharacterInteractionMessage::XpLevelInputChanged(v),
+                                SaveCharacterInteractionMessage::XpLevelInputChanged(v),
                             ),
                         )
                     },
@@ -228,7 +228,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                CharacterInteractionMessage::XpPointsInputChanged(v),
+                                SaveCharacterInteractionMessage::XpPointsInputChanged(v),
                             ),
                         )
                     },

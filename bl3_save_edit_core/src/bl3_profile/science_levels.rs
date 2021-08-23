@@ -1,7 +1,7 @@
 use anyhow::{bail, Context, Result};
 use strum::Display;
 
-#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct BorderlandsScienceInfo {
     pub science_level: ScienceLevel,
     pub solves: i32,
@@ -22,6 +22,12 @@ pub enum ScienceLevel {
     Tannis,
     TrueTannis,
     Unknown,
+}
+
+impl std::default::Default for ScienceLevel {
+    fn default() -> Self {
+        Self::Claptrap
+    }
 }
 
 const BORDERLANDS_SCIENCE_LEVELS: [(i32, ScienceLevel); 10] = [

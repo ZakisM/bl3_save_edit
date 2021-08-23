@@ -12,7 +12,7 @@ use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::character::{
-    CharacterAmmoInputChangedMessage, CharacterInteractionMessage,
+    CharacterAmmoInputChangedMessage, SaveCharacterInteractionMessage,
 };
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -73,7 +73,7 @@ impl AmmoSetterField {
                         move |v| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::Character(
-                                    CharacterInteractionMessage::AmmoMessage(on_changed(v)),
+                                    SaveCharacterInteractionMessage::AmmoMessage(on_changed(v)),
                                 ),
                             )
                         },
@@ -207,7 +207,7 @@ impl AmmoSetter {
                                     )
                                     .on_press(InteractionMessage::ManageSaveInteraction(
                                         ManageSaveInteractionMessage::Character(
-                                            CharacterInteractionMessage::MaxAmmoAmountsPressed,
+                                            SaveCharacterInteractionMessage::MaxAmmoAmountsPressed,
                                         ),
                                     ))
                                     .padding(10)

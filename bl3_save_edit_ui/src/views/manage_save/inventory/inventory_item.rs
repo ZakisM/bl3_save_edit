@@ -7,7 +7,7 @@ use crate::bl3_ui::{InteractionMessage, Message};
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
 use crate::views::manage_save::inventory::inventory_item_editor::InventoryItemEditor;
-use crate::views::manage_save::inventory::InventoryInteractionMessage;
+use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 
@@ -115,7 +115,7 @@ impl InventoryListItem {
             Button::new(&mut self.button_state, Container::new(button_content))
                 .on_press(InteractionMessage::ManageSaveInteraction(
                     ManageSaveInteractionMessage::Inventory(
-                        InventoryInteractionMessage::ItemPressed(self.id),
+                        SaveInventoryInteractionMessage::ItemPressed(self.id),
                     ),
                 ))
                 .padding(10)

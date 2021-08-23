@@ -12,7 +12,7 @@ use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::character::{
-    CharacterInteractionMessage, CharacterSduInputChangedMessage,
+    CharacterSduInputChangedMessage, SaveCharacterInteractionMessage,
 };
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -73,7 +73,7 @@ impl SduUnlockField {
                         move |v| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::Character(
-                                    CharacterInteractionMessage::SduMessage(on_changed(v)),
+                                    SaveCharacterInteractionMessage::SduMessage(on_changed(v)),
                                 ),
                             )
                         },
@@ -210,7 +210,7 @@ impl SduUnlocker {
                                     )
                                     .on_press(InteractionMessage::ManageSaveInteraction(
                                         ManageSaveInteractionMessage::Character(
-                                            CharacterInteractionMessage::MaxSduSlotsPressed,
+                                            SaveCharacterInteractionMessage::MaxSduSlotsPressed,
                                         ),
                                     ))
                                     .padding(10)

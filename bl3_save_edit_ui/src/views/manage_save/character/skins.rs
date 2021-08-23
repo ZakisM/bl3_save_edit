@@ -13,7 +13,7 @@ use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_save::character::{
-    CharacterInteractionMessage, CharacterSkinSelectedMessage,
+    CharacterSkinSelectedMessage, SaveCharacterInteractionMessage,
 };
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -96,7 +96,7 @@ impl SkinPickList {
                     move |s| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                CharacterInteractionMessage::SkinMessage(on_selected(s)),
+                                SaveCharacterInteractionMessage::SkinMessage(on_selected(s)),
                             ),
                         )
                     },

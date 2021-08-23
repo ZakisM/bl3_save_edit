@@ -17,7 +17,7 @@ use crate::game_data::{
 use crate::protos::oak_profile::Profile;
 
 #[derive(Derivative)]
-#[derivative(Debug, Clone, Eq, PartialEq, Ord, PartialOrd)]
+#[derivative(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct ProfileData {
     #[derivative(Ord = "ignore", PartialOrd = "ignore")]
     pub profile: Profile,

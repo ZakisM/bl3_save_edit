@@ -5,7 +5,7 @@ use strum::Display;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
-use crate::views::manage_save::inventory::InventoryInteractionMessage;
+use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 
@@ -41,7 +41,7 @@ pub fn parts_tab_bar_button<'a, T: Display + PartialEq>(
     state: &'a mut button::State,
     tab_bar_view: T,
     current_tab_bar_view: &T,
-    on_press_message: InventoryInteractionMessage,
+    on_press_message: SaveInventoryInteractionMessage,
     extra_title_content: Option<String>,
 ) -> Element<'a, Message> {
     let title = if let Some(extra_content) = extra_title_content {

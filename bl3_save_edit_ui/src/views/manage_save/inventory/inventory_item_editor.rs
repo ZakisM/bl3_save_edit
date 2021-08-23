@@ -16,7 +16,7 @@ use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
 use crate::views::manage_save::inventory::available_parts::AvailableParts;
 use crate::views::manage_save::inventory::current_parts::CurrentParts;
 use crate::views::manage_save::inventory::delete_item_button_style::DeleteItemButtonStyle;
-use crate::views::manage_save::inventory::InventoryInteractionMessage;
+use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
@@ -76,7 +76,7 @@ impl InventoryItemEditor {
                             |v| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Inventory(
-                                        InventoryInteractionMessage::ItemLevelInputChanged(v),
+                                        SaveInventoryInteractionMessage::ItemLevelInputChanged(v),
                                     ),
                                 )
                             },
@@ -108,7 +108,7 @@ impl InventoryItemEditor {
                     )
                     .on_press(InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::Inventory(
-                            InventoryInteractionMessage::SyncItemLevelWithCharacterLevelPressed,
+                            SaveInventoryInteractionMessage::SyncItemLevelWithCharacterLevelPressed,
                         ),
                     ))
                     .padding(10)
@@ -162,7 +162,7 @@ impl InventoryItemEditor {
                 )
                 .on_press(InteractionMessage::ManageSaveInteraction(
                     ManageSaveInteractionMessage::Inventory(
-                        InventoryInteractionMessage::DeleteItem(item_id),
+                        SaveInventoryInteractionMessage::DeleteItem(item_id),
                     ),
                 ))
                 .padding(10)
@@ -185,7 +185,7 @@ impl InventoryItemEditor {
                             |s| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Inventory(
-                                        InventoryInteractionMessage::BalanceInputSelected(s),
+                                        SaveInventoryInteractionMessage::BalanceInputSelected(s),
                                     ),
                                 )
                             },
@@ -215,7 +215,7 @@ impl InventoryItemEditor {
                             |s| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Inventory(
-                                        InventoryInteractionMessage::InvDataInputSelected(s),
+                                        SaveInventoryInteractionMessage::InvDataInputSelected(s),
                                     ),
                                 )
                             },
@@ -245,7 +245,9 @@ impl InventoryItemEditor {
                             |s| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Inventory(
-                                        InventoryInteractionMessage::ManufacturerInputSelected(s),
+                                        SaveInventoryInteractionMessage::ManufacturerInputSelected(
+                                            s,
+                                        ),
                                     ),
                                 )
                             },

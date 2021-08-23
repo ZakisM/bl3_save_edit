@@ -22,17 +22,23 @@ use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
 use crate::views::initialization::InitializationMessage;
-use crate::views::manage_save::character::{
-    CharacterAmmoInputChangedMessage, CharacterGearUnlockedMessage, CharacterInteractionMessage,
-    CharacterSduInputChangedMessage, CharacterSkinSelectedMessage,
+use crate::views::manage_profile::general::ProfileGeneralInteractionMessage;
+use crate::views::manage_profile::main::{ProfileTabBarInteractionMessage, ProfileTabBarView};
+use crate::views::manage_profile::profile::ProfileProfileInteractionMessage;
+use crate::views::manage_profile::{
+    ManageProfileInteractionMessage, ManageProfileState, ManageProfileView,
 };
-use crate::views::manage_save::currency::CurrencyInteractionMessage;
-use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
+use crate::views::manage_save::character::{
+    CharacterAmmoInputChangedMessage, CharacterGearUnlockedMessage,
+    CharacterSduInputChangedMessage, CharacterSkinSelectedMessage, SaveCharacterInteractionMessage,
+};
+use crate::views::manage_save::currency::SaveCurrencyInteractionMessage;
+use crate::views::manage_save::general::{GeneralMessage, SaveGeneralInteractionMessage};
 use crate::views::manage_save::inventory::parts_tab_bar::{AvailablePartType, CurrentPartType};
 use crate::views::manage_save::inventory::{
-    available_parts, InventoryInteractionMessage, InventoryStateExt,
+    available_parts, InventoryStateExt, SaveInventoryInteractionMessage,
 };
-use crate::views::manage_save::main::{MainTabBarInteractionMessage, MainTabBarView};
+use crate::views::manage_save::main::{SaveTabBarInteractionMessage, SaveTabBarView};
 use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
 };
@@ -45,6 +51,7 @@ pub struct Bl3Ui {
     pub view_state: ViewState,
     choose_save_directory_state: ChooseSaveDirectoryState,
     pub manage_save_state: ManageSaveState,
+    pub manage_profile_state: ManageProfileState,
     loaded_files_selector: pick_list::State<Bl3FileType>,
     pub loaded_files_selected: Box<Bl3FileType>,
     loaded_files: Vec<Bl3FileType>,
@@ -82,6 +89,7 @@ impl<T> MessageResult<T> {
 pub enum InteractionMessage {
     ChooseSaveInteraction(ChooseSaveInteractionMessage),
     ManageSaveInteraction(ManageSaveInteractionMessage),
+    ManageProfileInteraction(ManageProfileInteractionMessage),
     LoadedFileSelected(Box<Bl3FileType>),
     Ignore,
 }
@@ -91,6 +99,7 @@ pub enum ViewState {
     Initializing,
     ChooseSaveDirectory,
     ManageSave(ManageSaveView),
+    ManageProfile(ManageProfileView),
 }
 
 impl std::default::Default for ViewState {
@@ -152,43 +161,43 @@ impl Application for Bl3Ui {
                     }
                     InteractionMessage::ManageSaveInteraction(manage_save_msg) => match manage_save_msg
                     {
-                        ManageSaveInteractionMessage::Main(main_msg) => match main_msg {
-                            MainTabBarInteractionMessage::General => {
+                        ManageSaveInteractionMessage::TabBar(tab_bar_msg) => match tab_bar_msg {
+                            SaveTabBarInteractionMessage::General => {
                                 self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                    MainTabBarView::General,
+                                    SaveTabBarView::General,
                                 ))
                             }
-                            MainTabBarInteractionMessage::Character => {
+                            SaveTabBarInteractionMessage::Character => {
                                 self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                    MainTabBarView::Character,
+                                    SaveTabBarView::Character,
                                 ))
                             }
-                            MainTabBarInteractionMessage::Inventory => {
+                            SaveTabBarInteractionMessage::Inventory => {
                                 self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                    MainTabBarView::Inventory,
+                                    SaveTabBarView::Inventory,
                                 ))
                             }
-                            MainTabBarInteractionMessage::Currency => {
+                            SaveTabBarInteractionMessage::Currency => {
                                 self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                    MainTabBarView::Currency,
+                                    SaveTabBarView::Currency,
                                 ))
                             }
                         },
                         ManageSaveInteractionMessage::General(general_msg) => match general_msg {
-                            GeneralInteractionMessage::GuidInputChanged(guid) => {
-                                self.manage_save_state.main_state.general_state.guid_input = guid;
+                            SaveGeneralInteractionMessage::GuidInputChanged(guid) => {
+                                self.manage_save_state.save_view_state.general_state.guid_input = guid;
                             }
-                            GeneralInteractionMessage::SlotInputChanged(slot) => {
+                            SaveGeneralInteractionMessage::SlotInputChanged(slot) => {
                                 let filename = format!("{}.sav", slot);
 
-                                self.manage_save_state.main_state.general_state.slot_input = slot;
+                                self.manage_save_state.save_view_state.general_state.slot_input = slot;
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .general_state
                                     .filename_input = filename.clone();
                                 self.manage_save_state.current_file.file_name = filename;
                             }
-                            GeneralInteractionMessage::GenerateGuidPressed => {
+                            SaveGeneralInteractionMessage::GenerateGuidPressed => {
                                 return Command::perform(
                                     interaction::manage_save::general::generate_random_guid(),
                                     |r| {
@@ -198,19 +207,19 @@ impl Application for Bl3Ui {
                                     },
                                 );
                             }
-                            GeneralInteractionMessage::SaveTypeSelected(save_type) => {
+                            SaveGeneralInteractionMessage::SaveTypeSelected(save_type) => {
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .general_state
                                     .save_type_selected = save_type;
                             }
                         },
                         ManageSaveInteractionMessage::Character(character_msg) => match character_msg {
-                            CharacterInteractionMessage::NameInputChanged(name_input) => {
-                                self.manage_save_state.main_state.character_state.name_input =
+                            SaveCharacterInteractionMessage::NameInputChanged(name_input) => {
+                                self.manage_save_state.save_view_state.character_state.name_input =
                                     name_input;
                             }
-                            CharacterInteractionMessage::XpLevelInputChanged(level) => {
+                            SaveCharacterInteractionMessage::XpLevelInputChanged(level) => {
                                 let xp_points = if level > 0 {
                                     REQUIRED_XP_LIST[level as usize - 1][0]
                                 } else {
@@ -218,32 +227,32 @@ impl Application for Bl3Ui {
                                 };
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .xp_level_input = level;
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .xp_points_input = xp_points;
                             }
-                            CharacterInteractionMessage::XpPointsInputChanged(xp) => {
+                            SaveCharacterInteractionMessage::XpPointsInputChanged(xp) => {
                                 let level = experience_to_level(xp as i32).unwrap_or(1);
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .xp_points_input = xp;
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .xp_level_input = level;
                             }
-                            CharacterInteractionMessage::SduMessage(sdu_message) => match sdu_message {
+                            SaveCharacterInteractionMessage::SduMessage(sdu_message) => match sdu_message {
                                 CharacterSduInputChangedMessage::Backpack(level) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .sdu_unlocker
                                         .backpack
@@ -251,7 +260,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterSduInputChangedMessage::Sniper(level) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .sdu_unlocker
                                         .sniper
@@ -259,7 +268,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterSduInputChangedMessage::Shotgun(level) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .sdu_unlocker
                                         .shotgun
@@ -267,7 +276,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterSduInputChangedMessage::Pistol(level) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .sdu_unlocker
                                         .pistol
@@ -275,7 +284,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterSduInputChangedMessage::Grenade(level) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .sdu_unlocker
                                         .grenade
@@ -283,7 +292,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterSduInputChangedMessage::Smg(level) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .sdu_unlocker
                                         .smg
@@ -291,7 +300,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterSduInputChangedMessage::AssaultRifle(level) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .sdu_unlocker
                                         .assault_rifle
@@ -299,75 +308,75 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterSduInputChangedMessage::Heavy(level) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .sdu_unlocker
                                         .heavy
                                         .input = level;
                                 }
                             },
-                            CharacterInteractionMessage::MaxSduSlotsPressed => {
+                            SaveCharacterInteractionMessage::MaxSduSlotsPressed => {
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .sdu_unlocker
                                     .backpack
                                     .input = SaveSduSlot::Backpack.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .sdu_unlocker
                                     .sniper
                                     .input = SaveSduSlot::Sniper.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .sdu_unlocker
                                     .shotgun
                                     .input = SaveSduSlot::Shotgun.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .sdu_unlocker
                                     .pistol
                                     .input = SaveSduSlot::Pistol.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .sdu_unlocker
                                     .grenade
                                     .input = SaveSduSlot::Grenade.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .sdu_unlocker
                                     .smg
                                     .input = SaveSduSlot::Smg.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .sdu_unlocker
                                     .assault_rifle
                                     .input = SaveSduSlot::Ar.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .sdu_unlocker
                                     .heavy
                                     .input = SaveSduSlot::Heavy.maximum();
                             }
-                            CharacterInteractionMessage::AmmoMessage(ammo_message) => {
+                            SaveCharacterInteractionMessage::AmmoMessage(ammo_message) => {
                                 match ammo_message {
                                     CharacterAmmoInputChangedMessage::Sniper(amount) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .ammo_setter
                                             .sniper
@@ -375,7 +384,7 @@ impl Application for Bl3Ui {
                                     }
                                     CharacterAmmoInputChangedMessage::Shotgun(amount) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .ammo_setter
                                             .shotgun
@@ -383,7 +392,7 @@ impl Application for Bl3Ui {
                                     }
                                     CharacterAmmoInputChangedMessage::Pistol(amount) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .ammo_setter
                                             .pistol
@@ -391,7 +400,7 @@ impl Application for Bl3Ui {
                                     }
                                     CharacterAmmoInputChangedMessage::Grenade(amount) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .ammo_setter
                                             .grenade
@@ -399,7 +408,7 @@ impl Application for Bl3Ui {
                                     }
                                     CharacterAmmoInputChangedMessage::Smg(amount) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .ammo_setter
                                             .smg
@@ -407,7 +416,7 @@ impl Application for Bl3Ui {
                                     }
                                     CharacterAmmoInputChangedMessage::AssaultRifle(amount) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .ammo_setter
                                             .assault_rifle
@@ -415,7 +424,7 @@ impl Application for Bl3Ui {
                                     }
                                     CharacterAmmoInputChangedMessage::Heavy(amount) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .ammo_setter
                                             .heavy
@@ -423,67 +432,67 @@ impl Application for Bl3Ui {
                                     }
                                 }
                             }
-                            CharacterInteractionMessage::MaxAmmoAmountsPressed => {
+                            SaveCharacterInteractionMessage::MaxAmmoAmountsPressed => {
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .ammo_setter
                                     .sniper
                                     .input = AmmoPool::Sniper.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .ammo_setter
                                     .shotgun
                                     .input = AmmoPool::Shotgun.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .ammo_setter
                                     .pistol
                                     .input = AmmoPool::Pistol.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .ammo_setter
                                     .grenade
                                     .input = AmmoPool::Grenade.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .ammo_setter
                                     .smg
                                     .input = AmmoPool::Smg.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .ammo_setter
                                     .assault_rifle
                                     .input = AmmoPool::Ar.maximum();
 
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .ammo_setter
                                     .heavy
                                     .input = AmmoPool::Heavy.maximum();
                             }
-                            CharacterInteractionMessage::PlayerClassSelected(player_class) => {
+                            SaveCharacterInteractionMessage::PlayerClassSelected(player_class) => {
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .character_state
                                     .player_class_selected_class = player_class;
                             }
-                            CharacterInteractionMessage::SkinMessage(skin_message) => {
+                            SaveCharacterInteractionMessage::SkinMessage(skin_message) => {
                                 match skin_message {
                                     CharacterSkinSelectedMessage::HeadSkin(selected) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .skin_selectors
                                             .head_skin
@@ -491,7 +500,7 @@ impl Application for Bl3Ui {
                                     }
                                     CharacterSkinSelectedMessage::CharacterSkin(selected) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .skin_selectors
                                             .character_skin
@@ -499,7 +508,7 @@ impl Application for Bl3Ui {
                                     }
                                     CharacterSkinSelectedMessage::EchoTheme(selected) => {
                                         self.manage_save_state
-                                            .main_state
+                                            .save_view_state
                                             .character_state
                                             .skin_selectors
                                             .echo_theme
@@ -507,10 +516,10 @@ impl Application for Bl3Ui {
                                     }
                                 }
                             }
-                            CharacterInteractionMessage::GearMessage(gear_msg) => match gear_msg {
+                            SaveCharacterInteractionMessage::GearMessage(gear_msg) => match gear_msg {
                                 CharacterGearUnlockedMessage::Grenade(b) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .gear_unlocker
                                         .grenade
@@ -518,7 +527,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterGearUnlockedMessage::Shield(b) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .gear_unlocker
                                         .shield
@@ -526,7 +535,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterGearUnlockedMessage::Weapon1(b) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .gear_unlocker
                                         .weapon_1
@@ -534,7 +543,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterGearUnlockedMessage::Weapon2(b) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .gear_unlocker
                                         .weapon_2
@@ -542,7 +551,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterGearUnlockedMessage::Weapon3(b) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .gear_unlocker
                                         .weapon_3
@@ -550,7 +559,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterGearUnlockedMessage::Weapon4(b) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .gear_unlocker
                                         .weapon_4
@@ -558,7 +567,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterGearUnlockedMessage::Artifact(b) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .gear_unlocker
                                         .artifact
@@ -566,7 +575,7 @@ impl Application for Bl3Ui {
                                 }
                                 CharacterGearUnlockedMessage::ClassMod(b) => {
                                     self.manage_save_state
-                                        .main_state
+                                        .save_view_state
                                         .character_state
                                         .gear_unlocker
                                         .class_mod
@@ -575,14 +584,492 @@ impl Application for Bl3Ui {
                             },
                         },
                         ManageSaveInteractionMessage::Currency(currency_msg) => match currency_msg {
-                            CurrencyInteractionMessage::MoneyInputChanged(money) => {
-                                self.manage_save_state.main_state.currency_state.money_input = money;
+                            SaveCurrencyInteractionMessage::MoneyInputChanged(money) => {
+                                self.manage_save_state.save_view_state.currency_state.money_input = money;
                             }
-                            CurrencyInteractionMessage::EridiumInputChanged(eridium) => {
+                            SaveCurrencyInteractionMessage::EridiumInputChanged(eridium) => {
                                 self.manage_save_state
-                                    .main_state
+                                    .save_view_state
                                     .currency_state
                                     .eridium_input = eridium;
+                            }
+                        },
+                        ManageSaveInteractionMessage::Inventory(inventory_msg) => match inventory_msg {
+                            SaveInventoryInteractionMessage::ItemPressed(item_index) => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .selected_item_index = item_index;
+
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.available_parts.part_type_index =
+                                            available_parts::AvailablePartTypeIndex {
+                                                category_index: 0,
+                                                part_index: 0,
+                                            }
+                                    });
+                            }
+                            SaveInventoryInteractionMessage::ShowAllAvailablePartsSelected(selected) => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.available_parts.show_all_available_parts = selected;
+                                    })
+                            }
+                            SaveInventoryInteractionMessage::AvailablePartsTabPressed => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.available_parts.parts_tab_view = AvailablePartType::Parts
+                                    })
+                            }
+                            SaveInventoryInteractionMessage::AvailableAnointmentsTabPressed => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments
+                                    })
+                            }
+                            SaveInventoryInteractionMessage::AvailablePartPressed(
+                                available_part_type_index,
+                            ) => {
+                                let selected_item_index = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .selected_item_index;
+
+                                if let Some(current_item) = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .items_mut()
+                                    .get_mut(selected_item_index)
+                                {
+                                    if let Some(item_parts) = &mut current_item.item.item_parts {
+                                        if item_parts.parts().len() < MAX_BL3_ITEM_PARTS {
+                                            let part_selected = current_item
+                                                .editor
+                                                .available_parts
+                                                .parts
+                                                .get(available_part_type_index.category_index)
+                                                .and_then(|p| {
+                                                    p.parts.get(available_part_type_index.part_index)
+                                                });
+
+                                            if let Some(part_selected) = part_selected {
+                                                let part_inv_key = &item_parts.part_inv_key;
+
+                                                if let Ok(bl3_part) = INVENTORY_SERIAL_DB
+                                                    .get_part_by_short_name(
+                                                        part_inv_key,
+                                                        &part_selected.part.name,
+                                                    )
+                                                {
+                                                    if let Err(e) = current_item.item.add_part(bl3_part)
+                                                    {
+                                                        let msg = format!("Failed to add part to item: {}", e);
+
+                                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                                    }
+
+                                                    self.manage_save_state
+                                                        .save_view_state
+                                                        .inventory_state
+                                                        .map_current_item_if_exists(|i| {
+                                                            i.editor.available_parts.part_type_index =
+                                                                available_part_type_index
+                                                        });
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            SaveInventoryInteractionMessage::AvailableAnointmentPressed(available_part_type_index) => {
+                                let selected_item_index = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .selected_item_index;
+
+                                if let Some(current_item) = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .items_mut()
+                                    .get_mut(selected_item_index)
+                                {
+                                    if let Some(item_parts) = &mut current_item.item.item_parts {
+                                        if item_parts.generic_parts().len() < MAX_BL3_ITEM_ANOINTMENTS {
+                                            let anointment_selected = current_item
+                                                .editor
+                                                .available_parts
+                                                .parts
+                                                .get(available_part_type_index.category_index)
+                                                .and_then(|p| {
+                                                    p.parts.get(available_part_type_index.part_index)
+                                                });
+
+                                            if let Some(anointment_selected) = anointment_selected {
+                                                if let Ok(bl3_part) = INVENTORY_SERIAL_DB
+                                                    .get_part_by_short_name(
+                                                        "InventoryGenericPartData",
+                                                        &anointment_selected.part.name,
+                                                    )
+                                                {
+                                                    if let Err(e) = current_item.item.add_generic_part(bl3_part)
+                                                    {
+                                                        let msg = format!("Failed to add part to item: {}", e);
+
+                                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                                    }
+
+                                                    self.manage_save_state
+                                                        .save_view_state
+                                                        .inventory_state
+                                                        .map_current_item_if_exists(|i| {
+                                                            i.editor.available_parts.part_type_index =
+                                                                available_part_type_index
+                                                        });
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            SaveInventoryInteractionMessage::CurrentPartsTabPressed => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.current_parts.parts_tab_view = CurrentPartType::Parts
+                                    })
+                            }
+                            SaveInventoryInteractionMessage::CurrentAnointmentsTabPressed => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists(|i| {
+                                        i.editor.current_parts.parts_tab_view = CurrentPartType::Anointments
+                                    })
+                            }
+                            SaveInventoryInteractionMessage::CurrentPartPressed(current_part_type_index) => {
+                                let selected_item_index = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .selected_item_index;
+
+                                if let Some(current_item) = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .items_mut()
+                                    .get_mut(selected_item_index)
+                                {
+                                    let part_selected = current_item
+                                        .editor
+                                        .current_parts
+                                        .parts
+                                        .get(current_part_type_index.category_index)
+                                        .and_then(|p| p.parts.get(current_part_type_index.part_index));
+
+                                    if let Some(part_selected) = part_selected {
+                                        if let Err(e) =
+                                        current_item.item.remove_part(&part_selected.part.part)
+                                        {
+                                            let msg = format!("Failed to remove part from item: {}", e);
+
+                                            self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                        }
+
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .inventory_state
+                                            .map_current_item_if_exists_to_editor_state();
+                                    }
+                                }
+                            }
+                            SaveInventoryInteractionMessage::CurrentAnointmentPressed(current_part_type_index) => {
+                                let selected_item_index = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .selected_item_index;
+
+                                if let Some(current_item) = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .items_mut()
+                                    .get_mut(selected_item_index)
+                                {
+                                    let part_selected = current_item
+                                        .editor
+                                        .current_parts
+                                        .parts
+                                        .get(current_part_type_index.category_index)
+                                        .and_then(|p| p.parts.get(current_part_type_index.part_index));
+
+                                    if let Some(part_selected) = part_selected {
+                                        if let Err(e) =
+                                        current_item.item.remove_generic_part(&part_selected.part.part)
+                                        {
+                                            let msg = format!("Failed to remove part from item: {}", e);
+
+                                            self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                        }
+
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .inventory_state
+                                            .map_current_item_if_exists_to_editor_state();
+                                    }
+                                }
+                            }
+                            SaveInventoryInteractionMessage::ImportItemInputChanged(s) => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .import_serial_input = s;
+                            }
+                            SaveInventoryInteractionMessage::CreateItemPressed => {
+                                self.manage_save_state.save_view_state.inventory_state.add_item(
+                                    Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap(),
+                                );
+
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .selected_item_index = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .items()
+                                    .len()
+                                    - 1;
+
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists_to_editor_state();
+
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .item_list_scrollable_state
+                                    .snap_to(1.0)
+                            }
+                            SaveInventoryInteractionMessage::ImportItemFromSerialPressed => {
+                                let item_serial = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .import_serial_input
+                                    .trim();
+
+                                match Bl3Item::from_serial_base64(item_serial) {
+                                    Ok(bl3_item) => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .inventory_state
+                                            .add_item(bl3_item);
+
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .inventory_state
+                                            .selected_item_index = self
+                                            .manage_save_state
+                                            .save_view_state
+                                            .inventory_state
+                                            .items()
+                                            .len()
+                                            - 1;
+
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .inventory_state
+                                            .map_current_item_if_exists_to_editor_state();
+
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .inventory_state
+                                            .item_list_scrollable_state
+                                            .snap_to(1.0);
+                                    }
+                                    Err(e) => {
+                                        let msg = format!("Failed to import serial: {}", e);
+
+                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                    }
+                                }
+                            }
+                            SaveInventoryInteractionMessage::SyncAllItemLevelsWithCharacterLevelPressed => {
+                                let character_level = self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .character_state
+                                    .xp_level_input;
+
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .all_item_levels_input = character_level;
+
+                                let character_level = character_level as usize;
+
+                                let mut error_notification = None;
+
+                                for (i, item) in self.manage_save_state.save_view_state.inventory_state.items_mut().iter_mut().enumerate() {
+                                    if let Err(e) = item.item.set_level(character_level) {
+                                        let msg = format!("Failed to set level for item number: {} - {}", i, e);
+
+                                        error_notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+
+                                        break;
+                                    }
+                                }
+
+                                if let Some(error_notification) = error_notification {
+                                    self.notification = Some(error_notification)
+                                }
+
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists_to_editor_state();
+                            }
+                            SaveInventoryInteractionMessage::SyncItemLevelWithCharacterLevelPressed => {
+                                let character_level =
+                                    self.manage_save_state
+                                        .save_view_state
+                                        .character_state
+                                        .xp_level_input as usize;
+
+                                if let Err(e) = self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_level(character_level)
+                                    }) {
+                                    let msg = format!("Failed to set level for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
+                            }
+                            SaveInventoryInteractionMessage::AllItemLevelInputChanged(item_level_input) => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .all_item_levels_input = item_level_input;
+
+                                let item_level = item_level_input as usize;
+
+                                let mut error_notification = None;
+
+                                for (i, item) in self.manage_save_state.save_view_state.inventory_state.items_mut().iter_mut().enumerate() {
+                                    if let Err(e) = item.item.set_level(item_level) {
+                                        let msg = format!("Failed to set level for item number: {} - {}", i, e);
+
+                                        error_notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+
+                                        break;
+                                    }
+                                }
+
+                                if let Some(error_notification) = error_notification {
+                                    self.notification = Some(error_notification)
+                                }
+
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists_to_editor_state();
+                            }
+                            SaveInventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
+                                if let Err(e) = self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_level(item_level_input as usize)
+                                    }) {
+                                    let msg = format!("Failed to set level for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
+                            }
+                            SaveInventoryInteractionMessage::DeleteItem(id) => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .remove_item(id);
+
+                                let current_file = &mut self.manage_save_state.current_file;
+
+                                current_file.character_data.remove_inventory_item(id);
+
+                                if self
+                                    .manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .selected_item_index
+                                    != 0
+                                {
+                                    self.manage_save_state
+                                        .save_view_state
+                                        .inventory_state
+                                        .selected_item_index -= 1;
+                                }
+
+                                self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists_to_editor_state();
+                            }
+                            SaveInventoryInteractionMessage::BalanceInputSelected(balance_selected) => {
+                                if let Err(e) = self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_balance(balance_selected)
+                                    }) {
+                                    let msg = format!("Failed to set balance for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
+                            }
+                            SaveInventoryInteractionMessage::InvDataInputSelected(inv_data_selected) => {
+                                if let Err(e) = self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_inv_data(inv_data_selected)
+                                    }) {
+                                    let msg = format!("Failed to set inventory data for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
+                            }
+                            SaveInventoryInteractionMessage::ManufacturerInputSelected(
+                                manufacturer_selected,
+                            ) => {
+                                if let Err(e) = self.manage_save_state
+                                    .save_view_state
+                                    .inventory_state
+                                    .map_current_item_if_exists_result(|i| {
+                                        i.item.set_manufacturer(manufacturer_selected)
+                                    }) {
+                                    let msg = format!("Failed to set manufacturer for item: {}", e);
+
+                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                }
                             }
                         },
                         ManageSaveInteractionMessage::SaveFilePressed => {
@@ -616,485 +1103,44 @@ impl Application for Bl3Ui {
                                 }
                             };
                         }
-                        ManageSaveInteractionMessage::Inventory(inventory_msg) => match inventory_msg {
-                            InventoryInteractionMessage::ItemPressed(item_index) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .selected_item_index = item_index;
-
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.part_type_index =
-                                            available_parts::AvailablePartTypeIndex {
-                                                category_index: 0,
-                                                part_index: 0,
-                                            }
-                                    });
+                    },
+                    InteractionMessage::ManageProfileInteraction(manage_profile_msg) => match manage_profile_msg {
+                        ManageProfileInteractionMessage::TabBar(tab_bar_msg) => match tab_bar_msg {
+                            ProfileTabBarInteractionMessage::General => {
+                                self.view_state = ViewState::ManageProfile(ManageProfileView::TabBar(
+                                    ProfileTabBarView::General,
+                                ))
                             }
-                            InventoryInteractionMessage::ShowAllAvailablePartsSelected(selected) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.show_all_available_parts = selected;
-                                    })
+                            ProfileTabBarInteractionMessage::Profile => {
+                                self.view_state = ViewState::ManageProfile(ManageProfileView::TabBar(
+                                    ProfileTabBarView::Profile,
+                                ))
                             }
-                            InventoryInteractionMessage::AvailablePartsTabPressed => {
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.parts_tab_view = AvailablePartType::Parts
-                                    })
-                            }
-                            InventoryInteractionMessage::AvailableAnointmentsTabPressed => {
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments
-                                    })
-                            }
-                            InventoryInteractionMessage::AvailablePartPressed(
-                                available_part_type_index,
-                            ) => {
-                                let selected_item_index = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .selected_item_index;
-
-                                if let Some(current_item) = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .get_mut(selected_item_index)
-                                {
-                                    if let Some(item_parts) = &mut current_item.item.item_parts {
-                                        if item_parts.parts().len() < MAX_BL3_ITEM_PARTS {
-                                            let part_selected = current_item
-                                                .editor
-                                                .available_parts
-                                                .parts
-                                                .get(available_part_type_index.category_index)
-                                                .and_then(|p| {
-                                                    p.parts.get(available_part_type_index.part_index)
-                                                });
-
-                                            if let Some(part_selected) = part_selected {
-                                                let part_inv_key = &item_parts.part_inv_key;
-
-                                                if let Ok(bl3_part) = INVENTORY_SERIAL_DB
-                                                    .get_part_by_short_name(
-                                                        part_inv_key,
-                                                        &part_selected.part.name,
-                                                    )
-                                                {
-                                                    if let Err(e) = current_item.item.add_part(bl3_part)
-                                                    {
-                                                        let msg = format!("Failed to add part to item: {}", e);
-
-                                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                                    }
-
-                                                    self.manage_save_state
-                                                        .main_state
-                                                        .inventory_state
-                                                        .map_current_item_if_exists(|i| {
-                                                            i.editor.available_parts.part_type_index =
-                                                                available_part_type_index
-                                                        });
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            InventoryInteractionMessage::AvailableAnointmentPressed(available_part_type_index) => {
-                                let selected_item_index = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .selected_item_index;
-
-                                if let Some(current_item) = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .get_mut(selected_item_index)
-                                {
-                                    if let Some(item_parts) = &mut current_item.item.item_parts {
-                                        if item_parts.generic_parts().len() < MAX_BL3_ITEM_ANOINTMENTS {
-                                            let anointment_selected = current_item
-                                                .editor
-                                                .available_parts
-                                                .parts
-                                                .get(available_part_type_index.category_index)
-                                                .and_then(|p| {
-                                                    p.parts.get(available_part_type_index.part_index)
-                                                });
-
-                                            if let Some(anointment_selected) = anointment_selected {
-                                                if let Ok(bl3_part) = INVENTORY_SERIAL_DB
-                                                    .get_part_by_short_name(
-                                                        "InventoryGenericPartData",
-                                                        &anointment_selected.part.name,
-                                                    )
-                                                {
-                                                    if let Err(e) = current_item.item.add_generic_part(bl3_part)
-                                                    {
-                                                        let msg = format!("Failed to add part to item: {}", e);
-
-                                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                                    }
-
-                                                    self.manage_save_state
-                                                        .main_state
-                                                        .inventory_state
-                                                        .map_current_item_if_exists(|i| {
-                                                            i.editor.available_parts.part_type_index =
-                                                                available_part_type_index
-                                                        });
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            InventoryInteractionMessage::CurrentPartsTabPressed => {
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.current_parts.parts_tab_view = CurrentPartType::Parts
-                                    })
-                            }
-                            InventoryInteractionMessage::CurrentAnointmentsTabPressed => {
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.current_parts.parts_tab_view = CurrentPartType::Anointments
-                                    })
-                            }
-                            InventoryInteractionMessage::CurrentPartPressed(current_part_type_index) => {
-                                let selected_item_index = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .selected_item_index;
-
-                                if let Some(current_item) = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .get_mut(selected_item_index)
-                                {
-                                    let part_selected = current_item
-                                        .editor
-                                        .current_parts
-                                        .parts
-                                        .get(current_part_type_index.category_index)
-                                        .and_then(|p| p.parts.get(current_part_type_index.part_index));
-
-                                    if let Some(part_selected) = part_selected {
-                                        if let Err(e) =
-                                        current_item.item.remove_part(&part_selected.part.part)
-                                        {
-                                            let msg = format!("Failed to remove part from item: {}", e);
-
-                                            self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                        }
-
-                                        self.manage_save_state
-                                            .main_state
-                                            .inventory_state
-                                            .map_current_item_if_exists_to_editor_state();
-                                    }
-                                }
-                            }
-                            InventoryInteractionMessage::CurrentAnointmentPressed(current_part_type_index) => {
-                                let selected_item_index = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .selected_item_index;
-
-                                if let Some(current_item) = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .get_mut(selected_item_index)
-                                {
-                                    let part_selected = current_item
-                                        .editor
-                                        .current_parts
-                                        .parts
-                                        .get(current_part_type_index.category_index)
-                                        .and_then(|p| p.parts.get(current_part_type_index.part_index));
-
-                                    if let Some(part_selected) = part_selected {
-                                        if let Err(e) =
-                                        current_item.item.remove_generic_part(&part_selected.part.part)
-                                        {
-                                            let msg = format!("Failed to remove part from item: {}", e);
-
-                                            self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                        }
-
-                                        self.manage_save_state
-                                            .main_state
-                                            .inventory_state
-                                            .map_current_item_if_exists_to_editor_state();
-                                    }
-                                }
-                            }
-                            InventoryInteractionMessage::ImportItemInputChanged(s) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .import_serial_input = s;
-                            }
-                            InventoryInteractionMessage::CreateItemPressed => {
-                                self.manage_save_state.main_state.inventory_state.add_item(
-                                    Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap(),
-                                );
-
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .selected_item_index = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .items()
-                                    .len()
-                                    - 1;
-
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_to_editor_state();
-
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .item_list_scrollable_state
-                                    .snap_to(1.0)
-                            }
-                            InventoryInteractionMessage::ImportItemFromSerialPressed => {
-                                let item_serial = self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .import_serial_input
-                                    .trim();
-
-                                match Bl3Item::from_serial_base64(item_serial) {
-                                    Ok(bl3_item) => {
-                                        self.manage_save_state
-                                            .main_state
-                                            .inventory_state
-                                            .add_item(bl3_item);
-
-                                        self.manage_save_state
-                                            .main_state
-                                            .inventory_state
-                                            .selected_item_index = self
-                                            .manage_save_state
-                                            .main_state
-                                            .inventory_state
-                                            .items()
-                                            .len()
-                                            - 1;
-
-                                        self.manage_save_state
-                                            .main_state
-                                            .inventory_state
-                                            .map_current_item_if_exists_to_editor_state();
-
-                                        self.manage_save_state
-                                            .main_state
-                                            .inventory_state
-                                            .item_list_scrollable_state
-                                            .snap_to(1.0);
-                                    }
-                                    Err(e) => {
-                                        let msg = format!("Failed to import serial: {}", e);
-
-                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                    }
-                                }
-                            }
-                            InventoryInteractionMessage::SyncAllItemLevelsWithCharacterLevelPressed => {
-                                let character_level = self
-                                    .manage_save_state
-                                    .main_state
-                                    .character_state
-                                    .xp_level_input;
-
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .all_item_levels_input = character_level;
-
-                                let character_level = character_level as usize;
-
-                                let mut error_notification = None;
-
-                                for (i, item) in self.manage_save_state.main_state.inventory_state.items_mut().iter_mut().enumerate() {
-                                    if let Err(e) = item.item.set_level(character_level) {
-                                        let msg = format!("Failed to set level for item number: {} - {}", i, e);
-
-                                        error_notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-
-                                        break;
-                                    }
-                                }
-
-                                if let Some(error_notification) = error_notification {
-                                    self.notification = Some(error_notification)
-                                }
-
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_to_editor_state();
-                            }
-                            InventoryInteractionMessage::SyncItemLevelWithCharacterLevelPressed => {
-                                let character_level =
-                                    self.manage_save_state
-                                        .main_state
-                                        .character_state
-                                        .xp_level_input as usize;
-
-                                if let Err(e) = self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_level(character_level)
-                                    }) {
-                                    let msg = format!("Failed to set level for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
-                            }
-                            InventoryInteractionMessage::AllItemLevelInputChanged(item_level_input) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .all_item_levels_input = item_level_input;
-
-                                let item_level = item_level_input as usize;
-
-                                let mut error_notification = None;
-
-                                for (i, item) in self.manage_save_state.main_state.inventory_state.items_mut().iter_mut().enumerate() {
-                                    if let Err(e) = item.item.set_level(item_level) {
-                                        let msg = format!("Failed to set level for item number: {} - {}", i, e);
-
-                                        error_notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-
-                                        break;
-                                    }
-                                }
-
-                                if let Some(error_notification) = error_notification {
-                                    self.notification = Some(error_notification)
-                                }
-
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_to_editor_state();
-                            }
-                            InventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
-                                if let Err(e) = self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_level(item_level_input as usize)
-                                    }) {
-                                    let msg = format!("Failed to set level for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
-                            }
-                            InventoryInteractionMessage::DeleteItem(id) => {
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .remove_item(id);
-
-                                let current_file = &mut self.manage_save_state.current_file;
-
-                                current_file.character_data.remove_inventory_item(id);
-
-                                if self
-                                    .manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .selected_item_index
-                                    != 0
-                                {
-                                    self.manage_save_state
-                                        .main_state
-                                        .inventory_state
-                                        .selected_item_index -= 1;
-                                }
-
-                                self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_to_editor_state();
-                            }
-                            InventoryInteractionMessage::BalanceInputSelected(balance_selected) => {
-                                if let Err(e) = self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_balance(balance_selected)
-                                    }) {
-                                    let msg = format!("Failed to set balance for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
-                            }
-                            InventoryInteractionMessage::InvDataInputSelected(inv_data_selected) => {
-                                if let Err(e) = self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_inv_data(inv_data_selected)
-                                    }) {
-                                    let msg = format!("Failed to set inventory data for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
-                            }
-                            InventoryInteractionMessage::ManufacturerInputSelected(
-                                manufacturer_selected,
-                            ) => {
-                                if let Err(e) = self.manage_save_state
-                                    .main_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_manufacturer(manufacturer_selected)
-                                    }) {
-                                    let msg = format!("Failed to set manufacturer for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
+                        }
+                        ManageProfileInteractionMessage::General(general_msg) => match general_msg {
+                            ProfileGeneralInteractionMessage::ProfileTypeSelected(profile_type) => {
+                                self.manage_profile_state
+                                    .profile_view_state
+                                    .general_state
+                                    .profile_type_selected = profile_type;
                             }
                         },
-                    },
+                        ManageProfileInteractionMessage::Profile(profile_msg) => match profile_msg {
+                            ProfileProfileInteractionMessage::GuardianRankInputChanged(guardian_rank) => {
+                                self.manage_profile_state
+                                    .profile_view_state
+                                    .profile_state
+                                    .guardian_rank_input = guardian_rank;
+                            }
+                            ProfileProfileInteractionMessage::GuardianRankTokensInputChanged(guardian_rank_tokens) => {
+                                self.manage_profile_state
+                                    .profile_view_state
+                                    .profile_state
+                                    .guardian_rank_tokens_input = guardian_rank_tokens;
+                            }
+                        },
+                        ManageProfileInteractionMessage::SaveFilePressed => {}
+                    }
                     InteractionMessage::LoadedFileSelected(loaded_file) => {
                         self.loaded_files_selected = loaded_file;
 
@@ -1153,7 +1199,10 @@ impl Application for Bl3Ui {
             Message::ManageSave(manage_save_msg) => match manage_save_msg {
                 ManageSaveMessage::General(general_msg) => match general_msg {
                     GeneralMessage::GenerateRandomGuidCompleted(guid) => {
-                        self.manage_save_state.main_state.general_state.guid_input = guid;
+                        self.manage_save_state
+                            .save_view_state
+                            .general_state
+                            .guid_input = guid;
                     }
                 },
             },
@@ -1227,31 +1276,41 @@ impl Application for Bl3Ui {
         .style(Bl3UiStyle)
         .into_element();
 
-        let save_button = Button::new(
+        let view_state_discrim = mem::discriminant(&self.view_state);
+        let manage_save_discrim = mem::discriminant(&ViewState::ManageSave(
+            ManageSaveView::TabBar(SaveTabBarView::General),
+        ));
+        let manage_profile_discrim = mem::discriminant(&ViewState::ManageProfile(
+            ManageProfileView::TabBar(ProfileTabBarView::General),
+        ));
+
+        let mut save_button = Button::new(
             &mut self.save_file_button_state,
             Text::new("Save").font(JETBRAINS_MONO_BOLD).size(17),
         )
-        .on_press(InteractionMessage::ManageSaveInteraction(
-            ManageSaveInteractionMessage::SaveFilePressed,
-        ))
         .padding(10)
-        .style(Bl3UiStyle)
-        .into_element();
+        .style(Bl3UiStyle);
+
+        if view_state_discrim == manage_save_discrim {
+            save_button = save_button.on_press(InteractionMessage::ManageSaveInteraction(
+                ManageSaveInteractionMessage::SaveFilePressed,
+            ));
+        } else if view_state_discrim == manage_profile_discrim {
+            save_button = save_button.on_press(InteractionMessage::ManageProfileInteraction(
+                ManageProfileInteractionMessage::SaveFilePressed,
+            ));
+        }
 
         let mut menu_bar_content = Row::new()
             .push(title)
             .spacing(15)
             .align_items(Align::Center);
 
-        // mem::discriminant will match any of the enum's under ViewState::ManageSave
-        if mem::discriminant(&self.view_state)
-            == mem::discriminant(&ViewState::ManageSave(ManageSaveView::TabBar(
-                MainTabBarView::General,
-            )))
+        if view_state_discrim == manage_save_discrim || view_state_discrim == manage_profile_discrim
         {
             menu_bar_content = menu_bar_content.push(change_dir_button.into_element());
             menu_bar_content = menu_bar_content.push(all_saves_picklist);
-            menu_bar_content = menu_bar_content.push(save_button);
+            menu_bar_content = menu_bar_content.push(save_button.into_element());
         }
 
         let menu_bar = Container::new(menu_bar_content)
@@ -1268,6 +1327,12 @@ impl Application for Bl3Ui {
                 ManageSaveView::TabBar(main_tab_bar_view) => {
                     views::manage_save::main::view(&mut self.manage_save_state, main_tab_bar_view)
                 }
+            },
+            ViewState::ManageProfile(manage_profile_view) => match manage_profile_view {
+                ManageProfileView::TabBar(main_tab_bar_view) => views::manage_profile::main::view(
+                    &mut self.manage_profile_state,
+                    main_tab_bar_view,
+                ),
             },
         };
 

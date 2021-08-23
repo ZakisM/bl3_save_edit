@@ -16,7 +16,7 @@ use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::inventory::extra_part_info::add_extra_part_info;
 use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
 use crate::views::manage_save::inventory::parts_tab_bar::{parts_tab_bar_button, CurrentPartType};
-use crate::views::manage_save::inventory::InventoryInteractionMessage;
+use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::text_margin::TextMargin;
@@ -100,13 +100,13 @@ impl CurrentInventoryPart {
             .on_press(InteractionMessage::ManageSaveInteraction(
                 ManageSaveInteractionMessage::Inventory(match self.part_type {
                     CurrentPartType::Parts => {
-                        InventoryInteractionMessage::CurrentPartPressed(CurrentPartTypeIndex {
+                        SaveInventoryInteractionMessage::CurrentPartPressed(CurrentPartTypeIndex {
                             category_index: self.category_index,
                             part_index: self.part_index,
                         })
                     }
                     CurrentPartType::Anointments => {
-                        InventoryInteractionMessage::CurrentAnointmentPressed(
+                        SaveInventoryInteractionMessage::CurrentAnointmentPressed(
                             CurrentPartTypeIndex {
                                 category_index: self.category_index,
                                 part_index: self.part_index,
@@ -303,7 +303,7 @@ impl CurrentParts {
                 &mut self.current_parts_tab_button_state,
                 CurrentPartType::Parts,
                 &self.parts_tab_view,
-                InventoryInteractionMessage::CurrentPartsTabPressed,
+                SaveInventoryInteractionMessage::CurrentPartsTabPressed,
                 Some(format!(
                     "({}/{})",
                     item.item_parts
@@ -322,7 +322,7 @@ impl CurrentParts {
                 &mut self.current_anointments_tab_button_state,
                 CurrentPartType::Anointments,
                 &self.parts_tab_view,
-                InventoryInteractionMessage::CurrentAnointmentsTabPressed,
+                SaveInventoryInteractionMessage::CurrentAnointmentsTabPressed,
                 Some(format!(
                     "({}/{})",
                     item.item_parts

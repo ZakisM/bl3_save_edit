@@ -32,7 +32,7 @@ pub enum GeneralMessage {
 }
 
 #[derive(Debug, Clone)]
-pub enum GeneralInteractionMessage {
+pub enum SaveGeneralInteractionMessage {
     GuidInputChanged(String),
     SlotInputChanged(u32),
     GenerateGuidPressed,
@@ -90,7 +90,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                         |s| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::General(
-                                    GeneralInteractionMessage::GuidInputChanged(s),
+                                    SaveGeneralInteractionMessage::GuidInputChanged(s),
                                 ),
                             )
                         },
@@ -112,7 +112,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                 )
                 .on_press(InteractionMessage::ManageSaveInteraction(
                     ManageSaveInteractionMessage::General(
-                        GeneralInteractionMessage::GenerateGuidPressed,
+                        SaveGeneralInteractionMessage::GenerateGuidPressed,
                     ),
                 ))
                 .padding(10)
@@ -138,7 +138,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::General(
-                                GeneralInteractionMessage::SlotInputChanged(v),
+                                SaveGeneralInteractionMessage::SlotInputChanged(v),
                             ),
                         )
                     },
@@ -176,7 +176,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                 |h| {
                     InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::General(
-                            GeneralInteractionMessage::SaveTypeSelected(h),
+                            SaveGeneralInteractionMessage::SaveTypeSelected(h),
                         ),
                     )
                 },
