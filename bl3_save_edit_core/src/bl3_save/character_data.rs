@@ -544,6 +544,38 @@ impl CharacterData {
         &self.unlockable_inventory_slots
     }
 
+    pub fn remove_inventory_slot_if_exists(
+        &mut self,
+        inventory_slot: &InventorySlot,
+    ) -> Result<()> {
+        let slot_path = inventory_slot.get_serializations()[0];
+
+        if let Some(slot) = self
+            .character
+            .equipped_inventory_list
+            .iter_mut()
+            .find(|s| s.slot_data_path == slot_path)
+        {
+            //Lock in character data
+            slot.enabled = false;
+        }
+
+        if let Some(current_slot) = self
+            .unlockable_inventory_slots
+            .iter_mut()
+            .find(|i| i.slot == *inventory_slot)
+        {
+            current_slot.unlocked = false;
+        } else {
+            self.unlockable_inventory_slots.push(InventorySlotData {
+                slot: inventory_slot.to_owned(),
+                unlocked: false,
+            });
+        }
+
+        Ok(())
+    }
+
     pub fn unlock_inventory_slot(&mut self, inventory_slot: &InventorySlot) -> Result<()> {
         let slot_path = inventory_slot.get_serializations()[0];
 
@@ -559,6 +591,7 @@ impl CharacterData {
                 )
             })?;
 
+        //Unlock in character data
         slot.enabled = true;
 
         let class_mod_challenge = match self.player_class {

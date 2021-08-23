@@ -46,17 +46,26 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                 LabelledElement::create(
                     "File",
                     Length::Units(90),
-                    TextInput::new(
-                        &mut general_state.filename_input_state,
-                        "1.sav",
-                        &general_state.filename_input,
-                        |_| InteractionMessage::Ignore,
+                    Tooltip::new(
+                        TextInput::new(
+                            &mut general_state.filename_input_state,
+                            "1.sav",
+                            &general_state.filename_input,
+                            |_| InteractionMessage::Ignore,
+                        )
+                        .font(JETBRAINS_MONO)
+                        .padding(10)
+                        .size(17)
+                        .style(Bl3UiStyle)
+                        .into_element(),
+                        "Not editable, this is modified by changing your Save Slot below",
+                        tooltip::Position::Top,
                     )
-                    .font(JETBRAINS_MONO)
+                    .gap(10)
                     .padding(10)
+                    .font(JETBRAINS_MONO)
                     .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
+                    .style(Bl3UiTooltipStyle),
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))

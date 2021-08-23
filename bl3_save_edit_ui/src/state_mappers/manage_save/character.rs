@@ -193,6 +193,9 @@ pub fn map_character_state_to_save(
         // Do we want to handle removing item slots? - Doesn't make sense to do so
         if s.is_unlocked {
             save.character_data.unlock_inventory_slot(&s.inv_slot)?;
+        } else {
+            save.character_data
+                .remove_inventory_slot_if_exists(&s.inv_slot)?;
         }
     }
 
