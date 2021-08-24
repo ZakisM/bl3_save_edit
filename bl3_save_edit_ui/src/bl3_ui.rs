@@ -5,6 +5,7 @@ use iced::{
     Element, HorizontalAlignment, Length, PickList, Row, Text,
 };
 
+use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
 use bl3_save_edit_core::bl3_save::ammo::AmmoPool;
 use bl3_save_edit_core::bl3_save::bl3_item::{
     Bl3Item, MAX_BL3_ITEM_ANOINTMENTS, MAX_BL3_ITEM_PARTS,
@@ -24,7 +25,9 @@ use crate::views::choose_save_directory::{
 use crate::views::initialization::InitializationMessage;
 use crate::views::manage_profile::general::ProfileGeneralInteractionMessage;
 use crate::views::manage_profile::main::{ProfileTabBarInteractionMessage, ProfileTabBarView};
-use crate::views::manage_profile::profile::ProfileProfileInteractionMessage;
+use crate::views::manage_profile::profile::{
+    ProfileProfileInteractionMessage, ProfileSduInputChangedMessage, ProfileSkinUnlockedMessage,
+};
 use crate::views::manage_profile::{
     ManageProfileInteractionMessage, ManageProfileState, ManageProfileView,
 };
@@ -226,259 +229,175 @@ impl Application for Bl3Ui {
                                     0
                                 };
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
+                                let character_state = &mut self.manage_save_state.save_view_state.character_state;
+
+                                character_state
                                     .xp_level_input = level;
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
+                                character_state
                                     .xp_points_input = xp_points;
                             }
                             SaveCharacterInteractionMessage::XpPointsInputChanged(xp) => {
                                 let level = experience_to_level(xp as i32).unwrap_or(1);
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
+                                let character_state = &mut self.manage_save_state.save_view_state.character_state;
+
+                                character_state
                                     .xp_points_input = xp;
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
+                                character_state
                                     .xp_level_input = level;
                             }
-                            SaveCharacterInteractionMessage::SduMessage(sdu_message) => match sdu_message {
-                                CharacterSduInputChangedMessage::Backpack(level) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .sdu_unlocker
-                                        .backpack
-                                        .input = level;
+                            SaveCharacterInteractionMessage::SduMessage(sdu_message) => {
+                                let sdu_unlocker = &mut self.manage_save_state.save_view_state.character_state.sdu_unlocker;
+
+                                match sdu_message {
+                                    CharacterSduInputChangedMessage::Backpack(level) => {
+                                        sdu_unlocker
+                                            .backpack
+                                            .input = level;
+                                    }
+                                    CharacterSduInputChangedMessage::Sniper(level) => {
+                                        sdu_unlocker
+                                            .sniper
+                                            .input = level;
+                                    }
+                                    CharacterSduInputChangedMessage::Shotgun(level) => {
+                                        sdu_unlocker
+                                            .shotgun
+                                            .input = level;
+                                    }
+                                    CharacterSduInputChangedMessage::Pistol(level) => {
+                                        sdu_unlocker
+                                            .pistol
+                                            .input = level;
+                                    }
+                                    CharacterSduInputChangedMessage::Grenade(level) => {
+                                        sdu_unlocker
+                                            .grenade
+                                            .input = level;
+                                    }
+                                    CharacterSduInputChangedMessage::Smg(level) => {
+                                        sdu_unlocker
+                                            .smg
+                                            .input = level;
+                                    }
+                                    CharacterSduInputChangedMessage::AssaultRifle(level) => {
+                                        sdu_unlocker
+                                            .assault_rifle
+                                            .input = level;
+                                    }
+                                    CharacterSduInputChangedMessage::Heavy(level) => {
+                                        sdu_unlocker
+                                            .heavy
+                                            .input = level;
+                                    }
                                 }
-                                CharacterSduInputChangedMessage::Sniper(level) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .sdu_unlocker
-                                        .sniper
-                                        .input = level;
-                                }
-                                CharacterSduInputChangedMessage::Shotgun(level) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .sdu_unlocker
-                                        .shotgun
-                                        .input = level;
-                                }
-                                CharacterSduInputChangedMessage::Pistol(level) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .sdu_unlocker
-                                        .pistol
-                                        .input = level;
-                                }
-                                CharacterSduInputChangedMessage::Grenade(level) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .sdu_unlocker
-                                        .grenade
-                                        .input = level;
-                                }
-                                CharacterSduInputChangedMessage::Smg(level) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .sdu_unlocker
-                                        .smg
-                                        .input = level;
-                                }
-                                CharacterSduInputChangedMessage::AssaultRifle(level) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .sdu_unlocker
-                                        .assault_rifle
-                                        .input = level;
-                                }
-                                CharacterSduInputChangedMessage::Heavy(level) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .sdu_unlocker
-                                        .heavy
-                                        .input = level;
-                                }
-                            },
+                            }
                             SaveCharacterInteractionMessage::MaxSduSlotsPressed => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .sdu_unlocker
+                                let sdu_unlocker = &mut self.manage_save_state.save_view_state.character_state.sdu_unlocker;
+
+                                sdu_unlocker
                                     .backpack
                                     .input = SaveSduSlot::Backpack.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .sdu_unlocker
+                                sdu_unlocker
                                     .sniper
                                     .input = SaveSduSlot::Sniper.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .sdu_unlocker
+                                sdu_unlocker
                                     .shotgun
                                     .input = SaveSduSlot::Shotgun.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .sdu_unlocker
+                                sdu_unlocker
                                     .pistol
                                     .input = SaveSduSlot::Pistol.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .sdu_unlocker
+                                sdu_unlocker
                                     .grenade
                                     .input = SaveSduSlot::Grenade.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .sdu_unlocker
+                                sdu_unlocker
                                     .smg
                                     .input = SaveSduSlot::Smg.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .sdu_unlocker
+                                sdu_unlocker
                                     .assault_rifle
                                     .input = SaveSduSlot::Ar.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .sdu_unlocker
+                                sdu_unlocker
                                     .heavy
                                     .input = SaveSduSlot::Heavy.maximum();
                             }
                             SaveCharacterInteractionMessage::AmmoMessage(ammo_message) => {
+                                let ammo_setter = &mut self.manage_save_state.save_view_state.character_state.ammo_setter;
+
                                 match ammo_message {
                                     CharacterAmmoInputChangedMessage::Sniper(amount) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .ammo_setter
+                                        ammo_setter
                                             .sniper
                                             .input = amount;
                                     }
                                     CharacterAmmoInputChangedMessage::Shotgun(amount) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .ammo_setter
+                                        ammo_setter
                                             .shotgun
                                             .input = amount;
                                     }
                                     CharacterAmmoInputChangedMessage::Pistol(amount) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .ammo_setter
+                                        ammo_setter
                                             .pistol
                                             .input = amount;
                                     }
                                     CharacterAmmoInputChangedMessage::Grenade(amount) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .ammo_setter
+                                        ammo_setter
                                             .grenade
                                             .input = amount;
                                     }
                                     CharacterAmmoInputChangedMessage::Smg(amount) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .ammo_setter
+                                        ammo_setter
                                             .smg
                                             .input = amount;
                                     }
                                     CharacterAmmoInputChangedMessage::AssaultRifle(amount) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .ammo_setter
+                                        ammo_setter
                                             .assault_rifle
                                             .input = amount;
                                     }
                                     CharacterAmmoInputChangedMessage::Heavy(amount) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .ammo_setter
+                                        ammo_setter
                                             .heavy
                                             .input = amount;
                                     }
                                 }
                             }
                             SaveCharacterInteractionMessage::MaxAmmoAmountsPressed => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .ammo_setter
+                                let ammo_setter = &mut self.manage_save_state.save_view_state.character_state.ammo_setter;
+
+                                ammo_setter
                                     .sniper
                                     .input = AmmoPool::Sniper.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .ammo_setter
+                                ammo_setter
                                     .shotgun
                                     .input = AmmoPool::Shotgun.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .ammo_setter
+                                ammo_setter
                                     .pistol
                                     .input = AmmoPool::Pistol.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .ammo_setter
+                                ammo_setter
                                     .grenade
                                     .input = AmmoPool::Grenade.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .ammo_setter
+                                ammo_setter
                                     .smg
                                     .input = AmmoPool::Smg.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .ammo_setter
+                                ammo_setter
                                     .assault_rifle
                                     .input = AmmoPool::Ar.maximum();
 
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .ammo_setter
+                                ammo_setter
                                     .heavy
                                     .input = AmmoPool::Heavy.maximum();
                             }
@@ -489,99 +408,72 @@ impl Application for Bl3Ui {
                                     .player_class_selected_class = player_class;
                             }
                             SaveCharacterInteractionMessage::SkinMessage(skin_message) => {
+                                let skin_selectors = &mut self.manage_save_state.save_view_state.character_state.skin_selectors;
+
                                 match skin_message {
                                     CharacterSkinSelectedMessage::HeadSkin(selected) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .skin_selectors
+                                        skin_selectors
                                             .head_skin
                                             .selected = selected;
                                     }
                                     CharacterSkinSelectedMessage::CharacterSkin(selected) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .skin_selectors
+                                        skin_selectors
                                             .character_skin
                                             .selected = selected;
                                     }
                                     CharacterSkinSelectedMessage::EchoTheme(selected) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .character_state
-                                            .skin_selectors
+                                        skin_selectors
                                             .echo_theme
                                             .selected = selected;
                                     }
                                 }
                             }
-                            SaveCharacterInteractionMessage::GearMessage(gear_msg) => match gear_msg {
-                                CharacterGearUnlockedMessage::Grenade(b) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .gear_unlocker
-                                        .grenade
-                                        .is_unlocked = b;
+                            SaveCharacterInteractionMessage::GearMessage(gear_msg) => {
+                                let gear_unlocker = &mut self.manage_save_state.save_view_state.character_state.gear_unlocker;
+
+                                match gear_msg {
+                                    CharacterGearUnlockedMessage::Grenade(b) => {
+                                        gear_unlocker
+                                            .grenade
+                                            .is_unlocked = b;
+                                    }
+                                    CharacterGearUnlockedMessage::Shield(b) => {
+                                        gear_unlocker
+                                            .shield
+                                            .is_unlocked = b;
+                                    }
+                                    CharacterGearUnlockedMessage::Weapon1(b) => {
+                                        gear_unlocker
+                                            .weapon_1
+                                            .is_unlocked = b;
+                                    }
+                                    CharacterGearUnlockedMessage::Weapon2(b) => {
+                                        gear_unlocker
+                                            .weapon_2
+                                            .is_unlocked = b;
+                                    }
+                                    CharacterGearUnlockedMessage::Weapon3(b) => {
+                                        gear_unlocker
+                                            .weapon_3
+                                            .is_unlocked = b;
+                                    }
+                                    CharacterGearUnlockedMessage::Weapon4(b) => {
+                                        gear_unlocker
+                                            .weapon_4
+                                            .is_unlocked = b;
+                                    }
+                                    CharacterGearUnlockedMessage::Artifact(b) => {
+                                        gear_unlocker
+                                            .artifact
+                                            .is_unlocked = b;
+                                    }
+                                    CharacterGearUnlockedMessage::ClassMod(b) => {
+                                        gear_unlocker
+                                            .class_mod
+                                            .is_unlocked = b;
+                                    }
                                 }
-                                CharacterGearUnlockedMessage::Shield(b) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .gear_unlocker
-                                        .shield
-                                        .is_unlocked = b;
-                                }
-                                CharacterGearUnlockedMessage::Weapon1(b) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .gear_unlocker
-                                        .weapon_1
-                                        .is_unlocked = b;
-                                }
-                                CharacterGearUnlockedMessage::Weapon2(b) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .gear_unlocker
-                                        .weapon_2
-                                        .is_unlocked = b;
-                                }
-                                CharacterGearUnlockedMessage::Weapon3(b) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .gear_unlocker
-                                        .weapon_3
-                                        .is_unlocked = b;
-                                }
-                                CharacterGearUnlockedMessage::Weapon4(b) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .gear_unlocker
-                                        .weapon_4
-                                        .is_unlocked = b;
-                                }
-                                CharacterGearUnlockedMessage::Artifact(b) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .gear_unlocker
-                                        .artifact
-                                        .is_unlocked = b;
-                                }
-                                CharacterGearUnlockedMessage::ClassMod(b) => {
-                                    self.manage_save_state
-                                        .save_view_state
-                                        .character_state
-                                        .gear_unlocker
-                                        .class_mod
-                                        .is_unlocked = b;
-                                }
-                            },
+                            }
                         },
                         ManageSaveInteractionMessage::Currency(currency_msg) => match currency_msg {
                             SaveCurrencyInteractionMessage::MoneyInputChanged(money) => {
@@ -1116,6 +1008,11 @@ impl Application for Bl3Ui {
                                     ProfileTabBarView::Profile,
                                 ))
                             }
+                            ProfileTabBarInteractionMessage::Keys => {
+                                self.view_state = ViewState::ManageProfile(ManageProfileView::TabBar(
+                                    ProfileTabBarView::Keys,
+                                ))
+                            }
                         }
                         ManageProfileInteractionMessage::General(general_msg) => match general_msg {
                             ProfileGeneralInteractionMessage::ProfileTypeSelected(profile_type) => {
@@ -1144,7 +1041,68 @@ impl Application for Bl3Ui {
                                     .profile_state
                                     .science_level_selected = science_level;
                             }
+                            ProfileProfileInteractionMessage::ScienceTokensInputChanged(science_level_tokens) => {
+                                self.manage_profile_state
+                                    .profile_view_state
+                                    .profile_state
+                                    .science_tokens_input = science_level_tokens;
+                            }
+                            ProfileProfileInteractionMessage::SkinMessage(skin_message) => {
+                                let skin_unlocker = &mut self.manage_profile_state.profile_view_state.profile_state.skin_unlocker;
+
+                                match skin_message {
+                                    ProfileSkinUnlockedMessage::CharacterSkins(selected) => {
+                                        skin_unlocker.character_skins.is_unlocked = selected;
+                                    }
+                                    ProfileSkinUnlockedMessage::CharacterHeads(selected) => {
+                                        skin_unlocker.character_heads.is_unlocked = selected;
+                                    }
+                                    ProfileSkinUnlockedMessage::EchoThemes(selected) => {
+                                        skin_unlocker.echo_themes.is_unlocked = selected;
+                                    }
+                                    ProfileSkinUnlockedMessage::Emotes(selected) => {
+                                        skin_unlocker.emotes.is_unlocked = selected;
+                                    }
+                                    ProfileSkinUnlockedMessage::RoomDecorations(selected) => {
+                                        skin_unlocker.room_decorations.is_unlocked = selected;
+                                    }
+                                    ProfileSkinUnlockedMessage::WeaponSkins(selected) => {
+                                        skin_unlocker.weapon_skins.is_unlocked = selected;
+                                    }
+                                    ProfileSkinUnlockedMessage::WeaponTrinkets(selected) => {
+                                        skin_unlocker.weapon_trinkets.is_unlocked = selected;
+                                    }
+                                }
+                            }
+                            ProfileProfileInteractionMessage::SduMessage(sdu_message) => {
+                                let sdu_unlocker = &mut self.manage_profile_state.profile_view_state.profile_state.sdu_unlocker;
+
+                                match sdu_message {
+                                    ProfileSduInputChangedMessage::Bank(level) => {
+                                        sdu_unlocker
+                                            .bank
+                                            .input = level;
+                                    }
+                                    ProfileSduInputChangedMessage::LostLoot(level) => {
+                                        sdu_unlocker
+                                            .bank
+                                            .input = level;
+                                    }
+                                }
+                            }
+                            ProfileProfileInteractionMessage::MaxSduSlotsPressed => {
+                                let sdu_unlocker = &mut self.manage_profile_state.profile_view_state.profile_state.sdu_unlocker;
+
+                                sdu_unlocker
+                                    .bank
+                                    .input = ProfileSduSlot::Bank.maximum();
+
+                                sdu_unlocker
+                                    .lost_loot
+                                    .input = ProfileSduSlot::LostLoot.maximum();
+                            }
                         },
+                        ManageProfileInteractionMessage::Keys(keys_message) => match keys_message {}
                         ManageProfileInteractionMessage::SaveFilePressed => {}
                     }
                     InteractionMessage::LoadedFileSelected(loaded_file) => {

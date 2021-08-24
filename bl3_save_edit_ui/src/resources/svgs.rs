@@ -8,6 +8,7 @@ pub const CURRENCY: &[u8] = include_bytes!("../../resources/svg/currency.svg");
 
 //Profile editor
 pub const PROFILE: &[u8] = include_bytes!("../../resources/svg/profile.svg");
+pub const KEYS: &[u8] = include_bytes!("../../resources/svg/keys.svg");
 
 // Notification
 pub const POSITIVE_CLOSE: &[u8] = include_bytes!("../../resources/svg/positive_close.svg");

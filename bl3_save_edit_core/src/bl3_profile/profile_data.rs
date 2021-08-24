@@ -7,7 +7,7 @@ use rayon::prelude::ParallelSliceMut;
 
 use crate::bl3_profile::profile_currency::ProfileCurrency;
 use crate::bl3_profile::science_levels::{BorderlandsScienceInfo, BorderlandsScienceLevel};
-use crate::bl3_profile::sdu::{ProfSduSlot, ProfSduSlotData};
+use crate::bl3_profile::sdu::{ProfileSduSlot, ProfileSduSlotData};
 use crate::bl3_profile::util::get_checksum_hash;
 use crate::game_data::{
     PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_EMOTES, PROFILE_EMOTES_DEFAULTS,
@@ -28,7 +28,7 @@ pub struct ProfileData {
     pub guardian_rank: i32,
     pub guardian_rank_tokens: i32,
     pub borderlands_science_info: BorderlandsScienceInfo,
-    pub sdu_slots: Vec<ProfSduSlotData>,
+    pub sdu_slots: Vec<ProfileSduSlotData>,
     pub bank_items: Vec<Vec<u8>>,
     pub lost_loot_items: Vec<Vec<u8>>,
     pub character_skins_unlocked: usize,
@@ -94,10 +94,10 @@ impl ProfileData {
             .profile_sdu_list
             .par_iter()
             .map(|s| {
-                let slot = ProfSduSlot::from_str(&s.sdu_data_path)?;
+                let slot = ProfileSduSlot::from_str(&s.sdu_data_path)?;
                 let max = slot.maximum();
 
-                Ok(ProfSduSlotData {
+                Ok(ProfileSduSlotData {
                     slot,
                     current: s.sdu_level,
                     max,

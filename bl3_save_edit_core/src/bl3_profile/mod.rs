@@ -230,7 +230,7 @@ mod tests {
     use std::fs;
 
     use crate::bl3_profile::science_levels::BorderlandsScienceLevel;
-    use crate::bl3_profile::sdu::{ProfSduSlot, ProfSduSlotData};
+    use crate::bl3_profile::sdu::{ProfileSduSlot, ProfileSduSlotData};
 
     use super::*;
 
@@ -262,13 +262,13 @@ mod tests {
         assert_eq!(
             bl3_profile.profile_data.sdu_slots,
             vec![
-                ProfSduSlotData {
-                    slot: ProfSduSlot::Bank,
+                ProfileSduSlotData {
+                    slot: ProfileSduSlot::Bank,
                     current: 23,
                     max: 23,
                 },
-                ProfSduSlotData {
-                    slot: ProfSduSlot::LostLoot,
+                ProfileSduSlotData {
+                    slot: ProfileSduSlot::LostLoot,
                     current: 8,
                     max: 10,
                 },
@@ -314,13 +314,13 @@ mod tests {
         assert_eq!(
             bl3_profile.profile_data.sdu_slots,
             vec![
-                ProfSduSlotData {
-                    slot: ProfSduSlot::Bank,
+                ProfileSduSlotData {
+                    slot: ProfileSduSlot::Bank,
                     current: 8,
                     max: 23,
                 },
-                ProfSduSlotData {
-                    slot: ProfSduSlot::LostLoot,
+                ProfileSduSlotData {
+                    slot: ProfileSduSlot::LostLoot,
                     current: 8,
                     max: 10,
                 },
@@ -369,13 +369,13 @@ mod tests {
         assert_eq!(
             bl3_profile.profile_data.sdu_slots,
             vec![
-                ProfSduSlotData {
-                    slot: ProfSduSlot::Bank,
+                ProfileSduSlotData {
+                    slot: ProfileSduSlot::Bank,
                     current: 23,
                     max: 23,
                 },
-                ProfSduSlotData {
-                    slot: ProfSduSlot::LostLoot,
+                ProfileSduSlotData {
+                    slot: ProfileSduSlot::LostLoot,
                     current: 8,
                     max: 10,
                 },

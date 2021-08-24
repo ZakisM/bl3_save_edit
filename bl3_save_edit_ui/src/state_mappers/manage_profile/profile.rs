@@ -12,4 +12,9 @@ pub fn map_profile_to_profile_state(manage_profile_state: &mut ManageProfileStat
         .profile_view_state
         .profile_state
         .guardian_rank_tokens_input = profile.profile_data.guardian_rank_tokens;
+
+    manage_profile_state
+        .profile_view_state
+        .profile_state
+        .science_tokens_input = profile.profile_data.borderlands_science_info.tokens;
 }
