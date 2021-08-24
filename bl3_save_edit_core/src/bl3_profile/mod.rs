@@ -20,6 +20,7 @@ pub mod profile_currency;
 pub mod profile_data;
 pub mod science_levels;
 pub mod sdu;
+pub mod skins;
 pub mod util;
 
 #[derive(Debug, Clone, Default, Eq, Ord, PartialOrd)]

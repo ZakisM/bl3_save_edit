@@ -3,6 +3,8 @@ use std::rc::Rc;
 use derivative::Derivative;
 use iced::{Align, Checkbox, Color, Column, Container, Element, Length};
 
+use bl3_save_edit_core::bl3_profile::skins::{ProfileSkinData, ProfileSkinType};
+
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
@@ -17,6 +19,7 @@ use crate::widgets::text_margin::TextMargin;
 #[derivative(Debug, Default)]
 pub struct SkinUnlockCheckbox {
     name: String,
+    pub skin_data: ProfileSkinData,
     pub is_unlocked: bool,
     #[derivative(
         Debug = "ignore",
@@ -26,13 +29,14 @@ pub struct SkinUnlockCheckbox {
 }
 
 impl SkinUnlockCheckbox {
-    pub fn new<S, F>(name: S, on_checked: F) -> Self
+    pub fn new<S, F>(name: S, skin_data: ProfileSkinData, on_checked: F) -> Self
     where
         S: AsRef<str>,
         F: 'static + Fn(bool) -> ProfileSkinUnlockedMessage,
     {
         SkinUnlockCheckbox {
             name: name.as_ref().to_owned(),
+            skin_data,
             is_unlocked: false,
             on_checked: Rc::new(on_checked),
         }
@@ -41,11 +45,20 @@ impl SkinUnlockCheckbox {
     pub fn view(&mut self) -> Element<Message> {
         let on_checked = self.on_checked.clone();
 
-        Checkbox::new(self.is_unlocked, &self.name, move |c| {
-            InteractionMessage::ManageProfileInteraction(ManageProfileInteractionMessage::Profile(
-                ProfileProfileInteractionMessage::SkinMessage(on_checked(c)),
-            ))
-        })
+        Checkbox::new(
+            self.is_unlocked,
+            format!(
+                "{} ({}/{})",
+                &self.name, self.skin_data.current, self.skin_data.max
+            ),
+            move |c| {
+                InteractionMessage::ManageProfileInteraction(
+                    ManageProfileInteractionMessage::Profile(
+                        ProfileProfileInteractionMessage::SkinMessage(on_checked(c)),
+                    ),
+                )
+            },
+        )
         .size(20)
         .font(JETBRAINS_MONO)
         .text_color(Color::from_rgb8(220, 220, 220))
@@ -70,28 +83,38 @@ impl std::default::Default for SkinUnlocker {
     fn default() -> Self {
         Self {
             character_skins: SkinUnlockCheckbox::new(
-                "Character Skins",
+                "Unlock All Character Skins",
+                ProfileSkinData::new(ProfileSkinType::CharacterSkins, 0),
                 ProfileSkinUnlockedMessage::CharacterSkins,
             ),
             character_heads: SkinUnlockCheckbox::new(
-                "Character Heads",
+                "Unlock All Character Heads",
+                ProfileSkinData::new(ProfileSkinType::CharacterHeads, 0),
                 ProfileSkinUnlockedMessage::CharacterHeads,
             ),
             echo_themes: SkinUnlockCheckbox::new(
-                "Echo Themes",
+                "Unlock All Echo Themes",
+                ProfileSkinData::new(ProfileSkinType::EchoThemes, 0),
                 ProfileSkinUnlockedMessage::EchoThemes,
             ),
-            emotes: SkinUnlockCheckbox::new("Emotes", ProfileSkinUnlockedMessage::Emotes),
+            emotes: SkinUnlockCheckbox::new(
+                "Unlock All Emotes",
+                ProfileSkinData::new(ProfileSkinType::Emotes, 0),
+                ProfileSkinUnlockedMessage::Emotes,
+            ),
             room_decorations: SkinUnlockCheckbox::new(
-                "Room Decorations",
+                "Unlock All Room Decorations",
+                ProfileSkinData::new(ProfileSkinType::RoomDecorations, 0),
                 ProfileSkinUnlockedMessage::RoomDecorations,
             ),
             weapon_skins: SkinUnlockCheckbox::new(
-                "Weapon Skins",
+                "Unlock All Weapon Skins",
+                ProfileSkinData::new(ProfileSkinType::WeaponSkins, 0),
                 ProfileSkinUnlockedMessage::WeaponSkins,
             ),
             weapon_trinkets: SkinUnlockCheckbox::new(
-                "Weapon Trinkets",
+                "Unlock All Weapon Trinkets",
+                ProfileSkinData::new(ProfileSkinType::WeaponTrinkets, 0),
                 ProfileSkinUnlockedMessage::WeaponTrinkets,
             ),
         }
