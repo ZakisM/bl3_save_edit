@@ -1,8 +1,8 @@
-use iced::{text_input, Align, Column, Container, Length, Row};
+use iced::{button, text_input, Align, Button, Column, Container, Length, Row, Text};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
-use crate::resources::fonts::JETBRAINS_MONO;
+use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_profile::ManageProfileInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
@@ -18,6 +18,10 @@ pub struct KeysState {
     pub vault_card_1_keys_input_state: text_input::State,
     pub vault_card_1_chests_input: i32,
     pub vault_card_1_chests_input_state: text_input::State,
+    pub max_golden_keys_button_state: button::State,
+    pub max_diamond_keys_button_state: button::State,
+    pub max_vault_card_1_keys_button_state: button::State,
+    pub max_vault_card_1_chests_button_state: button::State,
 }
 
 #[derive(Debug, Clone)]
@@ -26,6 +30,10 @@ pub enum ProfileKeysInteractionMessage {
     DiamondKeys(i32),
     VaultCard1Keys(i32),
     VaultCard1Chests(i32),
+    MaxGoldenKeysPressed,
+    MaxDiamondKeysPressed,
+    MaxVaultCard1KeysPressed,
+    MaxVaultCard1ChestsPressed,
 }
 
 pub fn view(keys_state: &mut KeysState) -> Container<Message> {
@@ -59,6 +67,20 @@ pub fn view(keys_state: &mut KeysState) -> Container<Message> {
                 .width(Length::FillPortion(9))
                 .align_items(Align::Center),
             )
+            .push(
+                Button::new(
+                    &mut keys_state.max_golden_keys_button_state,
+                    Text::new("Max").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(InteractionMessage::ManageProfileInteraction(
+                    ManageProfileInteractionMessage::Keys(
+                        ProfileKeysInteractionMessage::MaxGoldenKeysPressed,
+                    ),
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
             .align_items(Align::Center),
     )
     .width(Length::Fill)
@@ -66,93 +88,150 @@ pub fn view(keys_state: &mut KeysState) -> Container<Message> {
     .style(Bl3UiStyle);
 
     let diamond_keys = Container::new(
-        LabelledElement::create(
-            "Diamond Keys",
-            Length::Units(170),
-            NumberInput::new(
-                &mut keys_state.diamond_keys_input_state,
-                keys_state.diamond_keys_input,
-                0,
-                None,
-                |v| {
-                    InteractionMessage::ManageProfileInteraction(
-                        ManageProfileInteractionMessage::Keys(
-                            ProfileKeysInteractionMessage::DiamondKeys(v),
-                        ),
+        Row::new()
+            .push(
+                LabelledElement::create(
+                    "Diamond Keys",
+                    Length::Units(170),
+                    NumberInput::new(
+                        &mut keys_state.diamond_keys_input_state,
+                        keys_state.diamond_keys_input,
+                        0,
+                        None,
+                        |v| {
+                            InteractionMessage::ManageProfileInteraction(
+                                ManageProfileInteractionMessage::Keys(
+                                    ProfileKeysInteractionMessage::DiamondKeys(v),
+                                ),
+                            )
+                        },
                     )
-                },
+                    .0
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                )
+                .spacing(15)
+                .width(Length::FillPortion(9))
+                .align_items(Align::Center),
             )
-            .0
-            .font(JETBRAINS_MONO)
-            .padding(10)
-            .size(17)
-            .style(Bl3UiStyle)
-            .into_element(),
-        )
-        .spacing(15)
-        .align_items(Align::Center),
+            .push(
+                Button::new(
+                    &mut keys_state.max_diamond_keys_button_state,
+                    Text::new("Max").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(InteractionMessage::ManageProfileInteraction(
+                    ManageProfileInteractionMessage::Keys(
+                        ProfileKeysInteractionMessage::MaxDiamondKeysPressed,
+                    ),
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
+            .align_items(Align::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
     let vault_card_1_keys = Container::new(
-        LabelledElement::create(
-            "Vault Card 1 Keys",
-            Length::Units(170),
-            NumberInput::new(
-                &mut keys_state.vault_card_1_keys_input_state,
-                keys_state.vault_card_1_keys_input,
-                0,
-                None,
-                |v| {
-                    InteractionMessage::ManageProfileInteraction(
-                        ManageProfileInteractionMessage::Keys(
-                            ProfileKeysInteractionMessage::VaultCard1Keys(v),
-                        ),
+        Row::new()
+            .push(
+                LabelledElement::create(
+                    "Vault Card 1 Keys",
+                    Length::Units(170),
+                    NumberInput::new(
+                        &mut keys_state.vault_card_1_keys_input_state,
+                        keys_state.vault_card_1_keys_input,
+                        0,
+                        None,
+                        |v| {
+                            InteractionMessage::ManageProfileInteraction(
+                                ManageProfileInteractionMessage::Keys(
+                                    ProfileKeysInteractionMessage::VaultCard1Keys(v),
+                                ),
+                            )
+                        },
                     )
-                },
+                    .0
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                )
+                .spacing(15)
+                .width(Length::FillPortion(9))
+                .align_items(Align::Center),
             )
-            .0
-            .font(JETBRAINS_MONO)
-            .padding(10)
-            .size(17)
-            .style(Bl3UiStyle)
-            .into_element(),
-        )
-        .spacing(15)
-        .align_items(Align::Center),
+            .push(
+                Button::new(
+                    &mut keys_state.max_vault_card_1_keys_button_state,
+                    Text::new("Max").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(InteractionMessage::ManageProfileInteraction(
+                    ManageProfileInteractionMessage::Keys(
+                        ProfileKeysInteractionMessage::MaxVaultCard1KeysPressed,
+                    ),
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
+            .align_items(Align::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
     let vault_card_1_chests = Container::new(
-        LabelledElement::create(
-            "Vault Card 1 Chests",
-            Length::Units(170),
-            NumberInput::new(
-                &mut keys_state.vault_card_1_chests_input_state,
-                keys_state.vault_card_1_chests_input,
-                0,
-                None,
-                |v| {
-                    InteractionMessage::ManageProfileInteraction(
-                        ManageProfileInteractionMessage::Keys(
-                            ProfileKeysInteractionMessage::VaultCard1Chests(v),
-                        ),
+        Row::new()
+            .push(
+                LabelledElement::create(
+                    "Vault Card 1 Chests",
+                    Length::Units(170),
+                    NumberInput::new(
+                        &mut keys_state.vault_card_1_chests_input_state,
+                        keys_state.vault_card_1_chests_input,
+                        0,
+                        None,
+                        |v| {
+                            InteractionMessage::ManageProfileInteraction(
+                                ManageProfileInteractionMessage::Keys(
+                                    ProfileKeysInteractionMessage::VaultCard1Chests(v),
+                                ),
+                            )
+                        },
                     )
-                },
+                    .0
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                )
+                .spacing(15)
+                .width(Length::FillPortion(9))
+                .align_items(Align::Center),
             )
-            .0
-            .font(JETBRAINS_MONO)
-            .padding(10)
-            .size(17)
-            .style(Bl3UiStyle)
-            .into_element(),
-        )
-        .spacing(15)
-        .align_items(Align::Center),
+            .push(
+                Button::new(
+                    &mut keys_state.max_vault_card_1_chests_button_state,
+                    Text::new("Max").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(InteractionMessage::ManageProfileInteraction(
+                    ManageProfileInteractionMessage::Keys(
+                        ProfileKeysInteractionMessage::MaxVaultCard1ChestsPressed,
+                    ),
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
+            .align_items(Align::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))

@@ -1,6 +1,5 @@
 use iced::{
-    pick_list, text_input, tooltip, Align, Column, Container, Length, PickList, Row, TextInput,
-    Tooltip,
+    pick_list, text_input, tooltip, Align, Column, Container, Length, PickList, TextInput, Tooltip,
 };
 
 use bl3_save_edit_core::parser::HeaderType;
@@ -27,37 +26,33 @@ pub enum ProfileGeneralInteractionMessage {
 
 pub fn view(general_state: &mut GeneralState) -> Container<Message> {
     let file = Container::new(
-        Row::new()
-            .push(
-                LabelledElement::create(
-                    "File",
-                    Length::Units(110),
-                    Tooltip::new(
-                        TextInput::new(
-                            &mut general_state.filename_input_state,
-                            "profile.sav",
-                            &general_state.filename_input,
-                            |_| InteractionMessage::Ignore,
-                        )
-                        .font(JETBRAINS_MONO)
-                        .padding(10)
-                        .size(17)
-                        .style(Bl3UiStyle)
-                        .into_element(),
-                        "Not editable",
-                        tooltip::Position::Top,
-                    )
-                    .gap(10)
-                    .padding(10)
-                    .font(JETBRAINS_MONO)
-                    .size(17)
-                    .style(Bl3UiTooltipStyle),
+        LabelledElement::create(
+            "File",
+            Length::Units(110),
+            Tooltip::new(
+                TextInput::new(
+                    &mut general_state.filename_input_state,
+                    "profile.sav",
+                    &general_state.filename_input,
+                    |_| InteractionMessage::Ignore,
                 )
-                .spacing(15)
-                .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .font(JETBRAINS_MONO)
+                .padding(10)
+                .size(17)
+                .style(Bl3UiStyle)
+                .into_element(),
+                "Not editable",
+                tooltip::Position::Top,
             )
-            .align_items(Align::Center),
+            .gap(10)
+            .padding(10)
+            .font(JETBRAINS_MONO)
+            .size(17)
+            .style(Bl3UiTooltipStyle),
+        )
+        .spacing(15)
+        .width(Length::FillPortion(9))
+        .align_items(Align::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))

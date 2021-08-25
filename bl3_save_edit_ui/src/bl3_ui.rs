@@ -486,6 +486,18 @@ impl Application for Bl3Ui {
                                     .currency_state
                                     .eridium_input = eridium;
                             }
+                            SaveCurrencyInteractionMessage::MaxMoneyPressed => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .currency_state
+                                    .money_input = i32::MAX;
+                            }
+                            SaveCurrencyInteractionMessage::MaxEridiumPressed => {
+                                self.manage_save_state
+                                    .save_view_state
+                                    .currency_state
+                                    .eridium_input = i32::MAX;
+                            }
                         },
                         ManageSaveInteractionMessage::Inventory(inventory_msg) => match inventory_msg {
                             SaveInventoryInteractionMessage::ItemPressed(item_index) => {
@@ -1118,6 +1130,18 @@ impl Application for Bl3Ui {
                                 }
                                 ProfileKeysInteractionMessage::VaultCard1Chests(vault_card_1_chests) => {
                                     keys_state.vault_card_1_chests_input = vault_card_1_chests;
+                                }
+                                ProfileKeysInteractionMessage::MaxGoldenKeysPressed => {
+                                    keys_state.golden_keys_input = i32::MAX;
+                                }
+                                ProfileKeysInteractionMessage::MaxDiamondKeysPressed => {
+                                    keys_state.diamond_keys_input = i32::MAX;
+                                }
+                                ProfileKeysInteractionMessage::MaxVaultCard1KeysPressed => {
+                                    keys_state.vault_card_1_keys_input = i32::MAX;
+                                }
+                                ProfileKeysInteractionMessage::MaxVaultCard1ChestsPressed => {
+                                    keys_state.vault_card_1_chests_input = i32::MAX;
                                 }
                             }
                         }
