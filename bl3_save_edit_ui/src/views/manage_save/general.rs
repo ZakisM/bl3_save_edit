@@ -33,8 +33,8 @@ pub enum GeneralMessage {
 
 #[derive(Debug, Clone)]
 pub enum SaveGeneralInteractionMessage {
-    GuidInputChanged(String),
-    SlotInputChanged(u32),
+    Guid(String),
+    Slot(u32),
     GenerateGuidPressed,
     SaveTypeSelected(HeaderType),
 }
@@ -90,7 +90,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                         |s| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::General(
-                                    SaveGeneralInteractionMessage::GuidInputChanged(s),
+                                    SaveGeneralInteractionMessage::Guid(s),
                                 ),
                             )
                         },
@@ -138,7 +138,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Message> {
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::General(
-                                SaveGeneralInteractionMessage::SlotInputChanged(v),
+                                SaveGeneralInteractionMessage::Slot(v),
                             ),
                         )
                     },

@@ -44,14 +44,14 @@ pub struct CharacterState {
 
 #[derive(Debug, Clone)]
 pub enum SaveCharacterInteractionMessage {
-    NameInputChanged(String),
-    XpLevelInputChanged(i32),
-    XpPointsInputChanged(i32),
+    Name(String),
+    XpLevel(i32),
+    XpPoints(i32),
     PlayerClassSelected(PlayerClass),
     SkinMessage(CharacterSkinSelectedMessage),
     GearMessage(CharacterGearUnlockedMessage),
-    SduMessage(CharacterSduInputChangedMessage),
-    AmmoMessage(CharacterAmmoInputChangedMessage),
+    SduMessage(CharacterSduMessage),
+    AmmoMessage(CharacterAmmoMessage),
     MaxSduSlotsPressed,
     MaxAmmoAmountsPressed,
 }
@@ -88,7 +88,7 @@ pub enum CharacterGearUnlockedMessage {
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterSduInputChangedMessage {
+pub enum CharacterSduMessage {
     Backpack(i32),
     Sniper(i32),
     Shotgun(i32),
@@ -100,7 +100,7 @@ pub enum CharacterSduInputChangedMessage {
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterAmmoInputChangedMessage {
+pub enum CharacterAmmoMessage {
     Sniper(i32),
     Shotgun(i32),
     Pistol(i32),
@@ -124,7 +124,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 |c| {
                     InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::Character(
-                            SaveCharacterInteractionMessage::NameInputChanged(c),
+                            SaveCharacterInteractionMessage::Name(c),
                         ),
                     )
                 },
@@ -188,7 +188,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                SaveCharacterInteractionMessage::XpLevelInputChanged(v),
+                                SaveCharacterInteractionMessage::XpLevel(v),
                             ),
                         )
                     },
@@ -228,7 +228,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                SaveCharacterInteractionMessage::XpPointsInputChanged(v),
+                                SaveCharacterInteractionMessage::XpPoints(v),
                             ),
                         )
                     },

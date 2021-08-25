@@ -31,12 +31,12 @@ pub struct ProfileState {
 
 #[derive(Debug, Clone)]
 pub enum ProfileProfileInteractionMessage {
-    GuardianRankInputChanged(i32),
-    GuardianRankTokensInputChanged(i32),
+    GuardianRank(i32),
+    GuardianRankTokens(i32),
     ScienceLevelSelected(BorderlandsScienceLevel),
-    ScienceTokensInputChanged(i32),
+    ScienceTokens(i32),
     SkinMessage(ProfileSkinUnlockedMessage),
-    SduMessage(ProfileSduInputChangedMessage),
+    SduMessage(ProfileSduMessage),
     MaxSduSlotsPressed,
 }
 
@@ -52,7 +52,7 @@ pub enum ProfileSkinUnlockedMessage {
 }
 
 #[derive(Debug, Clone)]
-pub enum ProfileSduInputChangedMessage {
+pub enum ProfileSduMessage {
     Bank(i32),
     LostLoot(i32),
 }
@@ -70,7 +70,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Message> {
                 |v| {
                     InteractionMessage::ManageProfileInteraction(
                         ManageProfileInteractionMessage::Profile(
-                            ProfileProfileInteractionMessage::GuardianRankInputChanged(v),
+                            ProfileProfileInteractionMessage::GuardianRank(v),
                         ),
                     )
                 },
@@ -101,7 +101,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Message> {
                 |v| {
                     InteractionMessage::ManageProfileInteraction(
                         ManageProfileInteractionMessage::Profile(
-                            ProfileProfileInteractionMessage::GuardianRankTokensInputChanged(v),
+                            ProfileProfileInteractionMessage::GuardianRankTokens(v),
                         ),
                     )
                 },
@@ -162,7 +162,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Message> {
                 |v| {
                     InteractionMessage::ManageProfileInteraction(
                         ManageProfileInteractionMessage::Profile(
-                            ProfileProfileInteractionMessage::ScienceTokensInputChanged(v),
+                            ProfileProfileInteractionMessage::ScienceTokens(v),
                         ),
                     )
                 },

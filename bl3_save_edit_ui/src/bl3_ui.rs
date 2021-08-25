@@ -24,16 +24,17 @@ use crate::views::choose_save_directory::{
 };
 use crate::views::initialization::InitializationMessage;
 use crate::views::manage_profile::general::ProfileGeneralInteractionMessage;
+use crate::views::manage_profile::keys::ProfileKeysInteractionMessage;
 use crate::views::manage_profile::main::{ProfileTabBarInteractionMessage, ProfileTabBarView};
 use crate::views::manage_profile::profile::{
-    ProfileProfileInteractionMessage, ProfileSduInputChangedMessage, ProfileSkinUnlockedMessage,
+    ProfileProfileInteractionMessage, ProfileSduMessage, ProfileSkinUnlockedMessage,
 };
 use crate::views::manage_profile::{
     ManageProfileInteractionMessage, ManageProfileState, ManageProfileView,
 };
 use crate::views::manage_save::character::{
-    CharacterAmmoInputChangedMessage, CharacterGearUnlockedMessage,
-    CharacterSduInputChangedMessage, CharacterSkinSelectedMessage, SaveCharacterInteractionMessage,
+    CharacterAmmoMessage, CharacterGearUnlockedMessage, CharacterSduMessage,
+    CharacterSkinSelectedMessage, SaveCharacterInteractionMessage,
 };
 use crate::views::manage_save::currency::SaveCurrencyInteractionMessage;
 use crate::views::manage_save::general::{GeneralMessage, SaveGeneralInteractionMessage};
@@ -187,10 +188,10 @@ impl Application for Bl3Ui {
                             }
                         },
                         ManageSaveInteractionMessage::General(general_msg) => match general_msg {
-                            SaveGeneralInteractionMessage::GuidInputChanged(guid) => {
+                            SaveGeneralInteractionMessage::Guid(guid) => {
                                 self.manage_save_state.save_view_state.general_state.guid_input = guid;
                             }
-                            SaveGeneralInteractionMessage::SlotInputChanged(slot) => {
+                            SaveGeneralInteractionMessage::Slot(slot) => {
                                 let filename = format!("{}.sav", slot);
 
                                 self.manage_save_state.save_view_state.general_state.slot_input = slot;
@@ -218,11 +219,11 @@ impl Application for Bl3Ui {
                             }
                         },
                         ManageSaveInteractionMessage::Character(character_msg) => match character_msg {
-                            SaveCharacterInteractionMessage::NameInputChanged(name_input) => {
+                            SaveCharacterInteractionMessage::Name(name_input) => {
                                 self.manage_save_state.save_view_state.character_state.name_input =
                                     name_input;
                             }
-                            SaveCharacterInteractionMessage::XpLevelInputChanged(level) => {
+                            SaveCharacterInteractionMessage::XpLevel(level) => {
                                 let xp_points = if level > 0 {
                                     REQUIRED_XP_LIST[level as usize - 1][0]
                                 } else {
@@ -237,7 +238,7 @@ impl Application for Bl3Ui {
                                 character_state
                                     .xp_points_input = xp_points;
                             }
-                            SaveCharacterInteractionMessage::XpPointsInputChanged(xp) => {
+                            SaveCharacterInteractionMessage::XpPoints(xp) => {
                                 let level = experience_to_level(xp as i32).unwrap_or(1);
 
                                 let character_state = &mut self.manage_save_state.save_view_state.character_state;
@@ -252,42 +253,42 @@ impl Application for Bl3Ui {
                                 let sdu_unlocker = &mut self.manage_save_state.save_view_state.character_state.sdu_unlocker;
 
                                 match sdu_message {
-                                    CharacterSduInputChangedMessage::Backpack(level) => {
+                                    CharacterSduMessage::Backpack(level) => {
                                         sdu_unlocker
                                             .backpack
                                             .input = level;
                                     }
-                                    CharacterSduInputChangedMessage::Sniper(level) => {
+                                    CharacterSduMessage::Sniper(level) => {
                                         sdu_unlocker
                                             .sniper
                                             .input = level;
                                     }
-                                    CharacterSduInputChangedMessage::Shotgun(level) => {
+                                    CharacterSduMessage::Shotgun(level) => {
                                         sdu_unlocker
                                             .shotgun
                                             .input = level;
                                     }
-                                    CharacterSduInputChangedMessage::Pistol(level) => {
+                                    CharacterSduMessage::Pistol(level) => {
                                         sdu_unlocker
                                             .pistol
                                             .input = level;
                                     }
-                                    CharacterSduInputChangedMessage::Grenade(level) => {
+                                    CharacterSduMessage::Grenade(level) => {
                                         sdu_unlocker
                                             .grenade
                                             .input = level;
                                     }
-                                    CharacterSduInputChangedMessage::Smg(level) => {
+                                    CharacterSduMessage::Smg(level) => {
                                         sdu_unlocker
                                             .smg
                                             .input = level;
                                     }
-                                    CharacterSduInputChangedMessage::AssaultRifle(level) => {
+                                    CharacterSduMessage::AssaultRifle(level) => {
                                         sdu_unlocker
                                             .assault_rifle
                                             .input = level;
                                     }
-                                    CharacterSduInputChangedMessage::Heavy(level) => {
+                                    CharacterSduMessage::Heavy(level) => {
                                         sdu_unlocker
                                             .heavy
                                             .input = level;
@@ -333,37 +334,37 @@ impl Application for Bl3Ui {
                                 let ammo_setter = &mut self.manage_save_state.save_view_state.character_state.ammo_setter;
 
                                 match ammo_message {
-                                    CharacterAmmoInputChangedMessage::Sniper(amount) => {
+                                    CharacterAmmoMessage::Sniper(amount) => {
                                         ammo_setter
                                             .sniper
                                             .input = amount;
                                     }
-                                    CharacterAmmoInputChangedMessage::Shotgun(amount) => {
+                                    CharacterAmmoMessage::Shotgun(amount) => {
                                         ammo_setter
                                             .shotgun
                                             .input = amount;
                                     }
-                                    CharacterAmmoInputChangedMessage::Pistol(amount) => {
+                                    CharacterAmmoMessage::Pistol(amount) => {
                                         ammo_setter
                                             .pistol
                                             .input = amount;
                                     }
-                                    CharacterAmmoInputChangedMessage::Grenade(amount) => {
+                                    CharacterAmmoMessage::Grenade(amount) => {
                                         ammo_setter
                                             .grenade
                                             .input = amount;
                                     }
-                                    CharacterAmmoInputChangedMessage::Smg(amount) => {
+                                    CharacterAmmoMessage::Smg(amount) => {
                                         ammo_setter
                                             .smg
                                             .input = amount;
                                     }
-                                    CharacterAmmoInputChangedMessage::AssaultRifle(amount) => {
+                                    CharacterAmmoMessage::AssaultRifle(amount) => {
                                         ammo_setter
                                             .assault_rifle
                                             .input = amount;
                                     }
-                                    CharacterAmmoInputChangedMessage::Heavy(amount) => {
+                                    CharacterAmmoMessage::Heavy(amount) => {
                                         ammo_setter
                                             .heavy
                                             .input = amount;
@@ -476,10 +477,10 @@ impl Application for Bl3Ui {
                             }
                         },
                         ManageSaveInteractionMessage::Currency(currency_msg) => match currency_msg {
-                            SaveCurrencyInteractionMessage::MoneyInputChanged(money) => {
+                            SaveCurrencyInteractionMessage::Money(money) => {
                                 self.manage_save_state.save_view_state.currency_state.money_input = money;
                             }
-                            SaveCurrencyInteractionMessage::EridiumInputChanged(eridium) => {
+                            SaveCurrencyInteractionMessage::Eridium(eridium) => {
                                 self.manage_save_state
                                     .save_view_state
                                     .currency_state
@@ -726,7 +727,7 @@ impl Application for Bl3Ui {
                                     }
                                 }
                             }
-                            SaveInventoryInteractionMessage::ImportItemInputChanged(s) => {
+                            SaveInventoryInteractionMessage::ImportItem(s) => {
                                 self.manage_save_state
                                     .save_view_state
                                     .inventory_state
@@ -856,7 +857,7 @@ impl Application for Bl3Ui {
                                     self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
                                 }
                             }
-                            SaveInventoryInteractionMessage::AllItemLevelInputChanged(item_level_input) => {
+                            SaveInventoryInteractionMessage::AllItemLevel(item_level_input) => {
                                 self.manage_save_state
                                     .save_view_state
                                     .inventory_state
@@ -885,7 +886,7 @@ impl Application for Bl3Ui {
                                     .inventory_state
                                     .map_current_item_if_exists_to_editor_state();
                             }
-                            SaveInventoryInteractionMessage::ItemLevelInputChanged(item_level_input) => {
+                            SaveInventoryInteractionMessage::ItemLevel(item_level_input) => {
                                 if let Err(e) = self.manage_save_state
                                     .save_view_state
                                     .inventory_state
@@ -1023,13 +1024,13 @@ impl Application for Bl3Ui {
                             }
                         },
                         ManageProfileInteractionMessage::Profile(profile_msg) => match profile_msg {
-                            ProfileProfileInteractionMessage::GuardianRankInputChanged(guardian_rank) => {
+                            ProfileProfileInteractionMessage::GuardianRank(guardian_rank) => {
                                 self.manage_profile_state
                                     .profile_view_state
                                     .profile_state
                                     .guardian_rank_input = guardian_rank;
                             }
-                            ProfileProfileInteractionMessage::GuardianRankTokensInputChanged(guardian_rank_tokens) => {
+                            ProfileProfileInteractionMessage::GuardianRankTokens(guardian_rank_tokens) => {
                                 self.manage_profile_state
                                     .profile_view_state
                                     .profile_state
@@ -1041,7 +1042,7 @@ impl Application for Bl3Ui {
                                     .profile_state
                                     .science_level_selected = science_level;
                             }
-                            ProfileProfileInteractionMessage::ScienceTokensInputChanged(science_level_tokens) => {
+                            ProfileProfileInteractionMessage::ScienceTokens(science_level_tokens) => {
                                 self.manage_profile_state
                                     .profile_view_state
                                     .profile_state
@@ -1078,12 +1079,12 @@ impl Application for Bl3Ui {
                                 let sdu_unlocker = &mut self.manage_profile_state.profile_view_state.profile_state.sdu_unlocker;
 
                                 match sdu_message {
-                                    ProfileSduInputChangedMessage::Bank(level) => {
+                                    ProfileSduMessage::Bank(level) => {
                                         sdu_unlocker
                                             .bank
                                             .input = level;
                                     }
-                                    ProfileSduInputChangedMessage::LostLoot(level) => {
+                                    ProfileSduMessage::LostLoot(level) => {
                                         sdu_unlocker
                                             .bank
                                             .input = level;
@@ -1102,7 +1103,24 @@ impl Application for Bl3Ui {
                                     .input = ProfileSduSlot::LostLoot.maximum();
                             }
                         },
-                        ManageProfileInteractionMessage::Keys(keys_message) => match keys_message {}
+                        ManageProfileInteractionMessage::Keys(keys_message) => {
+                            let keys_state = &mut self.manage_profile_state.profile_view_state.keys_state;
+
+                            match keys_message {
+                                ProfileKeysInteractionMessage::GoldenKeys(golden_keys) => {
+                                    keys_state.golden_keys_input = golden_keys;
+                                }
+                                ProfileKeysInteractionMessage::DiamondKeys(diamond_keys) => {
+                                    keys_state.diamond_keys_input = diamond_keys;
+                                }
+                                ProfileKeysInteractionMessage::VaultCard1Keys(vault_card_1_keys) => {
+                                    keys_state.vault_card_1_keys_input = vault_card_1_keys;
+                                }
+                                ProfileKeysInteractionMessage::VaultCard1Chests(vault_card_1_chests) => {
+                                    keys_state.vault_card_1_chests_input = vault_card_1_chests;
+                                }
+                            }
+                        }
                         ManageProfileInteractionMessage::SaveFilePressed => {}
                     }
                     InteractionMessage::LoadedFileSelected(loaded_file) => {

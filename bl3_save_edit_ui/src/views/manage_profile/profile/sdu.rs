@@ -11,9 +11,7 @@ use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::manage_profile::profile::{
-    ProfileProfileInteractionMessage, ProfileSduInputChangedMessage,
-};
+use crate::views::manage_profile::profile::{ProfileProfileInteractionMessage, ProfileSduMessage};
 use crate::views::manage_profile::ManageProfileInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::number_input::NumberInput;
@@ -27,11 +25,8 @@ pub struct SduUnlockField {
     pub sdu_slot: ProfileSduSlot,
     pub input: i32,
     input_state: text_input::State,
-    #[derivative(
-        Debug = "ignore",
-        Default(value = "Rc::new(ProfileSduInputChangedMessage::Bank)")
-    )]
-    on_changed: Rc<dyn Fn(i32) -> ProfileSduInputChangedMessage>,
+    #[derivative(Debug = "ignore", Default(value = "Rc::new(ProfileSduMessage::Bank)"))]
+    on_changed: Rc<dyn Fn(i32) -> ProfileSduMessage>,
 }
 
 impl SduUnlockField {
@@ -43,7 +38,7 @@ impl SduUnlockField {
     ) -> Self
     where
         S: AsRef<str>,
-        F: 'static + Fn(i32) -> ProfileSduInputChangedMessage,
+        F: 'static + Fn(i32) -> ProfileSduMessage,
     {
         SduUnlockField {
             name: name.as_ref().to_owned(),
@@ -114,17 +109,12 @@ pub struct SduUnlocker {
 impl std::default::Default for SduUnlocker {
     fn default() -> Self {
         Self {
-            bank: SduUnlockField::new(
-                "Bank",
-                0,
-                ProfileSduSlot::Bank,
-                ProfileSduInputChangedMessage::Bank,
-            ),
+            bank: SduUnlockField::new("Bank", 0, ProfileSduSlot::Bank, ProfileSduMessage::Bank),
             lost_loot: SduUnlockField::new(
                 "Lost Loot",
                 4,
                 ProfileSduSlot::LostLoot,
-                ProfileSduInputChangedMessage::LostLoot,
+                ProfileSduMessage::LostLoot,
             ),
             unlock_all_button_state: button::State::default(),
         }

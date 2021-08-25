@@ -76,7 +76,7 @@ impl InventoryItemEditor {
                             |v| {
                                 InteractionMessage::ManageSaveInteraction(
                                     ManageSaveInteractionMessage::Inventory(
-                                        SaveInventoryInteractionMessage::ItemLevelInputChanged(v),
+                                        SaveInventoryInteractionMessage::ItemLevel(v),
                                     ),
                                 )
                             },

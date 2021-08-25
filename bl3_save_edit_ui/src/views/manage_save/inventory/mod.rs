@@ -140,12 +140,12 @@ pub enum SaveInventoryInteractionMessage {
     CurrentPartPressed(CurrentPartTypeIndex),
     CurrentAnointmentPressed(CurrentPartTypeIndex),
     SyncItemLevelWithCharacterLevelPressed,
-    ImportItemInputChanged(String),
+    ImportItem(String),
     CreateItemPressed,
     ImportItemFromSerialPressed,
     SyncAllItemLevelsWithCharacterLevelPressed,
-    AllItemLevelInputChanged(i32),
-    ItemLevelInputChanged(i32),
+    AllItemLevel(i32),
+    ItemLevel(i32),
     DeleteItem(usize),
     BalanceInputSelected(BalancePart),
     InvDataInputSelected(InvDataPart),
@@ -168,7 +168,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                     |s| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Inventory(
-                                SaveInventoryInteractionMessage::ImportItemInputChanged(s),
+                                SaveInventoryInteractionMessage::ImportItem(s),
                             ),
                         )
                     },
@@ -228,7 +228,7 @@ pub fn view(inventory_state: &mut InventoryState) -> Container<Message> {
                         |v| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::Inventory(
-                                    SaveInventoryInteractionMessage::AllItemLevelInputChanged(v),
+                                    SaveInventoryInteractionMessage::AllItemLevel(v),
                                 ),
                             )
                         },

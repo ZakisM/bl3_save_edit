@@ -16,13 +16,10 @@ pub struct CurrencyState {
     pub eridium_input_state: text_input::State,
 }
 
-#[derive(Debug)]
-pub enum CurrencyMessage {}
-
 #[derive(Debug, Clone)]
 pub enum SaveCurrencyInteractionMessage {
-    MoneyInputChanged(i32),
-    EridiumInputChanged(i32),
+    Money(i32),
+    Eridium(i32),
 }
 
 pub fn view(general_state: &mut CurrencyState) -> Container<Message> {
@@ -40,7 +37,7 @@ pub fn view(general_state: &mut CurrencyState) -> Container<Message> {
                         |v| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::Currency(
-                                    SaveCurrencyInteractionMessage::MoneyInputChanged(v),
+                                    SaveCurrencyInteractionMessage::Money(v),
                                 ),
                             )
                         },
@@ -74,7 +71,7 @@ pub fn view(general_state: &mut CurrencyState) -> Container<Message> {
                 |v| {
                     InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::Currency(
-                            SaveCurrencyInteractionMessage::EridiumInputChanged(v),
+                            SaveCurrencyInteractionMessage::Eridium(v),
                         ),
                     )
                 },

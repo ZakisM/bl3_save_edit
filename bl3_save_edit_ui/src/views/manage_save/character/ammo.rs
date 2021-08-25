@@ -11,9 +11,7 @@ use bl3_save_edit_core::bl3_save::ammo::AmmoPool;
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::manage_save::character::{
-    CharacterAmmoInputChangedMessage, SaveCharacterInteractionMessage,
-};
+use crate::views::manage_save::character::{CharacterAmmoMessage, SaveCharacterInteractionMessage};
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::number_input::NumberInput;
@@ -29,16 +27,16 @@ pub struct AmmoSetterField {
     input_state: text_input::State,
     #[derivative(
         Debug = "ignore",
-        Default(value = "Rc::new(CharacterAmmoInputChangedMessage::Grenade)")
+        Default(value = "Rc::new(CharacterAmmoMessage::Grenade)")
     )]
-    on_changed: Rc<dyn Fn(i32) -> CharacterAmmoInputChangedMessage>,
+    on_changed: Rc<dyn Fn(i32) -> CharacterAmmoMessage>,
 }
 
 impl AmmoSetterField {
     pub fn new<S, F>(name: S, text_margin: usize, ammo_pool: AmmoPool, on_changed: F) -> Self
     where
         S: AsRef<str>,
-        F: 'static + Fn(i32) -> CharacterAmmoInputChangedMessage,
+        F: 'static + Fn(i32) -> CharacterAmmoMessage,
     {
         AmmoSetterField {
             name: name.as_ref().to_owned(),
@@ -118,43 +116,33 @@ impl std::default::Default for AmmoSetter {
                 "Sniper",
                 0,
                 AmmoPool::Sniper,
-                CharacterAmmoInputChangedMessage::Sniper,
+                CharacterAmmoMessage::Sniper,
             ),
-            heavy: AmmoSetterField::new(
-                "Heavy",
-                4,
-                AmmoPool::Heavy,
-                CharacterAmmoInputChangedMessage::Heavy,
-            ),
+            heavy: AmmoSetterField::new("Heavy", 4, AmmoPool::Heavy, CharacterAmmoMessage::Heavy),
             shotgun: AmmoSetterField::new(
                 "Shotgun",
                 0,
                 AmmoPool::Shotgun,
-                CharacterAmmoInputChangedMessage::Shotgun,
+                CharacterAmmoMessage::Shotgun,
             ),
             grenade: AmmoSetterField::new(
                 "Grenade",
                 4,
                 AmmoPool::Grenade,
-                CharacterAmmoInputChangedMessage::Grenade,
+                CharacterAmmoMessage::Grenade,
             ),
-            smg: AmmoSetterField::new(
-                "SMG",
-                0,
-                AmmoPool::Smg,
-                CharacterAmmoInputChangedMessage::Smg,
-            ),
+            smg: AmmoSetterField::new("SMG", 0, AmmoPool::Smg, CharacterAmmoMessage::Smg),
             assault_rifle: AmmoSetterField::new(
                 "AR",
                 4,
                 AmmoPool::Ar,
-                CharacterAmmoInputChangedMessage::AssaultRifle,
+                CharacterAmmoMessage::AssaultRifle,
             ),
             pistol: AmmoSetterField::new(
                 "Pistol",
                 0,
                 AmmoPool::Pistol,
-                CharacterAmmoInputChangedMessage::Pistol,
+                CharacterAmmoMessage::Pistol,
             ),
             max_all_button_state: button::State::default(),
         }
