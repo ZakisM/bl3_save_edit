@@ -186,9 +186,8 @@ impl std::default::Default for ItemRarity {
 }
 
 impl Bl3Item {
-    pub fn from_serial_bytes(serial: Vec<u8>) -> Result<Self> {
-        // first decrypt the serial
-        let mut serial = serial;
+    pub fn from_serial_bytes(serial: &[u8]) -> Result<Self> {
+        let serial = serial;
 
         if serial.len() < 5 {
             bail!("Serial length must be longer than 4 characters.");
@@ -203,6 +202,8 @@ impl Bl3Item {
         let serial_version = initial_byte;
 
         let orig_seed = read_be_signed_int(&serial[1..5])?.1;
+
+        let mut serial = serial.to_vec();
 
         let decrypted_serial = Self::bogodecrypt(&mut serial[5..], orig_seed);
 
@@ -394,7 +395,7 @@ impl Bl3Item {
 
         let decoded = base64::decode(&serial[4..serial.len() - 1])?;
 
-        Self::from_serial_bytes(decoded)
+        Self::from_serial_bytes(&decoded)
     }
 
     pub fn encrypt_serial(&self, seed: i32) -> Result<Vec<u8>> {
@@ -639,7 +640,7 @@ impl Bl3Item {
 
         let full_serial = self.encrypt_serial(0)?;
 
-        *self = Bl3Item::from_serial_bytes(full_serial)?;
+        *self = Bl3Item::from_serial_bytes(&full_serial)?;
 
         Ok(())
     }
@@ -648,10 +649,10 @@ impl Bl3Item {
         if seed != 0 {
             let mut xor = ((seed >> 5) as i64) & 0xFFFFFFFF;
 
-            for d in data.iter_mut() {
+            data.iter_mut().for_each(|d| {
                 xor = (xor * 0x10A860C1) % 0xFFFFFFFB;
                 *d ^= xor as u8;
-            }
+            });
         }
     }
 
@@ -746,7 +747,7 @@ mod tests {
         let orig_serial_number = serial_number.clone();
 
         let decrypted =
-            Bl3Item::from_serial_bytes(serial_number).expect("failed to decrypt serial");
+            Bl3Item::from_serial_bytes(&serial_number).expect("failed to decrypt serial");
 
         assert_eq!(decrypted.balance_part.ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Balance/InvBalD_Shield_OldGod.InvBalD_Shield_OldGod");
         assert_eq!(

@@ -9,6 +9,7 @@ use crate::bl3_profile::profile_currency::ProfileCurrency;
 use crate::bl3_profile::science_levels::{BorderlandsScienceInfo, BorderlandsScienceLevel};
 use crate::bl3_profile::sdu::{ProfileSduSlot, ProfileSduSlotData};
 use crate::bl3_profile::util::get_checksum_hash;
+use crate::bl3_save::bl3_item::Bl3Item;
 use crate::game_data::{
     PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_EMOTES, PROFILE_EMOTES_DEFAULTS,
     PROFILE_HEADS, PROFILE_HEADS_DEFAULTS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS,
@@ -29,8 +30,8 @@ pub struct ProfileData {
     pub guardian_rank_tokens: i32,
     pub borderlands_science_info: BorderlandsScienceInfo,
     pub sdu_slots: Vec<ProfileSduSlotData>,
-    pub bank_items: Vec<Vec<u8>>,
-    pub lost_loot_items: Vec<Vec<u8>>,
+    pub bank_items: Vec<Bl3Item>,
+    pub lost_loot_items: Vec<Bl3Item>,
     pub character_skins_unlocked: usize,
     pub character_heads_unlocked: usize,
     pub echo_themes_unlocked: usize,
@@ -110,13 +111,13 @@ impl ProfileData {
         let bank_items = profile
             .bank_inventory_list
             .par_iter()
-            .cloned()
+            .filter_map(|i| Bl3Item::from_serial_bytes(i).ok())
             .collect::<Vec<_>>();
 
         let lost_loot_items = profile
             .lost_loot_inventory_list
             .par_iter()
-            .cloned()
+            .filter_map(|i| Bl3Item::from_serial_bytes(i).ok())
             .collect::<Vec<_>>();
 
         let mut character_skins_unlocked = PROFILE_SKINS_DEFAULTS.len();

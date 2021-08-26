@@ -72,62 +72,63 @@ impl CharacterData {
         let available_head_skins = PROFILE_HEADS_DEFAULTS
             .par_iter()
             .chain(PROFILE_HEADS.par_iter())
-            .cloned()
             .filter(|h| {
                 h.ident
                     .to_lowercase()
                     .contains(&player_class.to_string().to_lowercase())
             })
+            .cloned()
             .collect::<Vec<_>>();
 
         let head_skin_selected = available_head_skins
             .par_iter()
-            .cloned()
             .find_first(|s| {
                 character
                     .selected_customizations
                     .par_iter()
                     .any(|cs| cs == s.ident)
             })
+            .cloned()
             .unwrap_or(available_head_skins[0]);
 
         let available_character_skins = PROFILE_SKINS_DEFAULTS
             .par_iter()
             .chain(PROFILE_SKINS.par_iter())
-            .cloned()
             .filter(|h| {
                 h.ident
                     .to_lowercase()
                     .contains(&player_class.to_string().to_lowercase())
             })
+            .cloned()
             .collect::<Vec<_>>();
 
         let character_skin_selected = available_character_skins
             .par_iter()
-            .cloned()
             .find_first(|s| {
                 character
                     .selected_customizations
                     .par_iter()
                     .any(|cs| cs == s.ident)
             })
+            .cloned()
             .unwrap_or(available_character_skins[0]);
 
         let echo_theme_selected = PROFILE_ECHO_THEMES_DEFAULTS
             .par_iter()
             .chain(PROFILE_ECHO_THEMES.par_iter())
-            .cloned()
             .find_first(|s| {
                 character
                     .selected_customizations
                     .par_iter()
                     .any(|cs| cs == s.ident)
             })
+            .cloned()
             .unwrap_or(PROFILE_ECHO_THEMES_DEFAULTS[0]);
 
         let money = currency_amount_from_character(&character, &Currency::Money);
         let eridium = currency_amount_from_character(&character, &Currency::Eridium);
         let playthroughs = Playthrough::playthroughs_from_character(&character)?;
+
         let mut unlockable_inventory_slots = character
             .equipped_inventory_list
             .par_iter()
@@ -341,7 +342,7 @@ impl CharacterData {
         let inventory_items = character
             .inventory_items
             .par_iter()
-            .filter_map(|i| Bl3Item::from_serial_bytes(i.item_serial_number.clone()).ok())
+            .filter_map(|i| Bl3Item::from_serial_bytes(&i.item_serial_number).ok())
             .collect::<Vec<_>>();
 
         Ok(Self {
