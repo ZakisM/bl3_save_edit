@@ -24,12 +24,12 @@ pub fn map_save_to_character_state(manage_save_state: &mut ManageSaveState) {
     manage_save_state
         .save_view_state
         .character_state
-        .xp_level_input = save.character_data.player_level();
+        .level_input = save.character_data.player_level();
 
     manage_save_state
         .save_view_state
         .character_state
-        .xp_points_input = save.character_data.character.experience_points;
+        .experience_points_input = save.character_data.character.experience_points;
 
     manage_save_state
         .save_view_state
@@ -175,7 +175,7 @@ pub fn map_character_state_to_save(
         manage_save_state
             .save_view_state
             .character_state
-            .xp_points_input,
+            .experience_points_input,
     )?;
 
     save.character_data.set_head_skin_selected(

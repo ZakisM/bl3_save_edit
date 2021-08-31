@@ -48,6 +48,8 @@ pub fn map_loaded_file_to_state(main_state: &mut Bl3Ui) {
 
             manage_profile::keys::map_profile_to_keys_state(&mut main_state.manage_profile_state);
 
+            manage_profile::bank::map_profile_to_bank_state(&mut main_state.manage_profile_state);
+
             if mem::discriminant(&main_state.view_state)
                 != mem::discriminant(&ViewState::ManageProfile(ManageProfileView::TabBar(
                     ProfileTabBarView::General,

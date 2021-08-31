@@ -1,10 +1,10 @@
 use iced::{button, Color};
 
-pub struct InventoryButtonStyle {
+pub struct ItemEditorButtonStyle {
     pub is_active: bool,
 }
 
-impl button::StyleSheet for InventoryButtonStyle {
+impl button::StyleSheet for ItemEditorButtonStyle {
     fn active(&self) -> button::Style {
         let (background, text_color) = if self.is_active {
             (

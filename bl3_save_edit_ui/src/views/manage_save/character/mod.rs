@@ -32,9 +32,9 @@ pub struct CharacterState {
     pub name_input_state: text_input::State,
     pub player_class_selector: pick_list::State<PlayerClass>,
     pub player_class_selected_class: PlayerClass,
-    pub xp_level_input: i32,
+    pub level_input: i32,
     pub xp_level_input_state: text_input::State,
-    pub xp_points_input: i32,
+    pub experience_points_input: i32,
     pub xp_points_input_state: text_input::State,
     pub skin_selectors: SkinSelectors,
     pub gear_unlocker: GearUnlocker,
@@ -182,7 +182,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
             Tooltip::new(
                 NumberInput::new(
                     &mut character_state.xp_level_input_state,
-                    character_state.xp_level_input,
+                    character_state.level_input,
                     1,
                     Some(MAX_CHARACTER_LEVEL as i32),
                     |v| {
@@ -222,7 +222,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
             Tooltip::new(
                 NumberInput::new(
                     &mut character_state.xp_points_input_state,
-                    character_state.xp_points_input,
+                    character_state.experience_points_input,
                     0,
                     Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0]),
                     |v| {

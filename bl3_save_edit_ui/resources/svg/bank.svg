@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<svg id="Layer_1" style="enable-background:new 0 0 64 64;" version="1.1" viewBox="0 0 64 64" xml:space="preserve"
+     xmlns="http://www.w3.org/2000/svg"><style type="text/css">
+	.st0{fill:#B4E6DD;}
+	.st1{fill:#80D4C4;}
+	.st2{fill:#D2F0EA;}
+	.st3{fill:#FFFFFF;}
+	.st4{fill:#FBD872;}
+	.st5{fill:#DB7767;}
+	.st6{fill:#F38E7A;}
+	.st7{fill:#F6AF62;}
+	.st8{fill:#32A48E;}
+	.st9{fill:#A38FD8;}
+	.st10{fill:#7C64BD;}
+	.st11{fill:#EAA157;}
+	.st12{fill:#9681CF;}
+	.st13{fill:#F9C46A;}
+	.st14{fill:#CE6B61;}
+</style>
+    <g><rect class="st8" height="4" width="48" x="8" y="52"/>
+        <rect class="st1" height="4" width="44.57" x="9.72" y="48"/>
+        <rect class="st8" height="4" width="44.57" x="9.72" y="21.86"/>
+        <g><rect class="st0" height="5.6" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 68.9296 4.9296)" width="16.14" x="23.93" y="34.13"/>
+            <rect class="st2" height="3" width="9.04" x="27.48" y="25.86"/>
+            <rect class="st2" height="3" width="9.04" x="27.48" y="45"/></g>
+        <g><rect class="st0" height="5.6" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 82.6938 -8.8346)" width="16.14" x="37.69" y="34.13"/>
+            <rect class="st2" height="3" width="9.04" x="41.24" y="25.86"/>
+            <rect class="st2" height="3" width="9.04" x="41.24" y="45"/></g>
+        <g><rect class="st0" height="5.6" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 55.1654 18.6938)" width="16.14" x="10.17" y="34.13"/>
+            <rect class="st2" height="3" width="9.04" x="13.72" y="25.86"/>
+            <rect class="st2" height="3" width="9.04" x="13.72" y="45"/></g>
+        <polygon class="st0" points="32,8 9.72,21.86 54.28,21.86  "/>
+        <rect class="st1" height="6.3" width="8" x="28" y="15.56"/>
+        <circle class="st3" cx="32" cy="15.7" r="4"/></g></svg>

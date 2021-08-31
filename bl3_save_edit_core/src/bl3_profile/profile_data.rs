@@ -199,4 +199,14 @@ impl ProfileData {
             weapon_trinkets_unlocked,
         })
     }
+
+    pub fn remove_bank_item(&mut self, index: usize) {
+        if index < self.profile.bank_inventory_list.len() {
+            self.profile.bank_inventory_list.remove(index);
+        }
+
+        if index < self.bank_items.len() {
+            self.bank_items.remove(index);
+        }
+    }
 }

@@ -12,18 +12,17 @@ use bl3_save_edit_core::resources::{
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::views::item_editor::available_parts::AvailableParts;
+use crate::views::item_editor::current_parts::CurrentParts;
+use crate::views::item_editor::delete_item_button_style::DeleteItemButtonStyle;
+use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
-use crate::views::manage_save::inventory::available_parts::AvailableParts;
-use crate::views::manage_save::inventory::current_parts::CurrentParts;
-use crate::views::manage_save::inventory::delete_item_button_style::DeleteItemButtonStyle;
-use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
-use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
 
 #[derive(Debug, Default)]
-pub struct InventoryItemEditor {
+pub struct Editor {
     pub item_level_input: i32,
     pub item_level_input_state: text_input::State,
     pub sync_item_level_char_level_button: button::State,
@@ -40,8 +39,16 @@ pub struct InventoryItemEditor {
     pub current_parts: CurrentParts,
 }
 
-impl InventoryItemEditor {
-    pub fn view(&mut self, item_id: usize, item: &Bl3Item) -> Container<Message> {
+impl Editor {
+    pub fn view<F>(
+        &mut self,
+        item_id: usize,
+        item: &Bl3Item,
+        interaction_message: F,
+    ) -> Container<Message>
+    where
+        F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
+    {
         let inventory_serial_db_parts_categorized = &*INVENTORY_SERIAL_DB_PARTS_CATEGORIZED;
         let inventory_parts_all_categorized = &INVENTORY_PARTS_ALL_CATEGORIZED;
 
@@ -73,12 +80,8 @@ impl InventoryItemEditor {
                             self.item_level_input,
                             1,
                             Some(MAX_CHARACTER_LEVEL as i32),
-                            |v| {
-                                InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::Inventory(
-                                        SaveInventoryInteractionMessage::ItemLevel(v),
-                                    ),
-                                )
+                            move |v| {
+                                interaction_message(ItemEditorInteractionMessage::ItemLevel(v))
                             },
                         )
                         .0
@@ -99,29 +102,6 @@ impl InventoryItemEditor {
                 .spacing(15)
                 .width(Length::FillPortion(9))
                 .align_items(Align::Center),
-            )
-            .push(
-                Tooltip::new(
-                    Button::new(
-                        &mut self.sync_item_level_char_level_button,
-                        Text::new("Sync").font(JETBRAINS_MONO_BOLD).size(17),
-                    )
-                    .on_press(InteractionMessage::ManageSaveInteraction(
-                        ManageSaveInteractionMessage::Inventory(
-                            SaveInventoryInteractionMessage::SyncItemLevelWithCharacterLevelPressed,
-                        ),
-                    ))
-                    .padding(10)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                    "Synchronize this item level with your Character level",
-                    tooltip::Position::Top,
-                )
-                .gap(10)
-                .padding(10)
-                .font(JETBRAINS_MONO)
-                .size(17)
-                .style(Bl3UiTooltipStyle),
             )
             .align_items(Align::Center);
 
@@ -160,10 +140,8 @@ impl InventoryItemEditor {
                     &mut self.delete_item_button,
                     Text::new("Delete Item").font(JETBRAINS_MONO_BOLD).size(17),
                 )
-                .on_press(InteractionMessage::ManageSaveInteraction(
-                    ManageSaveInteractionMessage::Inventory(
-                        SaveInventoryInteractionMessage::DeleteItem(item_id),
-                    ),
+                .on_press(interaction_message(
+                    ItemEditorInteractionMessage::DeleteItem(item_id),
                 ))
                 .padding(10)
                 .style(DeleteItemButtonStyle)
@@ -182,11 +160,9 @@ impl InventoryItemEditor {
                             &mut self.balance_input_state,
                             &INVENTORY_BALANCE_PARTS[..],
                             Some(self.balance_input_selected.clone()),
-                            |s| {
-                                InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::Inventory(
-                                        SaveInventoryInteractionMessage::BalanceInputSelected(s),
-                                    ),
+                            move |s| {
+                                interaction_message(
+                                    ItemEditorInteractionMessage::BalanceInputSelected(s),
                                 )
                             },
                         )
@@ -212,11 +188,14 @@ impl InventoryItemEditor {
                             &mut self.inv_data_input_state,
                             &INVENTORY_INV_DATA_PARTS[..],
                             Some(self.inv_data_input_selected.clone()),
-                            |s| {
-                                InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::Inventory(
-                                        SaveInventoryInteractionMessage::InvDataInputSelected(s),
-                                    ),
+                            move |s| {
+                                // InteractionMessage::ManageSaveInteraction(
+                                //     ManageSaveInteractionMessage::Inventory(
+                                //         SaveInventoryInteractionMessage::InvDataInputSelected(s),
+                                //     ),
+                                // )
+                                interaction_message(
+                                    ItemEditorInteractionMessage::InvDataInputSelected(s),
                                 )
                             },
                         )
@@ -242,13 +221,9 @@ impl InventoryItemEditor {
                             &mut self.manufacturer_input_state,
                             &INVENTORY_MANUFACTURER_PARTS[..],
                             Some(self.manufacturer_input_selected.clone()),
-                            |s| {
-                                InteractionMessage::ManageSaveInteraction(
-                                    ManageSaveInteractionMessage::Inventory(
-                                        SaveInventoryInteractionMessage::ManufacturerInputSelected(
-                                            s,
-                                        ),
-                                    ),
+                            move |s| {
+                                interaction_message(
+                                    ItemEditorInteractionMessage::ManufacturerInputSelected(s),
                                 )
                             },
                         )
@@ -267,13 +242,16 @@ impl InventoryItemEditor {
             )
             .spacing(20);
 
-        let available_parts_contents =
-            self.available_parts
-                .view(anointments_list, specific_parts_list, all_parts_list);
+        let available_parts_contents = self.available_parts.view(
+            anointments_list,
+            specific_parts_list,
+            all_parts_list,
+            interaction_message,
+        );
 
         let current_parts_contents =
             self.current_parts
-                .view(item, anointments_list, all_parts_list);
+                .view(item, anointments_list, all_parts_list, interaction_message);
 
         let parts_editor_contents = Container::new(
             Row::new()

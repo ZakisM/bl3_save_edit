@@ -13,11 +13,10 @@ use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart, Reso
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::manage_save::inventory::extra_part_info::add_extra_part_info;
-use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
-use crate::views::manage_save::inventory::parts_tab_bar::{parts_tab_bar_button, CurrentPartType};
-use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
-use crate::views::manage_save::ManageSaveInteractionMessage;
+use crate::views::item_editor::extra_part_info::add_extra_part_info;
+use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
+use crate::views::item_editor::parts_tab_bar::{parts_tab_bar_button, CurrentPartType};
+use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::text_margin::TextMargin;
 
@@ -30,7 +29,7 @@ pub struct CurrentPartTypeIndex {
 #[derive(Debug)]
 pub struct CurrentCategorizedPart {
     pub category: String,
-    pub parts: Vec<CurrentInventoryPart>,
+    pub parts: Vec<CurrentItemEditorPart>,
 }
 
 impl CurrentCategorizedPart {
@@ -43,7 +42,7 @@ impl CurrentCategorizedPart {
         let parts = parts
             .into_iter()
             .enumerate()
-            .map(|(id, p)| CurrentInventoryPart::new(category_id, id, part_type.clone(), p))
+            .map(|(id, p)| CurrentItemEditorPart::new(category_id, id, part_type.clone(), p))
             .collect();
 
         Self { category, parts }
@@ -51,7 +50,7 @@ impl CurrentCategorizedPart {
 }
 
 #[derive(Debug)]
-pub struct CurrentInventoryPart {
+pub struct CurrentItemEditorPart {
     category_index: usize,
     part_index: usize,
     part_type: CurrentPartType,
@@ -59,7 +58,7 @@ pub struct CurrentInventoryPart {
     button_state: button::State,
 }
 
-impl CurrentInventoryPart {
+impl CurrentItemEditorPart {
     pub fn new(
         category_index: usize,
         part_index: usize,
@@ -75,7 +74,10 @@ impl CurrentInventoryPart {
         }
     }
 
-    pub fn view(&mut self) -> Element<Message> {
+    pub fn view<F>(&mut self, interaction_message: F) -> Element<Message>
+    where
+        F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
+    {
         let part_contents_col = Column::new()
             .push(
                 TextMargin::new(
@@ -97,33 +99,29 @@ impl CurrentInventoryPart {
         let part_contents = Container::new(part_contents_col).align_x(Align::Start);
 
         Button::new(&mut self.button_state, part_contents)
-            .on_press(InteractionMessage::ManageSaveInteraction(
-                ManageSaveInteractionMessage::Inventory(match self.part_type {
-                    CurrentPartType::Parts => {
-                        SaveInventoryInteractionMessage::CurrentPartPressed(CurrentPartTypeIndex {
-                            category_index: self.category_index,
-                            part_index: self.part_index,
-                        })
-                    }
-                    CurrentPartType::Anointments => {
-                        SaveInventoryInteractionMessage::CurrentAnointmentPressed(
-                            CurrentPartTypeIndex {
-                                category_index: self.category_index,
-                                part_index: self.part_index,
-                            },
-                        )
-                    }
-                }),
-            ))
+            .on_press(interaction_message(match self.part_type {
+                CurrentPartType::Parts => {
+                    ItemEditorInteractionMessage::CurrentPartPressed(CurrentPartTypeIndex {
+                        category_index: self.category_index,
+                        part_index: self.part_index,
+                    })
+                }
+                CurrentPartType::Anointments => {
+                    ItemEditorInteractionMessage::CurrentAnointmentPressed(CurrentPartTypeIndex {
+                        category_index: self.category_index,
+                        part_index: self.part_index,
+                    })
+                }
+            }))
             .padding(10)
             .width(Length::Fill)
-            .style(InventoryButtonStyle { is_active: false })
+            .style(ItemEditorButtonStyle { is_active: false })
             .into_element()
     }
 }
 
 #[derive(Debug, Clone)]
-pub struct InventoryCategorizedParts {
+pub struct ItemEditorCategorizedParts {
     pub category: String,
     pub parts: Vec<Bl3PartWithInfo>,
 }
@@ -144,12 +142,16 @@ pub struct CurrentParts {
 }
 
 impl CurrentParts {
-    pub fn view(
+    pub fn view<F>(
         &mut self,
         item: &Bl3Item,
         anointments_list: &[ResourceCategorizedParts],
         all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
-    ) -> Container<Message> {
+        interaction_message: F,
+    ) -> Container<Message>
+    where
+        F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
+    {
         match self.parts_tab_view {
             CurrentPartType::Parts => {
                 let mut categorized_parts: BTreeMap<String, Vec<Bl3PartWithInfo>> = BTreeMap::new();
@@ -208,7 +210,7 @@ impl CurrentParts {
                 let inventory_categorized_parts =
                     categorized_parts.into_iter().map(|(category, mut parts)| {
                         parts.sort();
-                        InventoryCategorizedParts { category, parts }
+                        ItemEditorCategorizedParts { category, parts }
                     });
 
                 self.parts = inventory_categorized_parts
@@ -255,7 +257,7 @@ impl CurrentParts {
                 let inventory_categorized_anointments =
                     categorized_parts.into_iter().map(|(category, mut parts)| {
                         parts.sort();
-                        InventoryCategorizedParts { category, parts }
+                        ItemEditorCategorizedParts { category, parts }
                     });
 
                 self.parts = inventory_categorized_anointments
@@ -290,7 +292,7 @@ impl CurrentParts {
                     );
 
                     for p in cat_parts.parts.iter_mut() {
-                        curr = curr.push(p.view())
+                        curr = curr.push(p.view(interaction_message))
                     }
 
                     curr
@@ -303,7 +305,7 @@ impl CurrentParts {
                 &mut self.current_parts_tab_button_state,
                 CurrentPartType::Parts,
                 &self.parts_tab_view,
-                SaveInventoryInteractionMessage::CurrentPartsTabPressed,
+                interaction_message(ItemEditorInteractionMessage::CurrentPartsTabPressed),
                 Some(format!(
                     "({}/{})",
                     item.item_parts
@@ -322,7 +324,7 @@ impl CurrentParts {
                 &mut self.current_anointments_tab_button_state,
                 CurrentPartType::Anointments,
                 &self.parts_tab_view,
-                SaveInventoryInteractionMessage::CurrentAnointmentsTabPressed,
+                interaction_message(ItemEditorInteractionMessage::CurrentAnointmentsTabPressed),
                 Some(format!(
                     "({}/{})",
                     item.item_parts

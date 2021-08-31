@@ -2,8 +2,8 @@ use anyhow::Result;
 
 use bl3_save_edit_core::bl3_save::Bl3Save;
 
-use crate::views::manage_save::inventory::inventory_item::InventoryListItem;
-use crate::views::manage_save::inventory::InventoryStateExt;
+use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
+use crate::views::item_editor::ItemEditorStateExt;
 use crate::views::manage_save::ManageSaveState;
 
 pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
@@ -12,29 +12,33 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
     manage_save_state
         .save_view_state
         .inventory_state
+        .item_editor_state
         .selected_item_index = 0;
 
     *manage_save_state
         .save_view_state
         .inventory_state
+        .item_editor_state
         .items_mut() = save
         .character_data
         .inventory_items()
         .iter()
         .cloned()
         .enumerate()
-        .map(|(i, item)| InventoryListItem::new(i, item))
+        .map(|(i, item)| ItemEditorListItem::new(i, item))
         .collect();
 
     manage_save_state
         .save_view_state
         .inventory_state
+        .item_editor_state
         .item_list_scrollable_state
         .snap_to(0.0);
 
     manage_save_state
         .save_view_state
         .inventory_state
+        .item_editor_state
         .map_current_item_if_exists(|i| i.editor.available_parts.scrollable_state.snap_to(0.0));
 }
 
@@ -45,6 +49,7 @@ pub fn map_inventory_state_to_save(
     for (i, edited_item) in manage_save_state
         .save_view_state
         .inventory_state
+        .item_editor_state
         .items()
         .iter()
         .enumerate()

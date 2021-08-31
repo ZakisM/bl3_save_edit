@@ -7,13 +7,9 @@ use iced::{
 
 use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
 use bl3_save_edit_core::bl3_save::ammo::AmmoPool;
-use bl3_save_edit_core::bl3_save::bl3_item::{
-    Bl3Item, MAX_BL3_ITEM_ANOINTMENTS, MAX_BL3_ITEM_PARTS,
-};
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
 use bl3_save_edit_core::file_helper::Bl3FileType;
-use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
 
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
@@ -23,6 +19,8 @@ use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
 use crate::views::initialization::InitializationMessage;
+use crate::views::item_editor::ItemEditorFileType;
+use crate::views::manage_profile::bank::ProfileBankInteractionMessage;
 use crate::views::manage_profile::general::ProfileGeneralInteractionMessage;
 use crate::views::manage_profile::keys::ProfileKeysInteractionMessage;
 use crate::views::manage_profile::main::{ProfileTabBarInteractionMessage, ProfileTabBarView};
@@ -38,10 +36,7 @@ use crate::views::manage_save::character::{
 };
 use crate::views::manage_save::currency::SaveCurrencyInteractionMessage;
 use crate::views::manage_save::general::{GeneralMessage, SaveGeneralInteractionMessage};
-use crate::views::manage_save::inventory::parts_tab_bar::{AvailablePartType, CurrentPartType};
-use crate::views::manage_save::inventory::{
-    available_parts, InventoryStateExt, SaveInventoryInteractionMessage,
-};
+use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::main::{SaveTabBarInteractionMessage, SaveTabBarView};
 use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
@@ -155,997 +150,587 @@ impl Application for Bl3Ui {
                             ChooseSaveInteractionMessage::ChooseDirPressed => {
                                 self.choose_save_directory_state.choose_dir_window_open = true;
 
-                                Command::perform(interaction::choose_save_directory::choose(), |r| {
-                                    Message::ChooseSave(ChooseSaveMessage::ChooseDirCompleted(
-                                        MessageResult::handle_result(r),
-                                    ))
-                                })
+                                Command::perform(
+                                    interaction::choose_save_directory::choose(),
+                                    |r| {
+                                        Message::ChooseSave(ChooseSaveMessage::ChooseDirCompleted(
+                                            MessageResult::handle_result(r),
+                                        ))
+                                    },
+                                )
                             }
                         };
                     }
-                    InteractionMessage::ManageSaveInteraction(manage_save_msg) => match manage_save_msg
-                    {
-                        ManageSaveInteractionMessage::TabBar(tab_bar_msg) => match tab_bar_msg {
-                            SaveTabBarInteractionMessage::General => {
-                                self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                    SaveTabBarView::General,
-                                ))
-                            }
-                            SaveTabBarInteractionMessage::Character => {
-                                self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                    SaveTabBarView::Character,
-                                ))
-                            }
-                            SaveTabBarInteractionMessage::Inventory => {
-                                self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                    SaveTabBarView::Inventory,
-                                ))
-                            }
-                            SaveTabBarInteractionMessage::Currency => {
-                                self.view_state = ViewState::ManageSave(ManageSaveView::TabBar(
-                                    SaveTabBarView::Currency,
-                                ))
-                            }
-                        },
-                        ManageSaveInteractionMessage::General(general_msg) => match general_msg {
-                            SaveGeneralInteractionMessage::Guid(guid) => {
-                                self.manage_save_state.save_view_state.general_state.guid_input = guid;
-                            }
-                            SaveGeneralInteractionMessage::Slot(slot) => {
-                                let filename = format!("{}.sav", slot);
-
-                                self.manage_save_state.save_view_state.general_state.slot_input = slot;
-                                self.manage_save_state
-                                    .save_view_state
-                                    .general_state
-                                    .filename_input = filename.clone();
-                                self.manage_save_state.current_file.file_name = filename;
-                            }
-                            SaveGeneralInteractionMessage::GenerateGuidPressed => {
-                                return Command::perform(
-                                    interaction::manage_save::general::generate_random_guid(),
-                                    |r| {
-                                        Message::ManageSave(ManageSaveMessage::General(
-                                            GeneralMessage::GenerateRandomGuidCompleted(r),
-                                        ))
-                                    },
-                                );
-                            }
-                            SaveGeneralInteractionMessage::SaveTypeSelected(save_type) => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .general_state
-                                    .save_type_selected = save_type;
-                            }
-                        },
-                        ManageSaveInteractionMessage::Character(character_msg) => match character_msg {
-                            SaveCharacterInteractionMessage::Name(name_input) => {
-                                self.manage_save_state.save_view_state.character_state.name_input =
-                                    name_input;
-                            }
-                            SaveCharacterInteractionMessage::XpLevel(level) => {
-                                let xp_points = if level > 0 {
-                                    REQUIRED_XP_LIST[level as usize - 1][0]
-                                } else {
-                                    0
-                                };
-
-                                let character_state = &mut self.manage_save_state.save_view_state.character_state;
-
-                                character_state
-                                    .xp_level_input = level;
-
-                                character_state
-                                    .xp_points_input = xp_points;
-                            }
-                            SaveCharacterInteractionMessage::XpPoints(xp) => {
-                                let level = experience_to_level(xp as i32).unwrap_or(1);
-
-                                let character_state = &mut self.manage_save_state.save_view_state.character_state;
-
-                                character_state
-                                    .xp_points_input = xp;
-
-                                character_state
-                                    .xp_level_input = level;
-                            }
-                            SaveCharacterInteractionMessage::SduMessage(sdu_message) => {
-                                let sdu_unlocker = &mut self.manage_save_state.save_view_state.character_state.sdu_unlocker;
-
-                                match sdu_message {
-                                    CharacterSduMessage::Backpack(level) => {
-                                        sdu_unlocker
-                                            .backpack
-                                            .input = level;
+                    InteractionMessage::ManageSaveInteraction(manage_save_msg) => {
+                        match manage_save_msg {
+                            ManageSaveInteractionMessage::TabBar(tab_bar_msg) => {
+                                match tab_bar_msg {
+                                    SaveTabBarInteractionMessage::General => {
+                                        self.view_state = ViewState::ManageSave(
+                                            ManageSaveView::TabBar(SaveTabBarView::General),
+                                        )
                                     }
-                                    CharacterSduMessage::Sniper(level) => {
-                                        sdu_unlocker
-                                            .sniper
-                                            .input = level;
+                                    SaveTabBarInteractionMessage::Character => {
+                                        self.view_state = ViewState::ManageSave(
+                                            ManageSaveView::TabBar(SaveTabBarView::Character),
+                                        )
                                     }
-                                    CharacterSduMessage::Shotgun(level) => {
-                                        sdu_unlocker
-                                            .shotgun
-                                            .input = level;
+                                    SaveTabBarInteractionMessage::Inventory => {
+                                        self.view_state = ViewState::ManageSave(
+                                            ManageSaveView::TabBar(SaveTabBarView::Inventory),
+                                        )
                                     }
-                                    CharacterSduMessage::Pistol(level) => {
-                                        sdu_unlocker
-                                            .pistol
-                                            .input = level;
-                                    }
-                                    CharacterSduMessage::Grenade(level) => {
-                                        sdu_unlocker
-                                            .grenade
-                                            .input = level;
-                                    }
-                                    CharacterSduMessage::Smg(level) => {
-                                        sdu_unlocker
-                                            .smg
-                                            .input = level;
-                                    }
-                                    CharacterSduMessage::AssaultRifle(level) => {
-                                        sdu_unlocker
-                                            .assault_rifle
-                                            .input = level;
-                                    }
-                                    CharacterSduMessage::Heavy(level) => {
-                                        sdu_unlocker
-                                            .heavy
-                                            .input = level;
+                                    SaveTabBarInteractionMessage::Currency => {
+                                        self.view_state = ViewState::ManageSave(
+                                            ManageSaveView::TabBar(SaveTabBarView::Currency),
+                                        )
                                     }
                                 }
                             }
-                            SaveCharacterInteractionMessage::MaxSduSlotsPressed => {
-                                let sdu_unlocker = &mut self.manage_save_state.save_view_state.character_state.sdu_unlocker;
-
-                                sdu_unlocker
-                                    .backpack
-                                    .input = SaveSduSlot::Backpack.maximum();
-
-                                sdu_unlocker
-                                    .sniper
-                                    .input = SaveSduSlot::Sniper.maximum();
-
-                                sdu_unlocker
-                                    .shotgun
-                                    .input = SaveSduSlot::Shotgun.maximum();
-
-                                sdu_unlocker
-                                    .pistol
-                                    .input = SaveSduSlot::Pistol.maximum();
-
-                                sdu_unlocker
-                                    .grenade
-                                    .input = SaveSduSlot::Grenade.maximum();
-
-                                sdu_unlocker
-                                    .smg
-                                    .input = SaveSduSlot::Smg.maximum();
-
-                                sdu_unlocker
-                                    .assault_rifle
-                                    .input = SaveSduSlot::Ar.maximum();
-
-                                sdu_unlocker
-                                    .heavy
-                                    .input = SaveSduSlot::Heavy.maximum();
-                            }
-                            SaveCharacterInteractionMessage::AmmoMessage(ammo_message) => {
-                                let ammo_setter = &mut self.manage_save_state.save_view_state.character_state.ammo_setter;
-
-                                match ammo_message {
-                                    CharacterAmmoMessage::Sniper(amount) => {
-                                        ammo_setter
-                                            .sniper
-                                            .input = amount;
-                                    }
-                                    CharacterAmmoMessage::Shotgun(amount) => {
-                                        ammo_setter
-                                            .shotgun
-                                            .input = amount;
-                                    }
-                                    CharacterAmmoMessage::Pistol(amount) => {
-                                        ammo_setter
-                                            .pistol
-                                            .input = amount;
-                                    }
-                                    CharacterAmmoMessage::Grenade(amount) => {
-                                        ammo_setter
-                                            .grenade
-                                            .input = amount;
-                                    }
-                                    CharacterAmmoMessage::Smg(amount) => {
-                                        ammo_setter
-                                            .smg
-                                            .input = amount;
-                                    }
-                                    CharacterAmmoMessage::AssaultRifle(amount) => {
-                                        ammo_setter
-                                            .assault_rifle
-                                            .input = amount;
-                                    }
-                                    CharacterAmmoMessage::Heavy(amount) => {
-                                        ammo_setter
-                                            .heavy
-                                            .input = amount;
-                                    }
-                                }
-                            }
-                            SaveCharacterInteractionMessage::MaxAmmoAmountsPressed => {
-                                let ammo_setter = &mut self.manage_save_state.save_view_state.character_state.ammo_setter;
-
-                                ammo_setter
-                                    .sniper
-                                    .input = AmmoPool::Sniper.maximum();
-
-                                ammo_setter
-                                    .shotgun
-                                    .input = AmmoPool::Shotgun.maximum();
-
-                                ammo_setter
-                                    .pistol
-                                    .input = AmmoPool::Pistol.maximum();
-
-                                ammo_setter
-                                    .grenade
-                                    .input = AmmoPool::Grenade.maximum();
-
-                                ammo_setter
-                                    .smg
-                                    .input = AmmoPool::Smg.maximum();
-
-                                ammo_setter
-                                    .assault_rifle
-                                    .input = AmmoPool::Ar.maximum();
-
-                                ammo_setter
-                                    .heavy
-                                    .input = AmmoPool::Heavy.maximum();
-                            }
-                            SaveCharacterInteractionMessage::PlayerClassSelected(player_class) => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .player_class_selected_class = player_class;
-                            }
-                            SaveCharacterInteractionMessage::SkinMessage(skin_message) => {
-                                let skin_selectors = &mut self.manage_save_state.save_view_state.character_state.skin_selectors;
-
-                                match skin_message {
-                                    CharacterSkinSelectedMessage::HeadSkin(selected) => {
-                                        skin_selectors
-                                            .head_skin
-                                            .selected = selected;
-                                    }
-                                    CharacterSkinSelectedMessage::CharacterSkin(selected) => {
-                                        skin_selectors
-                                            .character_skin
-                                            .selected = selected;
-                                    }
-                                    CharacterSkinSelectedMessage::EchoTheme(selected) => {
-                                        skin_selectors
-                                            .echo_theme
-                                            .selected = selected;
-                                    }
-                                }
-                            }
-                            SaveCharacterInteractionMessage::GearMessage(gear_msg) => {
-                                let gear_unlocker = &mut self.manage_save_state.save_view_state.character_state.gear_unlocker;
-
-                                match gear_msg {
-                                    CharacterGearUnlockedMessage::Grenade(b) => {
-                                        gear_unlocker
-                                            .grenade
-                                            .is_unlocked = b;
-                                    }
-                                    CharacterGearUnlockedMessage::Shield(b) => {
-                                        gear_unlocker
-                                            .shield
-                                            .is_unlocked = b;
-                                    }
-                                    CharacterGearUnlockedMessage::Weapon1(b) => {
-                                        gear_unlocker
-                                            .weapon_1
-                                            .is_unlocked = b;
-                                    }
-                                    CharacterGearUnlockedMessage::Weapon2(b) => {
-                                        gear_unlocker
-                                            .weapon_2
-                                            .is_unlocked = b;
-                                    }
-                                    CharacterGearUnlockedMessage::Weapon3(b) => {
-                                        gear_unlocker
-                                            .weapon_3
-                                            .is_unlocked = b;
-                                    }
-                                    CharacterGearUnlockedMessage::Weapon4(b) => {
-                                        gear_unlocker
-                                            .weapon_4
-                                            .is_unlocked = b;
-                                    }
-                                    CharacterGearUnlockedMessage::Artifact(b) => {
-                                        gear_unlocker
-                                            .artifact
-                                            .is_unlocked = b;
-                                    }
-                                    CharacterGearUnlockedMessage::ClassMod(b) => {
-                                        gear_unlocker
-                                            .class_mod
-                                            .is_unlocked = b;
-                                    }
-                                }
-                            }
-                        },
-                        ManageSaveInteractionMessage::Currency(currency_msg) => match currency_msg {
-                            SaveCurrencyInteractionMessage::Money(money) => {
-                                self.manage_save_state.save_view_state.currency_state.money_input = money;
-                            }
-                            SaveCurrencyInteractionMessage::Eridium(eridium) => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .currency_state
-                                    .eridium_input = eridium;
-                            }
-                            SaveCurrencyInteractionMessage::MaxMoneyPressed => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .currency_state
-                                    .money_input = i32::MAX;
-                            }
-                            SaveCurrencyInteractionMessage::MaxEridiumPressed => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .currency_state
-                                    .eridium_input = i32::MAX;
-                            }
-                        },
-                        ManageSaveInteractionMessage::Inventory(inventory_msg) => match inventory_msg {
-                            SaveInventoryInteractionMessage::ItemPressed(item_index) => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .selected_item_index = item_index;
-
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.part_type_index =
-                                            available_parts::AvailablePartTypeIndex {
-                                                category_index: 0,
-                                                part_index: 0,
-                                            }
-                                    });
-                            }
-                            SaveInventoryInteractionMessage::ShowAllAvailablePartsSelected(selected) => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.show_all_available_parts = selected;
-                                    })
-                            }
-                            SaveInventoryInteractionMessage::AvailablePartsTabPressed => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.parts_tab_view = AvailablePartType::Parts
-                                    })
-                            }
-                            SaveInventoryInteractionMessage::AvailableAnointmentsTabPressed => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments
-                                    })
-                            }
-                            SaveInventoryInteractionMessage::AvailablePartPressed(
-                                available_part_type_index,
-                            ) => {
-                                let selected_item_index = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .selected_item_index;
-
-                                if let Some(current_item) = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .get_mut(selected_item_index)
-                                {
-                                    if let Some(item_parts) = &mut current_item.item.item_parts {
-                                        if item_parts.parts().len() < MAX_BL3_ITEM_PARTS {
-                                            let part_selected = current_item
-                                                .editor
-                                                .available_parts
-                                                .parts
-                                                .get(available_part_type_index.category_index)
-                                                .and_then(|p| {
-                                                    p.parts.get(available_part_type_index.part_index)
-                                                });
-
-                                            if let Some(part_selected) = part_selected {
-                                                let part_inv_key = &item_parts.part_inv_key;
-
-                                                if let Ok(bl3_part) = INVENTORY_SERIAL_DB
-                                                    .get_part_by_short_name(
-                                                        part_inv_key,
-                                                        &part_selected.part.name,
-                                                    )
-                                                {
-                                                    if let Err(e) = current_item.item.add_part(bl3_part)
-                                                    {
-                                                        let msg = format!("Failed to add part to item: {}", e);
-
-                                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                                    }
-
-                                                    self.manage_save_state
-                                                        .save_view_state
-                                                        .inventory_state
-                                                        .map_current_item_if_exists(|i| {
-                                                            i.editor.available_parts.part_type_index =
-                                                                available_part_type_index
-                                                        });
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            SaveInventoryInteractionMessage::AvailableAnointmentPressed(available_part_type_index) => {
-                                let selected_item_index = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .selected_item_index;
-
-                                if let Some(current_item) = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .get_mut(selected_item_index)
-                                {
-                                    if let Some(item_parts) = &mut current_item.item.item_parts {
-                                        if item_parts.generic_parts().len() < MAX_BL3_ITEM_ANOINTMENTS {
-                                            let anointment_selected = current_item
-                                                .editor
-                                                .available_parts
-                                                .parts
-                                                .get(available_part_type_index.category_index)
-                                                .and_then(|p| {
-                                                    p.parts.get(available_part_type_index.part_index)
-                                                });
-
-                                            if let Some(anointment_selected) = anointment_selected {
-                                                if let Ok(bl3_part) = INVENTORY_SERIAL_DB
-                                                    .get_part_by_short_name(
-                                                        "InventoryGenericPartData",
-                                                        &anointment_selected.part.name,
-                                                    )
-                                                {
-                                                    if let Err(e) = current_item.item.add_generic_part(bl3_part)
-                                                    {
-                                                        let msg = format!("Failed to add part to item: {}", e);
-
-                                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                                    }
-
-                                                    self.manage_save_state
-                                                        .save_view_state
-                                                        .inventory_state
-                                                        .map_current_item_if_exists(|i| {
-                                                            i.editor.available_parts.part_type_index =
-                                                                available_part_type_index
-                                                        });
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            SaveInventoryInteractionMessage::CurrentPartsTabPressed => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.current_parts.parts_tab_view = CurrentPartType::Parts
-                                    })
-                            }
-                            SaveInventoryInteractionMessage::CurrentAnointmentsTabPressed => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists(|i| {
-                                        i.editor.current_parts.parts_tab_view = CurrentPartType::Anointments
-                                    })
-                            }
-                            SaveInventoryInteractionMessage::CurrentPartPressed(current_part_type_index) => {
-                                let selected_item_index = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .selected_item_index;
-
-                                if let Some(current_item) = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .get_mut(selected_item_index)
-                                {
-                                    let part_selected = current_item
-                                        .editor
-                                        .current_parts
-                                        .parts
-                                        .get(current_part_type_index.category_index)
-                                        .and_then(|p| p.parts.get(current_part_type_index.part_index));
-
-                                    if let Some(part_selected) = part_selected {
-                                        if let Err(e) =
-                                        current_item.item.remove_part(&part_selected.part.part)
-                                        {
-                                            let msg = format!("Failed to remove part from item: {}", e);
-
-                                            self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                        }
-
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .inventory_state
-                                            .map_current_item_if_exists_to_editor_state();
-                                    }
-                                }
-                            }
-                            SaveInventoryInteractionMessage::CurrentAnointmentPressed(current_part_type_index) => {
-                                let selected_item_index = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .selected_item_index;
-
-                                if let Some(current_item) = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .items_mut()
-                                    .get_mut(selected_item_index)
-                                {
-                                    let part_selected = current_item
-                                        .editor
-                                        .current_parts
-                                        .parts
-                                        .get(current_part_type_index.category_index)
-                                        .and_then(|p| p.parts.get(current_part_type_index.part_index));
-
-                                    if let Some(part_selected) = part_selected {
-                                        if let Err(e) =
-                                        current_item.item.remove_generic_part(&part_selected.part.part)
-                                        {
-                                            let msg = format!("Failed to remove part from item: {}", e);
-
-                                            self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                        }
-
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .inventory_state
-                                            .map_current_item_if_exists_to_editor_state();
-                                    }
-                                }
-                            }
-                            SaveInventoryInteractionMessage::ImportItem(s) => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .import_serial_input = s;
-                            }
-                            SaveInventoryInteractionMessage::CreateItemPressed => {
-                                self.manage_save_state.save_view_state.inventory_state.add_item(
-                                    Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap(),
-                                );
-
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .selected_item_index = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .items()
-                                    .len()
-                                    - 1;
-
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_to_editor_state();
-
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .item_list_scrollable_state
-                                    .snap_to(1.0)
-                            }
-                            SaveInventoryInteractionMessage::ImportItemFromSerialPressed => {
-                                let item_serial = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .import_serial_input
-                                    .trim();
-
-                                match Bl3Item::from_serial_base64(item_serial) {
-                                    Ok(bl3_item) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .inventory_state
-                                            .add_item(bl3_item);
-
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .inventory_state
-                                            .selected_item_index = self
-                                            .manage_save_state
-                                            .save_view_state
-                                            .inventory_state
-                                            .items()
-                                            .len()
-                                            - 1;
-
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .inventory_state
-                                            .map_current_item_if_exists_to_editor_state();
-
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .inventory_state
-                                            .item_list_scrollable_state
-                                            .snap_to(1.0);
-                                    }
-                                    Err(e) => {
-                                        let msg = format!("Failed to import serial: {}", e);
-
-                                        self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                    }
-                                }
-                            }
-                            SaveInventoryInteractionMessage::SyncAllItemLevelsWithCharacterLevelPressed => {
-                                let character_level = self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .character_state
-                                    .xp_level_input;
-
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .all_item_levels_input = character_level;
-
-                                let character_level = character_level as usize;
-
-                                let mut error_notification = None;
-
-                                for (i, item) in self.manage_save_state.save_view_state.inventory_state.items_mut().iter_mut().enumerate() {
-                                    if let Err(e) = item.item.set_level(character_level) {
-                                        let msg = format!("Failed to set level for item number: {} - {}", i, e);
-
-                                        error_notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-
-                                        break;
-                                    }
-                                }
-
-                                if let Some(error_notification) = error_notification {
-                                    self.notification = Some(error_notification)
-                                }
-
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_to_editor_state();
-                            }
-                            SaveInventoryInteractionMessage::SyncItemLevelWithCharacterLevelPressed => {
-                                let character_level =
+                            ManageSaveInteractionMessage::General(general_msg) => match general_msg
+                            {
+                                SaveGeneralInteractionMessage::Guid(guid) => {
                                     self.manage_save_state
                                         .save_view_state
-                                        .character_state
-                                        .xp_level_input as usize;
-
-                                if let Err(e) = self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_level(character_level)
-                                    }) {
-                                    let msg = format!("Failed to set level for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                                        .general_state
+                                        .guid_input = guid;
                                 }
-                            }
-                            SaveInventoryInteractionMessage::AllItemLevel(item_level_input) => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .all_item_levels_input = item_level_input;
+                                SaveGeneralInteractionMessage::Slot(slot) => {
+                                    let filename = format!("{}.sav", slot);
 
-                                let item_level = item_level_input as usize;
-
-                                let mut error_notification = None;
-
-                                for (i, item) in self.manage_save_state.save_view_state.inventory_state.items_mut().iter_mut().enumerate() {
-                                    if let Err(e) = item.item.set_level(item_level) {
-                                        let msg = format!("Failed to set level for item number: {} - {}", i, e);
-
-                                        error_notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-
-                                        break;
-                                    }
-                                }
-
-                                if let Some(error_notification) = error_notification {
-                                    self.notification = Some(error_notification)
-                                }
-
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_to_editor_state();
-                            }
-                            SaveInventoryInteractionMessage::ItemLevel(item_level_input) => {
-                                if let Err(e) = self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_level(item_level_input as usize)
-                                    }) {
-                                    let msg = format!("Failed to set level for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
-                            }
-                            SaveInventoryInteractionMessage::DeleteItem(id) => {
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .remove_item(id);
-
-                                let current_file = &mut self.manage_save_state.current_file;
-
-                                current_file.character_data.remove_inventory_item(id);
-
-                                if self
-                                    .manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .selected_item_index
-                                    != 0
-                                {
                                     self.manage_save_state
                                         .save_view_state
-                                        .inventory_state
-                                        .selected_item_index -= 1;
+                                        .general_state
+                                        .slot_input = slot;
+                                    self.manage_save_state
+                                        .save_view_state
+                                        .general_state
+                                        .filename_input = filename.clone();
+                                    self.manage_save_state.current_file.file_name = filename;
                                 }
-
-                                self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_to_editor_state();
-                            }
-                            SaveInventoryInteractionMessage::BalanceInputSelected(balance_selected) => {
-                                if let Err(e) = self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_balance(balance_selected)
-                                    }) {
-                                    let msg = format!("Failed to set balance for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
-                            }
-                            SaveInventoryInteractionMessage::InvDataInputSelected(inv_data_selected) => {
-                                if let Err(e) = self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_inv_data(inv_data_selected)
-                                    }) {
-                                    let msg = format!("Failed to set inventory data for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
-                            }
-                            SaveInventoryInteractionMessage::ManufacturerInputSelected(
-                                manufacturer_selected,
-                            ) => {
-                                if let Err(e) = self.manage_save_state
-                                    .save_view_state
-                                    .inventory_state
-                                    .map_current_item_if_exists_result(|i| {
-                                        i.item.set_manufacturer(manufacturer_selected)
-                                    }) {
-                                    let msg = format!("Failed to set manufacturer for item: {}", e);
-
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
-                            }
-                        },
-                        ManageSaveInteractionMessage::SaveFilePressed => {
-                            //Lets not make any modifications to the current file just in case we have any errors
-                            let mut current_file = self.manage_save_state.current_file.clone();
-
-                            if let Err(e) = manage_save::map_all_states_to_save(&mut self.manage_save_state, &mut current_file) {
-                                let msg = format!("Failed to save file: {}", e);
-
-                                self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-
-                                return Command::none();
-                            }
-
-                            let output_file = self
-                                .choose_save_directory_state
-                                .saves_dir
-                                .join(&self.manage_save_state.current_file.file_name);
-
-                            match current_file.to_bytes() {
-                                Ok(output) => {
+                                SaveGeneralInteractionMessage::GenerateGuidPressed => {
                                     return Command::perform(
-                                        interaction::save_file::save_file(output_file, output),
-                                        |r| Message::SaveFileCompleted(MessageResult::handle_result(r)),
+                                        interaction::manage_save::general::generate_random_guid(),
+                                        |r| {
+                                            Message::ManageSave(ManageSaveMessage::General(
+                                                GeneralMessage::GenerateRandomGuidCompleted(r),
+                                            ))
+                                        },
                                     );
                                 }
-                                Err(e) => {
+                                SaveGeneralInteractionMessage::SaveTypeSelected(save_type) => {
+                                    self.manage_save_state
+                                        .save_view_state
+                                        .general_state
+                                        .save_type_selected = save_type;
+                                }
+                            },
+                            ManageSaveInteractionMessage::Character(character_msg) => {
+                                match character_msg {
+                                    SaveCharacterInteractionMessage::Name(name_input) => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .name_input = name_input;
+                                    }
+                                    SaveCharacterInteractionMessage::XpLevel(level) => {
+                                        let xp_points = if level > 0 {
+                                            REQUIRED_XP_LIST[level as usize - 1][0]
+                                        } else {
+                                            0
+                                        };
+
+                                        let character_state = &mut self
+                                            .manage_save_state
+                                            .save_view_state
+                                            .character_state;
+
+                                        character_state.level_input = level;
+
+                                        character_state.experience_points_input = xp_points;
+                                    }
+                                    SaveCharacterInteractionMessage::XpPoints(xp) => {
+                                        let level = experience_to_level(xp as i32).unwrap_or(1);
+
+                                        let character_state = &mut self
+                                            .manage_save_state
+                                            .save_view_state
+                                            .character_state;
+
+                                        character_state.experience_points_input = xp;
+
+                                        character_state.level_input = level;
+                                    }
+                                    SaveCharacterInteractionMessage::SduMessage(sdu_message) => {
+                                        let sdu_unlocker = &mut self
+                                            .manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .sdu_unlocker;
+
+                                        match sdu_message {
+                                            CharacterSduMessage::Backpack(level) => {
+                                                sdu_unlocker.backpack.input = level;
+                                            }
+                                            CharacterSduMessage::Sniper(level) => {
+                                                sdu_unlocker.sniper.input = level;
+                                            }
+                                            CharacterSduMessage::Shotgun(level) => {
+                                                sdu_unlocker.shotgun.input = level;
+                                            }
+                                            CharacterSduMessage::Pistol(level) => {
+                                                sdu_unlocker.pistol.input = level;
+                                            }
+                                            CharacterSduMessage::Grenade(level) => {
+                                                sdu_unlocker.grenade.input = level;
+                                            }
+                                            CharacterSduMessage::Smg(level) => {
+                                                sdu_unlocker.smg.input = level;
+                                            }
+                                            CharacterSduMessage::AssaultRifle(level) => {
+                                                sdu_unlocker.assault_rifle.input = level;
+                                            }
+                                            CharacterSduMessage::Heavy(level) => {
+                                                sdu_unlocker.heavy.input = level;
+                                            }
+                                        }
+                                    }
+                                    SaveCharacterInteractionMessage::MaxSduSlotsPressed => {
+                                        let sdu_unlocker = &mut self
+                                            .manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .sdu_unlocker;
+
+                                        sdu_unlocker.backpack.input =
+                                            SaveSduSlot::Backpack.maximum();
+
+                                        sdu_unlocker.sniper.input = SaveSduSlot::Sniper.maximum();
+
+                                        sdu_unlocker.shotgun.input = SaveSduSlot::Shotgun.maximum();
+
+                                        sdu_unlocker.pistol.input = SaveSduSlot::Pistol.maximum();
+
+                                        sdu_unlocker.grenade.input = SaveSduSlot::Grenade.maximum();
+
+                                        sdu_unlocker.smg.input = SaveSduSlot::Smg.maximum();
+
+                                        sdu_unlocker.assault_rifle.input =
+                                            SaveSduSlot::Ar.maximum();
+
+                                        sdu_unlocker.heavy.input = SaveSduSlot::Heavy.maximum();
+                                    }
+                                    SaveCharacterInteractionMessage::AmmoMessage(ammo_message) => {
+                                        let ammo_setter = &mut self
+                                            .manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .ammo_setter;
+
+                                        match ammo_message {
+                                            CharacterAmmoMessage::Sniper(amount) => {
+                                                ammo_setter.sniper.input = amount;
+                                            }
+                                            CharacterAmmoMessage::Shotgun(amount) => {
+                                                ammo_setter.shotgun.input = amount;
+                                            }
+                                            CharacterAmmoMessage::Pistol(amount) => {
+                                                ammo_setter.pistol.input = amount;
+                                            }
+                                            CharacterAmmoMessage::Grenade(amount) => {
+                                                ammo_setter.grenade.input = amount;
+                                            }
+                                            CharacterAmmoMessage::Smg(amount) => {
+                                                ammo_setter.smg.input = amount;
+                                            }
+                                            CharacterAmmoMessage::AssaultRifle(amount) => {
+                                                ammo_setter.assault_rifle.input = amount;
+                                            }
+                                            CharacterAmmoMessage::Heavy(amount) => {
+                                                ammo_setter.heavy.input = amount;
+                                            }
+                                        }
+                                    }
+                                    SaveCharacterInteractionMessage::MaxAmmoAmountsPressed => {
+                                        let ammo_setter = &mut self
+                                            .manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .ammo_setter;
+
+                                        ammo_setter.sniper.input = AmmoPool::Sniper.maximum();
+
+                                        ammo_setter.shotgun.input = AmmoPool::Shotgun.maximum();
+
+                                        ammo_setter.pistol.input = AmmoPool::Pistol.maximum();
+
+                                        ammo_setter.grenade.input = AmmoPool::Grenade.maximum();
+
+                                        ammo_setter.smg.input = AmmoPool::Smg.maximum();
+
+                                        ammo_setter.assault_rifle.input = AmmoPool::Ar.maximum();
+
+                                        ammo_setter.heavy.input = AmmoPool::Heavy.maximum();
+                                    }
+                                    SaveCharacterInteractionMessage::PlayerClassSelected(
+                                        player_class,
+                                    ) => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .player_class_selected_class = player_class;
+                                    }
+                                    SaveCharacterInteractionMessage::SkinMessage(skin_message) => {
+                                        let skin_selectors = &mut self
+                                            .manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .skin_selectors;
+
+                                        match skin_message {
+                                            CharacterSkinSelectedMessage::HeadSkin(selected) => {
+                                                skin_selectors.head_skin.selected = selected;
+                                            }
+                                            CharacterSkinSelectedMessage::CharacterSkin(
+                                                selected,
+                                            ) => {
+                                                skin_selectors.character_skin.selected = selected;
+                                            }
+                                            CharacterSkinSelectedMessage::EchoTheme(selected) => {
+                                                skin_selectors.echo_theme.selected = selected;
+                                            }
+                                        }
+                                    }
+                                    SaveCharacterInteractionMessage::GearMessage(gear_msg) => {
+                                        let gear_unlocker = &mut self
+                                            .manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .gear_unlocker;
+
+                                        match gear_msg {
+                                            CharacterGearUnlockedMessage::Grenade(b) => {
+                                                gear_unlocker.grenade.is_unlocked = b;
+                                            }
+                                            CharacterGearUnlockedMessage::Shield(b) => {
+                                                gear_unlocker.shield.is_unlocked = b;
+                                            }
+                                            CharacterGearUnlockedMessage::Weapon1(b) => {
+                                                gear_unlocker.weapon_1.is_unlocked = b;
+                                            }
+                                            CharacterGearUnlockedMessage::Weapon2(b) => {
+                                                gear_unlocker.weapon_2.is_unlocked = b;
+                                            }
+                                            CharacterGearUnlockedMessage::Weapon3(b) => {
+                                                gear_unlocker.weapon_3.is_unlocked = b;
+                                            }
+                                            CharacterGearUnlockedMessage::Weapon4(b) => {
+                                                gear_unlocker.weapon_4.is_unlocked = b;
+                                            }
+                                            CharacterGearUnlockedMessage::Artifact(b) => {
+                                                gear_unlocker.artifact.is_unlocked = b;
+                                            }
+                                            CharacterGearUnlockedMessage::ClassMod(b) => {
+                                                gear_unlocker.class_mod.is_unlocked = b;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            ManageSaveInteractionMessage::Currency(currency_msg) => {
+                                match currency_msg {
+                                    SaveCurrencyInteractionMessage::Money(money) => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .currency_state
+                                            .money_input = money;
+                                    }
+                                    SaveCurrencyInteractionMessage::Eridium(eridium) => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .currency_state
+                                            .eridium_input = eridium;
+                                    }
+                                    SaveCurrencyInteractionMessage::MaxMoneyPressed => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .currency_state
+                                            .money_input = i32::MAX;
+                                    }
+                                    SaveCurrencyInteractionMessage::MaxEridiumPressed => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .currency_state
+                                            .eridium_input = i32::MAX;
+                                    }
+                                }
+                            }
+                            ManageSaveInteractionMessage::Inventory(inventory_msg) => {
+                                match inventory_msg {
+                                    SaveInventoryInteractionMessage::Editor(
+                                        item_editor_message,
+                                    ) => {
+                                        let notification = item_editor_message.update_state(
+                                            &mut self
+                                                .manage_save_state
+                                                .save_view_state
+                                                .inventory_state
+                                                .item_editor_state,
+                                            ItemEditorFileType::Save(
+                                                &mut self.manage_save_state.current_file,
+                                            ),
+                                        );
+
+                                        self.notification = notification;
+                                    }
+                                }
+                            }
+                            ManageSaveInteractionMessage::SaveFilePressed => {
+                                //Lets not make any modifications to the current file just in case we have any errors
+                                let mut current_file = self.manage_save_state.current_file.clone();
+
+                                if let Err(e) = manage_save::map_all_states_to_save(
+                                    &mut self.manage_save_state,
+                                    &mut current_file,
+                                ) {
                                     let msg = format!("Failed to save file: {}", e);
 
-                                    self.notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                                }
-                            };
-                        }
-                    },
-                    InteractionMessage::ManageProfileInteraction(manage_profile_msg) => match manage_profile_msg {
-                        ManageProfileInteractionMessage::TabBar(tab_bar_msg) => match tab_bar_msg {
-                            ProfileTabBarInteractionMessage::General => {
-                                self.view_state = ViewState::ManageProfile(ManageProfileView::TabBar(
-                                    ProfileTabBarView::General,
-                                ))
-                            }
-                            ProfileTabBarInteractionMessage::Profile => {
-                                self.view_state = ViewState::ManageProfile(ManageProfileView::TabBar(
-                                    ProfileTabBarView::Profile,
-                                ))
-                            }
-                            ProfileTabBarInteractionMessage::Keys => {
-                                self.view_state = ViewState::ManageProfile(ManageProfileView::TabBar(
-                                    ProfileTabBarView::Keys,
-                                ))
-                            }
-                        }
-                        ManageProfileInteractionMessage::General(general_msg) => match general_msg {
-                            ProfileGeneralInteractionMessage::ProfileTypeSelected(profile_type) => {
-                                self.manage_profile_state
-                                    .profile_view_state
-                                    .general_state
-                                    .profile_type_selected = profile_type;
-                            }
-                        },
-                        ManageProfileInteractionMessage::Profile(profile_msg) => match profile_msg {
-                            ProfileProfileInteractionMessage::GuardianRank(guardian_rank) => {
-                                self.manage_profile_state
-                                    .profile_view_state
-                                    .profile_state
-                                    .guardian_rank_input = guardian_rank;
-                            }
-                            ProfileProfileInteractionMessage::GuardianRankTokens(guardian_rank_tokens) => {
-                                self.manage_profile_state
-                                    .profile_view_state
-                                    .profile_state
-                                    .guardian_rank_tokens_input = guardian_rank_tokens;
-                            }
-                            ProfileProfileInteractionMessage::ScienceLevelSelected(science_level) => {
-                                self.manage_profile_state
-                                    .profile_view_state
-                                    .profile_state
-                                    .science_level_selected = science_level;
-                            }
-                            ProfileProfileInteractionMessage::ScienceTokens(science_level_tokens) => {
-                                self.manage_profile_state
-                                    .profile_view_state
-                                    .profile_state
-                                    .science_tokens_input = science_level_tokens;
-                            }
-                            ProfileProfileInteractionMessage::SkinMessage(skin_message) => {
-                                let skin_unlocker = &mut self.manage_profile_state.profile_view_state.profile_state.skin_unlocker;
+                                    self.notification = Some(Notification::new(
+                                        msg,
+                                        NotificationSentiment::Negative,
+                                    ));
 
-                                match skin_message {
-                                    ProfileSkinUnlockedMessage::CharacterSkins(selected) => {
-                                        skin_unlocker.character_skins.is_unlocked = selected;
-                                    }
-                                    ProfileSkinUnlockedMessage::CharacterHeads(selected) => {
-                                        skin_unlocker.character_heads.is_unlocked = selected;
-                                    }
-                                    ProfileSkinUnlockedMessage::EchoThemes(selected) => {
-                                        skin_unlocker.echo_themes.is_unlocked = selected;
-                                    }
-                                    ProfileSkinUnlockedMessage::Emotes(selected) => {
-                                        skin_unlocker.emotes.is_unlocked = selected;
-                                    }
-                                    ProfileSkinUnlockedMessage::RoomDecorations(selected) => {
-                                        skin_unlocker.room_decorations.is_unlocked = selected;
-                                    }
-                                    ProfileSkinUnlockedMessage::WeaponSkins(selected) => {
-                                        skin_unlocker.weapon_skins.is_unlocked = selected;
-                                    }
-                                    ProfileSkinUnlockedMessage::WeaponTrinkets(selected) => {
-                                        skin_unlocker.weapon_trinkets.is_unlocked = selected;
-                                    }
+                                    return Command::none();
                                 }
-                            }
-                            ProfileProfileInteractionMessage::SduMessage(sdu_message) => {
-                                let sdu_unlocker = &mut self.manage_profile_state.profile_view_state.profile_state.sdu_unlocker;
 
-                                match sdu_message {
-                                    ProfileSduMessage::Bank(level) => {
-                                        sdu_unlocker
-                                            .bank
-                                            .input = level;
+                                let output_file = self
+                                    .choose_save_directory_state
+                                    .saves_dir
+                                    .join(&self.manage_save_state.current_file.file_name);
+
+                                match current_file.to_bytes() {
+                                    Ok(output) => {
+                                        return Command::perform(
+                                            interaction::save_file::save_file(output_file, output),
+                                            |r| {
+                                                Message::SaveFileCompleted(
+                                                    MessageResult::handle_result(r),
+                                                )
+                                            },
+                                        );
                                     }
-                                    ProfileSduMessage::LostLoot(level) => {
-                                        sdu_unlocker
-                                            .bank
-                                            .input = level;
+                                    Err(e) => {
+                                        let msg = format!("Failed to save file: {}", e);
+
+                                        self.notification = Some(Notification::new(
+                                            msg,
+                                            NotificationSentiment::Negative,
+                                        ));
                                     }
-                                }
-                            }
-                            ProfileProfileInteractionMessage::MaxSduSlotsPressed => {
-                                let sdu_unlocker = &mut self.manage_profile_state.profile_view_state.profile_state.sdu_unlocker;
-
-                                sdu_unlocker
-                                    .bank
-                                    .input = ProfileSduSlot::Bank.maximum();
-
-                                sdu_unlocker
-                                    .lost_loot
-                                    .input = ProfileSduSlot::LostLoot.maximum();
-                            }
-                        },
-                        ManageProfileInteractionMessage::Keys(keys_message) => {
-                            let keys_state = &mut self.manage_profile_state.profile_view_state.keys_state;
-
-                            match keys_message {
-                                ProfileKeysInteractionMessage::GoldenKeys(golden_keys) => {
-                                    keys_state.golden_keys_input = golden_keys;
-                                }
-                                ProfileKeysInteractionMessage::DiamondKeys(diamond_keys) => {
-                                    keys_state.diamond_keys_input = diamond_keys;
-                                }
-                                ProfileKeysInteractionMessage::VaultCard1Keys(vault_card_1_keys) => {
-                                    keys_state.vault_card_1_keys_input = vault_card_1_keys;
-                                }
-                                ProfileKeysInteractionMessage::VaultCard1Chests(vault_card_1_chests) => {
-                                    keys_state.vault_card_1_chests_input = vault_card_1_chests;
-                                }
-                                ProfileKeysInteractionMessage::MaxGoldenKeysPressed => {
-                                    keys_state.golden_keys_input = i32::MAX;
-                                }
-                                ProfileKeysInteractionMessage::MaxDiamondKeysPressed => {
-                                    keys_state.diamond_keys_input = i32::MAX;
-                                }
-                                ProfileKeysInteractionMessage::MaxVaultCard1KeysPressed => {
-                                    keys_state.vault_card_1_keys_input = i32::MAX;
-                                }
-                                ProfileKeysInteractionMessage::MaxVaultCard1ChestsPressed => {
-                                    keys_state.vault_card_1_chests_input = i32::MAX;
-                                }
+                                };
                             }
                         }
-                        ManageProfileInteractionMessage::SaveFilePressed => {}
+                    }
+                    InteractionMessage::ManageProfileInteraction(manage_profile_msg) => {
+                        match manage_profile_msg {
+                            ManageProfileInteractionMessage::TabBar(tab_bar_msg) => {
+                                match tab_bar_msg {
+                                    ProfileTabBarInteractionMessage::General => {
+                                        self.view_state = ViewState::ManageProfile(
+                                            ManageProfileView::TabBar(ProfileTabBarView::General),
+                                        )
+                                    }
+                                    ProfileTabBarInteractionMessage::Profile => {
+                                        self.view_state = ViewState::ManageProfile(
+                                            ManageProfileView::TabBar(ProfileTabBarView::Profile),
+                                        )
+                                    }
+                                    ProfileTabBarInteractionMessage::Keys => {
+                                        self.view_state = ViewState::ManageProfile(
+                                            ManageProfileView::TabBar(ProfileTabBarView::Keys),
+                                        )
+                                    }
+                                    ProfileTabBarInteractionMessage::Bank => {
+                                        self.view_state = ViewState::ManageProfile(
+                                            ManageProfileView::TabBar(ProfileTabBarView::Bank),
+                                        )
+                                    }
+                                }
+                            }
+                            ManageProfileInteractionMessage::General(general_msg) => {
+                                match general_msg {
+                                    ProfileGeneralInteractionMessage::ProfileTypeSelected(
+                                        profile_type,
+                                    ) => {
+                                        self.manage_profile_state
+                                            .profile_view_state
+                                            .general_state
+                                            .profile_type_selected = profile_type;
+                                    }
+                                }
+                            }
+                            ManageProfileInteractionMessage::Profile(profile_msg) => {
+                                match profile_msg {
+                                    ProfileProfileInteractionMessage::GuardianRank(
+                                        guardian_rank,
+                                    ) => {
+                                        self.manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .guardian_rank_input = guardian_rank;
+                                    }
+                                    ProfileProfileInteractionMessage::GuardianRankTokens(
+                                        guardian_rank_tokens,
+                                    ) => {
+                                        self.manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .guardian_rank_tokens_input = guardian_rank_tokens;
+                                    }
+                                    ProfileProfileInteractionMessage::ScienceLevelSelected(
+                                        science_level,
+                                    ) => {
+                                        self.manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .science_level_selected = science_level;
+                                    }
+                                    ProfileProfileInteractionMessage::ScienceTokens(
+                                        science_level_tokens,
+                                    ) => {
+                                        self.manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .science_tokens_input = science_level_tokens;
+                                    }
+                                    ProfileProfileInteractionMessage::SkinMessage(skin_message) => {
+                                        let skin_unlocker = &mut self
+                                            .manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .skin_unlocker;
+
+                                        match skin_message {
+                                            ProfileSkinUnlockedMessage::CharacterSkins(
+                                                selected,
+                                            ) => {
+                                                skin_unlocker.character_skins.is_unlocked =
+                                                    selected;
+                                            }
+                                            ProfileSkinUnlockedMessage::CharacterHeads(
+                                                selected,
+                                            ) => {
+                                                skin_unlocker.character_heads.is_unlocked =
+                                                    selected;
+                                            }
+                                            ProfileSkinUnlockedMessage::EchoThemes(selected) => {
+                                                skin_unlocker.echo_themes.is_unlocked = selected;
+                                            }
+                                            ProfileSkinUnlockedMessage::Emotes(selected) => {
+                                                skin_unlocker.emotes.is_unlocked = selected;
+                                            }
+                                            ProfileSkinUnlockedMessage::RoomDecorations(
+                                                selected,
+                                            ) => {
+                                                skin_unlocker.room_decorations.is_unlocked =
+                                                    selected;
+                                            }
+                                            ProfileSkinUnlockedMessage::WeaponSkins(selected) => {
+                                                skin_unlocker.weapon_skins.is_unlocked = selected;
+                                            }
+                                            ProfileSkinUnlockedMessage::WeaponTrinkets(
+                                                selected,
+                                            ) => {
+                                                skin_unlocker.weapon_trinkets.is_unlocked =
+                                                    selected;
+                                            }
+                                        }
+                                    }
+                                    ProfileProfileInteractionMessage::SduMessage(sdu_message) => {
+                                        let sdu_unlocker = &mut self
+                                            .manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .sdu_unlocker;
+
+                                        match sdu_message {
+                                            ProfileSduMessage::Bank(level) => {
+                                                sdu_unlocker.bank.input = level;
+                                            }
+                                            ProfileSduMessage::LostLoot(level) => {
+                                                sdu_unlocker.bank.input = level;
+                                            }
+                                        }
+                                    }
+                                    ProfileProfileInteractionMessage::MaxSduSlotsPressed => {
+                                        let sdu_unlocker = &mut self
+                                            .manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .sdu_unlocker;
+
+                                        sdu_unlocker.bank.input = ProfileSduSlot::Bank.maximum();
+
+                                        sdu_unlocker.lost_loot.input =
+                                            ProfileSduSlot::LostLoot.maximum();
+                                    }
+                                }
+                            }
+                            ManageProfileInteractionMessage::Keys(keys_message) => {
+                                let keys_state =
+                                    &mut self.manage_profile_state.profile_view_state.keys_state;
+
+                                match keys_message {
+                                    ProfileKeysInteractionMessage::GoldenKeys(golden_keys) => {
+                                        keys_state.golden_keys_input = golden_keys;
+                                    }
+                                    ProfileKeysInteractionMessage::DiamondKeys(diamond_keys) => {
+                                        keys_state.diamond_keys_input = diamond_keys;
+                                    }
+                                    ProfileKeysInteractionMessage::VaultCard1Keys(
+                                        vault_card_1_keys,
+                                    ) => {
+                                        keys_state.vault_card_1_keys_input = vault_card_1_keys;
+                                    }
+                                    ProfileKeysInteractionMessage::VaultCard1Chests(
+                                        vault_card_1_chests,
+                                    ) => {
+                                        keys_state.vault_card_1_chests_input = vault_card_1_chests;
+                                    }
+                                    ProfileKeysInteractionMessage::MaxGoldenKeysPressed => {
+                                        keys_state.golden_keys_input = i32::MAX;
+                                    }
+                                    ProfileKeysInteractionMessage::MaxDiamondKeysPressed => {
+                                        keys_state.diamond_keys_input = i32::MAX;
+                                    }
+                                    ProfileKeysInteractionMessage::MaxVaultCard1KeysPressed => {
+                                        keys_state.vault_card_1_keys_input = i32::MAX;
+                                    }
+                                    ProfileKeysInteractionMessage::MaxVaultCard1ChestsPressed => {
+                                        keys_state.vault_card_1_chests_input = i32::MAX;
+                                    }
+                                }
+                            }
+                            ManageProfileInteractionMessage::Bank(bank_message) => {
+                                match bank_message {
+                                    ProfileBankInteractionMessage::Editor(item_editor_message) => {
+                                        let notification = item_editor_message.update_state(
+                                            &mut self
+                                                .manage_profile_state
+                                                .profile_view_state
+                                                .bank_state
+                                                .item_editor_state,
+                                            ItemEditorFileType::ProfileBank(
+                                                &mut self.manage_profile_state.current_file,
+                                            ),
+                                        );
+
+                                        self.notification = notification;
+                                    }
+                                }
+                            }
+                            ManageProfileInteractionMessage::SaveFilePressed => {}
+                        }
                     }
                     InteractionMessage::LoadedFileSelected(loaded_file) => {
                         self.loaded_files_selected = loaded_file;

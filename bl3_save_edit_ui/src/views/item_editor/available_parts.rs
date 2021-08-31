@@ -8,13 +8,10 @@ use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart};
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::manage_save::inventory::extra_part_info::add_extra_part_info;
-use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
-use crate::views::manage_save::inventory::parts_tab_bar::{
-    parts_tab_bar_button, AvailablePartType,
-};
-use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
-use crate::views::manage_save::ManageSaveInteractionMessage;
+use crate::views::item_editor::extra_part_info::add_extra_part_info;
+use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
+use crate::views::item_editor::parts_tab_bar::{parts_tab_bar_button, AvailablePartType};
+use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::text_margin::TextMargin;
 
@@ -91,7 +88,10 @@ impl AvailableResourcePart {
         }
     }
 
-    pub fn view(&mut self, is_active: bool) -> Element<Message> {
+    pub fn view<F>(&mut self, is_active: bool, interaction_message: F) -> Element<Message>
+    where
+        F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
+    {
         let part_contents_col = Column::new()
             .push(
                 TextMargin::new(&self.part.name, 1)
@@ -106,29 +106,25 @@ impl AvailableResourcePart {
         let part_contents = Container::new(part_contents_col).align_x(Align::Start);
 
         Button::new(&mut self.button_state, part_contents)
-            .on_press(InteractionMessage::ManageSaveInteraction(
-                ManageSaveInteractionMessage::Inventory(match self.part_type {
-                    AvailablePartType::Parts => {
-                        SaveInventoryInteractionMessage::AvailablePartPressed(
-                            AvailablePartTypeIndex {
-                                category_index: self.category_index,
-                                part_index: self.part_index,
-                            },
-                        )
-                    }
-                    AvailablePartType::Anointments => {
-                        SaveInventoryInteractionMessage::AvailableAnointmentPressed(
-                            AvailablePartTypeIndex {
-                                category_index: self.category_index,
-                                part_index: self.part_index,
-                            },
-                        )
-                    }
-                }),
-            ))
+            .on_press(interaction_message(match self.part_type {
+                AvailablePartType::Parts => {
+                    ItemEditorInteractionMessage::AvailablePartPressed(AvailablePartTypeIndex {
+                        category_index: self.category_index,
+                        part_index: self.part_index,
+                    })
+                }
+                AvailablePartType::Anointments => {
+                    ItemEditorInteractionMessage::AvailableAnointmentPressed(
+                        AvailablePartTypeIndex {
+                            category_index: self.category_index,
+                            part_index: self.part_index,
+                        },
+                    )
+                }
+            }))
             .padding(10)
             .width(Length::Fill)
-            .style(InventoryButtonStyle { is_active })
+            .style(ItemEditorButtonStyle { is_active })
             .into_element()
     }
 }
@@ -145,12 +141,16 @@ pub struct AvailableParts {
 }
 
 impl AvailableParts {
-    pub fn view(
+    pub fn view<F>(
         &mut self,
         anointments_list: &[ResourceCategorizedParts],
         specific_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
-    ) -> Container<Message> {
+        interaction_message: F,
+    ) -> Container<Message>
+    where
+        F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
+    {
         let selected_available_part_type_index = &self.part_type_index;
 
         let mut title_row = Row::new().align_items(Align::Center);
@@ -160,7 +160,7 @@ impl AvailableParts {
                 &mut self.available_parts_tab_button_state,
                 AvailablePartType::Parts,
                 &self.parts_tab_view,
-                SaveInventoryInteractionMessage::AvailablePartsTabPressed,
+                interaction_message(ItemEditorInteractionMessage::AvailablePartsTabPressed),
                 None,
             ))
             .padding(1)
@@ -172,7 +172,7 @@ impl AvailableParts {
                 &mut self.available_anointments_tab_button_state,
                 AvailablePartType::Anointments,
                 &self.parts_tab_view,
-                SaveInventoryInteractionMessage::AvailableAnointmentsTabPressed,
+                interaction_message(ItemEditorInteractionMessage::AvailableAnointmentsTabPressed),
                 None,
             ))
             .padding(1)
@@ -197,35 +197,28 @@ impl AvailableParts {
                     )
                 });
 
+                let checkbox =
+                    Checkbox::new(self.show_all_available_parts, "Show All Parts", move |c| {
+                        interaction_message(
+                            ItemEditorInteractionMessage::ShowAllAvailablePartsSelected(c),
+                        )
+                    })
+                    .size(17)
+                    .font(JETBRAINS_MONO_BOLD)
+                    .text_color(Color::from_rgb8(220, 220, 220))
+                    .text_size(17)
+                    .style(Bl3UiStyle)
+                    .into_element();
+
                 if specific_parts.is_some() {
                     available_parts_column = available_parts_column.push(
                         Container::new(
-                            Container::new(
-                                Checkbox::new(
-                                    self.show_all_available_parts,
-                                    "Show All Parts",
-                                    |c| {
-                                        InteractionMessage::ManageSaveInteraction(
-                                            ManageSaveInteractionMessage::Inventory(
-                                                SaveInventoryInteractionMessage::ShowAllAvailablePartsSelected(
-                                                    c,
-                                                ),
-                                            ),
-                                        )
-                                    },
-                                )
-                                    .size(17)
-                                    .font(JETBRAINS_MONO_BOLD)
-                                    .text_color(Color::from_rgb8(220, 220, 220))
-                                    .text_size(17)
-                                    .style(Bl3UiStyle)
-                                    .into_element(),
-                            )
+                            Container::new(checkbox)
                                 .padding(15)
                                 .width(Length::Fill)
                                 .style(Bl3UiStyleNoBorder),
                         )
-                            .padding(1),
+                        .padding(1),
                     );
                 }
 
@@ -265,7 +258,7 @@ impl AvailableParts {
                         let is_active = selected_available_part_type_index.category_index
                             == cat_index
                             && selected_available_part_type_index.part_index == part_index;
-                        curr = curr.push(p.view(is_active));
+                        curr = curr.push(p.view(is_active, interaction_message));
                     }
 
                     curr

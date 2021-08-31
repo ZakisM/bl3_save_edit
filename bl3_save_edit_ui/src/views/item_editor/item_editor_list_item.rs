@@ -5,30 +5,36 @@ use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, ItemRarity, ItemType};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::resources::fonts::JETBRAINS_MONO;
-use crate::views::manage_save::inventory::inventory_button_style::InventoryButtonStyle;
-use crate::views::manage_save::inventory::inventory_item_editor::InventoryItemEditor;
-use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
-use crate::views::manage_save::ManageSaveInteractionMessage;
+use crate::views::item_editor::editor::Editor;
+use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
+use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::InteractionExt;
 
 #[derive(Debug, Default)]
-pub struct InventoryListItem {
+pub struct ItemEditorListItem {
     pub id: usize,
     pub item: Bl3Item,
     button_state: button::State,
-    pub editor: InventoryItemEditor,
+    pub editor: Editor,
 }
 
-impl InventoryListItem {
+impl ItemEditorListItem {
     pub fn new(id: usize, item: Bl3Item) -> Self {
-        InventoryListItem {
+        ItemEditorListItem {
             id,
             item,
             ..Default::default()
         }
     }
 
-    pub fn view(&mut self, is_active: bool) -> (Element<Message>, Option<Container<Message>>) {
+    pub fn view<F>(
+        &mut self,
+        is_active: bool,
+        interaction_message: F,
+    ) -> (Element<Message>, Option<Container<Message>>)
+    where
+        F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
+    {
         let balance_part = self.item.balance_part();
 
         let label = balance_part.name.clone().unwrap_or_else(|| {
@@ -106,21 +112,19 @@ impl InventoryListItem {
             .spacing(10);
 
         let item_editor = if is_active {
-            Some(self.editor.view(self.id, &self.item))
+            Some(self.editor.view(self.id, &self.item, interaction_message))
         } else {
             None
         };
 
         (
             Button::new(&mut self.button_state, Container::new(button_content))
-                .on_press(InteractionMessage::ManageSaveInteraction(
-                    ManageSaveInteractionMessage::Inventory(
-                        SaveInventoryInteractionMessage::ItemPressed(self.id),
-                    ),
+                .on_press(interaction_message(
+                    ItemEditorInteractionMessage::ItemPressed(self.id),
                 ))
                 .padding(10)
                 .width(Length::Fill)
-                .style(InventoryButtonStyle { is_active })
+                .style(ItemEditorButtonStyle { is_active })
                 .into_element(),
             item_editor,
         )

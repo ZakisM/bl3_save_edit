@@ -1,5 +1,6 @@
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
 
+use crate::views::manage_profile::bank::ProfileBankInteractionMessage;
 use crate::views::manage_profile::general::ProfileGeneralInteractionMessage;
 use crate::views::manage_profile::keys::ProfileKeysInteractionMessage;
 use crate::views::manage_profile::main::{
@@ -7,6 +8,7 @@ use crate::views::manage_profile::main::{
 };
 use crate::views::manage_profile::profile::ProfileProfileInteractionMessage;
 
+pub mod bank;
 pub mod general;
 pub mod keys;
 pub mod main;
@@ -24,6 +26,7 @@ pub enum ManageProfileInteractionMessage {
     General(ProfileGeneralInteractionMessage),
     Profile(ProfileProfileInteractionMessage),
     Keys(ProfileKeysInteractionMessage),
+    Bank(ProfileBankInteractionMessage),
     SaveFilePressed,
 }
 

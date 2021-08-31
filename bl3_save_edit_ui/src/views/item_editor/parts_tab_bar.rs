@@ -5,8 +5,6 @@ use strum::Display;
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
-use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
-use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 
 #[derive(Debug, Display, Clone, Eq, PartialEq)]
@@ -37,13 +35,16 @@ impl std::default::Default for CurrentPartType {
     }
 }
 
-pub fn parts_tab_bar_button<'a, T: Display + PartialEq>(
+pub fn parts_tab_bar_button<'a, T>(
     state: &'a mut button::State,
     tab_bar_view: T,
     current_tab_bar_view: &T,
-    on_press_message: SaveInventoryInteractionMessage,
+    on_press_message: InteractionMessage,
     extra_title_content: Option<String>,
-) -> Element<'a, Message> {
+) -> Element<'a, Message>
+where
+    T: Display + PartialEq,
+{
     let title = if let Some(extra_content) = extra_title_content {
         format!("{} {}", tab_bar_view, extra_content)
     } else {
@@ -59,9 +60,10 @@ pub fn parts_tab_bar_button<'a, T: Display + PartialEq>(
             .width(Length::Fill)
             .horizontal_alignment(HorizontalAlignment::Center),
     )
-    .on_press(InteractionMessage::ManageSaveInteraction(
-        ManageSaveInteractionMessage::Inventory(on_press_message),
-    ))
+    // .on_press(InteractionMessage::ManageSaveInteraction(
+    //     ManageSaveInteractionMessage::Inventory(on_press_message),
+    // ))
+    .on_press(on_press_message)
     .width(Length::Fill)
     .padding(15)
     .style(PartsTabBarActiveStyle);
