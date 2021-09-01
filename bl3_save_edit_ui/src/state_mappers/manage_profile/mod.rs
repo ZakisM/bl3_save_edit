@@ -20,7 +20,7 @@ pub fn map_all_states_to_profile(
 
     manage_profile::keys::map_keys_state_to_profile(manage_profile_state, current_file)?;
 
-    // manage_profile::currency::map_inventory_state_to_profile(manage_profile_state, current_file)?;
+    manage_profile::bank::map_bank_state_to_profile(manage_profile_state, current_file)?;
 
     Ok(())
 }

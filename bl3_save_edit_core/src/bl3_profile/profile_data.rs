@@ -426,6 +426,37 @@ impl ProfileData {
         }
     }
 
+    pub fn add_bank_item(&mut self, item: &Bl3Item) -> Result<()> {
+        let item_serial_number = item.get_serial_number(true)?;
+
+        self.profile.bank_inventory_list.push(item_serial_number);
+
+        self.bank_items.push(item.to_owned());
+
+        Ok(())
+    }
+
+    pub fn insert_bank_item(&mut self, item_index: usize, item: &Bl3Item) -> Result<()> {
+        let item_serial_number = item.get_serial_number(true)?;
+
+        self.profile
+            .bank_inventory_list
+            .insert(item_index, item_serial_number);
+
+        self.bank_items.insert(item_index, item.to_owned());
+
+        Ok(())
+    }
+
+    pub fn replace_bank_item(&mut self, item_index: usize, new_item: &Bl3Item) -> Result<()> {
+        self.insert_bank_item(item_index, new_item)?;
+
+        // Remove old item
+        self.remove_bank_item(item_index + 1);
+
+        Ok(())
+    }
+
     pub fn lost_loot_items(&self) -> &Vec<Bl3Item> {
         &self.lost_loot_items
     }
