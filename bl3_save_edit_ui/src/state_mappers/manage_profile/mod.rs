@@ -18,8 +18,8 @@ pub fn map_all_states_to_profile(
 
     manage_profile::profile::map_profile_state_to_profile(manage_profile_state, current_file);
 
-    // manage_profile::inventory::map_inventory_state_to_profile(manage_profile_state, current_file)?;
-    //
+    manage_profile::keys::map_keys_state_to_profile(manage_profile_state, current_file)?;
+
     // manage_profile::currency::map_inventory_state_to_profile(manage_profile_state, current_file)?;
 
     Ok(())

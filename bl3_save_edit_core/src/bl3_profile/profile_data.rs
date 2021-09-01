@@ -1,7 +1,7 @@
 use std::convert::TryInto;
 use std::str::FromStr;
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use derivative::Derivative;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
@@ -20,7 +20,8 @@ use crate::game_data::{
 };
 use crate::protos::oak_profile::{GuardianRankProfileData, Profile};
 use crate::protos::oak_shared::{
-    OakCustomizationSaveGameData, OakInventoryCustomizationPartInfo, OakSDUSaveGameData,
+    InventoryCategorySaveData, OakCustomizationSaveGameData, OakInventoryCustomizationPartInfo,
+    OakSDUSaveGameData, VaultCardRewardList, VaultCardSaveGameData,
 };
 
 #[derive(Derivative)]
@@ -235,6 +236,91 @@ impl ProfileData {
 
     pub fn vault_card_1_chests(&self) -> i32 {
         self.vault_card_1_chests
+    }
+
+    pub fn set_currency(&mut self, currency: &ProfileCurrency, quantity: i32) -> Result<()> {
+        let hash = currency
+            .get_hash()
+            .and_then(|h| h.try_into().map_err(anyhow::Error::new))
+            .with_context(|| format!("Failed to read hash for currency: {}", currency))?;
+
+        if let Some(inv_cat_save_data) = self
+            .profile
+            .bank_inventory_category_list
+            .iter_mut()
+            .find(|i| i.base_category_definition_hash == hash)
+        {
+            inv_cat_save_data.quantity = quantity;
+        } else {
+            self.profile
+                .bank_inventory_category_list
+                .push(InventoryCategorySaveData {
+                    base_category_definition_hash: hash,
+                    quantity,
+                    unknown_fields: Default::default(),
+                    cached_size: Default::default(),
+                });
+        }
+
+        match currency {
+            ProfileCurrency::GoldenKey => {
+                self.golden_keys = quantity;
+            }
+            ProfileCurrency::DiamondKey => {
+                self.diamond_keys = quantity;
+            }
+            ProfileCurrency::VaultCardOneId => {
+                self.vault_card_1_keys = quantity;
+            }
+        }
+
+        Ok(())
+    }
+
+    pub fn set_vault_card_chests(&mut self, vault_card_id: u32, vault_card_chests: i32) {
+        let vault_card_reward_list = VaultCardRewardList {
+            vault_card_id,
+            vault_card_experience: 0,
+            unlocked_reward_list: Default::default(),
+            redeemed_reward_list: Default::default(),
+            vault_card_chests,
+            vault_card_chests_opened: 0,
+            vault_card_keys_spent: 0,
+            gear_rewards: Default::default(),
+            unknown_fields: Default::default(),
+            cached_size: Default::default(),
+        };
+
+        if let Some(vault_card) = self.profile.vault_card.as_mut() {
+            if vault_card.last_active_vault_card_id == 0 {
+                vault_card.last_active_vault_card_id = vault_card_id;
+            }
+
+            if let Some(claimed_rewards) = vault_card
+                .vault_card_claimed_rewards
+                .iter_mut()
+                .find(|v| v.vault_card_id == 1)
+            {
+                claimed_rewards.vault_card_chests = vault_card_chests;
+            } else {
+                vault_card
+                    .vault_card_claimed_rewards
+                    .push(vault_card_reward_list);
+            }
+        } else {
+            self.profile.vault_card = Some(VaultCardSaveGameData {
+                last_active_vault_card_id: vault_card_id,
+                current_day_seed: 0,
+                current_week_seed: 0,
+                vault_card_previous_challenges: Default::default(),
+                vault_card_claimed_rewards: vec![vault_card_reward_list].into(),
+                unknown_fields: Default::default(),
+                cached_size: Default::default(),
+            })
+            .into();
+        }
+
+        self.vault_card_1_chests = vault_card_chests;
     }
 
     pub fn guardian_rank(&self) -> i32 {

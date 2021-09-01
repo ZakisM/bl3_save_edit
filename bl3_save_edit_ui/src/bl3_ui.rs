@@ -658,7 +658,7 @@ impl Application for Bl3Ui {
                                                 sdu_unlocker.bank.input = level;
                                             }
                                             ProfileSduMessage::LostLoot(level) => {
-                                                sdu_unlocker.bank.input = level;
+                                                sdu_unlocker.lost_loot.input = level;
                                             }
                                         }
                                     }
