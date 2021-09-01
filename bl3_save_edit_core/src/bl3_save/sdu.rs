@@ -58,7 +58,7 @@ impl std::default::Default for SaveSduSlot {
 
 impl SaveSduSlot {
     pub fn maximum(&self) -> i32 {
-        match *self {
+        match self {
             SaveSduSlot::Backpack | SaveSduSlot::Sniper | SaveSduSlot::Heavy => 13,
             SaveSduSlot::Shotgun
             | SaveSduSlot::Pistol

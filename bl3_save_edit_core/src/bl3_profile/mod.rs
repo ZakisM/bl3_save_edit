@@ -1,11 +1,12 @@
 use std::fmt;
 use std::fmt::Formatter;
+use std::io::Write;
 use std::path::Path;
 
 use anyhow::{Context, Result};
+use byteorder::{LittleEndian, WriteBytesExt};
 
 use crate::bl3_profile::profile_data::ProfileData;
-use crate::file_helper;
 use crate::file_helper::FileData;
 use crate::game_data::{
     PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_EMOTES, PROFILE_EMOTES_DEFAULTS,
@@ -13,8 +14,9 @@ use crate::game_data::{
     PROFILE_SKINS_DEFAULTS, PROFILE_WEAPON_SKINS, PROFILE_WEAPON_TRINKETS,
 };
 use crate::models::CustomFormatData;
-use crate::parser::{decrypt, HeaderType};
+use crate::parser::{decrypt, encrypt, HeaderType};
 use crate::protos::oak_profile::Profile;
+use crate::{file_helper, parser};
 
 pub mod profile_currency;
 pub mod profile_data;
@@ -26,7 +28,7 @@ pub mod util;
 #[derive(Debug, Clone, Default, Eq, Ord, PartialOrd)]
 pub struct Bl3Profile {
     pub file_name: String,
-    pub profile_version: u32,
+    pub save_game_version: u32,
     pub package_version: u32,
     pub engine_major: u16,
     pub engine_minor: u16,
@@ -78,7 +80,7 @@ impl Bl3Profile {
 
         Ok(Self {
             file_name,
-            profile_version: file_version,
+            save_game_version: file_version,
             package_version,
             engine_major,
             engine_minor,
@@ -94,20 +96,52 @@ impl Bl3Profile {
         })
     }
 
-    pub fn from_bytes(
-        file_location: &Path,
-        data: &mut [u8],
-        header_type: HeaderType,
-    ) -> Result<Self> {
+    pub fn from_bytes(file_location: &Path, data: &[u8], header_type: HeaderType) -> Result<Self> {
         let file_data = file_helper::read_bytes(file_location, data)?;
 
         Self::from_file_data(&file_data, header_type)
+    }
+
+    pub fn to_bytes(&self) -> Result<Vec<u8>> {
+        let mut output = Vec::new();
+
+        output.write_all(b"GVAS")?;
+        output.write_u32::<LittleEndian>(self.save_game_version)?;
+        output.write_u32::<LittleEndian>(self.package_version)?;
+        output.write_u16::<LittleEndian>(self.engine_major)?;
+        output.write_u16::<LittleEndian>(self.engine_minor)?;
+        output.write_u16::<LittleEndian>(self.engine_patch)?;
+        output.write_u32::<LittleEndian>(self.engine_build)?;
+        parser::write_str(&mut output, &self.build_id)?;
+        output.write_u32::<LittleEndian>(self.custom_format_version)?;
+        output.write_u32::<LittleEndian>(self.custom_format_data_count)?;
+
+        for cfd in &self.custom_format_data {
+            output.write_all(&cfd.guid)?;
+            output.write_u32::<LittleEndian>(cfd.entry)?;
+        }
+
+        parser::write_str(&mut output, &self.save_game_type)?;
+
+        let mut data = protobuf::Message::write_to_bytes(&self.profile_data.profile)?;
+
+        encrypt(&mut data, self.header_type)?;
+
+        output.write_u32::<LittleEndian>(data.len() as u32)?;
+        output.append(&mut data);
+
+        //Now try re-reading it also - there's no point making an invalid save
+        //TODO: Instead of refreshing dir after save - reload only this save using below
+        let file_name = Path::new(&self.file_name);
+        let _ = Self::from_bytes(file_name, &output, self.header_type)?;
+
+        Ok(output)
     }
 }
 
 impl fmt::Display for Bl3Profile {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        writeln!(f, "Profile version: {}", self.profile_version)?;
+        writeln!(f, "Profile version: {}", self.save_game_version)?;
         writeln!(f, "Package version: {}", self.package_version)?;
         writeln!(
             f,
@@ -127,44 +161,48 @@ impl fmt::Display for Bl3Profile {
         writeln!(
             f,
             "{:>1}- Golden Keys: {}",
-            " ", self.profile_data.golden_keys
+            " ",
+            self.profile_data.golden_keys()
         )?;
         writeln!(
             f,
             "{:>1}- Diamond Keys: {}",
-            " ", self.profile_data.diamond_keys
+            " ",
+            self.profile_data.diamond_keys()
         )?;
         writeln!(
             f,
             "{:>1}- Vault Card 1 Keys: {}",
-            " ", self.profile_data.vault_card_1_keys
+            " ",
+            self.profile_data.vault_card_1_keys()
         )?;
         writeln!(
             f,
             "{:>1}- Vault Card 1 Chests: {}",
-            " ", self.profile_data.vault_card_1_chests
+            " ",
+            self.profile_data.vault_card_1_chests()
         )?;
-        writeln!(f, "Guardian Rank: {}", self.profile_data.guardian_rank)?;
+        writeln!(f, "Guardian Rank: {}", self.profile_data.guardian_rank())?;
         writeln!(
             f,
             "Guardian Rank Tokens: {}",
-            self.profile_data.guardian_rank_tokens
+            self.profile_data.guardian_rank_tokens()
         )?;
         writeln!(
             f,
             "Borderlands Science Level: {} ({} solved)",
-            self.profile_data.borderlands_science_info.science_level,
-            self.profile_data.borderlands_science_info.solves
+            self.profile_data.borderlands_science_info().science_level,
+            self.profile_data.borderlands_science_info().solves
         )?;
         writeln!(
             f,
             "Borderlands Science Tokens: {}",
-            self.profile_data.borderlands_science_info.tokens
+            self.profile_data.borderlands_science_info().tokens
         )?;
 
         writeln!(f, "SDUs:")?;
 
-        for slot in &self.profile_data.sdu_slots {
+        for slot in self.profile_data.sdu_slots() {
             writeln!(
                 f,
                 "{:>1}- {}: {}/{}",
@@ -172,53 +210,53 @@ impl fmt::Display for Bl3Profile {
             )?;
         }
 
-        writeln!(f, "Items in Bank: {}", self.profile_data.bank_items.len())?;
+        writeln!(f, "Items in Bank: {}", self.profile_data.bank_items().len())?;
         writeln!(
             f,
             "Items in Lost Loot machine: {}",
-            self.profile_data.lost_loot_items.len()
+            self.profile_data.lost_loot_items().len()
         )?;
 
         writeln!(
             f,
             "Character Skins Unlocked: {}/{}",
-            self.profile_data.character_skins_unlocked,
+            self.profile_data.character_skins_unlocked(),
             PROFILE_SKINS.len() + PROFILE_SKINS_DEFAULTS.len()
         )?;
         writeln!(
             f,
             "Character Heads Unlocked: {}/{}",
-            self.profile_data.character_heads_unlocked,
+            self.profile_data.character_heads_unlocked(),
             PROFILE_HEADS.len() + PROFILE_HEADS_DEFAULTS.len()
         )?;
         writeln!(
             f,
             "ECHO Themes Unlocked: {}/{}",
-            self.profile_data.echo_themes_unlocked,
+            self.profile_data.echo_themes_unlocked(),
             PROFILE_ECHO_THEMES.len() + PROFILE_ECHO_THEMES_DEFAULTS.len()
         )?;
         writeln!(
             f,
             "Emotes Unlocked: {}/{}",
-            self.profile_data.profile_emotes_unlocked,
+            self.profile_data.profile_emotes_unlocked(),
             PROFILE_EMOTES.len() + PROFILE_EMOTES_DEFAULTS.len()
         )?;
         writeln!(
             f,
             "Room Decorations Unlocked: {}/{}",
-            self.profile_data.room_decorations_unlocked,
+            self.profile_data.room_decorations_unlocked(),
             PROFILE_ROOM_DECORATIONS.len()
         )?;
         writeln!(
             f,
             "Weapon Skins Unlocked: {}/{}",
-            self.profile_data.weapon_skins_unlocked,
+            self.profile_data.weapon_skins_unlocked(),
             PROFILE_WEAPON_SKINS.len()
         )?;
         writeln!(
             f,
             "Weapon Trinkets Unlocked: {}/{}",
-            self.profile_data.weapon_trinkets_unlocked,
+            self.profile_data.weapon_trinkets_unlocked(),
             PROFILE_WEAPON_TRINKETS.len()
         )?;
 
@@ -245,23 +283,29 @@ mod tests {
             Bl3Profile::from_bytes(filename, &mut profile_file_data, HeaderType::PcProfile)
                 .expect("failed to read test profile");
 
-        assert_eq!(bl3_profile.profile_data.golden_keys, 23);
-        assert_eq!(bl3_profile.profile_data.diamond_keys, 0);
-        assert_eq!(bl3_profile.profile_data.vault_card_1_keys, 0);
-        assert_eq!(bl3_profile.profile_data.vault_card_1_chests, 0);
-        assert_eq!(bl3_profile.profile_data.guardian_rank, 226);
-        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens, 8);
+        assert_eq!(bl3_profile.profile_data.golden_keys(), 23);
+        assert_eq!(bl3_profile.profile_data.diamond_keys(), 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_keys(), 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_chests(), 0);
+        assert_eq!(bl3_profile.profile_data.guardian_rank(), 226);
+        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens(), 8);
         assert_eq!(
             bl3_profile
                 .profile_data
-                .borderlands_science_info
+                .borderlands_science_info()
                 .science_level,
             BorderlandsScienceLevel::Claptrap
         );
-        assert_eq!(bl3_profile.profile_data.borderlands_science_info.solves, 0);
-        assert_eq!(bl3_profile.profile_data.borderlands_science_info.tokens, 0);
         assert_eq!(
-            bl3_profile.profile_data.sdu_slots,
+            bl3_profile.profile_data.borderlands_science_info().solves,
+            0
+        );
+        assert_eq!(
+            bl3_profile.profile_data.borderlands_science_info().tokens,
+            0
+        );
+        assert_eq!(
+            *bl3_profile.profile_data.sdu_slots(),
             vec![
                 ProfileSduSlotData {
                     slot: ProfileSduSlot::Bank,
@@ -276,15 +320,15 @@ mod tests {
             ]
         );
 
-        assert_eq!(bl3_profile.profile_data.bank_items.len(), 399);
-        assert_eq!(bl3_profile.profile_data.lost_loot_items.len(), 13);
-        assert_eq!(bl3_profile.profile_data.character_skins_unlocked, 212);
-        assert_eq!(bl3_profile.profile_data.character_heads_unlocked, 144);
-        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked, 57);
-        assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked, 72);
-        assert_eq!(bl3_profile.profile_data.room_decorations_unlocked, 93);
-        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked, 26);
-        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked, 68);
+        assert_eq!(bl3_profile.profile_data.bank_items().len(), 399);
+        assert_eq!(bl3_profile.profile_data.lost_loot_items().len(), 13);
+        assert_eq!(bl3_profile.profile_data.character_skins_unlocked(), 212);
+        assert_eq!(bl3_profile.profile_data.character_heads_unlocked(), 144);
+        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked(), 57);
+        assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked(), 72);
+        assert_eq!(bl3_profile.profile_data.room_decorations_unlocked(), 93);
+        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 26);
+        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked(), 68);
     }
 
     #[test]
@@ -297,23 +341,29 @@ mod tests {
             Bl3Profile::from_bytes(filename, &mut profile_file_data, HeaderType::PcProfile)
                 .expect("failed to read test profile");
 
-        assert_eq!(bl3_profile.profile_data.golden_keys, 1);
-        assert_eq!(bl3_profile.profile_data.diamond_keys, 0);
-        assert_eq!(bl3_profile.profile_data.vault_card_1_keys, 0);
-        assert_eq!(bl3_profile.profile_data.vault_card_1_chests, 0);
-        assert_eq!(bl3_profile.profile_data.guardian_rank, 200);
-        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens, 0);
+        assert_eq!(bl3_profile.profile_data.golden_keys(), 1);
+        assert_eq!(bl3_profile.profile_data.diamond_keys(), 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_keys(), 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_chests(), 0);
+        assert_eq!(bl3_profile.profile_data.guardian_rank(), 200);
+        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens(), 0);
         assert_eq!(
             bl3_profile
                 .profile_data
-                .borderlands_science_info
+                .borderlands_science_info()
                 .science_level,
             BorderlandsScienceLevel::None
         );
-        assert_eq!(bl3_profile.profile_data.borderlands_science_info.solves, 0);
-        assert_eq!(bl3_profile.profile_data.borderlands_science_info.tokens, 0);
         assert_eq!(
-            bl3_profile.profile_data.sdu_slots,
+            bl3_profile.profile_data.borderlands_science_info().solves,
+            0
+        );
+        assert_eq!(
+            bl3_profile.profile_data.borderlands_science_info().tokens,
+            0
+        );
+        assert_eq!(
+            *bl3_profile.profile_data.sdu_slots(),
             vec![
                 ProfileSduSlotData {
                     slot: ProfileSduSlot::Bank,
@@ -328,15 +378,15 @@ mod tests {
             ]
         );
 
-        assert_eq!(bl3_profile.profile_data.bank_items.len(), 0);
-        assert_eq!(bl3_profile.profile_data.lost_loot_items.len(), 13);
-        assert_eq!(bl3_profile.profile_data.character_skins_unlocked, 27);
-        assert_eq!(bl3_profile.profile_data.character_heads_unlocked, 22);
-        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked, 17);
-        assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked, 17);
-        assert_eq!(bl3_profile.profile_data.room_decorations_unlocked, 26);
-        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked, 7);
-        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked, 8);
+        assert_eq!(bl3_profile.profile_data.bank_items().len(), 0);
+        assert_eq!(bl3_profile.profile_data.lost_loot_items().len(), 13);
+        assert_eq!(bl3_profile.profile_data.character_skins_unlocked(), 27);
+        assert_eq!(bl3_profile.profile_data.character_heads_unlocked(), 22);
+        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked(), 17);
+        assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked(), 17);
+        assert_eq!(bl3_profile.profile_data.room_decorations_unlocked(), 26);
+        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 7);
+        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked(), 8);
     }
 
     #[test]
@@ -349,26 +399,29 @@ mod tests {
             Bl3Profile::from_bytes(filename, &mut profile_file_data, HeaderType::Ps4Profile)
                 .expect("failed to read test profile");
 
-        assert_eq!(bl3_profile.profile_data.golden_keys, 69420);
-        assert_eq!(bl3_profile.profile_data.diamond_keys, 0);
-        assert_eq!(bl3_profile.profile_data.vault_card_1_keys, 0);
-        assert_eq!(bl3_profile.profile_data.vault_card_1_chests, 0);
-        assert_eq!(bl3_profile.profile_data.guardian_rank, 69420);
-        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens, 99999999);
+        assert_eq!(bl3_profile.profile_data.golden_keys(), 69420);
+        assert_eq!(bl3_profile.profile_data.diamond_keys(), 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_keys(), 0);
+        assert_eq!(bl3_profile.profile_data.vault_card_1_chests(), 0);
+        assert_eq!(bl3_profile.profile_data.guardian_rank(), 69420);
+        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens(), 99999999);
         assert_eq!(
             bl3_profile
                 .profile_data
-                .borderlands_science_info
+                .borderlands_science_info()
                 .science_level,
             BorderlandsScienceLevel::None
         );
-        assert_eq!(bl3_profile.profile_data.borderlands_science_info.solves, 0);
         assert_eq!(
-            bl3_profile.profile_data.borderlands_science_info.tokens,
+            bl3_profile.profile_data.borderlands_science_info().solves,
+            0
+        );
+        assert_eq!(
+            bl3_profile.profile_data.borderlands_science_info().tokens,
             69420
         );
         assert_eq!(
-            bl3_profile.profile_data.sdu_slots,
+            *bl3_profile.profile_data.sdu_slots(),
             vec![
                 ProfileSduSlotData {
                     slot: ProfileSduSlot::Bank,
@@ -383,14 +436,14 @@ mod tests {
             ]
         );
 
-        assert_eq!(bl3_profile.profile_data.bank_items.len(), 2000);
-        assert_eq!(bl3_profile.profile_data.lost_loot_items.len(), 0);
-        assert_eq!(bl3_profile.profile_data.character_skins_unlocked, 212);
-        assert_eq!(bl3_profile.profile_data.character_heads_unlocked, 144);
-        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked, 57);
-        assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked, 64);
-        assert_eq!(bl3_profile.profile_data.room_decorations_unlocked, 94);
-        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked, 27);
-        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked, 68);
+        assert_eq!(bl3_profile.profile_data.bank_items().len(), 2000);
+        assert_eq!(bl3_profile.profile_data.lost_loot_items().len(), 0);
+        assert_eq!(bl3_profile.profile_data.character_skins_unlocked(), 212);
+        assert_eq!(bl3_profile.profile_data.character_heads_unlocked(), 144);
+        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked(), 57);
+        assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked(), 64);
+        assert_eq!(bl3_profile.profile_data.room_decorations_unlocked(), 94);
+        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 27);
+        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked(), 68);
     }
 }

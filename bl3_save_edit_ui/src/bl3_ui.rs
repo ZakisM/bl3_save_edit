@@ -14,7 +14,7 @@ use bl3_save_edit_core::file_helper::Bl3FileType;
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::state_mappers::manage_save;
+use crate::state_mappers::{manage_profile, manage_save};
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -729,7 +729,51 @@ impl Application for Bl3Ui {
                                     }
                                 }
                             }
-                            ManageProfileInteractionMessage::SaveFilePressed => {}
+                            ManageProfileInteractionMessage::SaveProfilePressed => {
+                                //Lets not make any modifications to the current file just in case we have any errors
+                                let mut current_file =
+                                    self.manage_profile_state.current_file.clone();
+
+                                if let Err(e) = manage_profile::map_all_states_to_profile(
+                                    &mut self.manage_profile_state,
+                                    &mut current_file,
+                                ) {
+                                    let msg = format!("Failed to save profile: {}", e);
+
+                                    self.notification = Some(Notification::new(
+                                        msg,
+                                        NotificationSentiment::Negative,
+                                    ));
+
+                                    return Command::none();
+                                }
+
+                                let output_file = self
+                                    .choose_save_directory_state
+                                    .saves_dir
+                                    .join(&self.manage_profile_state.current_file.file_name);
+
+                                match current_file.to_bytes() {
+                                    Ok(output) => {
+                                        return Command::perform(
+                                            interaction::save_file::save_file(output_file, output),
+                                            |r| {
+                                                Message::SaveFileCompleted(
+                                                    MessageResult::handle_result(r),
+                                                )
+                                            },
+                                        );
+                                    }
+                                    Err(e) => {
+                                        let msg = format!("Failed to save file: {}", e);
+
+                                        self.notification = Some(Notification::new(
+                                            msg,
+                                            NotificationSentiment::Negative,
+                                        ));
+                                    }
+                                };
+                            }
                         }
                     }
                     InteractionMessage::LoadedFileSelected(loaded_file) => {
@@ -888,7 +932,7 @@ impl Application for Bl3Ui {
             ));
         } else if view_state_discrim == manage_profile_discrim {
             save_button = save_button.on_press(InteractionMessage::ManageProfileInteraction(
-                ManageProfileInteractionMessage::SaveFilePressed,
+                ManageProfileInteractionMessage::SaveProfilePressed,
             ));
         }
 

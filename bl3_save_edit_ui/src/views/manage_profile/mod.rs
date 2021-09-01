@@ -27,7 +27,7 @@ pub enum ManageProfileInteractionMessage {
     Profile(ProfileProfileInteractionMessage),
     Keys(ProfileKeysInteractionMessage),
     Bank(ProfileBankInteractionMessage),
-    SaveFilePressed,
+    SaveProfilePressed,
 }
 
 #[derive(Debug, PartialEq)]

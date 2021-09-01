@@ -97,7 +97,8 @@ impl std::fmt::Display for Bl3FileType {
                 write!(
                     f,
                     "[{}] Golden Keys: {}",
-                    profile.header_type, profile.profile_data.golden_keys,
+                    profile.header_type,
+                    profile.profile_data.golden_keys(),
                 )
             }
         }

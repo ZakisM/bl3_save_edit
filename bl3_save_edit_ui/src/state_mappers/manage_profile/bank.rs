@@ -17,7 +17,7 @@ pub fn map_profile_to_bank_state(manage_profile_state: &mut ManageProfileState) 
         .item_editor_state
         .items_mut() = profile
         .profile_data
-        .bank_items
+        .bank_items()
         .iter()
         .cloned()
         .enumerate()

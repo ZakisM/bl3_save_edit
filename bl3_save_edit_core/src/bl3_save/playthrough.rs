@@ -32,8 +32,8 @@ impl Playthrough {
                     .and_then(|m| {
                         FAST_TRAVEL
                             .par_iter()
-                            .cloned()
                             .find_first(|ft| ft.ident == m.to_lowercase())
+                            .map(|ft| ft.to_owned())
                     })
                     .unwrap_or(FAST_TRAVEL[0]);
 

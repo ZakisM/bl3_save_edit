@@ -54,7 +54,7 @@ impl std::default::Default for AmmoPool {
 
 impl AmmoPool {
     pub fn maximum(&self) -> i32 {
-        match *self {
+        match self {
             AmmoPool::Grenade => 13,
             AmmoPool::Pistol => 1200,
             AmmoPool::Shotgun => 280,

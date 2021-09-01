@@ -122,7 +122,7 @@ impl CharacterData {
                     .par_iter()
                     .any(|cs| cs == s.ident)
             })
-            .cloned()
+            .map(|s| s.to_owned())
             .unwrap_or(PROFILE_ECHO_THEMES_DEFAULTS[0]);
 
         let money = currency_amount_from_character(&character, &Currency::Money);
@@ -167,14 +167,11 @@ impl CharacterData {
                 std::mem::discriminant(&sdu) == std::mem::discriminant(&save_sdu.slot)
             });
 
-            let slot = sdu;
-            let max = slot.maximum();
-
             if !contains_sdu_slot {
                 sdu_slots.push(SaveSduSlotData {
-                    slot,
                     current: 0,
-                    max,
+                    max: sdu.maximum(),
+                    slot: sdu,
                 })
             }
         });
@@ -634,7 +631,7 @@ impl CharacterData {
         &self.sdu_slots
     }
 
-    pub fn set_sdu_slots(&mut self, sdu_slot: &SaveSduSlot, level: i32) -> Result<()> {
+    pub fn set_sdu_slot(&mut self, sdu_slot: &SaveSduSlot, level: i32) {
         let sdu_path = sdu_slot.get_serializations()[0];
 
         if let Some(sdu) = self
@@ -662,8 +659,6 @@ impl CharacterData {
                 max: sdu_slot.maximum(),
             });
         }
-
-        Ok(())
     }
 
     pub fn ammo_pools(&self) -> &Vec<AmmoPoolData> {

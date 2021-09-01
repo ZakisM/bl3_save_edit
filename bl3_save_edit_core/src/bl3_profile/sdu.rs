@@ -1,4 +1,4 @@
-use strum::{Display, EnumString};
+use strum::{Display, EnumIter, EnumMessage, EnumString};
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct ProfileSduSlotData {
@@ -7,7 +7,9 @@ pub struct ProfileSduSlotData {
     pub max: i32,
 }
 
-#[derive(Debug, Display, EnumString, Eq, PartialEq, Ord, PartialOrd, Clone)]
+#[derive(
+    Debug, Display, EnumString, EnumIter, EnumMessage, Eq, PartialEq, Ord, PartialOrd, Clone,
+)]
 pub enum ProfileSduSlot {
     #[strum(serialize = "/Game/Pickups/SDU/SDU_Bank.SDU_Bank", to_string = "Bank")]
     Bank,
@@ -20,7 +22,7 @@ pub enum ProfileSduSlot {
 
 impl ProfileSduSlot {
     pub fn maximum(&self) -> i32 {
-        match *self {
+        match self {
             ProfileSduSlot::Bank => 23,
             ProfileSduSlot::LostLoot => 10,
         }

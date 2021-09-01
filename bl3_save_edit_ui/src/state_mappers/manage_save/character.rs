@@ -210,7 +210,7 @@ pub fn map_character_state_to_save(
         .character_state
         .gear_unlocker;
 
-    let all_gear_slots = [
+    let all_gear_unlock_boxes = [
         &gear_unlocker.artifact,
         &gear_unlocker.class_mod,
         &gear_unlocker.grenade,
@@ -221,7 +221,7 @@ pub fn map_character_state_to_save(
         &gear_unlocker.weapon_4,
     ];
 
-    for s in all_gear_slots {
+    for s in all_gear_unlock_boxes {
         if s.is_unlocked {
             save.character_data.unlock_inventory_slot(&s.inv_slot)?;
         } else {
@@ -266,7 +266,7 @@ pub fn map_character_state_to_save(
     ];
 
     for s in all_sdu_slots {
-        save.character_data.set_sdu_slots(&s.sdu_slot, s.input)?;
+        save.character_data.set_sdu_slot(&s.sdu_slot, s.input);
     }
 
     Ok(())

@@ -3,7 +3,9 @@ use std::rc::Rc;
 use derivative::Derivative;
 use iced::{Align, Checkbox, Color, Column, Container, Element, Length};
 
-use bl3_save_edit_core::bl3_profile::skins::{ProfileSkinData, ProfileSkinType};
+use bl3_save_edit_core::bl3_profile::skins::{
+    ProfileSkinData, ProfileSkinType, SkinSet, WeaponSkinSet,
+};
 
 use crate::bl3_ui::{InteractionMessage, Message};
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -49,7 +51,9 @@ impl SkinUnlockCheckbox {
             self.is_unlocked,
             format!(
                 "{} ({}/{})",
-                &self.name, self.skin_data.current, self.skin_data.max
+                &self.name,
+                self.skin_data.current,
+                self.skin_data.skin_type.maximum()
             ),
             move |c| {
                 InteractionMessage::ManageProfileInteraction(
@@ -84,37 +88,37 @@ impl std::default::Default for SkinUnlocker {
         Self {
             character_skins: SkinUnlockCheckbox::new(
                 "Unlock All Character Skins",
-                ProfileSkinData::new(ProfileSkinType::CharacterSkins, 0),
+                ProfileSkinData::new(ProfileSkinType::Regular(SkinSet::CharacterSkins), 0),
                 ProfileSkinUnlockedMessage::CharacterSkins,
             ),
             character_heads: SkinUnlockCheckbox::new(
                 "Unlock All Character Heads",
-                ProfileSkinData::new(ProfileSkinType::CharacterHeads, 0),
+                ProfileSkinData::new(ProfileSkinType::Regular(SkinSet::CharacterHeads), 0),
                 ProfileSkinUnlockedMessage::CharacterHeads,
             ),
             echo_themes: SkinUnlockCheckbox::new(
                 "Unlock All Echo Themes",
-                ProfileSkinData::new(ProfileSkinType::EchoThemes, 0),
+                ProfileSkinData::new(ProfileSkinType::Regular(SkinSet::EchoThemes), 0),
                 ProfileSkinUnlockedMessage::EchoThemes,
             ),
             emotes: SkinUnlockCheckbox::new(
                 "Unlock All Emotes",
-                ProfileSkinData::new(ProfileSkinType::Emotes, 0),
+                ProfileSkinData::new(ProfileSkinType::Regular(SkinSet::Emotes), 0),
                 ProfileSkinUnlockedMessage::Emotes,
             ),
             room_decorations: SkinUnlockCheckbox::new(
                 "Unlock All Room Decorations",
-                ProfileSkinData::new(ProfileSkinType::RoomDecorations, 0),
+                ProfileSkinData::new(ProfileSkinType::Regular(SkinSet::RoomDecorations), 0),
                 ProfileSkinUnlockedMessage::RoomDecorations,
             ),
             weapon_skins: SkinUnlockCheckbox::new(
                 "Unlock All Weapon Skins",
-                ProfileSkinData::new(ProfileSkinType::WeaponSkins, 0),
+                ProfileSkinData::new(ProfileSkinType::Weapon(WeaponSkinSet::WeaponSkins), 0),
                 ProfileSkinUnlockedMessage::WeaponSkins,
             ),
             weapon_trinkets: SkinUnlockCheckbox::new(
                 "Unlock All Weapon Trinkets",
-                ProfileSkinData::new(ProfileSkinType::WeaponTrinkets, 0),
+                ProfileSkinData::new(ProfileSkinType::Weapon(WeaponSkinSet::WeaponTrinkets), 0),
                 ProfileSkinUnlockedMessage::WeaponTrinkets,
             ),
         }

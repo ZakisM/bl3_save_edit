@@ -23,6 +23,12 @@ pub fn map_save_to_general_state(manage_save_state: &mut ManageSaveState) {
 }
 
 pub fn map_general_state_to_save(manage_save_state: &mut ManageSaveState, save: &mut Bl3Save) {
+    save.file_name = manage_save_state
+        .save_view_state
+        .general_state
+        .filename_input
+        .clone();
+
     save.character_data.character.save_game_guid = manage_save_state
         .save_view_state
         .general_state
