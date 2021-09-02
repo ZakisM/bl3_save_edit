@@ -892,6 +892,8 @@ impl Application for Bl3Ui {
                     self.loaded_files.sort();
 
                     self.loaded_files_selected = Box::new(bl3_file_type);
+
+                    state_mappers::map_loaded_file_to_state(self);
                 }
                 MessageResult::Error(e) => {
                     let msg = format!("Failed to save file: {}", e);
@@ -934,6 +936,8 @@ impl Application for Bl3Ui {
                     self.loaded_files.sort();
 
                     self.loaded_files_selected = Box::new(bl3_file_type);
+
+                    state_mappers::map_loaded_file_to_state(self);
                 }
                 MessageResult::Error(e) => {
                     let msg = format!("Failed to save profile: {}", e);

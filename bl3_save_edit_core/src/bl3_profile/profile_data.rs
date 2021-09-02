@@ -20,8 +20,9 @@ use crate::game_data::{
 };
 use crate::protos::oak_profile::{GuardianRankProfileData, Profile};
 use crate::protos::oak_shared::{
-    InventoryCategorySaveData, OakCustomizationSaveGameData, OakInventoryCustomizationPartInfo,
-    OakSDUSaveGameData, VaultCardRewardList, VaultCardSaveGameData,
+    CrewQuartersDecorationItemSaveGameData, InventoryCategorySaveData,
+    OakCustomizationSaveGameData, OakInventoryCustomizationPartInfo, OakSDUSaveGameData,
+    VaultCardRewardList, VaultCardSaveGameData,
 };
 
 #[derive(Derivative)]
@@ -365,7 +366,7 @@ impl ProfileData {
     }
 
     pub fn set_borderlands_science_level(&mut self, science_level: &BorderlandsScienceLevel) {
-        self.profile.CitizenScienceLevelProgression = science_level.science_level_progression();
+        self.profile.CitizenScienceLevelProgression = science_level.progression();
         self.profile.bCitizenScienceHasSeenIntroVideo = true;
         self.profile.bCitizenScienceTutorialDone = true;
 
@@ -495,28 +496,55 @@ impl ProfileData {
         skins.sort_by_key(|s| s.name);
 
         match skin_type {
-            ProfileSkinType::Regular(_) => {
-                let previous_customizations = self.profile.unlocked_customizations.clone();
+            ProfileSkinType::Regular(set) => match set {
+                SkinSet::RoomDecorations => {
+                    let previous_customizations =
+                        self.profile.unlocked_crew_quarters_decorations.clone();
 
-                self.profile.unlocked_customizations.clear();
+                    self.profile.unlocked_crew_quarters_decorations.clear();
 
-                skins.iter().for_each(|c| {
-                    self.profile
-                        .unlocked_customizations
-                        .push(OakCustomizationSaveGameData {
-                            is_new: true,
-                            customization_asset_path: c.ident.to_owned(),
-                            unknown_fields: Default::default(),
-                            cached_size: Default::default(),
-                        });
-                });
+                    skins.iter().for_each(|c| {
+                        self.profile.unlocked_crew_quarters_decorations.push(
+                            CrewQuartersDecorationItemSaveGameData {
+                                is_new: true,
+                                decoration_item_asset_path: c.ident.to_owned(),
+                                unknown_fields: Default::default(),
+                                cached_size: Default::default(),
+                            },
+                        );
+                    });
 
-                previous_customizations.iter().for_each(|pc| {
-                    if !self.profile.unlocked_customizations.contains(pc) {
-                        self.profile.unlocked_customizations.push(pc.to_owned());
-                    }
-                });
-            }
+                    previous_customizations.iter().for_each(|pc| {
+                        if !self.profile.unlocked_crew_quarters_decorations.contains(pc) {
+                            self.profile
+                                .unlocked_crew_quarters_decorations
+                                .push(pc.to_owned());
+                        }
+                    });
+                }
+                _ => {
+                    let previous_customizations = self.profile.unlocked_customizations.clone();
+
+                    self.profile.unlocked_customizations.clear();
+
+                    skins.iter().for_each(|c| {
+                        self.profile
+                            .unlocked_customizations
+                            .push(OakCustomizationSaveGameData {
+                                is_new: true,
+                                customization_asset_path: c.ident.to_owned(),
+                                unknown_fields: Default::default(),
+                                cached_size: Default::default(),
+                            });
+                    });
+
+                    previous_customizations.iter().for_each(|pc| {
+                        if !self.profile.unlocked_customizations.contains(pc) {
+                            self.profile.unlocked_customizations.push(pc.to_owned());
+                        }
+                    });
+                }
+            },
             ProfileSkinType::Weapon(_) => {
                 let previous_inventory_customizations =
                     self.profile.unlocked_inventory_customization_parts.clone();

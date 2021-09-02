@@ -1,7 +1,7 @@
 use crate::game_data::{
-    GameDataKv, PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_EMOTES, PROFILE_HEADS,
-    PROFILE_HEADS_DEFAULTS, PROFILE_ROOM_DECORATIONS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS,
-    PROFILE_WEAPON_SKINS, PROFILE_WEAPON_TRINKETS,
+    GameDataKv, PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_EMOTES,
+    PROFILE_EMOTES_DEFAULTS, PROFILE_HEADS, PROFILE_HEADS_DEFAULTS, PROFILE_ROOM_DECORATIONS,
+    PROFILE_SKINS, PROFILE_SKINS_DEFAULTS, PROFILE_WEAPON_SKINS, PROFILE_WEAPON_TRINKETS,
 };
 
 #[derive(Debug, Default, Clone)]
@@ -52,7 +52,7 @@ impl ProfileSkinType {
                 SkinSet::EchoThemes => {
                     PROFILE_ECHO_THEMES.len() + PROFILE_ECHO_THEMES_DEFAULTS.len()
                 }
-                SkinSet::Emotes => PROFILE_EMOTES.len() + PROFILE_ECHO_THEMES_DEFAULTS.len(),
+                SkinSet::Emotes => PROFILE_EMOTES.len() + PROFILE_EMOTES_DEFAULTS.len(),
                 SkinSet::RoomDecorations => PROFILE_ROOM_DECORATIONS.len(),
             },
             ProfileSkinType::Weapon(weapon_skin_set) => match weapon_skin_set {
@@ -76,11 +76,9 @@ impl ProfileSkinType {
                     PROFILE_ECHO_THEMES_DEFAULTS.to_vec(),
                 ]
                 .concat(),
-                SkinSet::Emotes => [
-                    PROFILE_EMOTES.to_vec(),
-                    PROFILE_ECHO_THEMES_DEFAULTS.to_vec(),
-                ]
-                .concat(),
+                SkinSet::Emotes => {
+                    [PROFILE_EMOTES.to_vec(), PROFILE_EMOTES_DEFAULTS.to_vec()].concat()
+                }
                 SkinSet::RoomDecorations => PROFILE_ROOM_DECORATIONS.to_vec(),
             },
             ProfileSkinType::Weapon(weapon_skin_set) => match weapon_skin_set {

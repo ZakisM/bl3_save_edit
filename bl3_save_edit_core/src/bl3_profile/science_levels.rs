@@ -73,7 +73,7 @@ impl BorderlandsScienceLevel {
         bail!("Failed to read Borderlands Science Level.")
     }
 
-    pub fn science_level_progression(&self) -> Vec<i32> {
+    pub fn progression(&self) -> Vec<i32> {
         if *self == BorderlandsScienceLevel::None {
             return Vec::new();
         }
@@ -83,10 +83,12 @@ impl BorderlandsScienceLevel {
             .position(|(_, l)| l == self)
             .expect("Failed to find corresponding Borderlands Science Level");
 
-        let levels = BORDERLANDS_SCIENCE_LEVELS[0..required_level_index + 1]
+        let mut levels = BORDERLANDS_SCIENCE_LEVELS[0..required_level_index]
             .iter()
             .map(|(i, _)| *i)
             .collect::<Vec<_>>();
+
+        levels.resize(BORDERLANDS_SCIENCE_LEVELS.len(), 0);
 
         levels
     }
@@ -99,47 +101,47 @@ mod tests {
     #[test]
     pub fn test_science_level_progression() {
         assert_eq!(
-            BorderlandsScienceLevel::None.science_level_progression(),
+            BorderlandsScienceLevel::None.progression(),
             Vec::<i32>::new()
         );
         assert_eq!(
-            BorderlandsScienceLevel::Claptrap.science_level_progression(),
-            vec![5]
+            BorderlandsScienceLevel::Claptrap.progression(),
+            vec![0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         );
         assert_eq!(
-            BorderlandsScienceLevel::Brick.science_level_progression(),
-            vec![5, 10]
+            BorderlandsScienceLevel::Brick.progression(),
+            vec![5, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         );
         assert_eq!(
-            BorderlandsScienceLevel::Mordecai.science_level_progression(),
-            vec![5, 10, 15]
+            BorderlandsScienceLevel::Mordecai.progression(),
+            vec![5, 10, 0, 0, 0, 0, 0, 0, 0, 0]
         );
         assert_eq!(
-            BorderlandsScienceLevel::Torgue.science_level_progression(),
-            vec![5, 10, 15, 20]
+            BorderlandsScienceLevel::Torgue.progression(),
+            vec![5, 10, 15, 0, 0, 0, 0, 0, 0, 0]
         );
         assert_eq!(
-            BorderlandsScienceLevel::Marcus.science_level_progression(),
-            vec![5, 10, 15, 20, 25]
+            BorderlandsScienceLevel::Marcus.progression(),
+            vec![5, 10, 15, 20, 0, 0, 0, 0, 0, 0]
         );
         assert_eq!(
-            BorderlandsScienceLevel::Ellie.science_level_progression(),
-            vec![5, 10, 15, 20, 25, 30]
+            BorderlandsScienceLevel::Ellie.progression(),
+            vec![5, 10, 15, 20, 25, 0, 0, 0, 0, 0]
         );
         assert_eq!(
-            BorderlandsScienceLevel::Lilith.science_level_progression(),
-            vec![5, 10, 15, 20, 25, 30, 35]
+            BorderlandsScienceLevel::Lilith.progression(),
+            vec![5, 10, 15, 20, 25, 30, 0, 0, 0, 0]
         );
         assert_eq!(
-            BorderlandsScienceLevel::MadMoxxi.science_level_progression(),
-            vec![5, 10, 15, 20, 25, 30, 35, 40]
+            BorderlandsScienceLevel::MadMoxxi.progression(),
+            vec![5, 10, 15, 20, 25, 30, 35, 0, 0, 0]
         );
         assert_eq!(
-            BorderlandsScienceLevel::Tannis.science_level_progression(),
-            vec![5, 10, 15, 20, 25, 30, 35, 40, 50]
+            BorderlandsScienceLevel::Tannis.progression(),
+            vec![5, 10, 15, 20, 25, 30, 35, 40, 0, 0]
         );
         assert_eq!(
-            BorderlandsScienceLevel::TrueTannis.science_level_progression(),
+            BorderlandsScienceLevel::TrueTannis.progression(),
             vec![5, 10, 15, 20, 25, 30, 35, 40, 50, 0]
         );
     }
