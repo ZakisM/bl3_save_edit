@@ -6,10 +6,13 @@ use iced::{
 };
 
 use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
+use bl3_save_edit_core::bl3_profile::Bl3Profile;
 use bl3_save_edit_core::bl3_save::ammo::AmmoPool;
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 use bl3_save_edit_core::bl3_save::util::{experience_to_level, REQUIRED_XP_LIST};
+use bl3_save_edit_core::bl3_save::Bl3Save;
 use bl3_save_edit_core::file_helper::Bl3FileType;
+use bl3_save_edit_core::parser::HeaderType;
 
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
@@ -65,7 +68,8 @@ pub enum Message {
     Interaction(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
     ManageSave(ManageSaveMessage),
-    SaveFileCompleted(MessageResult<()>),
+    SaveFileCompleted(MessageResult<Bl3Save>),
+    SaveProfileCompleted(MessageResult<Bl3Profile>),
     ClearNotification,
 }
 
@@ -96,6 +100,7 @@ pub enum InteractionMessage {
 #[derive(Debug, PartialEq)]
 pub enum ViewState {
     Initializing,
+    Loading,
     ChooseSaveDirectory,
     ManageSave(ManageSaveView),
     ManageProfile(ManageProfileView),
@@ -114,7 +119,7 @@ impl Application for Bl3Ui {
 
     fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
         let initialization_tasks = [Command::perform(initialization::load_lazy_data(), |_| {
-            Message::Initialization(InitializationMessage::LoadLazyData)
+            Message::Initialization(InitializationMessage::Initializing)
         })];
 
         (
@@ -137,7 +142,7 @@ impl Application for Bl3Ui {
     ) -> Command<Self::Message> {
         match message {
             Message::Initialization(initialization_msg) => match initialization_msg {
-                InitializationMessage::LoadLazyData => {
+                InitializationMessage::Initializing => {
                     self.view_state = ViewState::ChooseSaveDirectory;
                 }
             },
@@ -509,9 +514,13 @@ impl Application for Bl3Ui {
                                     .join(&self.manage_save_state.current_file.file_name);
 
                                 match current_file.to_bytes() {
-                                    Ok(output) => {
+                                    Ok((output, save_file)) => {
                                         return Command::perform(
-                                            interaction::save_file::save_file(output_file, output),
+                                            interaction::save::save_file(
+                                                output_file,
+                                                output,
+                                                save_file,
+                                            ),
                                             |r| {
                                                 Message::SaveFileCompleted(
                                                     MessageResult::handle_result(r),
@@ -754,11 +763,15 @@ impl Application for Bl3Ui {
                                     .join(&self.manage_profile_state.current_file.file_name);
 
                                 match current_file.to_bytes() {
-                                    Ok(output) => {
+                                    Ok((output, profile)) => {
                                         return Command::perform(
-                                            interaction::save_file::save_file(output_file, output),
+                                            interaction::save::save_profile(
+                                                output_file,
+                                                output,
+                                                profile,
+                                            ),
                                             |r| {
-                                                Message::SaveFileCompleted(
+                                                Message::SaveProfileCompleted(
                                                     MessageResult::handle_result(r),
                                                 )
                                             },
@@ -791,6 +804,8 @@ impl Application for Bl3Ui {
                     match choose_dir_res {
                         MessageResult::Success(dir) => {
                             self.choose_save_directory_state.saves_dir = dir.clone();
+
+                            self.view_state = ViewState::Loading;
 
                             return Command::perform(
                                 interaction::choose_save_directory::load_files_in_directory(dir),
@@ -826,6 +841,8 @@ impl Application for Bl3Ui {
                     MessageResult::Error(e) => {
                         let msg = format!("Failed to load save directory: {}", e);
 
+                        self.view_state = ViewState::ChooseSaveDirectory;
+
                         self.notification =
                             Some(Notification::new(msg, NotificationSentiment::Negative));
                     }
@@ -842,25 +859,84 @@ impl Application for Bl3Ui {
                 },
             },
             Message::SaveFileCompleted(res) => match res {
-                MessageResult::Success(_) => {
+                MessageResult::Success(save) => {
                     self.notification = Some(Notification::new(
                         "Successfully saved file!",
                         NotificationSentiment::Positive,
                     ));
 
-                    return Command::perform(
-                        interaction::choose_save_directory::load_files_in_directory(
-                            self.choose_save_directory_state.saves_dir.clone(),
-                        ),
-                        |r| {
-                            Message::ChooseSave(ChooseSaveMessage::LoadedFiles(
-                                MessageResult::handle_result(r),
-                            ))
-                        },
-                    );
+                    let loaded_file_selected = &*self.loaded_files_selected;
+
+                    let loaded_file = self
+                        .loaded_files
+                        .iter_mut()
+                        .find(|f| *f == loaded_file_selected)
+                        .expect("failed to find loaded file");
+
+                    self.manage_save_state.current_file = save.clone();
+
+                    let save_file_name = save.file_name.clone();
+
+                    let bl3_file_type = match save.header_type {
+                        HeaderType::PcSave => Bl3FileType::PcSave(save),
+                        HeaderType::Ps4Save => Bl3FileType::Ps4Save(save),
+                        _ => panic!("Unexpected Bl3FileType when reloading save"),
+                    };
+
+                    if loaded_file.filename() == save_file_name {
+                        *loaded_file = bl3_file_type.clone();
+                    } else {
+                        self.loaded_files.push(bl3_file_type.clone());
+                    }
+
+                    self.loaded_files.sort();
+
+                    self.loaded_files_selected = Box::new(bl3_file_type);
                 }
                 MessageResult::Error(e) => {
                     let msg = format!("Failed to save file: {}", e);
+
+                    self.notification =
+                        Some(Notification::new(msg, NotificationSentiment::Negative));
+                }
+            },
+            Message::SaveProfileCompleted(res) => match res {
+                MessageResult::Success(profile) => {
+                    self.notification = Some(Notification::new(
+                        "Successfully saved profile!",
+                        NotificationSentiment::Positive,
+                    ));
+
+                    let loaded_file_selected = &*self.loaded_files_selected;
+
+                    let loaded_file = self
+                        .loaded_files
+                        .iter_mut()
+                        .find(|f| *f == loaded_file_selected)
+                        .expect("failed to find loaded file");
+
+                    self.manage_profile_state.current_file = profile.clone();
+
+                    let profile_file_name = profile.file_name.clone();
+
+                    let bl3_file_type = match profile.header_type {
+                        HeaderType::PcProfile => Bl3FileType::PcProfile(profile),
+                        HeaderType::Ps4Profile => Bl3FileType::Ps4Profile(profile),
+                        _ => panic!("Unexpected Bl3FileType when reloading profile"),
+                    };
+
+                    if loaded_file.filename() == profile_file_name {
+                        *loaded_file = bl3_file_type.clone();
+                    } else {
+                        self.loaded_files.push(bl3_file_type.clone());
+                    }
+
+                    self.loaded_files.sort();
+
+                    self.loaded_files_selected = Box::new(bl3_file_type);
+                }
+                MessageResult::Error(e) => {
+                    let msg = format!("Failed to save profile: {}", e);
 
                     self.notification =
                         Some(Notification::new(msg, NotificationSentiment::Negative));
@@ -955,6 +1031,7 @@ impl Application for Bl3Ui {
 
         let content = match &self.view_state {
             ViewState::Initializing => views::initialization::view(),
+            ViewState::Loading => views::loading::view(),
             ViewState::ChooseSaveDirectory => {
                 views::choose_save_directory::view(&mut self.choose_save_directory_state)
             }

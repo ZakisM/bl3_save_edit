@@ -102,7 +102,7 @@ impl Bl3Profile {
         Self::from_file_data(&file_data, header_type)
     }
 
-    pub fn to_bytes(&self) -> Result<Vec<u8>> {
+    pub fn to_bytes(&self) -> Result<(Vec<u8>, Bl3Profile)> {
         let mut output = Vec::new();
 
         output.write_all(b"GVAS")?;
@@ -131,11 +131,10 @@ impl Bl3Profile {
         output.append(&mut data);
 
         //Now try re-reading it also - there's no point making an invalid save
-        //TODO: Instead of refreshing dir after save - reload only this save using below
         let file_name = Path::new(&self.file_name);
-        let _ = Self::from_bytes(file_name, &output, self.header_type)?;
+        let new_profile = Self::from_bytes(file_name, &output, self.header_type)?;
 
-        Ok(output)
+        Ok((output, new_profile))
     }
 }
 

@@ -97,7 +97,7 @@ impl Bl3Save {
         Self::from_file_data(&file_data, header_type)
     }
 
-    pub fn to_bytes(&self) -> Result<Vec<u8>> {
+    pub fn to_bytes(&self) -> Result<(Vec<u8>, Bl3Save)> {
         let mut output = Vec::new();
 
         output.write_all(b"GVAS")?;
@@ -126,11 +126,10 @@ impl Bl3Save {
         output.append(&mut data);
 
         //Now try re-reading it also - there's no point making an invalid save
-        //TODO: Instead of refreshing dir after save - reload only this save using below
         let file_name = Path::new(&self.file_name);
-        let _ = Self::from_bytes(file_name, &output, self.header_type)?;
+        let new_save = Self::from_bytes(file_name, &output, self.header_type)?;
 
-        Ok(output)
+        Ok((output, new_save))
     }
 }
 

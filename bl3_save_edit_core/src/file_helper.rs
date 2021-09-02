@@ -121,4 +121,13 @@ impl Bl3FileType {
             bail!("Could not recognize file type.")
         }
     }
+
+    pub fn filename(&self) -> &str {
+        match self {
+            Bl3FileType::PcSave(s) => &s.file_name,
+            Bl3FileType::PcProfile(p) => &p.file_name,
+            Bl3FileType::Ps4Save(s) => &s.file_name,
+            Bl3FileType::Ps4Profile(p) => &p.file_name,
+        }
+    }
 }

@@ -11,6 +11,7 @@ use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 pub mod choose_save_directory;
 pub mod initialization;
 pub mod item_editor;
+pub mod loading;
 pub mod manage_profile;
 pub mod manage_save;
 
