@@ -15,6 +15,7 @@ futures = "0.3"
 anyhow = "1.0"
 derivative = "2.2.0"
 heck = "0.3"
+toml = "0.5"
 
 [dependencies.uuid]
 version = "0.8"
@@ -30,10 +31,14 @@ version = "0.4.4"
 
 [dependencies.tokio]
 version = "1"
-features = ["fs", "rt-multi-thread", "rt"]
+features = ["io-util", "fs", "rt-multi-thread", "rt"]
 
 [dependencies.strum]
 version = "0.21"
+features = ["derive"]
+
+[dependencies.serde]
+version = "1"
 features = ["derive"]
 
 [dependencies.iced]

@@ -1,11 +1,13 @@
 use iced::{Align, Color, Container, Length, Text};
 
 use crate::bl3_ui::Message;
+use crate::config::Config;
 use crate::resources::fonts::JETBRAINS_MONO;
 
 #[derive(Debug, Clone)]
 pub enum InitializationMessage {
-    Initializing,
+    LazyData,
+    Config(Config),
 }
 
 pub fn view<'a>() -> Container<'a, Message> {

@@ -19,7 +19,7 @@ pub struct ChooseSaveDirectoryState {
 #[derive(Debug, Clone)]
 pub enum ChooseSaveMessage {
     ChooseDirCompleted(MessageResult<PathBuf>),
-    LoadedFiles(MessageResult<Vec<Bl3FileType>>),
+    FilesLoaded(MessageResult<(PathBuf, Vec<Bl3FileType>)>),
 }
 
 #[derive(Debug, Clone)]

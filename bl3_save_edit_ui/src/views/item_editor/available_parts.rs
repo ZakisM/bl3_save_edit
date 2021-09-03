@@ -3,6 +3,7 @@ use iced::{
     Scrollable, Text,
 };
 
+use bl3_save_edit_core::bl3_save::bl3_item::Bl3Item;
 use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart};
 
 use crate::bl3_ui::{InteractionMessage, Message};
@@ -143,6 +144,7 @@ pub struct AvailableParts {
 impl AvailableParts {
     pub fn view<F>(
         &mut self,
+        item: &Bl3Item,
         anointments_list: &[ResourceCategorizedParts],
         specific_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
@@ -181,59 +183,63 @@ impl AvailableParts {
 
         let mut available_parts_column = Column::new().push(Container::new(title_row));
 
-        let available_parts = match self.parts_tab_view {
-            AvailablePartType::Parts => {
-                let specific_parts = specific_parts_list.map(|i| {
-                    AvailableCategorizedPart::from_resource_categorized_parts(
-                        AvailablePartType::Parts,
-                        i,
-                    )
-                });
-
-                let all_parts = all_parts_list.map(|i| {
-                    AvailableCategorizedPart::from_resource_categorized_parts(
-                        AvailablePartType::Parts,
-                        i,
-                    )
-                });
-
-                let checkbox =
-                    Checkbox::new(self.show_all_available_parts, "Show All Parts", move |c| {
-                        interaction_message(
-                            ItemEditorInteractionMessage::ShowAllAvailablePartsSelected(c),
+        let available_parts = if item.item_parts.is_some() {
+            match self.parts_tab_view {
+                AvailablePartType::Parts => {
+                    let specific_parts = specific_parts_list.map(|i| {
+                        AvailableCategorizedPart::from_resource_categorized_parts(
+                            AvailablePartType::Parts,
+                            i,
                         )
-                    })
-                    .size(17)
-                    .font(JETBRAINS_MONO_BOLD)
-                    .text_color(Color::from_rgb8(220, 220, 220))
-                    .text_size(17)
-                    .style(Bl3UiStyle)
-                    .into_element();
+                    });
 
-                if specific_parts.is_some() {
-                    available_parts_column = available_parts_column.push(
-                        Container::new(
-                            Container::new(checkbox)
-                                .padding(15)
-                                .width(Length::Fill)
-                                .style(Bl3UiStyleNoBorder),
+                    let all_parts = all_parts_list.map(|i| {
+                        AvailableCategorizedPart::from_resource_categorized_parts(
+                            AvailablePartType::Parts,
+                            i,
                         )
-                        .padding(1),
-                    );
+                    });
+
+                    let checkbox =
+                        Checkbox::new(self.show_all_available_parts, "Show All Parts", move |c| {
+                            interaction_message(
+                                ItemEditorInteractionMessage::ShowAllAvailablePartsSelected(c),
+                            )
+                        })
+                        .size(17)
+                        .font(JETBRAINS_MONO_BOLD)
+                        .text_color(Color::from_rgb8(220, 220, 220))
+                        .text_size(17)
+                        .style(Bl3UiStyle)
+                        .into_element();
+
+                    if specific_parts.is_some() {
+                        available_parts_column = available_parts_column.push(
+                            Container::new(
+                                Container::new(checkbox)
+                                    .padding(15)
+                                    .width(Length::Fill)
+                                    .style(Bl3UiStyleNoBorder),
+                            )
+                            .padding(1),
+                        );
+                    }
+
+                    if self.show_all_available_parts || specific_parts.is_none() {
+                        all_parts
+                    } else {
+                        specific_parts
+                    }
                 }
-
-                if self.show_all_available_parts || specific_parts.is_none() {
-                    all_parts
-                } else {
-                    specific_parts
+                AvailablePartType::Anointments => {
+                    Some(AvailableCategorizedPart::from_resource_categorized_parts(
+                        AvailablePartType::Anointments,
+                        anointments_list,
+                    ))
                 }
             }
-            AvailablePartType::Anointments => {
-                Some(AvailableCategorizedPart::from_resource_categorized_parts(
-                    AvailablePartType::Anointments,
-                    anointments_list,
-                ))
-            }
+        } else {
+            None
         };
 
         if let Some(available_parts) = available_parts {
@@ -277,7 +283,7 @@ impl AvailableParts {
         } else {
             available_parts_column = available_parts_column.push(
                 Container::new(
-                    Text::new("No available parts found.")
+                    Text::new("No available parts or anointments found.")
                         .font(JETBRAINS_MONO)
                         .size(17)
                         .color(Color::from_rgb8(220, 220, 220)),

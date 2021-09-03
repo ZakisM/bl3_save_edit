@@ -5,6 +5,7 @@ use crate::bl3_ui::Bl3Ui;
 mod bl3_ui;
 mod bl3_ui_style;
 mod commands;
+mod config;
 mod resources;
 mod state_mappers;
 mod views;

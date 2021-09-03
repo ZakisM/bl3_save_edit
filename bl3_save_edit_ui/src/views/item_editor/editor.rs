@@ -189,11 +189,6 @@ impl Editor {
                             &INVENTORY_INV_DATA_PARTS[..],
                             Some(self.inv_data_input_selected.clone()),
                             move |s| {
-                                // InteractionMessage::ManageSaveInteraction(
-                                //     ManageSaveInteractionMessage::Inventory(
-                                //         SaveInventoryInteractionMessage::InvDataInputSelected(s),
-                                //     ),
-                                // )
                                 interaction_message(
                                     ItemEditorInteractionMessage::InvDataInputSelected(s),
                                 )
@@ -243,6 +238,7 @@ impl Editor {
             .spacing(20);
 
         let available_parts_contents = self.available_parts.view(
+            item,
             anointments_list,
             specific_parts_list,
             all_parts_list,

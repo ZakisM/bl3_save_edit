@@ -1,4 +1,5 @@
 use std::mem;
+use std::path::PathBuf;
 
 use iced::{
     button, pick_list, Align, Application, Button, Clipboard, Color, Column, Command, Container,
@@ -16,6 +17,7 @@ use bl3_save_edit_core::parser::HeaderType;
 
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
 use crate::commands::{initialization, interaction};
+use crate::config::{Config, ConfigMessage};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::state_mappers::{manage_profile, manage_save};
 use crate::views::choose_save_directory::{
@@ -50,6 +52,7 @@ use crate::{state_mappers, views, VERSION};
 
 #[derive(Debug, Default)]
 pub struct Bl3Ui {
+    pub config: Config,
     pub view_state: ViewState,
     choose_save_directory_state: ChooseSaveDirectoryState,
     pub manage_save_state: ManageSaveState,
@@ -65,6 +68,7 @@ pub struct Bl3Ui {
 #[derive(Debug, Clone)]
 pub enum Message {
     Initialization(InitializationMessage),
+    Config(ConfigMessage),
     Interaction(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
     ManageSave(ManageSaveMessage),
@@ -118,16 +122,14 @@ impl Application for Bl3Ui {
     type Flags = ();
 
     fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
-        let initialization_tasks = [Command::perform(initialization::load_lazy_data(), |_| {
-            Message::Initialization(InitializationMessage::Initializing)
-        })];
-
         (
             Bl3Ui {
                 view_state: ViewState::Initializing,
                 ..Bl3Ui::default()
             },
-            Command::batch(initialization_tasks),
+            Command::perform(initialization::load_lazy_data(), |_| {
+                Message::Initialization(InitializationMessage::LazyData)
+            }),
         )
     }
 
@@ -142,9 +144,38 @@ impl Application for Bl3Ui {
     ) -> Command<Self::Message> {
         match message {
             Message::Initialization(initialization_msg) => match initialization_msg {
-                InitializationMessage::Initializing => {
+                InitializationMessage::LazyData => {
+                    //Load config once initialized
+                    return Command::perform(initialization::load_config(), |r| {
+                        Message::Initialization(InitializationMessage::Config(r))
+                    });
+                }
+                InitializationMessage::Config(config) => {
+                    self.config = config;
+
+                    if self.config.saves_dir().exists() {
+                        return Command::perform(
+                            interaction::choose_save_directory::load_files_in_directory(
+                                self.config.saves_dir().to_path_buf(),
+                            ),
+                            |r| {
+                                Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
+                                    MessageResult::handle_result(r),
+                                ))
+                            },
+                        );
+                    } else if *self.config.saves_dir() != PathBuf::default() {
+                        self.notification = Some(Notification::new("Failed to load your previously selected Save/Profile directory. Please select another directory.", NotificationSentiment::Negative));
+                    }
+
                     self.view_state = ViewState::ChooseSaveDirectory;
                 }
+            },
+            Message::Config(config_msg) => match config_msg {
+                ConfigMessage::SaveCompleted(res) => match res {
+                    MessageResult::Success(_) => println!("Successfully saved config."),
+                    MessageResult::Error(e) => eprintln!("Failed to save config: {}", e),
+                },
             },
             Message::Interaction(interaction_msg) => {
                 self.notification = None;
@@ -156,7 +187,9 @@ impl Application for Bl3Ui {
                                 self.choose_save_directory_state.choose_dir_window_open = true;
 
                                 Command::perform(
-                                    interaction::choose_save_directory::choose(),
+                                    interaction::choose_save_directory::choose(
+                                        self.config.saves_dir().to_path_buf(),
+                                    ),
                                     |r| {
                                         Message::ChooseSave(ChooseSaveMessage::ChooseDirCompleted(
                                             MessageResult::handle_result(r),
@@ -810,7 +843,7 @@ impl Application for Bl3Ui {
                             return Command::perform(
                                 interaction::choose_save_directory::load_files_in_directory(dir),
                                 |r| {
-                                    Message::ChooseSave(ChooseSaveMessage::LoadedFiles(
+                                    Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
                                         MessageResult::handle_result(r),
                                     ))
                                 },
@@ -824,8 +857,8 @@ impl Application for Bl3Ui {
                         }
                     }
                 }
-                ChooseSaveMessage::LoadedFiles(loaded_files) => match loaded_files {
-                    MessageResult::Success(mut files) => {
+                ChooseSaveMessage::FilesLoaded(res) => match res {
+                    MessageResult::Success((dir, mut files)) => {
                         files.sort();
                         self.loaded_files = files;
 
@@ -837,6 +870,14 @@ impl Application for Bl3Ui {
                         );
 
                         state_mappers::map_loaded_file_to_state(self);
+
+                        self.config.set_saves_dir(dir);
+
+                        return Command::perform(self.config.clone().save(), |r| {
+                            Message::Config(ConfigMessage::SaveCompleted(
+                                MessageResult::handle_result(r),
+                            ))
+                        });
                     }
                     MessageResult::Error(e) => {
                         let msg = format!("Failed to load save directory: {}", e);

@@ -7,10 +7,14 @@ use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
 #[cfg(not(target_os = "macos"))]
-pub async fn choose() -> Result<PathBuf> {
+pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
     use native_dialog::FileDialog;
 
-    let home_dir = dirs::home_dir().unwrap_or_default();
+    let home_dir = if existing_dir.exists {
+        existing_dir
+    } else {
+        dirs::home_dir().unwrap_or_default()
+    };
 
     #[cfg(target_os = "windows")]
     let default_dir = home_dir.join("Documents/My Games/Borderlands 3/Saved/SaveGames/");
@@ -32,12 +36,16 @@ pub async fn choose() -> Result<PathBuf> {
 }
 
 #[cfg(target_os = "macos")]
-pub async fn choose() -> Result<PathBuf> {
+pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
     use native_dialog::{Dialog, OpenSingleDir};
 
-    let home_dir = dirs::home_dir()
-        .unwrap_or_default()
-        .join("Library/Application Support/GearboxSoftware/OakGame/Saved/SaveGames");
+    let home_dir = if existing_dir.exists() {
+        existing_dir
+    } else {
+        dirs::home_dir()
+            .unwrap_or_default()
+            .join("Library/Application Support/GearboxSoftware/OakGame/Saved/SaveGames")
+    };
 
     let mut default_dir = None;
 
@@ -56,7 +64,7 @@ pub async fn choose() -> Result<PathBuf> {
     Ok(res)
 }
 
-pub async fn load_files_in_directory(dir: PathBuf) -> Result<Vec<Bl3FileType>> {
+pub async fn load_files_in_directory(dir: PathBuf) -> Result<(PathBuf, Vec<Bl3FileType>)> {
     let start_time = tokio::time::Instant::now();
 
     let mut dirs = tokio::fs::read_dir(&*dir).await?;
@@ -103,5 +111,5 @@ pub async fn load_files_in_directory(dir: PathBuf) -> Result<Vec<Bl3FileType>> {
         );
     }
 
-    Ok(all_files)
+    Ok((dir, all_files))
 }
