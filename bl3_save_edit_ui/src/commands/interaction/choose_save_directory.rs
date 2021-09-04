@@ -3,6 +3,7 @@ use std::path::PathBuf;
 
 use anyhow::{bail, Context, Result};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use tracing::{error, info};
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
@@ -83,7 +84,7 @@ pub async fn load_files_in_directory(dir: PathBuf) -> Result<(PathBuf, Vec<Bl3Fi
             {
                 match tokio::fs::read(&path).await {
                     Ok(data) => all_data.push((path, data)),
-                    Err(e) => eprintln!("{}", e),
+                    Err(e) => error!("{}", e),
                 }
             }
         } else {
@@ -104,7 +105,7 @@ pub async fn load_files_in_directory(dir: PathBuf) -> Result<(PathBuf, Vec<Bl3Fi
     }
 
     if let Some(end_time) = tokio::time::Instant::now().checked_duration_since(start_time) {
-        println!(
+        info!(
             "Read {} files in {} milliseconds",
             all_files.len(),
             end_time.as_millis()

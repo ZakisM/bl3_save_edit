@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use anyhow::{bail, Context, Result};
 use serde::{Deserialize, Serialize};
 use tokio::io::AsyncWriteExt;
+use tracing::info;
 
 use crate::bl3_ui::MessageResult;
 
@@ -15,12 +16,12 @@ pub enum ConfigMessage {
 }
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
-pub struct Config {
+pub struct Bl3Config {
     config_dir: PathBuf,
     saves_dir: PathBuf,
 }
 
-impl Config {
+impl Bl3Config {
     pub async fn open_dir() -> Result<()> {
         let config_dir = dirs::config_dir().context("Failed to read folder.")?;
 
@@ -31,22 +32,21 @@ impl Config {
         }
     }
 
-    pub async fn load() -> Self {
+    pub fn load() -> Self {
         let config_dir = dirs::config_dir().unwrap_or_default().join(CONFIG_DIR);
 
-        if let Ok(mut config) = tokio::fs::read(&config_dir.join(CONFIG_NAME))
-            .await
+        if let Ok(mut config) = std::fs::read(&config_dir.join(CONFIG_NAME))
             .map_err(anyhow::Error::new)
-            .and_then(|c| toml::from_slice::<Config>(&c).map_err(anyhow::Error::new))
+            .and_then(|c| toml::from_slice::<Bl3Config>(&c).map_err(anyhow::Error::new))
         {
-            println!("Found existing config");
+            info!("Found existing config");
 
             //Set the config dir in case we ever want to change it from code
             config.config_dir = config_dir;
 
             config
         } else {
-            println!("Creating default config");
+            info!("Creating default config");
 
             Self {
                 config_dir,
@@ -56,12 +56,12 @@ impl Config {
     }
 
     pub async fn save(self) -> Result<()> {
-        println!("Saving config...");
+        info!("Saving config...");
 
         let config_dir = dirs::config_dir().unwrap_or_default().join(CONFIG_DIR);
 
         if !config_dir.exists() {
-            tokio::fs::create_dir(&config_dir).await?;
+            tokio::fs::create_dir_all(&config_dir).await?;
         }
 
         let output = toml::to_vec(&self)?;

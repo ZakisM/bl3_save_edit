@@ -8,6 +8,7 @@ use encoding_rs::mem::decode_latin1;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use serde::Deserialize;
 use strum::{Display, EnumString};
+use tracing::warn;
 
 use crate::bl3_save::arbitrary_bits::{ArbitraryBitVec, ArbitraryBits};
 use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
@@ -316,7 +317,7 @@ impl Bl3Item {
             let num_customs = bits.eat(4)?;
 
             if num_customs != 0 {
-                println!(
+                warn!(
                     "Number of customs should be 0 for this item but it is: {}",
                     num_customs
                 );
@@ -462,7 +463,7 @@ impl Bl3Item {
             .map(|gd| gd.name.to_owned())
         {
             None => {
-                println!(
+                warn!(
                     "set_balance error: no part_inv_key found for: {}",
                     balance_part.ident
                 );

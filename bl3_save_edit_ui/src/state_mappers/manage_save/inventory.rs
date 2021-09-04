@@ -1,4 +1,5 @@
 use anyhow::Result;
+use tracing::info;
 
 use bl3_save_edit_core::bl3_save::Bl3Save;
 
@@ -62,15 +63,15 @@ pub fn map_inventory_state_to_save(
             // If the item we have edited has different serial number
             // Then we replace it
             if *original_serial_number != edited_serial_number {
-                println!("Replacing item at index: {}", i);
+                info!("Replacing item at index: {}", i);
                 save.character_data
                     .replace_inventory_item(i as i32, i, &edited_item.item)?;
             } else {
-                println!("Keeping existing item at index: {}", i);
+                info!("Keeping existing item at index: {}", i);
             }
         } else {
             // Otherwise insert our new item in this slot
-            println!("Inserting item at index: {}", i);
+            info!("Inserting item at index: {}", i);
             save.character_data
                 .insert_inventory_item(i as i32, i, &edited_item.item)?;
         }

@@ -1,4 +1,5 @@
 use anyhow::Result;
+use tracing::info;
 
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
 
@@ -64,16 +65,16 @@ pub fn map_bank_state_to_profile(
             // If the item we have edited has different serial number
             // Then we replace it
             if *original_serial_number != edited_serial_number {
-                println!("Replacing bank item at index: {}", i);
+                info!("Replacing bank item at index: {}", i);
                 profile
                     .profile_data
                     .replace_bank_item(i, &edited_item.item)?;
             } else {
-                println!("Keeping existing bank item at index: {}", i);
+                info!("Keeping existing bank item at index: {}", i);
             }
         } else {
-            // // Otherwise insert our new item in this slot
-            println!("Inserting bank item at index: {}", i);
+            // Otherwise insert our new item in this slot
+            info!("Inserting bank item at index: {}", i);
             profile
                 .profile_data
                 .insert_bank_item(i, &edited_item.item)?;

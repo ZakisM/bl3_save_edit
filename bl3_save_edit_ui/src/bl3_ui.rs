@@ -5,6 +5,7 @@ use iced::{
     button, pick_list, svg, tooltip, Align, Application, Button, Clipboard, Color, Column, Command,
     Container, Element, HorizontalAlignment, Length, PickList, Row, Svg, Text, Tooltip,
 };
+use tracing::{error, info};
 
 use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
@@ -17,7 +18,7 @@ use bl3_save_edit_core::parser::HeaderType;
 
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::commands::{initialization, interaction};
-use crate::config::{Config, ConfigMessage};
+use crate::config::{Bl3Config, ConfigMessage};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::resources::svgs::REFRESH;
 use crate::state_mappers::{manage_profile, manage_save};
@@ -52,8 +53,8 @@ use crate::widgets::notification::{Notification, NotificationSentiment};
 use crate::{state_mappers, views, VERSION};
 
 #[derive(Debug, Default)]
-pub struct Bl3Ui {
-    pub config: Config,
+pub struct Bl3Application {
+    pub config: Bl3Config,
     pub view_state: ViewState,
     choose_save_directory_state: ChooseSaveDirectoryState,
     pub manage_save_state: ManageSaveState,
@@ -122,16 +123,17 @@ impl std::default::Default for ViewState {
     }
 }
 
-impl Application for Bl3Ui {
+impl Application for Bl3Application {
     type Executor = tokio::runtime::Runtime;
     type Message = Message;
-    type Flags = ();
+    type Flags = Bl3Config;
 
-    fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
+    fn new(config: Self::Flags) -> (Self, Command<Self::Message>) {
         (
-            Bl3Ui {
+            Bl3Application {
+                config,
                 view_state: ViewState::Initializing,
-                ..Bl3Ui::default()
+                ..Bl3Application::default()
             },
             Command::perform(initialization::load_lazy_data(), |_| {
                 Message::Initialization(InitializationMessage::LazyData)
@@ -151,14 +153,6 @@ impl Application for Bl3Ui {
         match message {
             Message::Initialization(initialization_msg) => match initialization_msg {
                 InitializationMessage::LazyData => {
-                    //Load config once initialized
-                    return Command::perform(initialization::load_config(), |r| {
-                        Message::Initialization(InitializationMessage::Config(r))
-                    });
-                }
-                InitializationMessage::Config(config) => {
-                    self.config = config;
-
                     if self.config.saves_dir().exists() {
                         return Command::perform(
                             interaction::choose_save_directory::load_files_in_directory(
@@ -171,7 +165,10 @@ impl Application for Bl3Ui {
                             },
                         );
                     } else if *self.config.saves_dir() != PathBuf::default() {
-                        self.notification = Some(Notification::new("Failed to load your previously selected Save/Profile folder. Please select another folder.", NotificationSentiment::Negative));
+                        let msg = "Failed to load your previously selected Save/Profile folder. Please select another folder.";
+
+                        self.notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
                     }
 
                     self.view_state = ViewState::ChooseSaveDirectory;
@@ -179,8 +176,8 @@ impl Application for Bl3Ui {
             },
             Message::Config(config_msg) => match config_msg {
                 ConfigMessage::SaveCompleted(res) => match res {
-                    MessageResult::Success(_) => println!("Successfully saved config."),
-                    MessageResult::Error(e) => eprintln!("Failed to save config: {}", e),
+                    MessageResult::Success(_) => info!("Successfully saved config."),
+                    MessageResult::Error(e) => error!("Failed to save config: {}", e),
                 },
             },
             Message::Interaction(interaction_msg) => {
@@ -539,6 +536,8 @@ impl Application for Bl3Ui {
                                 ) {
                                     let msg = format!("Failed to save file: {}", e);
 
+                                    error!("{}", msg);
+
                                     self.notification = Some(Notification::new(
                                         msg,
                                         NotificationSentiment::Negative,
@@ -571,6 +570,8 @@ impl Application for Bl3Ui {
                                     }
                                     Err(e) => {
                                         let msg = format!("Failed to save file: {}", e);
+
+                                        error!("{}", msg);
 
                                         self.notification = Some(Notification::new(
                                             msg,
@@ -790,6 +791,8 @@ impl Application for Bl3Ui {
                                 ) {
                                     let msg = format!("Failed to save profile: {}", e);
 
+                                    error!("{}", msg);
+
                                     self.notification = Some(Notification::new(
                                         msg,
                                         NotificationSentiment::Negative,
@@ -823,6 +826,8 @@ impl Application for Bl3Ui {
                                     Err(e) => {
                                         let msg = format!("Failed to save file: {}", e);
 
+                                        error!("{}", msg);
+
                                         self.notification = Some(Notification::new(
                                             msg,
                                             NotificationSentiment::Negative,
@@ -838,7 +843,7 @@ impl Application for Bl3Ui {
                         state_mappers::map_loaded_file_to_state(self);
                     }
                     InteractionMessage::OpenBackupFolder => {
-                        return Command::perform(Config::open_dir(), |r| {
+                        return Command::perform(Bl3Config::open_dir(), |r| {
                             Message::OpenBackupFolderCompleted(MessageResult::handle_result(r))
                         });
                     }
@@ -879,6 +884,8 @@ impl Application for Bl3Ui {
                         MessageResult::Error(e) => {
                             let msg = format!("Failed to choose save folder: {}", e);
 
+                            error!("{}", msg);
+
                             self.notification =
                                 Some(Notification::new(msg, NotificationSentiment::Negative));
                         }
@@ -908,6 +915,8 @@ impl Application for Bl3Ui {
                     }
                     MessageResult::Error(e) => {
                         let msg = format!("Failed to load save folder: {}", e);
+
+                        error!("{}", msg);
 
                         self.view_state = ViewState::ChooseSaveDirectory;
 
@@ -948,7 +957,12 @@ impl Application for Bl3Ui {
                     let bl3_file_type = match save.header_type {
                         HeaderType::PcSave => Bl3FileType::PcSave(save),
                         HeaderType::Ps4Save => Bl3FileType::Ps4Save(save),
-                        _ => panic!("Unexpected Bl3FileType when reloading save"),
+                        _ => {
+                            let msg = "Unexpected Bl3FileType when reloading save";
+
+                            error!("{}", msg);
+                            panic!("{}", msg);
+                        }
                     };
 
                     if loaded_file.filename() == save_file_name {
@@ -965,6 +979,8 @@ impl Application for Bl3Ui {
                 }
                 MessageResult::Error(e) => {
                     let msg = format!("Failed to save file: {}", e);
+
+                    error!("{}", msg);
 
                     self.notification =
                         Some(Notification::new(msg, NotificationSentiment::Negative));
@@ -992,7 +1008,12 @@ impl Application for Bl3Ui {
                     let bl3_file_type = match profile.header_type {
                         HeaderType::PcProfile => Bl3FileType::PcProfile(profile),
                         HeaderType::Ps4Profile => Bl3FileType::Ps4Profile(profile),
-                        _ => panic!("Unexpected Bl3FileType when reloading profile"),
+                        _ => {
+                            let msg = "Unexpected Bl3FileType when reloading profile";
+
+                            error!("{}", msg);
+                            panic!("{}", msg);
+                        }
                     };
 
                     if loaded_file.filename() == profile_file_name {
@@ -1010,21 +1031,22 @@ impl Application for Bl3Ui {
                 MessageResult::Error(e) => {
                     let msg = format!("Failed to save profile: {}", e);
 
-                    self.notification =
-                        Some(Notification::new(msg, NotificationSentiment::Negative));
-                }
-            },
-            Message::OpenBackupFolderCompleted(res) => match res {
-                MessageResult::Success(_) => {
-                    println!("Successfully opened backup folder");
-                }
-                MessageResult::Error(e) => {
-                    let msg = format!("Failed to open backups folder: {}", e);
+                    error!("{}", msg);
 
                     self.notification =
                         Some(Notification::new(msg, NotificationSentiment::Negative));
                 }
             },
+            Message::OpenBackupFolderCompleted(res) => {
+                if let MessageResult::Error(e) = res {
+                    let msg = format!("Failed to open backups folder: {}", e);
+
+                    error!("{}", msg);
+
+                    self.notification =
+                        Some(Notification::new(msg, NotificationSentiment::Negative));
+                }
+            }
             Message::ClearNotification => {
                 self.notification = None;
             }

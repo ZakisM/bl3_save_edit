@@ -2,6 +2,7 @@ use std::path::PathBuf;
 
 use anyhow::Result;
 use chrono::Local;
+use tracing::info;
 
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
 use bl3_save_edit_core::bl3_save::Bl3Save;
@@ -13,7 +14,7 @@ pub async fn save_file(
     existing_save: Bl3Save,
     new_save: Bl3Save,
 ) -> Result<Bl3Save> {
-    println!(
+    info!(
         "Making a backup of existing save: {}",
         existing_save.file_name
     );
@@ -34,7 +35,7 @@ pub async fn save_file(
 
     tokio::fs::write(config_dir.join(backup_name), existing_save_output).await?;
 
-    println!("Saving file: {}", new_save.file_name);
+    info!("Saving file: {}", new_save.file_name);
 
     tokio::fs::write(output_file, output).await?;
 
@@ -48,7 +49,7 @@ pub async fn save_profile(
     existing_profile: Bl3Profile,
     new_profile: Bl3Profile,
 ) -> Result<Bl3Profile> {
-    println!(
+    info!(
         "Making a backup of existing profile: {}",
         existing_profile.file_name
     );
@@ -65,7 +66,7 @@ pub async fn save_profile(
 
     tokio::fs::write(config_dir.join(backup_name), existing_profile_output).await?;
 
-    println!("Saving profile: {}", new_profile.file_name);
+    info!("Saving profile: {}", new_profile.file_name);
 
     tokio::fs::write(output_file, output).await?;
 

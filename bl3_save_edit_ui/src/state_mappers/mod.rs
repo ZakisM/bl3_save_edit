@@ -2,7 +2,7 @@ use std::mem;
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
-use crate::bl3_ui::Bl3Ui;
+use crate::bl3_ui::Bl3Application;
 use crate::bl3_ui::ViewState;
 use crate::views::manage_profile::main::ProfileTabBarView;
 use crate::views::manage_profile::ManageProfileView;
@@ -12,7 +12,7 @@ use crate::views::manage_save::ManageSaveView;
 pub mod manage_profile;
 pub mod manage_save;
 
-pub fn map_loaded_file_to_state(main_state: &mut Bl3Ui) {
+pub fn map_loaded_file_to_state(main_state: &mut Bl3Application) {
     match &*main_state.loaded_files_selected {
         Bl3FileType::PcSave(save) | Bl3FileType::Ps4Save(save) => {
             //This file will be the one that gets modified when we press save.
