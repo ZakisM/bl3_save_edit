@@ -188,11 +188,13 @@ impl ItemEditorInteractionMessage {
             }
             ItemEditorInteractionMessage::AvailablePartsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
-                    i.editor.available_parts.parts_tab_view = AvailablePartType::Parts
+                    i.editor.available_parts.scrollable_state.snap_to(0.0);
+                    i.editor.available_parts.parts_tab_view = AvailablePartType::Parts;
                 }),
             ItemEditorInteractionMessage::AvailableAnointmentsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
-                    i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments
+                    i.editor.available_parts.scrollable_state.snap_to(0.0);
+                    i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments;
                 }),
             ItemEditorInteractionMessage::AvailablePartPressed(available_part_type_index) => {
                 let selected_item_index = item_editor_state.selected_item_index;
@@ -275,10 +277,12 @@ impl ItemEditorInteractionMessage {
             }
             ItemEditorInteractionMessage::CurrentPartsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
+                    i.editor.current_parts.scrollable_state.snap_to(0.0);
                     i.editor.current_parts.parts_tab_view = CurrentPartType::Parts
                 }),
             ItemEditorInteractionMessage::CurrentAnointmentsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
+                    i.editor.current_parts.scrollable_state.snap_to(0.0);
                     i.editor.current_parts.parts_tab_view = CurrentPartType::Anointments
                 }),
             ItemEditorInteractionMessage::CurrentPartPressed(current_part_type_index) => {
