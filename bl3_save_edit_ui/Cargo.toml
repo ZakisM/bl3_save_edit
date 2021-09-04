@@ -16,6 +16,8 @@ anyhow = "1.0"
 derivative = "2.2.0"
 heck = "0.3"
 toml = "0.5"
+chrono = "0.4"
+open = "2.0"
 
 [dependencies.uuid]
 version = "0.8"

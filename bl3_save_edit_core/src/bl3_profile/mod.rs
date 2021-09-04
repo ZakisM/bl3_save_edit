@@ -102,7 +102,7 @@ impl Bl3Profile {
         Self::from_file_data(&file_data, header_type)
     }
 
-    pub fn to_bytes(&self) -> Result<(Vec<u8>, Bl3Profile)> {
+    pub fn as_bytes(&self) -> Result<(Vec<u8>, Bl3Profile)> {
         let mut output = Vec::new();
 
         output.write_all(b"GVAS")?;

@@ -1,5 +1,6 @@
 //Save/Profile Editor
 pub const GENERAL: &[u8] = include_bytes!("../../resources/svg/general.svg");
+pub const REFRESH: &[u8] = include_bytes!("../../resources/svg/refresh.svg");
 
 //Save Editor
 pub const CHARACTER: &[u8] = include_bytes!("../../resources/svg/character.svg");

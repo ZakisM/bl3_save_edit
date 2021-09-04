@@ -2,8 +2,8 @@ use std::mem;
 use std::path::PathBuf;
 
 use iced::{
-    button, pick_list, Align, Application, Button, Clipboard, Color, Column, Command, Container,
-    Element, HorizontalAlignment, Length, PickList, Row, Text,
+    button, pick_list, svg, tooltip, Align, Application, Button, Clipboard, Color, Column, Command,
+    Container, Element, HorizontalAlignment, Length, PickList, Row, Svg, Text, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
@@ -15,10 +15,11 @@ use bl3_save_edit_core::bl3_save::Bl3Save;
 use bl3_save_edit_core::file_helper::Bl3FileType;
 use bl3_save_edit_core::parser::HeaderType;
 
-use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle};
+use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::commands::{initialization, interaction};
 use crate::config::{Config, ConfigMessage};
 use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::resources::svgs::REFRESH;
 use crate::state_mappers::{manage_profile, manage_save};
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
@@ -60,7 +61,9 @@ pub struct Bl3Ui {
     loaded_files_selector: pick_list::State<Bl3FileType>,
     pub loaded_files_selected: Box<Bl3FileType>,
     loaded_files: Vec<Bl3FileType>,
+    backups_button_state: button::State,
     change_dir_button_state: button::State,
+    refresh_button_state: button::State,
     save_file_button_state: button::State,
     notification: Option<Notification>,
 }
@@ -74,6 +77,7 @@ pub enum Message {
     ManageSave(ManageSaveMessage),
     SaveFileCompleted(MessageResult<Bl3Save>),
     SaveProfileCompleted(MessageResult<Bl3Profile>),
+    OpenBackupFolderCompleted(MessageResult<()>),
     ClearNotification,
 }
 
@@ -98,6 +102,8 @@ pub enum InteractionMessage {
     ManageSaveInteraction(ManageSaveInteractionMessage),
     ManageProfileInteraction(ManageProfileInteractionMessage),
     LoadedFileSelected(Box<Bl3FileType>),
+    OpenBackupFolder,
+    RefreshSavesDirectory,
     Ignore,
 }
 
@@ -165,7 +171,7 @@ impl Application for Bl3Ui {
                             },
                         );
                     } else if *self.config.saves_dir() != PathBuf::default() {
-                        self.notification = Some(Notification::new("Failed to load your previously selected Save/Profile directory. Please select another directory.", NotificationSentiment::Negative));
+                        self.notification = Some(Notification::new("Failed to load your previously selected Save/Profile folder. Please select another folder.", NotificationSentiment::Negative));
                     }
 
                     self.view_state = ViewState::ChooseSaveDirectory;
@@ -542,16 +548,18 @@ impl Application for Bl3Ui {
                                 }
 
                                 let output_file = self
-                                    .choose_save_directory_state
-                                    .saves_dir
+                                    .config
+                                    .saves_dir()
                                     .join(&self.manage_save_state.current_file.file_name);
 
-                                match current_file.to_bytes() {
+                                match current_file.as_bytes() {
                                     Ok((output, save_file)) => {
                                         return Command::perform(
                                             interaction::save::save_file(
+                                                self.config.config_dir().to_path_buf(),
                                                 output_file,
                                                 output,
+                                                self.manage_save_state.current_file.clone(),
                                                 save_file,
                                             ),
                                             |r| {
@@ -791,16 +799,18 @@ impl Application for Bl3Ui {
                                 }
 
                                 let output_file = self
-                                    .choose_save_directory_state
-                                    .saves_dir
+                                    .config
+                                    .saves_dir()
                                     .join(&self.manage_profile_state.current_file.file_name);
 
-                                match current_file.to_bytes() {
+                                match current_file.as_bytes() {
                                     Ok((output, profile)) => {
                                         return Command::perform(
                                             interaction::save::save_profile(
+                                                self.config.config_dir().to_path_buf(),
                                                 output_file,
                                                 output,
+                                                self.manage_profile_state.current_file.clone(),
                                                 profile,
                                             ),
                                             |r| {
@@ -827,6 +837,25 @@ impl Application for Bl3Ui {
 
                         state_mappers::map_loaded_file_to_state(self);
                     }
+                    InteractionMessage::OpenBackupFolder => {
+                        return Command::perform(Config::open_dir(), |r| {
+                            Message::OpenBackupFolderCompleted(MessageResult::handle_result(r))
+                        });
+                    }
+                    InteractionMessage::RefreshSavesDirectory => {
+                        self.view_state = ViewState::Loading;
+
+                        return Command::perform(
+                            interaction::choose_save_directory::load_files_in_directory(
+                                self.config.saves_dir().to_path_buf(),
+                            ),
+                            |r| {
+                                Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
+                                    MessageResult::handle_result(r),
+                                ))
+                            },
+                        );
+                    }
                     InteractionMessage::Ignore => {}
                 }
             }
@@ -836,8 +865,6 @@ impl Application for Bl3Ui {
 
                     match choose_dir_res {
                         MessageResult::Success(dir) => {
-                            self.choose_save_directory_state.saves_dir = dir.clone();
-
                             self.view_state = ViewState::Loading;
 
                             return Command::perform(
@@ -850,7 +877,7 @@ impl Application for Bl3Ui {
                             );
                         }
                         MessageResult::Error(e) => {
-                            let msg = format!("Failed to choose save directory: {}", e);
+                            let msg = format!("Failed to choose save folder: {}", e);
 
                             self.notification =
                                 Some(Notification::new(msg, NotificationSentiment::Negative));
@@ -880,7 +907,7 @@ impl Application for Bl3Ui {
                         });
                     }
                     MessageResult::Error(e) => {
-                        let msg = format!("Failed to load save directory: {}", e);
+                        let msg = format!("Failed to load save folder: {}", e);
 
                         self.view_state = ViewState::ChooseSaveDirectory;
 
@@ -987,6 +1014,17 @@ impl Application for Bl3Ui {
                         Some(Notification::new(msg, NotificationSentiment::Negative));
                 }
             },
+            Message::OpenBackupFolderCompleted(res) => match res {
+                MessageResult::Success(_) => {
+                    println!("Successfully opened backup folder");
+                }
+                MessageResult::Error(e) => {
+                    let msg = format!("Failed to open backups folder: {}", e);
+
+                    self.notification =
+                        Some(Notification::new(msg, NotificationSentiment::Negative));
+                }
+            },
             Message::ClearNotification => {
                 self.notification = None;
             }
@@ -1003,14 +1041,46 @@ impl Application for Bl3Ui {
             .width(Length::Fill)
             .horizontal_alignment(HorizontalAlignment::Left);
 
+        let backups_button = Button::new(
+            &mut self.backups_button_state,
+            Text::new("Open Backup Folder")
+                .font(JETBRAINS_MONO_BOLD)
+                .size(17),
+        )
+        .on_press(InteractionMessage::OpenBackupFolder)
+        .padding(10)
+        .style(Bl3UiStyle)
+        .into_element();
+
         let mut change_dir_button = Button::new(
             &mut self.change_dir_button_state,
-            Text::new("Change Folder")
+            Text::new("Change Saves Folder")
                 .font(JETBRAINS_MONO_BOLD)
                 .size(17),
         )
         .padding(10)
         .style(Bl3UiStyle);
+
+        let refresh_icon_handle = svg::Handle::from_memory(REFRESH);
+
+        let refresh_icon = Svg::new(refresh_icon_handle)
+            .height(Length::Units(17))
+            .width(Length::Units(17));
+
+        let refresh_button = Tooltip::new(
+            Button::new(&mut self.refresh_button_state, refresh_icon)
+                .on_press(InteractionMessage::RefreshSavesDirectory)
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            "Refresh saves folder",
+            tooltip::Position::Bottom,
+        )
+        .gap(10)
+        .padding(10)
+        .font(JETBRAINS_MONO)
+        .size(17)
+        .style(Bl3UiTooltipStyle);
 
         if !self.choose_save_directory_state.choose_dir_window_open {
             change_dir_button =
@@ -1064,7 +1134,9 @@ impl Application for Bl3Ui {
 
         if view_state_discrim == manage_save_discrim || view_state_discrim == manage_profile_discrim
         {
+            menu_bar_content = menu_bar_content.push(backups_button);
             menu_bar_content = menu_bar_content.push(change_dir_button.into_element());
+            menu_bar_content = menu_bar_content.push(refresh_button);
             menu_bar_content = menu_bar_content.push(all_saves_picklist);
             menu_bar_content = menu_bar_content.push(save_button.into_element());
         }

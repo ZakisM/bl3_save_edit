@@ -13,7 +13,6 @@ use crate::views::InteractionExt;
 pub struct ChooseSaveDirectoryState {
     choose_dir_button_state: button::State,
     pub choose_dir_window_open: bool,
-    pub saves_dir: PathBuf,
 }
 
 #[derive(Debug, Clone)]
@@ -28,7 +27,7 @@ pub enum ChooseSaveInteractionMessage {
 }
 
 pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Container<Message> {
-    let dir_button_text = Text::new("Select Borderlands 3 Save/Profile directory")
+    let dir_button_text = Text::new("Select Borderlands 3 Save/Profile folder")
         .font(JETBRAINS_MONO)
         .size(20)
         .color(Color::from_rgb8(220, 220, 220));
