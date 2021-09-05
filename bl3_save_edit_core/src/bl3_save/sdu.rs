@@ -1,4 +1,4 @@
-use strum::{Display, EnumIter, EnumString};
+use strum::{Display, EnumIter, EnumMessage, EnumString};
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct SaveSduSlotData {
@@ -7,7 +7,9 @@ pub struct SaveSduSlotData {
     pub max: i32,
 }
 
-#[derive(Debug, Display, EnumString, EnumIter, Eq, PartialEq, Ord, PartialOrd, Clone)]
+#[derive(
+    Debug, Display, EnumString, EnumIter, EnumMessage, Eq, PartialEq, Ord, PartialOrd, Clone,
+)]
 pub enum SaveSduSlot {
     #[strum(
         serialize = "/Game/Pickups/SDU/SDU_Backpack.SDU_Backpack",
@@ -56,7 +58,7 @@ impl std::default::Default for SaveSduSlot {
 
 impl SaveSduSlot {
     pub fn maximum(&self) -> i32 {
-        match *self {
+        match self {
             SaveSduSlot::Backpack | SaveSduSlot::Sniper | SaveSduSlot::Heavy => 13,
             SaveSduSlot::Shotgun
             | SaveSduSlot::Pistol

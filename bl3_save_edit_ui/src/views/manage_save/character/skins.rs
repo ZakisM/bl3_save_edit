@@ -9,11 +9,11 @@ use bl3_save_edit_core::game_data::{
     PROFILE_HEADS_DEFAULTS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS,
 };
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_save::character::{
-    CharacterInteractionMessage, CharacterSkinSelectedMessage,
+    CharacterSkinSelectedMessage, SaveCharacterInteractionMessage,
 };
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
@@ -66,7 +66,7 @@ impl SkinPickList {
         }
     }
 
-    pub fn view(&mut self, player_class: Option<&PlayerClass>) -> Container<Message> {
+    pub fn view(&mut self, player_class: Option<&PlayerClass>) -> Container<Bl3Message> {
         let on_selected = self.on_selected.clone();
 
         let available_skins = if let Some(player_class) = player_class {
@@ -96,7 +96,7 @@ impl SkinPickList {
                     move |s| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                CharacterInteractionMessage::SkinMessage(on_selected(s)),
+                                SaveCharacterInteractionMessage::SkinMessage(on_selected(s)),
                             ),
                         )
                     },
@@ -152,7 +152,7 @@ impl std::default::Default for SkinSelectors {
 }
 
 impl SkinSelectors {
-    pub fn view(&mut self, player_class: &PlayerClass) -> Container<Message> {
+    pub fn view(&mut self, player_class: &PlayerClass) -> Container<Bl3Message> {
         let head_skin = self.head_skin.view(Some(player_class));
         let character_skin = self.character_skin.view(Some(player_class));
         let echo_theme = self.echo_theme.view(None);

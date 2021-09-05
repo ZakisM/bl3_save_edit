@@ -1,4 +1,3 @@
-use std::collections::HashSet;
 use std::convert::TryInto;
 use std::io::Read;
 
@@ -68,17 +67,17 @@ impl InventorySerialDb {
         Ok(cur_bits as usize)
     }
 
-    pub fn get_part(&self, category: &str, index: usize) -> Result<String> {
+    pub fn get_part_ident(&self, category: &str, index: usize) -> Result<String> {
         let assets = self.data[category]["assets"].members();
 
         if index > assets.len() {
-            bail!("index was greater than assets length")
+            bail!("Index was greater than assets length.")
         } else {
             Ok(self.data[category]["assets"][index - 1].to_string())
         }
     }
 
-    pub fn get_part_by_name(&self, category: &str, name: &str) -> Result<Bl3Part> {
+    pub fn get_part_by_short_name(&self, category: &str, name: &str) -> Result<Bl3Part> {
         let part_info = self.data[category]["assets"]
             .members()
             .into_iter()
@@ -91,33 +90,17 @@ impl InventorySerialDb {
             let res = Bl3Part {
                 ident,
                 short_ident: Some(name.to_owned()),
-                idx,
+                idx: idx + 1,
             };
 
             Ok(res)
         } else {
             //This should never happen but lets leave it here just in case
             bail!(
-                "failed to find part from inventory serial db - category: {}, name: {}",
+                "Failed to find part from inventory serial db - category: {}, name: {}",
                 category,
                 name
             )
         }
-    }
-
-    // Use this to ensure we only show Available Parts in the UI that we can actually add to the weapon
-    pub fn par_all_parts(&self) -> HashSet<String> {
-        self.data
-            .entries()
-            .par_bridge()
-            .map(|(category, _)| {
-                self.data[category]["assets"]
-                    .members()
-                    .par_bridge()
-                    .filter_map(|p| p.to_string().rsplit('.').next().map(|s| s.to_owned()))
-                    .collect::<HashSet<_>>()
-            })
-            .flatten()
-            .collect::<HashSet<_>>()
     }
 }

@@ -1,190 +1,109 @@
-use iced::{
-    button, container, svg, Align, Button, Color, Column, Container, Element, HorizontalAlignment,
-    Length, Row, Svg, Text,
-};
+use iced::{button, svg, Column, Container, Length, Row};
 use strum::Display;
 
-use crate::bl3_ui::{InteractionMessage, Message};
-use crate::resources::fonts::JETBRAINS_MONO_BOLD;
-use crate::resources::svgs::{CHARACTER, CURRENCY, FAST_TRAVEL, INVENTORY, SETTINGS};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
+use crate::resources::svgs::{CHARACTER, CURRENCY, GENERAL, INVENTORY};
 use crate::views::manage_save::character::CharacterState;
 use crate::views::manage_save::currency::CurrencyState;
-use crate::views::manage_save::fast_travel::FastTravelState;
 use crate::views::manage_save::general::GeneralState;
 use crate::views::manage_save::inventory::InventoryState;
 use crate::views::manage_save::{
-    character, currency, fast_travel, general, inventory, ManageSaveInteractionMessage,
-    ManageSaveState,
+    character, currency, general, inventory, ManageSaveInteractionMessage, ManageSaveState,
 };
-use crate::views::InteractionExt;
+use crate::views::{tab_bar_button, ManageTabBarStyle};
 
 #[derive(Debug, Default)]
-pub struct MainState {
-    tab_bar_state: TabBarState,
+pub struct SaveViewState {
+    tab_bar_state: SaveTabBarState,
     pub general_state: GeneralState,
     pub character_state: CharacterState,
     pub currency_state: CurrencyState,
     pub inventory_state: InventoryState,
-    pub fast_travel_state: FastTravelState,
 }
 
 #[derive(Debug, Default)]
-pub struct TabBarState {
+pub struct SaveTabBarState {
     general_button_state: button::State,
     character_button_state: button::State,
     inventory_button_state: button::State,
     currency_button_state: button::State,
-    fast_travel_button_state: button::State,
 }
 
 #[derive(Debug, Clone)]
-pub enum MainTabBarInteractionMessage {
+pub enum SaveTabBarInteractionMessage {
     General,
     Character,
     Inventory,
     Currency,
-    FastTravel,
 }
 
 #[derive(Debug, Display, PartialEq)]
 #[strum(serialize_all = "title_case")]
-pub enum MainTabBarView {
+pub enum SaveTabBarView {
     General,
     Character,
     Inventory,
     Currency,
-    FastTravel,
-}
-
-struct ManageSaveTabBarActiveStyle;
-
-impl button::StyleSheet for ManageSaveTabBarActiveStyle {
-    fn active(&self) -> button::Style {
-        button::Style {
-            background: Some(Color::from_rgb8(25, 25, 25).into()),
-            text_color: Color::from_rgb8(242, 203, 5),
-            ..button::Style::default()
-        }
-    }
-
-    fn hovered(&self) -> button::Style {
-        button::Style {
-            background: Some(Color::from_rgb8(25, 25, 25).into()),
-            text_color: Color::from_rgb8(255, 199, 38),
-            ..button::Style::default()
-        }
-    }
-
-    fn pressed(&self) -> button::Style {
-        button::Style {
-            background: Some(Color::from_rgb8(25, 25, 25).into()),
-            text_color: Color::from_rgb8(255, 199, 38),
-            ..button::Style::default()
-        }
-    }
-}
-
-struct ManageSaveTabBarStyle;
-
-impl container::StyleSheet for ManageSaveTabBarStyle {
-    fn style(&self) -> container::Style {
-        container::Style {
-            background: Some(Color::from_rgb8(30, 30, 30).into()),
-            border_width: 1.0,
-            border_color: Color::from_rgb8(25, 25, 25),
-            ..container::Style::default()
-        }
-    }
-}
-
-impl button::StyleSheet for ManageSaveTabBarStyle {
-    fn active(&self) -> button::Style {
-        button::Style {
-            background: Some(Color::from_rgb8(30, 30, 30).into()),
-            text_color: Color::from_rgb8(210, 210, 210),
-            ..button::Style::default()
-        }
-    }
-
-    fn hovered(&self) -> button::Style {
-        button::Style {
-            background: Some(Color::from_rgb8(35, 35, 35).into()),
-            text_color: Color::from_rgb8(210, 210, 210),
-            ..button::Style::default()
-        }
-    }
-
-    fn pressed(&self) -> button::Style {
-        button::Style {
-            background: Some(Color::from_rgb8(32, 32, 32).into()),
-            text_color: Color::from_rgb8(210, 210, 210),
-            ..button::Style::default()
-        }
-    }
 }
 
 pub fn view<'a>(
     manage_save_state: &'a mut ManageSaveState,
-    tab_bar_view: &MainTabBarView,
-) -> Container<'a, Message> {
+    tab_bar_view: &SaveTabBarView,
+) -> Container<'a, Bl3Message> {
     let general_button = tab_bar_button(
         &mut manage_save_state
-            .main_state
+            .save_view_state
             .tab_bar_state
             .general_button_state,
-        MainTabBarView::General,
+        SaveTabBarView::General,
         tab_bar_view,
-        MainTabBarInteractionMessage::General,
-        svg::Handle::from_memory(SETTINGS),
+        InteractionMessage::ManageSaveInteraction(ManageSaveInteractionMessage::TabBar(
+            SaveTabBarInteractionMessage::General,
+        )),
+        svg::Handle::from_memory(GENERAL),
         100,
     );
 
     let character_button = tab_bar_button(
         &mut manage_save_state
-            .main_state
+            .save_view_state
             .tab_bar_state
             .character_button_state,
-        MainTabBarView::Character,
+        SaveTabBarView::Character,
         tab_bar_view,
-        MainTabBarInteractionMessage::Character,
+        InteractionMessage::ManageSaveInteraction(ManageSaveInteractionMessage::TabBar(
+            SaveTabBarInteractionMessage::Character,
+        )),
         svg::Handle::from_memory(CHARACTER),
         115,
     );
 
     let inventory_button = tab_bar_button(
         &mut manage_save_state
-            .main_state
+            .save_view_state
             .tab_bar_state
             .inventory_button_state,
-        MainTabBarView::Inventory,
+        SaveTabBarView::Inventory,
         tab_bar_view,
-        MainTabBarInteractionMessage::Inventory,
+        InteractionMessage::ManageSaveInteraction(ManageSaveInteractionMessage::TabBar(
+            SaveTabBarInteractionMessage::Inventory,
+        )),
         svg::Handle::from_memory(INVENTORY),
         115,
     );
 
     let currency_button = tab_bar_button(
         &mut manage_save_state
-            .main_state
+            .save_view_state
             .tab_bar_state
             .currency_button_state,
-        MainTabBarView::Currency,
+        SaveTabBarView::Currency,
         tab_bar_view,
-        MainTabBarInteractionMessage::Currency,
+        InteractionMessage::ManageSaveInteraction(ManageSaveInteractionMessage::TabBar(
+            SaveTabBarInteractionMessage::Currency,
+        )),
         svg::Handle::from_memory(CURRENCY),
         105,
-    );
-
-    let fast_travel = tab_bar_button(
-        &mut manage_save_state
-            .main_state
-            .tab_bar_state
-            .fast_travel_button_state,
-        MainTabBarView::FastTravel,
-        tab_bar_view,
-        MainTabBarInteractionMessage::FastTravel,
-        svg::Handle::from_memory(FAST_TRAVEL),
-        127,
     );
 
     let tab_bar = Container::new(
@@ -192,24 +111,24 @@ pub fn view<'a>(
             .push(general_button)
             .push(character_button)
             .push(inventory_button)
-            .push(currency_button)
-            .push(fast_travel),
+            .push(currency_button),
     )
     .width(Length::Fill)
-    .style(ManageSaveTabBarStyle);
+    .style(ManageTabBarStyle);
 
     let tab_content = match tab_bar_view {
-        MainTabBarView::General => general::view(&mut manage_save_state.main_state.general_state),
-        MainTabBarView::Character => {
-            character::view(&mut manage_save_state.main_state.character_state)
+        SaveTabBarView::General => {
+            general::view(&mut manage_save_state.save_view_state.general_state)
         }
-        MainTabBarView::Currency => {
-            currency::view(&mut manage_save_state.main_state.currency_state)
+        SaveTabBarView::Character => {
+            character::view(&mut manage_save_state.save_view_state.character_state)
         }
-        MainTabBarView::Inventory => {
-            inventory::view(&mut manage_save_state.main_state.inventory_state)
+        SaveTabBarView::Currency => {
+            currency::view(&mut manage_save_state.save_view_state.currency_state)
         }
-        _ => fast_travel::view(&mut manage_save_state.main_state.fast_travel_state),
+        SaveTabBarView::Inventory => {
+            inventory::view(&mut manage_save_state.save_view_state.inventory_state)
+        }
     };
 
     let all_contents = Column::new().push(tab_bar).push(tab_content);
@@ -217,43 +136,4 @@ pub fn view<'a>(
     Container::new(all_contents)
         .width(Length::Fill)
         .height(Length::Fill)
-}
-
-fn tab_bar_button<'a>(
-    state: &'a mut button::State,
-    tab_bar_view: MainTabBarView,
-    current_tab_bar_view: &MainTabBarView,
-    on_press_message: MainTabBarInteractionMessage,
-    icon_handle: svg::Handle,
-    length: u16,
-) -> Element<'a, Message> {
-    let icon = Svg::new(icon_handle)
-        .height(Length::Units(17))
-        .width(Length::Units(17));
-
-    let button = Button::new(
-        state,
-        Row::new()
-            .push(icon)
-            .push(
-                Text::new(tab_bar_view.to_string())
-                    .horizontal_alignment(HorizontalAlignment::Center)
-                    .font(JETBRAINS_MONO_BOLD)
-                    .size(18),
-            )
-            .padding(5)
-            .spacing(10)
-            .width(Length::Units(length))
-            .align_items(Align::Center),
-    )
-    .on_press(InteractionMessage::ManageSaveInteraction(
-        ManageSaveInteractionMessage::Main(on_press_message),
-    ))
-    .padding(5);
-
-    if tab_bar_view == *current_tab_bar_view {
-        button.style(ManageSaveTabBarActiveStyle).into_element()
-    } else {
-        button.style(ManageSaveTabBarStyle).into_element()
-    }
 }

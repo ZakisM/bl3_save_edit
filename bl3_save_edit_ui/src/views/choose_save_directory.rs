@@ -4,7 +4,7 @@ use iced::{button, Align, Button, Color, Column, Container, HorizontalAlignment,
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
-use crate::bl3_ui::{InteractionMessage, Message, MessageResult};
+use crate::bl3_ui::{Bl3Message, InteractionMessage, MessageResult};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::InteractionExt;
@@ -13,13 +13,12 @@ use crate::views::InteractionExt;
 pub struct ChooseSaveDirectoryState {
     choose_dir_button_state: button::State,
     pub choose_dir_window_open: bool,
-    pub saves_dir: PathBuf,
 }
 
 #[derive(Debug, Clone)]
 pub enum ChooseSaveMessage {
     ChooseDirCompleted(MessageResult<PathBuf>),
-    LoadedFiles(MessageResult<Vec<Bl3FileType>>),
+    FilesLoaded(MessageResult<(PathBuf, Vec<Bl3FileType>)>),
 }
 
 #[derive(Debug, Clone)]
@@ -27,8 +26,8 @@ pub enum ChooseSaveInteractionMessage {
     ChooseDirPressed,
 }
 
-pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Container<Message> {
-    let dir_button_text = Text::new("Select Borderlands 3 Save/Profile directory")
+pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Container<Bl3Message> {
+    let dir_button_text = Text::new("Select Borderlands 3 Save/Profile folder")
         .font(JETBRAINS_MONO)
         .size(20)
         .color(Color::from_rgb8(220, 220, 220));

@@ -1,7 +1,7 @@
 use std::fmt::Formatter;
 use std::path::Path;
 
-use anyhow::{bail, Context, Result};
+use anyhow::{bail, Result};
 use nom::Finish;
 
 use crate::bl3_profile::Bl3Profile;
@@ -13,7 +13,7 @@ use crate::parser::{
 
 #[derive(Debug, Clone)]
 pub struct FileData<'a> {
-    pub file_name: &'a str,
+    pub file_location: &'a Path,
     pub file_version: u32,
     pub package_version: u32,
     pub engine_major: u16,
@@ -28,7 +28,7 @@ pub struct FileData<'a> {
     pub remaining_data: &'a [u8],
 }
 
-pub fn read_bytes<'a>(file_name: &'a str, data: &'a [u8]) -> Result<FileData<'a>> {
+pub fn read_bytes<'a>(file_location: &'a Path, data: &'a [u8]) -> Result<FileData<'a>> {
     let (r, _) = read_header(data).finish()?;
     let (r, file_version) = read_int(r).finish()?;
     let (r, package_version) = read_int(r).finish()?;
@@ -48,11 +48,11 @@ pub fn read_bytes<'a>(file_name: &'a str, data: &'a [u8]) -> Result<FileData<'a>
     let remaining_data = &data[data_read..];
 
     if remaining_data.len() != remaining_data_len as usize {
-        bail!("failed to parse the first part of the file")
+        bail!("Failed to parse the first part of the file.")
     }
 
     Ok(FileData {
-        file_name,
+        file_location,
         file_version,
         package_version,
         engine_major,
@@ -90,14 +90,15 @@ impl std::fmt::Display for Bl3FileType {
                 "[{}] {} ({}) - Level {}",
                 save.header_type,
                 save.character_data.character.preferred_character_name,
-                save.character_data.player_class,
-                save.character_data.player_level
+                save.character_data.player_class(),
+                save.character_data.player_level()
             ),
             Bl3FileType::PcProfile(profile) | Bl3FileType::Ps4Profile(profile) => {
                 write!(
                     f,
                     "[{}] Golden Keys: {}",
-                    profile.header_type, profile.profile_data.golden_keys,
+                    profile.header_type,
+                    profile.profile_data.golden_keys(),
                 )
             }
         }
@@ -105,11 +106,8 @@ impl std::fmt::Display for Bl3FileType {
 }
 
 impl Bl3FileType {
-    pub fn from_unknown_data(file_name: &Path, data: &[u8]) -> Result<Bl3FileType> {
-        let file_name = file_name
-            .to_str()
-            .with_context(|| format!("failed to read file name: {:?}", file_name.file_name()))?;
-        let file_data = read_bytes(file_name, data)?;
+    pub fn from_unknown_data(file_location: &Path, data: &[u8]) -> Result<Bl3FileType> {
+        let file_data = read_bytes(file_location, data)?;
 
         if let Ok(save) = Bl3Save::from_file_data(&file_data, HeaderType::PcSave) {
             Ok(Bl3FileType::PcSave(save))
@@ -120,7 +118,16 @@ impl Bl3FileType {
         } else if let Ok(profile) = Bl3Profile::from_file_data(&file_data, HeaderType::Ps4Profile) {
             Ok(Bl3FileType::Ps4Profile(profile))
         } else {
-            bail!("could not recognize file type")
+            bail!("Could not recognize file type.")
+        }
+    }
+
+    pub fn filename(&self) -> &str {
+        match self {
+            Bl3FileType::PcSave(s) => &s.file_name,
+            Bl3FileType::PcProfile(p) => &p.file_name,
+            Bl3FileType::Ps4Save(s) => &s.file_name,
+            Bl3FileType::Ps4Profile(p) => &p.file_name,
         }
     }
 }

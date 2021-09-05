@@ -1,190 +1,83 @@
-use std::collections::{BTreeMap, BTreeSet, HashMap};
-use std::io::Read;
+use std::collections::HashMap;
 
-use heck::TitleCase;
 use once_cell::sync::Lazy;
-use rayon::iter::{
-    IntoParallelIterator, IntoParallelRefIterator, ParallelBridge, ParallelIterator,
-};
+use serde::de::DeserializeOwned;
 use serde::Deserialize;
 
+use crate::bl3_save::bl3_item::{BalancePart, InvDataPart, ManufacturerPart};
 use crate::models::inventory_serial_db::InventorySerialDb;
 
-pub const INVENTORY_SERIAL_DB_JSON_COMPRESSED: &[u8] =
+type InventoryPartsAll = HashMap<String, ResourceItem>;
+type InventorySerialDbCategorizedParts = HashMap<String, Vec<ResourceCategorizedParts>>;
+
+pub(crate) const INVENTORY_SERIAL_DB_JSON_COMPRESSED: &[u8] =
     include_bytes!("../../resources/INVENTORY_SERIAL_DB.json.sz");
 
-const INVENTORY_PARTS_ALL_DATA_COMPRESSED: &[u8] =
-    include_bytes!("../../resources/INVENTORY_PARTS_ALL.csv.sz");
+const INVENTORY_PARTS_ALL_CATEGORIZED_RON_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_PARTS_ALL_CATEGORIZED.ron.sz");
+
+const INVENTORY_SERIAL_DB_PARTS_CATEGORIZED_RON_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_SERIAL_DB_PARTS_CATEGORIZED.ron.sz");
+
+const INVENTORY_BALANCE_PARTS_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_BALANCE_PARTS.ron.sz");
+
+const INVENTORY_INV_DATA_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_INV_DATA_PARTS.ron.sz");
+
+const INVENTORY_MANUFACTURER_PARTS_COMPRESSED: &[u8] =
+    include_bytes!("../../resources/INVENTORY_MANUFACTURER_PARTS.ron.sz");
 
 pub static INVENTORY_SERIAL_DB: Lazy<InventorySerialDb> =
     Lazy::new(|| InventorySerialDb::load().expect("failed to load inventory serial db"));
 
-pub static INVENTORY_PARTS_ALL: Lazy<HashMap<String, ResourceItem>> =
-    Lazy::new(|| load_inventory_parts_grouped(INVENTORY_PARTS_ALL_DATA_COMPRESSED));
+pub static INVENTORY_PARTS_ALL_CATEGORIZED: Lazy<InventoryPartsAll> =
+    Lazy::new(|| load_compressed_data(INVENTORY_PARTS_ALL_CATEGORIZED_RON_COMPRESSED));
 
-#[derive(Debug, Deserialize)]
-struct ResourceItemRecord {
-    #[serde(rename = "Name")]
-    manufacturer: String,
-    #[serde(rename = "Weapon Type", skip)]
-    weapon_type: Option<String>,
-    #[serde(rename = "Rarity")]
-    rarity: String,
-    #[serde(rename = "Balance")]
-    balance: String,
-    #[serde(rename = "Category")]
-    category: String,
-    #[serde(rename = "Min Parts")]
-    min_parts: u8,
-    #[serde(rename = "Max Parts")]
-    max_parts: u8,
-    #[serde(rename = "Weight")]
-    weight: f32,
-    #[serde(rename = "Part")]
-    part: String,
-    #[serde(rename = "Dependencies")]
-    dependencies: Option<Vec<String>>,
-    #[serde(rename = "Excluders")]
-    excluders: Option<Vec<String>>,
+pub static INVENTORY_SERIAL_DB_PARTS_CATEGORIZED: Lazy<InventorySerialDbCategorizedParts> =
+    Lazy::new(|| load_compressed_data(INVENTORY_SERIAL_DB_PARTS_CATEGORIZED_RON_COMPRESSED));
+
+pub static INVENTORY_BALANCE_PARTS: Lazy<Vec<BalancePart>> =
+    Lazy::new(|| load_compressed_data(INVENTORY_BALANCE_PARTS_COMPRESSED));
+
+pub static INVENTORY_INV_DATA_PARTS: Lazy<Vec<InvDataPart>> =
+    Lazy::new(|| load_compressed_data(INVENTORY_INV_DATA_COMPRESSED));
+
+pub static INVENTORY_MANUFACTURER_PARTS: Lazy<Vec<ManufacturerPart>> =
+    Lazy::new(|| load_compressed_data(INVENTORY_MANUFACTURER_PARTS_COMPRESSED));
+
+pub fn load_compressed_data<T: DeserializeOwned>(input: &'static [u8]) -> T {
+    let mut rdr = snap::read::FrameDecoder::new(input);
+
+    ron::de::from_reader(&mut rdr).expect("failed to read compressed data")
 }
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, Deserialize)]
 pub struct ResourceItem {
     pub manufacturer: String,
     pub rarity: String,
     pub inventory_categorized_parts: Vec<ResourceCategorizedParts>,
 }
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, Deserialize)]
 pub struct ResourceCategorizedParts {
     pub category: String,
     pub parts: Vec<ResourcePart>,
 }
 
-#[derive(Debug, Default, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+#[derive(Debug, Default, Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Deserialize)]
 pub struct ResourcePart {
     pub name: String,
     pub min_parts: u8,
     pub max_parts: u8,
     pub dependencies: Option<Vec<String>>,
     pub excluders: Option<Vec<String>>,
+    pub info: ResourcePartInfo,
 }
 
-#[derive(Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
-struct TempHeader {
-    manufacturer: String,
-    rarity: String,
-    balance: String,
-}
-
-// TODO: Handle any errors here properly and exit UI correctly
-fn load_inventory_parts_grouped(bytes: &[u8]) -> HashMap<String, ResourceItem> {
-    let mut rdr = snap::read::FrameDecoder::new(bytes);
-
-    let mut decompressed_bytes = String::new();
-
-    rdr.read_to_string(&mut decompressed_bytes)
-        .expect("Failed to read decompressed bytes");
-
-    let mut rdr = csv::ReaderBuilder::new()
-        .has_headers(true)
-        .from_reader(decompressed_bytes.as_bytes());
-
-    let inventory_serial_db_all_parts = INVENTORY_SERIAL_DB.par_all_parts();
-
-    let records = rdr
-        .deserialize()
-        .par_bridge()
-        .map(|r| {
-            let record: ResourceItemRecord = r.expect("failed to deserialize resource part record");
-            record
-        })
-        .filter(|r| inventory_serial_db_all_parts.contains(r.part.as_str()))
-        .map(|mut record| {
-            if let Some(curr_dependencies) = &record.dependencies {
-                let all_dependencies = curr_dependencies
-                    .get(0)
-                    .expect("failed to read curr_dependency")
-                    .split(',')
-                    .map(|s| s.trim().to_owned())
-                    .collect::<Vec<_>>();
-
-                record.dependencies = Some(all_dependencies);
-            };
-
-            if let Some(curr_excluders) = &record.excluders {
-                let all_excluders = curr_excluders
-                    .get(0)
-                    .expect("failed to read curr_excluder")
-                    .split(',')
-                    .map(|s| s.trim().to_owned())
-                    .collect::<Vec<_>>();
-
-                record.excluders = Some(all_excluders);
-            };
-
-            record
-        })
-        .collect::<Vec<_>>();
-
-    let parts_grouped = records
-        .into_iter()
-        .fold(BTreeMap::new(), |mut curr, inv_part| {
-            let inventory_part_header = TempHeader {
-                manufacturer: inv_part.manufacturer,
-                rarity: inv_part.rarity,
-                balance: inv_part.balance,
-            };
-
-            let inventory_part = ResourcePart {
-                name: inv_part.part,
-                min_parts: inv_part.min_parts,
-                max_parts: inv_part.max_parts,
-                dependencies: inv_part.dependencies,
-                excluders: inv_part.excluders,
-            };
-
-            let curr_group = curr
-                .entry(inventory_part_header)
-                .or_insert_with(BTreeMap::new);
-
-            let curr_group_category = curr_group
-                .entry(inv_part.category.to_title_case())
-                .or_insert_with(BTreeSet::new);
-
-            curr_group_category.insert(inventory_part);
-
-            curr
-        });
-
-    parts_grouped
-        .into_iter()
-        .fold(HashMap::new(), |mut curr, (header, body)| {
-            let inventory_categorized_parts = body
-                .into_par_iter()
-                .map(|(category, parts)| ResourceCategorizedParts {
-                    category,
-                    parts: parts
-                        .par_iter()
-                        .map(|p| ResourcePart {
-                            name: p.name.to_owned(),
-                            min_parts: p.min_parts,
-                            max_parts: p.max_parts,
-                            dependencies: p.dependencies.clone(),
-                            excluders: p.excluders.clone(),
-                        })
-                        .collect::<Vec<_>>(),
-                })
-                .collect::<Vec<_>>();
-
-            let inv_part = ResourceItem {
-                manufacturer: header.manufacturer,
-                rarity: header.rarity,
-                inventory_categorized_parts,
-            };
-
-            curr.insert(header.balance, inv_part);
-
-            curr
-        })
+#[derive(Debug, Default, Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Deserialize)]
+pub struct ResourcePartInfo {
+    pub positives: Option<String>,
+    pub negatives: Option<String>,
+    pub effects: Option<String>,
 }

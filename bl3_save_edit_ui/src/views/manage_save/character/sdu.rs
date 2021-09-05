@@ -8,12 +8,10 @@ use iced::{
 
 use bl3_save_edit_core::bl3_save::sdu::SaveSduSlot;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::manage_save::character::{
-    CharacterInteractionMessage, CharacterSduInputChangedMessage,
-};
+use crate::views::manage_save::character::{CharacterSduMessage, SaveCharacterInteractionMessage};
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::number_input::NumberInput;
@@ -24,35 +22,35 @@ use crate::widgets::text_margin::TextMargin;
 pub struct SduUnlockField {
     name: String,
     text_margin: usize,
-    sdu_slot_type: SaveSduSlot,
+    pub sdu_slot: SaveSduSlot,
     pub input: i32,
     input_state: text_input::State,
     #[derivative(
         Debug = "ignore",
-        Default(value = "Rc::new(CharacterSduInputChangedMessage::Backpack)")
+        Default(value = "Rc::new(CharacterSduMessage::Backpack)")
     )]
-    on_changed: Rc<dyn Fn(i32) -> CharacterSduInputChangedMessage>,
+    on_changed: Rc<dyn Fn(i32) -> CharacterSduMessage>,
 }
 
 impl SduUnlockField {
     pub fn new<S, F>(name: S, text_margin: usize, sdu_slot_type: SaveSduSlot, on_changed: F) -> Self
     where
         S: AsRef<str>,
-        F: 'static + Fn(i32) -> CharacterSduInputChangedMessage,
+        F: 'static + Fn(i32) -> CharacterSduMessage,
     {
         SduUnlockField {
             name: name.as_ref().to_owned(),
             text_margin,
-            sdu_slot_type,
+            sdu_slot: sdu_slot_type,
             on_changed: Rc::new(on_changed),
             ..Default::default()
         }
     }
 
-    pub fn view(&mut self) -> Row<Message> {
+    pub fn view(&mut self) -> Row<Bl3Message> {
         let on_changed = self.on_changed.clone();
         let minimum = 0;
-        let maximum = self.sdu_slot_type.maximum();
+        let maximum = self.sdu_slot.maximum();
 
         Row::new()
             .push(
@@ -73,7 +71,7 @@ impl SduUnlockField {
                         move |v| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::Character(
-                                    CharacterInteractionMessage::SduMessage(on_changed(v)),
+                                    SaveCharacterInteractionMessage::SduMessage(on_changed(v)),
                                 ),
                             )
                         },
@@ -119,49 +117,39 @@ impl std::default::Default for SduUnlocker {
                 "Backpack",
                 0,
                 SaveSduSlot::Backpack,
-                CharacterSduInputChangedMessage::Backpack,
+                CharacterSduMessage::Backpack,
             ),
             sniper: SduUnlockField::new(
                 "Sniper",
                 4,
                 SaveSduSlot::Sniper,
-                CharacterSduInputChangedMessage::Sniper,
+                CharacterSduMessage::Sniper,
             ),
-            heavy: SduUnlockField::new(
-                "Heavy",
-                0,
-                SaveSduSlot::Heavy,
-                CharacterSduInputChangedMessage::Heavy,
-            ),
+            heavy: SduUnlockField::new("Heavy", 0, SaveSduSlot::Heavy, CharacterSduMessage::Heavy),
             shotgun: SduUnlockField::new(
                 "Shotgun",
                 4,
                 SaveSduSlot::Shotgun,
-                CharacterSduInputChangedMessage::Shotgun,
+                CharacterSduMessage::Shotgun,
             ),
             grenade: SduUnlockField::new(
                 "Grenade",
                 0,
                 SaveSduSlot::Grenade,
-                CharacterSduInputChangedMessage::Grenade,
+                CharacterSduMessage::Grenade,
             ),
-            smg: SduUnlockField::new(
-                "SMG",
-                4,
-                SaveSduSlot::Smg,
-                CharacterSduInputChangedMessage::Smg,
-            ),
+            smg: SduUnlockField::new("SMG", 4, SaveSduSlot::Smg, CharacterSduMessage::Smg),
             assault_rifle: SduUnlockField::new(
                 "AR",
                 0,
                 SaveSduSlot::Ar,
-                CharacterSduInputChangedMessage::AssaultRifle,
+                CharacterSduMessage::AssaultRifle,
             ),
             pistol: SduUnlockField::new(
                 "Pistol",
                 4,
                 SaveSduSlot::Pistol,
-                CharacterSduInputChangedMessage::Pistol,
+                CharacterSduMessage::Pistol,
             ),
             unlock_all_button_state: button::State::default(),
         }
@@ -169,7 +157,7 @@ impl std::default::Default for SduUnlocker {
 }
 
 impl SduUnlocker {
-    pub fn view(&mut self) -> Container<Message> {
+    pub fn view(&mut self) -> Container<Bl3Message> {
         Container::new(
             Column::new()
                 .push(
@@ -210,7 +198,7 @@ impl SduUnlocker {
                                     )
                                     .on_press(InteractionMessage::ManageSaveInteraction(
                                         ManageSaveInteractionMessage::Character(
-                                            CharacterInteractionMessage::MaxSduSlotsPressed,
+                                            SaveCharacterInteractionMessage::MaxSduSlotsPressed,
                                         ),
                                     ))
                                     .padding(10)

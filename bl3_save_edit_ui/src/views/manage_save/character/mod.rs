@@ -7,9 +7,10 @@ use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
 use bl3_save_edit_core::bl3_save::util::REQUIRED_XP_LIST;
 use bl3_save_edit_core::game_data::GameDataKv;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::JETBRAINS_MONO;
+use crate::views::manage_save::character::ammo::AmmoSetter;
 use crate::views::manage_save::character::gear::GearUnlocker;
 use crate::views::manage_save::character::sdu::SduUnlocker;
 use crate::views::manage_save::character::skins::SkinSelectors;
@@ -18,6 +19,7 @@ use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
 
+mod ammo;
 mod gear;
 mod sdu;
 mod skins;
@@ -30,25 +32,28 @@ pub struct CharacterState {
     pub name_input_state: text_input::State,
     pub player_class_selector: pick_list::State<PlayerClass>,
     pub player_class_selected_class: PlayerClass,
-    pub xp_level_input: i32,
+    pub level_input: i32,
     pub xp_level_input_state: text_input::State,
-    pub xp_points_input: i32,
+    pub experience_points_input: i32,
     pub xp_points_input_state: text_input::State,
     pub skin_selectors: SkinSelectors,
     pub gear_unlocker: GearUnlocker,
+    pub ammo_setter: AmmoSetter,
     pub sdu_unlocker: SduUnlocker,
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterInteractionMessage {
-    NameInputChanged(String),
-    XpLevelInputChanged(i32),
-    XpPointsInputChanged(i32),
+pub enum SaveCharacterInteractionMessage {
+    Name(String),
+    XpLevel(i32),
+    XpPoints(i32),
     PlayerClassSelected(PlayerClass),
     SkinMessage(CharacterSkinSelectedMessage),
     GearMessage(CharacterGearUnlockedMessage),
-    SduMessage(CharacterSduInputChangedMessage),
+    SduMessage(CharacterSduMessage),
+    AmmoMessage(CharacterAmmoMessage),
     MaxSduSlotsPressed,
+    MaxAmmoAmountsPressed,
 }
 
 #[derive(Debug, Default)]
@@ -83,7 +88,7 @@ pub enum CharacterGearUnlockedMessage {
 }
 
 #[derive(Debug, Clone)]
-pub enum CharacterSduInputChangedMessage {
+pub enum CharacterSduMessage {
     Backpack(i32),
     Sniper(i32),
     Shotgun(i32),
@@ -94,7 +99,18 @@ pub enum CharacterSduInputChangedMessage {
     Heavy(i32),
 }
 
-pub fn view(character_state: &mut CharacterState) -> Container<Message> {
+#[derive(Debug, Clone)]
+pub enum CharacterAmmoMessage {
+    Sniper(i32),
+    Shotgun(i32),
+    Pistol(i32),
+    Grenade(i32),
+    Smg(i32),
+    AssaultRifle(i32),
+    Heavy(i32),
+}
+
+pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
     let selected_class = character_state.player_class_selected_class;
 
     let character_name = Container::new(
@@ -108,7 +124,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 |c| {
                     InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::Character(
-                            CharacterInteractionMessage::NameInputChanged(c),
+                            SaveCharacterInteractionMessage::Name(c),
                         ),
                     )
                 },
@@ -136,7 +152,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 |c| {
                     InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::Character(
-                            CharacterInteractionMessage::PlayerClassSelected(c),
+                            SaveCharacterInteractionMessage::PlayerClassSelected(c),
                         ),
                     )
                 },
@@ -166,13 +182,13 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
             Tooltip::new(
                 NumberInput::new(
                     &mut character_state.xp_level_input_state,
-                    character_state.xp_level_input,
+                    character_state.level_input,
                     1,
                     Some(MAX_CHARACTER_LEVEL as i32),
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                CharacterInteractionMessage::XpLevelInputChanged(v),
+                                SaveCharacterInteractionMessage::XpLevel(v),
                             ),
                         )
                     },
@@ -183,7 +199,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
                 .size(17)
                 .style(Bl3UiStyle)
                 .into_element(),
-                "Level must be between 1 and 72",
+                format!("Level must be between 1 and {}", MAX_CHARACTER_LEVEL),
                 tooltip::Position::Top,
             )
             .gap(10)
@@ -206,13 +222,13 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
             Tooltip::new(
                 NumberInput::new(
                     &mut character_state.xp_points_input_state,
-                    character_state.xp_points_input,
+                    character_state.experience_points_input,
                     0,
                     Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0]),
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                CharacterInteractionMessage::XpPointsInputChanged(v),
+                                SaveCharacterInteractionMessage::XpPoints(v),
                             ),
                         )
                     },
@@ -248,6 +264,11 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
         .view()
         .width(Length::FillPortion(3));
 
+    let ammo_setter = character_state
+        .ammo_setter
+        .view()
+        .width(Length::FillPortion(2));
+
     let sdu_unlocker = character_state
         .sdu_unlocker
         .view()
@@ -255,6 +276,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Message> {
 
     let slot_sdu_row = Row::new()
         .push(gear_unlocker)
+        .push(ammo_setter)
         .push(sdu_unlocker)
         .spacing(20);
 

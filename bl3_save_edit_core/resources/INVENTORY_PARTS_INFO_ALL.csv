@@ -1,0 +1,1934 @@
+Part,Positives,Negatives,Effects
+Artifact_Part_Ability_AtomBalm,,,"Aura Damage +50%, Aura Burst Damage +18%, Aura Burst Radius +18% ""Enhances the Radiation status effect aura, making it larget and more deadly"""
+Artifact_Part_Ability_BloodFrenzy,,,"Melee Enemies to Trigger Enrage, Sprint Speed +13%, Fire Rate +9%, Duration 10s ""Enrage increases your Sprint Speed and Fire Rate"""
+Artifact_Part_Ability_CausticCoast,,,"Imbue Slide with Corrosive, Bonus Damage 50%, Shard Fire Rate 10.0/s ""Slide kicks up Corrosive shards that explode on impact"""
+Artifact_Part_Ability_Cauterizer,,,"Imbue Slide with Incendiary, Bonus Damage 73%, Puddle Cooldown 10s ""Slide deals bonus Incendiary Damage, creating a magma puddle upon impact"""
+Artifact_Part_Ability_CorrosiveStone,,,"Imbue Melee with Corrosive, Bonus Damage +80% ""Adds Corrosive damage to all Melee attacks"""
+Artifact_Part_Ability_CryoStone,,,"Imbue Melee with Cryo, Bonus Damage +80% ""Adds Cryo damage to all Melee attacks"""
+Artifact_Part_Ability_ElectricSlide,,,"Imbue Slide with Shock, Bonus Damage 73%, Arc Targets ""Slide arcs beams of Shock to nearby enemies, which can arc to other nearby enemies"""
+Artifact_Part_Ability_ElementalOrigin,,,"Elemental Damage Boost, Damage Boost +183% ""While suffering an elemental effect, increase your damage with that same element"""
+Artifact_Part_Ability_FastHands,,,"Melee Enemies to Steal Ammo, Ammo Refill +8%, Ammo Returned to Allies +8% ""Dealing Melee damage replenishes ammo"""
+Artifact_Part_Ability_FireStone,,,"Imbue Melee with Incendiary, Bonus Damage +80% ""Adds Incendiary damage to all Melee attacks"""
+Artifact_Part_Ability_FleshMelter,,,"Corrosive Damage Boost, Bonus Damage +25%, Max Stacks 5, Duration 8.8s ""Killing an enemy with Corrosive increases your damage with Corrosive for a short duration"""
+Artifact_Part_Ability_Grave,,,"Weakness is in the mind, Melee Damage +100%, Weapon Damage +20%, Splash Damage +15% ""Increase Melee damage when below 50% HP, Increase Weapon damage when below 20% HP, Increase Splash Damage when below 5% HP"""
+Artifact_Part_Ability_HotDrop,,,"Imbue Slam with Incendiary, Slam Bonus Damage 88%, Slam Radius +28%, Fireballs 5 ""Slam launches Incendiary projectiles that spawn Magma Puddles"""
+Artifact_Part_Ability_IceSpiker,,,"Imbue Slam with Cryo, Slam Bonus Damage 88%, Slam Radius +28% ""Fires 3 Cryo projectiles that damage and pass through enemies"""
+Artifact_Part_Ability_KnifeDrain,,,"Imbue Melee with Lifesteal, Melee Lifesteal +75% ""All Melee attacks return a portion of the damage dealt as Health"""
+Artifact_Part_Ability_LastStand,,,"Temporary Invulnerability, Duration 5s, Cooldown 40s ""Temporary Invulnerability when Health drops below 50%"""
+Artifact_Part_Ability_LootExpander,,,"Enhanced Pickups, Cash +119%, Ammo +25%, Health +43% ""Increases the amount of cash, health and ammo you recieve from pickups"""
+Artifact_Part_Ability_MindMelt,,,"Imbue Slam with Radiation, Slam Bonus Damage 88%, Slam Radius +28%, Aura Duration 8s ""Slam triggers a Radiation aura that follows you and damages nearby enemies"""
+Artifact_Part_Ability_RadiationStone,,,"Imbue Melee with Radiation, Bonus Damage +80% ""Adds Radiation damage to all Melee attacks"""
+Artifact_Part_Ability_Radiodead,,,"Imbue Slide With Radiation, Bonus Damage 73%, Duration 5sec ""Slide deals additonal Radiation damage creating a toxic puddle on impact"""
+Artifact_Part_Ability_Relic,,,"Find Better Loot, Luck +38.00% ""Increases the chance to find rare loot"""
+Artifact_Part_Ability_ShatterRig,,,"Vs. Frozen, Bonus Damage +35%, Cryo Efficiency +50% ""Increase damage against Frozen targets"""
+Artifact_Part_Ability_ShockStone,,,"Imbue Melee with Shock, Bonus Damage +80% ""Adds Shock damage to all Melee attacks"""
+Artifact_Part_Ability_SparkPlug,,,"Imbue Slam with Shock, Slam Bonus Damage 88%, Slam Radius +28%, Duration 8s ""Slam plants an electrified coil that does Shock damage to nearby enemies"""
+Artifact_Part_Ability_ToxicRevenger,,,"Imbue Slam with Corrosive, Slam Bonus Damage 88%, Slam Radius +28%, Puddle Duration 5s ""Slam creates a large Corrosive puddle on impact"""
+Artifact_Part_Ability_CommanderPlanetoid,,,Deal 69% bonus elemental damage whenever you Melee an enemy. Elemental type changes ever 5 seconds
+Artifact_Part_Ability_CosmicCrater,,,Slam creates a random puddle that lasts for 5 seconds
+Artifact_Part_Ability_Deathless,,,"Reserves all but 1 Health, +100% Shield Capacity, +25% Shield Recharge Rate, -20% Shield Recharge Delay"
+Artifact_Part_Ability_ElDragonJr,,,"Unlease The Power of El Dragon, Melee Ignite Chance 100%, Slide Ignite Chance 100%, Ground Slam Ignite Chance 100%"
+Artifact_Part_Ability_ElectricBanjo,,,"Star Power, Bullet Proce Chance +20%"
+Artifact_Part_Ability_LoadedDice,,,"-75% Max Health, Substantially increases your Luck"
+Artifact_Part_Ability_MoxxisEndowment,,,+8% Combat XP
+Artifact_Part_Ability_OttoIdol,,,Restore 18% health on kill
+Artifact_Part_Ability_PhoenixTears,,,"Rise Up!, Health on Second Wind 100%"
+Artifact_Part_Ability_PullOutMethod,,,"Slam generates a singularity effect, pulling enemies toward you"
+Artifact_Part_Ability_RearEnder,,,"Improved Slam, Slam Damage +59%, Slam Radius +28%, Slam Knockback +53%"
+Artifact_Part_Ability_RoadWarrior,,,"Slide Release Agnoziing Pain, Buzzsaws 3.0/s, Buzzsaw Damage 1"
+Artifact_Part_Ability_RocketBoots,,,Slide launches homing rockets that deal Incendiary Damage
+Artifact_Part_Ability_Safegaurd,,,Slam triggers a shield that reduces incoming damage by +57% and lasts for 5 seconds
+Artifact_Part_Ability_Salvo,,,Slam launches a barrage of homing rockets
+Artifact_Part_Ability_SplatterGun,,,+50% Shotgun Damage while sliding
+Artifact_Part_Ability_StaticTouch,,,"Slide builds a static charge, causing your next Melee attack to do a 50% bonus Shock damage that chains to nearby enemies"
+Artifact_Part_Ability_VictoryRush,,,"Kill a Badass to trigger Victory Rush, +18% Movement Speed and Damage for 60 second duration"
+Artifact_Part_Ability_WhiteElephant,,,Melee attacks have a 30% chance to attack a sticky bomb
+Artifact_Part_Stat_Relic,,,+10% Experience Gained from Combat
+Artifact_Part_Stats_Asbestos,,,+29% Incendiary Resistance
+Artifact_Part_Stats_Brawler,,,+25% Melee Damage
+Artifact_Part_Stats_Breaching,,,+17% Shotgun Damage
+Artifact_Part_Stats_Contaminated,,,+16% Radiation Damage
+Artifact_Part_Stats_DeadEye,,,+16% Pistol Damage
+Artifact_Part_Stats_Durable,,,+29% Corrosive Resistance
+Artifact_Part_Stats_Frozen,,,+16% Cryo Damage
+Artifact_Part_Stats_Greasy,,,+16% SMG Damage
+Artifact_Part_Stats_Grenadier,,,+30% Grenade Damage
+Artifact_Part_Stats_Grounded,,,+29% Shock Resistance
+Artifact_Part_Stats_Hasty,,,+8% Movement Speed
+Artifact_Part_Stats_HollowPoint,,,+16% Assault Rifle Damage
+Artifact_Part_Stats_Hulking,,,+17% Heavy Damage
+Artifact_Part_Stats_Insulated,,,+29% Cryo Resistance
+Artifact_Part_Stats_LeadCoated,,,+29% Radiation Resistance
+Artifact_Part_Stats_Loaded,,,+40% Magazine Size
+Artifact_Part_Stats_LongLasting,,,+21% Action Skill Cooldown Rate
+Artifact_Part_Stats_LongRange,,,+17% Sniper Damage
+Artifact_Part_Stats_Lucky,,,+12.67 Luck
+Artifact_Part_Stats_Lustrous,,,+23% Elemental Resistance
+Artifact_Part_Stats_Melty,,,+16% Corrosive Damage
+Artifact_Part_Stats_Precision,,,+26% Weapon Accuracy
+Artifact_Part_Stats_Quickdraw,,,+14% Weapon Reload Speed
+Artifact_Part_Stats_Ravaging,,,+33% Splash Damage
+Artifact_Part_Stats_Spicy,,,+16% Incendiary Damage
+Artifact_Part_Stats_Stalwart,,,+1666 Max Shield
+Artifact_Part_Stats_Unyielding,,,+40% FFYL Downed Time
+Artifact_Part_Stats_Vigorous,,,+1487 Max Health
+Artifact_Part_Stats_Zappy,,,+16% Shock Damage
+Artifact_Part_Stats_Accuracy,,,+26% Accuracy
+Artifact_Part_Stats_ActionSkillCooldown,,,+21% Action Skill Cooldown Rate
+Artifact_Part_Stats_AreaDamage,,,+33% Splash Damage
+Artifact_Part_Stats_ATLAS,,,"+20% ATLAS Weapon Fire Rate, +83% ATLAS Weapon Magazine Size"
+Artifact_Part_Stats_BleedoutDuration,,,+40% Fight for your life duration
+Artifact_Part_Stats_BleedoutMoveSpeed,,,+37% Fight for your life Movement Speed
+Artifact_Part_Stats_CorrosiveDamage,,,+16% Corrosive Damage
+Artifact_Part_Stats_CorrosiveDoTChance,,,+26% Corrosive Chance
+Artifact_Part_Stats_CorrosiveResist,,,+29% Corrosive Resistance
+Artifact_Part_Stats_CryoDamage_3,,,+16% Cryo Damage
+Artifact_Part_Stats_CryoEfficiency,,,+27% Cryo Efficiency
+Artifact_Part_Stats_CryoResist,,,+29% Cryo Resistance
+Artifact_Part_Stats_FireDamage_3,,,+16% Fire Damage
+Artifact_Part_Stats_FireDoTChance,,,+26% Incendiary Chance
+Artifact_Part_Stats_FireResist,,,+29% Incendiary Resistance
+Artifact_Part_Stats_HealthRegen,,,Regenerates +149 Health/sec
+Artifact_Part_Stats_Jakobs1,,,"+43% Jakobs Weapon Magazine Size, +17% Jakobs WEapon Reload Speed"
+Artifact_Part_Stats_MagazineSize,,,+40% Magazine Size
+Artifact_Part_Stats_MaxHealth,,,+1487 Max health
+Artifact_Part_Stats_MaxShieldCapacity,,,+30% Shield Recharge Rate
+Artifact_Part_Stats_MeleeDamage,,,+25% Melee Damage
+Artifact_Part_Stats_Movespeed,,,+8% Movement Speed
+Artifact_Part_Stats_RadiationDamage,,,+16% Radiation Damage
+Artifact_Part_Stats_RadiationDoTChance,,,+27% Irradiate Chance
+Artifact_Part_Stats_RadiationResist,,,+29% Radiation Resistance
+Artifact_Part_Stats_ReloadSpeed,,,+14% Weapon Reload Speed
+Artifact_Part_Stats_ShieldRechargeDelay,,,-30% Shield Recharge Delay
+Artifact_Part_Stats_ShieldRechargeRate,,,+30% Shield Recharge Rate
+Artifact_Part_Stats_ShockDamage,,,+16% Shock Damage
+Artifact_Part_Stats_ShockDoTChance,,,+26% Shock Chance
+Artifact_Part_Stats_ShockResist,,,+29% Shock Resistance
+Artifact_Part_Stats_Tediore,,,"+35% Tediore Weapon Accuracy, +138% Tediore Weapon Magazine Size"
+Artifact_Part_Stats_Vladof,,,"+10% Vladof Weapon Fire Rate, +67% Vladof Weapon Magazine Size"
+Artifact_Part_Stats_XPMultiplier,,,+7% Experience Gained From Combat
+Part_Shield_Aug_ANS__LGD_Aurelia,,,"When depleted, releases a large Cryo nova dealing 11154 damage and freezing enemies. 30% of Nova damage is returned as health"
+Part_Shield_Aug_BackHam,,,Damage taken from behind is reduced by 56%
+Part_Shield_Aug_ANS_LGD_Breakup,,,"You are accompanied by a small drone that will fire at enemies, dealing damage per shot. When your shield breaks, a temporary drone will come to your aid."
+Part_Shield_Aug_ANS_LGD_NovaBurner,,,"22,307 Incendiary Damage on shield break and fill"
+Part_Shield_Aug_ANS_LGD_ReRouter,,,"When fully charged, the next shot Drain 50% shield to deal 120% bonus Amp Damage and return it as health"
+Part_Shield_ANS_Aug_LGD_RoughRider,,,Reduces incoming damage by 23% and grants +35% Max health
+Part_Shield_Aug_ANS_LGD_SlideKick,,,Sliding into enemies drains all shields and deals up to 5205 bonus damage based on current shield strength
+Part_Shield_Aug_ANS_LGD_WTF,,,25% Chance to drop IEDs when damaged that deal 3718 damage
+Part_Shield_Aug_ScreamOfTerror,,,14872 nova damage on shield break
+Part_Shield_Aug_HYP_LGD_FrontLoader,,,Reserves 60% of your Max Health and returns it as Shield Cpaacity.
+Part_Shield_Aug_HYP_LGD_ReCharger,,,Instantly begins recharging when borken. Cooldown: 20s
+Part_Shield_Aug_HYP_LGD_Rectifier1,,,"While depleted, electrocutes nearby enemies dealing 279 Shock Damage per second"
+Part_Shield_Aug_HYP_LGD_StopGap,,,"On Shield Break, become immune to any damage taken for 5 seconds."
+Shield_Part_Aug_HYP_LGD_Transformer,,,"Converts 100% of Shock Damage into shields. 40% Chance to absorb bullets, adding them to your ammo count."
+Part_Shield_Aug_Ward,,,+25% Weapon Dmaage while shield is depleted. +2% Max Health per second while shields are active. This effect doubles while shields are depleted.
+Part_Shield_Aug_PAN_LGD_BigBoomBlaster,,,"Has a 60% chance to drop a booster that restores 60% shields, a grenade, and Heavy ammo"
+Part_Shield_Aug_PAN_LGD_BlackHole,,,Suck enemies towards you on shield break
+Part_Shield_Aug_PAN_Cyttorak,,,+22% Weapon Damage while shield is depleted. +25% Max Health
+Part_Shield_Aug_PAN_LGD_Impaler,,,Fires homing spikes to attackers when taking bullet damage
+Part_Shield_Aug_PAN_LGD_Radiate,,,Deals Radiation damage per second to nearby enemies and grants immunity to Radiation damage.
+Part_Shield_Aug_PAN_LGD_Revengenader,,,Throws a free grenade when shield is depleted. This effect has a short cooldown
+Part_Shield_Aug_PAN_LGD_ShootingStar,,,"While depleted, successful melees summon a projectile that deals damage."
+Part_Shield_Aug_MoxxisEmbrace,,,Healgasm all over yourself and allies to heal them for 2231 on shield break
+Part_Shield_Aug_XPLootBooster,,,Experience Gain: +10%. Loot Rarity boost. XP and Loot effects work through Level 10.
+Part_Shield_Aug_HYP_BuriedAlive,,,+5% Max Health per second while shields are full.
+Part_Shield_Aug_HYP_LGD_Dispensary,,,"On taking dmage, has a 35% chance to drop an Upper or Downer pill. These pills provide buffs, but can have some bad side effects..."
+Part_Shield_Aug_LoopOf4N631,,,Reduces action skill cooldown duration when depleted
+Part_Shield_Aug_GoldenTouch,,,"Provides: Brimming, Fleet and Roid"
+Part_Shield_Aug_MrCaffeine,,,"+50% Reload Speed and 15% Fire Rate while shield is full. When depleted, Fire Rate and Reload Speed are severely penalised."
+Part_Shield_Aug_Absorb,,,+15% chance to absorb bullets as ammo
+Part_Shield_Aug_Adaptive,,,+8% health and 17% resistance to the last damage type received for 3 seconds.
+Part_Shield_Aug_Adrenaline,,,+23% Reload Speed while shield is depleted
+Part_Shield_Aug_Amp,,,"While Full, Shots Drain 30% Shields for +20% Weapon Damage"
+Part_Shield_Aug_Brimming,,,+5% Max health per second while shields are full.
+Part_Shield_Aug_Capacity,,,+25% Max Capacity
+Part_Shield_Aug_Fleet,,,+10% Movement Speed while shield is depleted
+Part_Shield_Aug_FortifyCharge,,,"When damaged, has a 15% chance to drop a Forify Charge that grants 10% Damage Reduction"
+Part_Shield_Aug_HealthCharge,,,"When damaged, has a 15% chance to drop a Health Charge that restores 15% of Max health"
+Part_Shield_Aug_Healthy,,,+10 / 25 / 50% Max Health
+Part_Shield_Aug_Knockback,,,Deals area-knockback on shield break
+Part_Shield_Aug_Nova,,,Deals area-knockback and damage based on shields resistance type on shield break
+Part_Shield_Aug_PowerCharge,,,"When damaged, has a 15% chance to drop a Power Charge that increases weapon damage by 10%"
+Part_Shield_Aug_Projected,,,"Crouching projects your shield forward, gaining +20% damage reduction."
+Part_Shield_Aug_RechargeDelay,,,-25% Recharge Delay
+Part_Shield_Aug_RechargeRate,,,+15% Recharge Rate
+Part_Shield_Aug_Reflect,,,15% chance to Reflect projectiles while shielded
+Part_Shield_Aug_Roid,,,+80 / 180 / 300% Melee Damage while shield is depleted
+Part_Shield_Aug_ShieldCharge,,,"When damaged, has a 15% chance to drop a Booster that restores 8% shields."
+Part_Shield_Aug_Spike,,,Returns 1487 damage if melee'd while shielded
+Part_Shield_Aug_TriggerHappy,,,+10% Fire Rate while shield is depleted
+Part_Shield_Aug_Turtle,,,"+40% Capacity, -10% Max Health"
+Part_Shield_Aug_Vagabond,,,+10% Movement Speed while shields are full.
+Part_Shield_Mat_BackHam,,,Skin
+Part_Shield_Mat_PAN_LGD_BigBoomBlaster,,,Skin
+Part_Shield_Mat_PAN_LGD_BlackHole,,,Skin
+Part_Shield_Mat_HYP_LGD_FrontLoader,,,Skin
+Part_Shield_Mat_PAN_LGD_Impaler,,,Skin
+Part_Shield_Mat_ANS_LGD_NovaBurner,,,Skin
+Part_Shield_Mat_HYP_LGD_ReCharger,,,Skin
+Part_Shield_Mat_HYP_LGD_Rectifier1,,,Skin
+Part_Shield_Mat_PAN_LGD_Revengenader,,,Skin
+Part_Shield_Mat_ANS_LGD_SlideKick,,,Skin
+Part_Shield_Mat_HYP_LGD_StopGap,,,Skin
+Part_Shield_Mat_ANS_LGD_ReRouter,,,Skin
+Part_Shield_Mat_ANS_LGD_WTF,,,Skin
+Part_Shield_Mat_ANS_LGD_Aurelia,,,Skin
+Part_Shield_Mat_HYP_BuriedAlive,,,Skin
+Part_Shield_Mat_PAN_Cyttorak,,,Skin
+Part_Shield_Mat_HYP_LGD_Dispensary,,,Skin
+Part_Shield_Mat_GoldenTouch,,,Skin
+Part_Shield_Mat_ANS_LGD_Breakup,,,Skin
+Part_Shield_Mat_MoxxisEmbrace,,,Skin
+Part_Shield_Mat_PAN_LGD_Radiate,,,Skin
+Part_Shield_Mat_PAN_LGD_ShootingStar,,,Skin
+Part_Shield_Mat_PAN_LGD_Unpaler,,,Skin
+Part_Shield_Mat_Ward,,,Skin
+Part_Shield_Mat_XPLootBooster,,,Skin
+Part_Shield_Mat_ScreamOfTerror,,,Skin
+Part_Shield_Mat_ANS_LGD_VersionOmNom,,,Skin
+Part_Shield_Mat_ANS_LGD_SlideKick,,,Skin
+GM_Part_Behavior_01_Large,,,Increases radius by 20/40/60%
+GM_Part_Behavior_03_Bouncy,,,"Grenade bounces forward 3/5/7 times, exploding when hitting an enemy. Keeps bouncing after."
+GM_Part_Behavior_04_Sticky,,,Sticks on impact. Deals 25/100/200% bonus damage if stuck directly to an enemy
+GM_Part_Behavior_06_MIRV,,,Spawns 3/6/9 MIRV grenades
+GM_Part_Behavior_07_Lingering,,,Does DoT for 4/6/8 seconds or 2/4/6 bursts
+GM_Part_Behavior_09_Singularity,,,Pulls enemies towards epicenter. Singularity FX are static. Does not stack.
+GM_Part_Behavior_10_Transfusion,,,Steal 30/60/100% damage dealt to enemy Health. Doesn't apply to DoTs. Gives to allies if user full.
+GM_Part_Behavior_11_Force,,,Knocks enemies away and off their feet
+GM_Part_Behavior_12_Mini_MIRV,,,MIRV grenades spawn 3/4 more grenades.
+GM_Part_Behavior_15_Spring,,,Bounces straight up 1/2/4 times and explodes on each impact. Damage increased 10/15/20% per jump.
+GM_Part_Behavior_16_Money,,,Enemies drop a small/moderate/significant sum of cash when damaged.
+GM_Part_Behavior_18_Generator,,,Steals 30/60/100% of damage dealt to enemy Shields
+GM_Part_Behavior_19_Artillery,,,Fires bullets in a 360 spray dealing 15/30/50% additional DoT until it explodes.
+GM_Part_Behavior_20_Nuke,,,Consumes up to 2/3/5 additional grenades. Damage up 50% per extra grenade.
+GM_Part_Behavior_21_Link,,,15/30/50% increased damage for each additional enemy hit.
+GM_Part_Behavior_22_Divider,,,Grenade splits into 1+1/2/3 grenades shortly after thrown.
+GM_Part_Behavior_23_Roider,,,Increases grenade damage by 15/30/45%
+GM_Part_Behavior_24_ElementalDamage,,,Increases elemental damage by 15/30/45%
+GM_Part_Behavior_25_Rain,,,Launches straight up after initial explosion and fires 3/4/5 grenades in a circle around it
+GM_Part_Behavior_NONE,,,N/A (Can be used as filler slot to maintain component count)
+Part_GM_Aug_BirthdaySuprise,,,Deals 100% increased damage to varkids and spiderants.
+Part_GM_Aug_ButtStallion,,,Throw Buttstallion with a rainbow explosion
+Part_GM_Aug_CashMoneyPreorder,,,Enemies dropa  holy metric buttload of cash when damaged
+Part_GM_Aug_Chupa,,,Sticks to enemy and does damage over time to health. Ignores shields
+Part_GM_Aug_EMP,,,Depletes enemy shields
+Part_GM_Aug_Epicenter,,,Explodes twice releasing radial of projectiles.
+Part_GM_Aug_Fastball,,,Throws the grenade like a fast baseball. Explodes on impact
+Part_GM_Aug_FireStorm,,,Rains fireballs down from the sky
+Part_GM_Aug_HunterSeeker,,,Splits into 2 slow drones that shoot before exploding
+Part_GM_Aug_JustDeserts,,,"Throws a cake, small radius"
+Part_GM_Aug_Kryll,,,Triples number of grenades with each explosion up to 3 times
+Part_GM_Aug_Nagate,,,Spawns circle of longbow grenades
+Part_GM_Aug_ObviousTrap,,,Lay down a group of 6 sticky grenades that detonate when an enemy is near
+Part_GM_Aug_PAN_MoxiesBosom,,,Rubberized. Throws 2 grenades at once. Increased dmg every bounce
+Part_GM_Aug_Piss,,,Removes status effects on allies. Damaged enemies take +20% dmg
+Part_GM_Aug_Quasar,,,Hovers & sucks enemies in. Constant arcs of electricity
+Part_GM_Aug_RedQueen,,,Rubberized. Splits into 2 laser-connected grenades.
+Part_GM_Aug_Seeker,,,Homing
+Part_GM_Aug_Shroom,,,Creates 3 mushrooms which each explode dealing corrosive
+Part_GM_Aug_StormFront,,,Splits into 4 grenades that deal continuous shock to nearby enemies
+Part_GM_Aug_TranFusion,,,Heals for 120% of hp dmg dealt. Heals shields for 30% shield dmg
+Part_GM_Aug_WidowMaker,,,Proximity grenade. Spawns homing rockets
+Part_GM_Aug_WizardOfNOG,,,Turns NOG friendly
+GM_Part_Material_Atlas_01_Common,,,Skin
+GM_Part_Material_Atlas_02_Uncommon,,,Skin
+GM_Part_Material_Atlas_03_Rare,,,Skin
+GM_Part_Material_Atlas_04_VeryRare,,,Skin
+GM_Part_Material_Hyperion_01_Common,,,Skin
+GM_Part_Material_Hyperion_02_Uncommon,,,Skin
+GM_Part_Material_Hyperion_03_Rare,,,Skin
+GM_Part_Material_Hyperion_04_VeryRare,,,Skin
+GM_Part_Material_Pangolin_01_Common,,,Skin
+GM_Part_Material_Pangolin_02_Uncommon,,,Skin
+GM_Part_Material_Pangolin_03_Rare,,,Skin
+GM_Part_Material_Pangolin_04_VeryRare,,,Skin
+GM_Part_Material_Tediore_01_Common,,,Skin
+GM_Part_Material_Tediore_02_Uncommon,,,Skin
+GM_Part_Material_Tediore_03_Rare,,,Skin
+GM_Part_Material_Tediore_04_VeryRare,,,Skin
+GM_Part_Material_Torgue_01_Common,,,Skin
+GM_Part_Material_Torgue_02_Uncommon,,,Skin
+GM_Part_Material_Torgue_03_Rare,,,Skin
+GM_Part_Material_Torgue_04_VeryRare,,,Skin
+GM_Part_Material_Vladof_01_Common,,,Skin
+GM_Part_Material_Vladof_02_Uncommon,,,Skin
+GM_Part_Material_Vladof_03_Rare,,,Skin
+GM_Part_Material_Vladof_04_VeryRare,,,Skin
+Part_GM_Material_BirthdaySuprise,,,Skin
+Part_GM_Material_ButtStallion,,,Skin
+Part_GM_Material_CashMoneyPreorder,,,Skin
+Part_GM_Material_Chupa,,,Skin
+Part_GM_Material_EchoV2,,,Skin
+Part_GM_Material_EMP,,,Skin
+Part_GM_Material_Epicenter,,,Skin
+Part_GM_Material_Fastball,,,Skin
+Part_GM_Material_FireStorm,,,Skin
+Part_GM_Material_HipHop,,,Skin
+Part_GM_Material_HunterSeeker,,,Skin
+Part_GM_Material_JustDeserts,,,Skin
+Part_GM_Material_Kryll,,,Skin
+Part_GM_Material_Nagate,,,Skin
+Part_GM_Material_ObviousTrap,,,Skin
+Part_GM_Material_PAN_MoxiesBosom,,,Skin
+Part_GM_Material_Piss,,,Skin
+Part_GM_Material_Quasar,,,Skin
+Part_GM_Material_RedQueen,,,Skin
+Part_GM_Material_Seeker,,,Skin
+Part_GM_Material_Shroom,,,Skin
+Part_GM_Material_StormFront,,,Skin
+Part_GM_Material_Summit,,,Skin
+Part_GM_Material_Surge,,,Skin
+Part_GM_Material_ToiletBombs,,,Skin
+Part_GM_Material_ToyGrenade,,,Skin
+Part_GM_Material_TranFusion,,,Skin
+Part_GM_Material_WidowMaker,,,Skin
+Part_GM_Material_WizardOfNOG,,,Skin
+Part_GM_Material_FontOfDarkness,,,Skin
+GM_Part_Manufacturer_01_Torgue,,,Exploder
+GM_Part_Manufacturer_02_Atlas,,,Homing
+GM_Part_Manufacturer_03_Hyperion,,,Longbow
+GM_Part_Manufacturer_04_Vladof,,,Impact
+GM_Part_Manufacturer_06_Pangolin,,,Rubberized
+GM_Part_Manufacturer_07_Tediore,,,Explode after impact
+ClassMod_Part_Beastmaster_Unique_01_Friendbot,,,"Psycho Head on a Stick / All my BFFs / Barbaric Yawp When FL4K kills an enemy, their pet gains second wind"
+ClassMod_Part_Beastmaster_Unique_02_CosmicStalker,,,Big Game / Interplanetary Stalker / Hunter's Eye FL4K's Hunt Skill Power is increased by 25%
+ClassMod_Part_Beastmaster_Unique_03_BountyHunter,,,"Hunter's Eye / The Most Dangerous Game / Frenzy FL4K has a 3% chance to activate any purchased Hunt Kill Skill when dealing gun damage. Bosses are now treated as Humans, Beasts and Robotics for FL4K's Hunt Skills."
+ClassMod_Part_Beastmaster_Unique_05_RakkCommander,,,He Bites! / Go for the Eyes! / Eager to Impress Rakk Attack gains 1 extra charge!
+ClassMod_Part_Beastmaster_Unique_06_RedFang,,,"Eager to impress / Ferocity / He Bites! While Gamma Burst is active, FL4K's pet taunts all enemies."
+ClassMod_Part_Beastmaster_Unique_07_BlueFang,,,Fade Away kills have a 33% chance to refund a Fade Away Charge and extend the duration of Fade Away by 3 seconds.
+ClassMod_Part_Mod_Beastmaster_01_QuickCharge,,,Hunter's Eye / Two F4ng / Turn Tail and Run
+ClassMod_Part_Mod_Beastmaster_02_Divergent,,,Eager To Impress / Hive Mind / Who Rescued Who?
+ClassMod_Part_Mod_Beastmaster_03_Bushmaster,,,Ambush Predator / Leave No Trace / Turn Tail and Run
+ClassMod_Part_Mod_Beastmaster_04_Whistleblower,,,Sic Em' / Eager To Impress / Psycho Head on a Stick
+ClassMod_Part_Mod_Beastmaster_05_DARPAW,,,Ferocity / Who Rescued Who? / Self-Repairing System
+ClassMod_Part_Mod_Beastmaster_06_Overdriven,,,Rage and Recover / The Fast and the Furryous / Who Rescued Who?
+ClassMod_Part_Mod_Beastmaster_07_Thrillbotting,,,The Most Dangerous Game / Big Game / Hidden Machine
+ClassMod_Part_Mod_Beastmaster_08_TurboCharged,,,Second Intention / Furious Attack / Overclocked
+ClassMod_Part_Mod_Beastmaster_09_Headcase,,,Ambush Predator / Leave No Trace / The Fast and the Furryous
+ClassMod_Part_Mod_Beastmaster_10_Botmaster,,,Ferocity / He Bites! / Go for the Eyes!
+ClassMod_Part_Skill_BeastMaster_Bond11,,,"When FL4K's pet takes damage, the pet returns some of that damage to the attacker."
+ClassMod_Part_Skill_BeastMaster_Bond2,,,"Kill Skill. Whenever FL4K kills an enemy, Action Skill Cooldown Time is reduces."
+ClassMod_Part_Skill_BeastMaster_Bond3,,,"Whenever FL4K's Pet deals damage, FL4K regenerates health for a few seconds."
+ClassMod_Part_Skill_BeastMaster_Bond4,,,"When FL4K's pet attacks an enemy, the first melee attack is an automatic Critcal Hit that deals increased damage."
+ClassMod_Part_Skill_BeastMaster_Bond7,,,FL4K's Pet deals increased damage.
+ClassMod_Part_Skill_BeastMaster_DangerousGame,,,"Hunter Kill Skill. Whenever FL4K kills a Badass or stronger enemy, they gain increased Critical Hit Damage, Gun Damage, and Handling for a long time."
+ClassMod_Part_Skill_BeastMaster_FastAndFurry,,,"Turn Tail and Run: While moving, FL4K constantly regenerates health and gains Damage Reduction. While Still, FL4K gains Gun Damage and Fire Rate."
+ClassMod_Part_Skill_BeastMaster_Frenzy,,,"Frenzy: Hunter Skill. When FL4K's pet deals damage, FL4K and their pet gain a stack of Frenzy. Each stack of Frenzy increases Damage. The stacks decay after a few seconds."
+ClassMod_Part_Skill_BeastMaster_FullTank,,,"Fast and the Furryous: While above half health, FL4K's Gun Damage and Movement Speed are increased."
+ClassMod_Part_Skill_BeastMaster_GeneticLink,,,"When FL4K takes damage, a portion of all damage they take is shared to their pet instead."
+ClassMod_Part_Skill_BeastMaster_GotThisForYou,,,"Hunter Kill Skill. Whenever FL4K kills an enemy, their Pet gains increased Movement Speed and Damage for a few seconds."
+ClassMod_Part_Skill_BeastMaster_HeadCount,,,"Whenever FL4K scores a Critical hit, there is a chance their Action Skill Cooldown is reduced."
+ClassMod_Part_Skill_BeastMaster_HR1,,,"Hunter Skill. After shooting an enemy, FL4K gains a stack of Furious Attack."
+ClassMod_Part_Skill_BeastMaster_HR2,,,Attack Command has a lowered Cooldown and increased Damage.
+ClassMod_Part_Skill_BeastMaster_HR3,,,"Kill Skill. After killing an enemy, FL4K and FL4K's pet regenerate health for a few seconds."
+ClassMod_Part_Skill_BeastMaster_HR4,,,"FL4K's Maxium Health is increased, and they constantly regenerate health."
+ClassMod_Part_Skill_BeastMaster_HR7,,,Allies share a portion of FL4K's total Health Regeneration. FL4K's pet shares twice the amount of Health Regeneration.
+ClassMod_Part_Skill_BeastMaster_HR8,,,FL4K gains increased Fire Rate. FL4K gains even more Fire Rate after reloading.
+ClassMod_Part_Skill_BeastMaster_HR9,,,"When an enemy has no target or is attacking a different target, FL4K deals increased damage against them."
+ClassMod_Part_Skill_BeastMaster_Hunt1,,,"Leave No Trace: When FL4K scores a Critical Hit, there is a chance for 1 ammo to be added to their magazine."
+ClassMod_Part_Skill_BeastMaster_Hunt2,,,"Second Intention: Hunter Kill Skill. Whenever FL4K kills an enemy, they gain increased Reload Speed."
+ClassMod_Part_Skill_BeastMaster_Hunt5,,,"Ambush Predator: While there are no enemies nearby, FL4K's Weapon Handling and Critical Hit Damage are increased."
+ClassMod_Part_Skill_BeastMaster_HuntersEye,,,FL4K gains bonuses when fighting different types of enemies.
+ClassMod_Part_Skill_BeastMaster_InterStalker,,,"Hunter Kill Skill. Whenever FL4K kills an enemy, they gain a stack of Interplanetary Stalker. For each stack of Interplanetary Stalker, they gain a bonus to all damage dealth."
+ClassMod_Part_Skill_BeastMaster_LifeTraining,,,"Whenever FL4K's Pet deals damage, FL4K regenerates health for a few seconds."
+ClassMod_Part_Skill_BeastMaster_Symbiosis,,,Increases the power of Pet Bonuses granted to FL4K.
+ClassMod_Part_Skill_BeastMaster_TwoFang,,,FL4K has a chance to fire an extra projectile per shot
+ClassMod_Part_Operative_Unique_01_Infiltrator,,,"Zane's Weapon Damage and Movement Speed are increased. The lower his shield, the greater the bonus. Whenever Zane activates an action skill he breaks his shield."
+ClassMod_Part_Operative_Unique_02_Executor,,,"Kill Skill. Whenever Zane kills an enemy, he gains increased Accuracy, Handling, Critical Hit Damage, Status Effect Damage, and Status Effect Chance."
+ClassMod_Part_Operative_Unique_03_Expert,,,Kill Skill. +5% Chance on kill to recharge SNTL Cooldown and Duration.
+ClassMod_Part_Operative_Unique_04_Firebrand,,,"Grants Zane's Digit-Clone the Binary System Augment. Whenever Zane's Clone receives melee damage, it creates a Shock Nova around it."
+ClassMod_Part_Operative_Unique_05_Operative,,,"Whenever Zane freezes an enemy, a random Status Effect is applied to them instantly."
+Part_CM_Operative_Raid1,,,"While Sliding or Airborne, Zane gains +40% Weapon Damage and +20% Damage Reduction. While Slowed, Zane gains +25% Movement Speed"
+ClassMod_Part_Skill_Operative_Adrenaline,,,"Zane gains increased Action Skill Cooldown Rate. This bonus is based on the amount of shield he has. The more percent full, the greater the bonus."
+ClassMod_Part_Skill_Operative_BorrowedTime,,,Zane gains increased Action Skill Duration for every active Action Skill.
+ClassMod_Part_Skill_Operative_Chancer,,,"Zane gains Health Regeneration. The lower his shield is, the higher the bonus."
+ClassMod_Part_Skill_Operative_ColdBore,,,Zane gains increased Weapon Swap Speed. The next shot fired after swapping weapons deals Bonus Cryo Damage.
+ClassMod_Part_Skill_Operative_CoolerHeads,,,"Whenever Zane scores a Critical Hit on an enemy, theres a chance they will be Slowed. This effect stacks until the target is Frozen."
+ClassMod_Part_Skill_Operative_CoolHand,,,"Zane gains increased Reload Speed. Kill Skill. After killing an enemy, Zanes Reload Speed is increasted for a few seconds. Duration 15sec"
+ClassMod_Part_Skill_Operative_Donnybrook,,,"Kill Skill. Whenever Zane kills an enemy, he and his Digi-Clone receieve increased Gun Damage and gain Health Regeneration for a few seconds. Duration, 15sec"
+ClassMod_Part_Skill_Operative_DroneDelivery,,,"SNTL will occasionally drop a free grenade based on Zane's current grenade mod while attacking enemies. ""Cooldown 15sec"""
+ClassMod_Part_Skill_Operative_DuctTape,,,The first shot fired from Zane's gun has a chance to also fire a grenade. Cooldown Time 8sec
+ClassMod_Part_Skill_Operative_ExtraParts,,,Zane gains Increased Mazimum Shield Capacity.
+ClassMod_Part_Skill_Operative_GoodMisfortune,,,Kill Skill. Killing an enemy increased Zane's Action Skill Duration.
+ClassMod_Part_Skill_Operative_LikeAGhost,,,Zane and his Digi-Clone gain a chance to ignore bullets. This chance is increased for a few seconds after activating an Action skill. This effect stacks. Duration 8sec
+ClassMod_Part_Skill_Operative_MultiTasker,,,"Whenever one or more of Zane's action skills are active, he gains increased Gun Damage for each active action skill."
+ClassMod_Part_Skill_Operative_Ordnance,,,"Kill Skill. Whenever Zane kills an enemy, they create a Cryo Nova, dealing damage to all nearby enemies. Cooldown 2sec"
+ClassMod_Part_Skill_Operative_PlayingDirty,,,"Kill Skill. After killing an enemy, Zane's next five shots all have a chance to fire an additional projectile."
+ClassMod_Part_Skill_Operative_PocketFullOfGrenades,,,"Kill Skill. After killing an enemy, Zane gains Grenade Regeneration for a few seconds. Duration 15sec"
+ClassMod_Part_Skill_Operative_Praemunitus,,,Zane and his Digi-Clone gain increased Magazine Size.
+ClassMod_Part_Skill_Operative_ReadyForAction,,,Zane gains improved Shield Recharge Rate and Shield Recharge Delay.
+ClassMod_Part_Skill_Operative_ReallyExpensiveJacket,,,Elemental Status Effects applied to Zane have a reduced duration.
+ClassMod_Part_Skill_Operative_Refreshment,,,"Whenever Zane damages a frozen enemy with his weapon, he gains some of that damage back as health."
+ClassMod_Part_Skill_Operative_SupersonicMan,,,"Whenever one or more of Zane's Action Skills are active, he gains increased Movement Speed for each active Action Skill."
+ClassMod_Part_Skill_Operative_Teamwork,,,Zane deals Bonus Shock Damage to enemies that arent targeting him.
+ClassMod_Part_Skill_Operative_TheWantVsNeed,,,"Kill Skill. After killing an enemy, Zane's weapons gain Life Steal for a few seconds. Duration 15sec"
+ClassMod_Part_Skill_Operative_Violent_Momentum,,,"Zane's Gun Damage is increased while moving. The quicker he moves, the greater the Gun Damage."
+ClassMod_Part_Skill_Operative_Violent_Speed,,,"Kill Skill. After killing an enemy, Zane gains increased Movement Speed for a few seconds. Duration 15sec"
+ClassMod_Part_Skill_Operative_ViolentViolence,,,"Kill Skill. After killing an enemy, Zane gains increased Fire Rate for a few seconds. Duration 15sec"
+ClassMod_Part_Siren_Unique_01_Storm,,,"Whenever Amarea first damages an enemy with her Action Skill, she creates a damaging cloud of her Action Skill Element at that Location. Cloud Dmaage: +25/s"
+ClassMod_Part_Siren_Unique_02_Dragon,,,"Whenever Amara kills an enemy with a melee attack, her Action Skill Augment is triggered."
+ClassMod_Part_Siren_Unique_03_Bruiser,,,"Amara gains Damage Reduction. This bonus is based on the distance to the enemry. The close the enemy, the greater the bonus. Dmaage Reduction: Up to 29%"
+ClassMod_Part_Siren_Unique_04_Phasezerker,,,"On Action Skill Used, Amara gains her Max Rush Stack count, but they decay over time. Amara gains 3% Weapon Damage and 10% Action Skill Cooldown Rate based on the number of Rush Stacks. Max Rush Stacks: +5"
+ClassMod_Part_Siren_Unique_05_Siren,,,"Whenever Amara Phasegraps an enemry, her Action Skill Element is applied to all nearby enemies."
+Part_CM_Siren_Raid1,,,"Whenever Amara activates her action skill, she applies her action skill element to herself. Amara's Gun Damage is increased while moving. The quicker she moves, the greater the Gun Damage bonus."
+Part_CM_Siren_DLC1,,,"Whenever an enemy damages Amara, she gains increased Action Skill Cooldown Rate (5%) for a 8 seconds. This effect stacks."
+GPart_All_SkillEnd_AccuracyHandling,,,"On Action Skill End, Weapon Accuracy(50%) and Handling(200%) are greatly increased for 12 seconds."
+GPart_All_SkillEnd_AddGrenade,,,"On Action Skill Start, Regenerate 1 grenade."
+GPart_All_SkillEnd_CooldownRate,,,"On Action Skill End, action skill cooldown rate is increased by 20% for 15 seconds."
+GPart_All_SkillEnd_CritDamage,,,"On Action Skill End, Critical Damage is increased by 25% for 15 seconds."
+GPart_All_SkillEnd_DamageReduction,,,"On Action Skill End, damage taken is reduced by 15% for 12 seconds."
+GPart_All_SkillEnd_EleChanceDamage,,,"On Action Skill End, Weapon Status Effect Damage is increased by 75% and Chance is increased by 40% for 12 seconds."
+GPart_All_SkillEnd_FireRateReload,,,"On Action Skill End, fire rate is increased by 11%, and reload speed by 35% for 12 seconds."
+GPart_All_SkillEnd_HealthRegen,,,"On Action Skill End, regenerate 1.25% max health per second for 12 seconds."
+GPart_All_SkillEnd_LifeSteal,,,"On Action Skill End, gain 15% Life Steal for 12 seconds."
+GPart_All_SkillEnd_MeleeDamage,,,"On Action Skill End, Melee Damage is increased by 100% for 12 seconds."
+GPart_All_SkillEnd_MoveSpeed,,,"On Action Skill End, movement speed is increased by 5% for 12 seconds."
+GPart_All_SkillEnd_NextMagBonusDamageCorrosive,,,"On Action Skill End, the next 2 magazines will have 50% additional bonus corrosive damage."
+GPart_All_SkillEnd_NextMagBonusDamageCryo,,,"On Action Skill End, the next 2 magazines will have 50% additional bonus cryo damage."
+GPart_All_SkillEnd_NextMagBonusDamageFire,,,"On Action Skill End, the next 2 magazines will have 50% additional bonus fire damage."
+GPart_All_SkillEnd_NextMagBonusDamageRadiation,,,"On Action Skill End, the next 2 magazines will have 50% additional bonus radiation damage."
+GPart_All_SkillEnd_NextMagBonusDamageShock,,,"On Action Skill End, the next 2 magazines will have 50% additional bonus shock damage."
+GPart_All_SkillEnd_ProjectileSpeed,,,"On Action Skill End, Projectile Speed is increased by 100% for 12 seconds."
+GPart_All_SkillEnd_UniqueEnemyDamage,,,"On Action Skill End, Deal 125% more Weapon Damage to Badass, Named, and Boss enemies for 15 seconds."
+GPart_All_SkillEnd_WeaponDamage,,,"On Action Skill End, Weapon Damage is increased by 100% for 12 seconds."
+GPart_All_Passive_GenerateTerror_Melee,,,Melee Attacks have a 25% chance to apply Terror to yourself.
+GPart_All_Passive_TerrorAmmoRegen,,,"While Terrified, gain ammo regeneration. The more Terror you have, the higher the bonus. T1: 5%, T2: 10%, T3: 15%"
+GPart_All_Passive_TerrorBonus_CryoDamage,,,"While Terrified, deal 50% bonus cryo damage."
+GPart_All_Passive_TerrorBulletReflect,,,"While Terrified, enemy bullets have a chance to reflect off of you. The more Terror you have, the higher the bonus. T1: 15%, T2: 30%, T3: 45%"
+GPart_All_Passive_TerrorCritDamage,,,"While Terrified, gain increased crit damage. The more Terror you have, the higher the bonus. T1: 50%, T2: 75%, T3: 100%"
+GPart_All_Passive_TerrorDamageFireRate,,,"While Terrified, gain increased damage and fire rate. The more Terror you have, the higher the bonus. Damage: T1: 5%, T2: 10%, T3: 15%, Fire Rate: T1: 10%, T2: 20%, T3: 30%"
+GPart_All_Passive_TerrorDamageMitigation,,,"While Terrified, reduce all incoming damage by a small amount. The more Terror you have, the higher the bonus. T1: 10%, T2: 20%, T3: 30%"
+GPart_All_Passive_TerrorHealthRegen,,,"While Terrified, gain health regeneration. The more Terror you have, the higher the bonus. T1: 4%, T2: 6%, T3: 8%"
+GPart_All_Passive_TerrorProjectilesPerShot,,,"While Terrified, you have a chance to fire an extra projectile per shot. The more Terror you have, the higher the bonus. T1: 10%, T2: 20%, T3: 30%"
+GPart_All_SkillEnd_GenerateTerror,,,"On Action Skill End, apply Terror to yourself every 5 seconds for the next 18 seconds. Generate Terror Rate: 3 ?"
+GPart_All_SkillEnd_TerrorHeal,,,"While Terrified, gain health regeneration. The more Terror you have, the higher the bonus. Base Heal: 25%, Terror Stack Bonus: 15%"
+GPart_EG_Generic_ConsecutiveHitsDmgStack,,,"Consecutive Hits increase Weapon Damage by 1% per hit, misses remove all bonuses. (Max: 200 stacks)"
+GPart_EG_Generic_KillStackReloadDamage,,,"Killing an enemy grants 5% Weapon Damage and 95% Reload Speed for 25 seconds, this effect stacks."
+GPart_EG_Generic_LowHealthExecutor,,,"While enemies are below 25% Health, gain 50% increased Weapon Damage."
+GPart_EG_GrenadeThrow_GlobalDamage,,,"On Grenade Thrown, Weapon, Grenade, and Action Skill Damage are increased by 25% for 6 seconds."
+GPart_EG_SkillEndBonusEleDamage_Corrosive,,,"On Action Skill End, gain 50% bonus Corrosive Damage with Weapons for 10 seconds."
+GPart_EG_SkillEndBonusEleDamage_Cryo,,,"On Action Skill End, gain 50% bonus Cryo Damage with Weapons for 10 seconds."
+GPart_EG_SkillEndBonusEleDamage_Fire,,,"On Action Skill End, gain 50% bonus Fire Damage with Weapons for 10 seconds."
+GPart_EG_SkillEndBonusEleDamage_Radiation,,,"On Action Skill End, gain 50% bonus Radiation Damage with Weapons for 10 seconds."
+GPart_EG_SkillEndBonusEleDamage_Shock,,,"On Action Skill End, gain 50% bonus Shock Damage with Weapons for 10 seconds."
+GPart_EG_WhileAirborn_AccuracyHandling,,,"While Airborne, Accuracy is increased by 25% and Handling by 10%."
+GPart_EG_WhileAirborn_CritDamage,,,"While Airborne, Critical Damage is increased by 125%."
+GPart_EG_WhileAirborn_Damage,,,"While Airborne, Damage is increased by 130%."
+GPart_EG_WhileAirborn_FireRate,,,"While Airborne, Fire Rate is increased by 120%."
+GPart_EG_WhileSliding_AccuracyHandling,,,"While Sliding, Accuracy is increased by 50% and Handling by 10%."
+GPart_EG_WhileSliding_Damage,,,"While Sliding, Damage is increased by 140%."
+GPart_EG_WhileSliding_FireRate,,,"While Sliding, Fire Rate is increased by 125%."
+GPart_Beast_AttackCmd_Lifesteal,,,"After using Attack Command, gain 30% lifesteal for 8 seconds."
+GPart_Beast_AttackCmd_Movespeed,,,"After issuing an Attack Command, gain 8% Movespeed for 6 seconds."
+GPart_Beast_ExitStealthNova,,,"When exiting Fade Away, create a nova that deals 175% damage. Nova Radius: 500"
+GPart_Beast_RakkCharge,,,Grants an extra charge of Rakk Attack!
+GPart_Beast_RakkCrit,,,"After using Rakk Attack!, gain 25% critical hit damage for 8 seconds."
+GPart_Beast_RakkSlag,,,Enemies damaged by Rakk Attack! take 50% increased damage for 10 seconds.
+GPart_Beast_Stealth_AccuracyHandling,,,"While Fade Away is active, gain greatly increased Accuracy(200%) and Handling(perfect) for 20 seconds."
+GPart_BonusRadiationDamage,,,"While Gamma Burst is active, gain 65% bonus radiation damage."
+GPart_Beast_AttackCmd_TerrorFireDMG,,,"After using Attack Command, consume all Terror and Fl4K's pet gains 50% bonus fire damage for 15 seconds."
+GPart_Gunner_AutoBear_AmmoRegen,,,"While Auto Bear is active, constantly regenerate 7.5% of magazine size per second."
+GPart_Gunner_AutoBear_FireDamage,,,"While Auto Bear is active, deals 20% bonus Incendiary damage."
+GPart_Gunner_EnterExit_Nova,,,"When entering and exiting Iron Bear, create a nova that deals 175% damage. Radius: 900"
+GPart_Gunner_IBGrenadeChance,,,"While Iron Bear is active, taking damage has a 20% chance to spawn a grenade each 8 seconds."
+GPart_Gunner_KillsLowerCooldown,,,"After exiting Iron Bear, kills increase Iron Bear's cooldown rate by 30% for 30 seconds. Stack Duration: 10 seconds"
+GPart_Gunner_NextMagFireDamage,,,"After exiting Iron Bear, the next 2 magazines will have 40% bonus Incendiary damage."
+GPart_Gunner_NextMagFirerateCrit,,,"After exiting Iron Bear, the next 2 magazines will have 10% increased fire rate and 20% critical damage."
+GPart_Gunner_NextMagReloadHandling,,,"After exiting Iron Bear, the next 3 magazines will have 50% increased reload speed and 20% increased handling."
+GPart_Gunner_NoAmmoConsumption,,,"After exiting Iron Bear, do not consume ammo for 5 seconds."
+GPart_Gunner_ShieldHealthMax,,,"After exiting Iron Bear, gain 75% increased shields and health for 25 seconds."
+GPart_Gunner_Reload_TerrorNova,,,"After Reloading, consume all Terror and create a nova that deals cryo damage(175%). Radius: 400"
+GPart_CloneSwap_WeaponDamage,,,"After swapping places with your Digi-Clone, Weapon Damage is increased by 75% for 6 seconds."
+GPart_Operative_BarrierActive_AccuracyCrit,,,"While Barrier is active, Accuracy is increased by 150%, and Critical Hit damage is increased by 30%."
+GPart_Operative_BarrierDeploy_ShieldRecharge,,,"When Barrier is Deployed, instantly start recharging your shields. Delay: 0.15 seconds"
+GPart_Operative_CloneActive_AmmoRegen,,,"While Digi-Clone is active, regenerate 12% of magazine ammo in mag per second for 30 seconds."
+GPart_Operative_CloneActive_HealthRegen,,,"While Digi-Clone is active, regenerate 3% max health per second of 30 seconds."
+GPart_Operative_CloneSwapInstaReload,,,"After swapping places with your Digi-Clone, your weapon is reloaded."
+GPart_Operative_DroneActiveBonusDamage,,,"While SNTNL is active, gain 50% of damage as bonus Cryo damage."
+GPart_Operative_DroneActiveMovespeed,,,"While SNTNL is active, movespeed is increased by 15%."
+GPart_Operative_DroneActive_FireRateReload,,,"While SNTNL is active, Fire Rate is increased by 9%, and Reload Speed by 30%."
+GPart_Operative_DroneActiveTerrorLifesteal,,,"While SNTNL is active, SNTNL gains 100% lifesteal while you are affected by Terror."
+GPart_Siren_Cast_WeaponDamage,,,"After using Phasecast, Weapon Damage is increased by 250% for 12 seconds."
+GPart_Siren_Grasp_AccuracyCrit,,,"After Phasegrasping an enemy, Weapon Accuracy(100%) and Handling(400%) are greatly increased for 20 seconds."
+GPart_Siren_Grasp_ConstantNova,,,"While Phasegrasp is active, Amara constantly triggers novas that deal 50% damage for 15 seconds. Nova Frequency: 1.2 sec, Nova Radius: 500"
+GPart_Siren_SkillEnd_AttunedSkillDamage,,,"On Action Skill End, deal 40% bonus radiation damage for 8 seconds."
+GPart_Siren_Slam_DamageReduction,,,"After using Phaseslam, damage taken is reduced by 25% and movespeed is increased by 12% for 10 seconds."
+GPart_Siren_Slam_MeleeDamage,,,"After using Phaseslam, Melee Damage is increased by 200% for 10 seconds."
+GPart_Siren_Slam_ReturnDamage,,,"On Action Skill End, 30% of all damage taken is returned to the attacker for 12 seconds."
+GPart_Siren_Slam_WeaponDamage,,,"After using Phaseslam, Weapon Damage is increased by 300% for 12 seconds."
+GPart_Siren_Grasp_TerrorSkulls,,,"After Phasegrasping an enemy, Amara fires Terror skulls at the grasped target dealing 200% damage."
+Part_PS_ATL_Barrel_01_A,Fire Rate +10%,,
+Part_PS_ATL_Barrel_01_B,Fire Rate +10%,,
+Part_PS_ATL_Barrel_01_C,Acc -15%,,
+Part_PS_ATL_Barrel_02_A,Proj Speed +30%,,
+Part_PS_ATL_Barrel_02_B,Dmg +10%,,
+Part_PS_ATL_Barrel_02_C,Dmg +10%,,
+Part_PS_ATL_Barrel_03_A,Acc -15%,,
+Part_PS_ATL_Barrel_03_B,Acc -15%,,
+Part_PS_ATL_Barrel_03_C,Reload Time -10%,,
+Part_PS_ATL_Barrel_Drill,"Mag Size +40, Reload Time +50%",Dmg -50%,
+Part_PS_ATL_Barrel_Warmonger,Splash Dmg Radius +130,"Acc +300%, Dmg -30%",
+Part_PS_ATL_Body,DO NOT REMOVE,,
+Part_PS_ATL_Body_A,Fire Rate +10%,,
+Part_PS_ATL_Body_B,Acc -15%,,
+Part_PS_ATL_Body_C,Reload Time -10%,,
+Part_PS_ATL_Grip_01,"Reload Time -5%, Acc -20%",,
+Part_PS_ATL_Grip_02,Dmg +5%,,
+Part_PS_ATL_Grip_03,"Weapon Sway -30%, Fire Rate +5%",,
+Part_PS_ATL_Mag_02,18 Round,,
+Part_PS_ATL_Mag_03,"26 Round, Dmg -10%",,
+Part_PS_ATL_Material_01_Common,Skin,,
+Part_PS_ATL_Material_02_UnCommon,Skin,,
+Part_PS_ATL_Material_03_Rare,Skin,,
+Part_PS_ATL_Material_04_VeryRare,Skin,,
+Part_PS_ATL_Material_Drill,Skin,,
+Part_PS_ATL_Material_Warmonger,Skin,,
+Part_PS_ATL_Radar_01,"Weapon Sway -30%, Recoil Height -30%, Acc -10%",,
+Part_PS_ATL_Radar_02,"Fire Rate +5%, Mag Size +10%",,
+Part_PS_ATL_Radar_03,"Reload Time -5%, Dmg +5%",,
+Part_PS_COV_Body_B,Fire rate +10%,,
+Part_PS_COV_Body_C,Heat per shot -25%,"Dmg -5%, Acc +10%",
+Part_PS_COV_Barrel_Legion,,"Dmg -12%, Reload time +10%, Acc +300%",
+Part_PS_COV_Barrel_01_A,"Acc bloom -30%, Melee dmg +40%",,
+Part_PS_COV_Barrel_01_B,Dmg +10%,,
+Part_PS_COV_Barrel_01_C,Fire Rate +10%,,
+Part_PS_COV_Barrel_02_A,Dmg +10%,,
+Part_PS_COV_Barrel_02_B,Heat per shot -25%,"Dmg -5%, Acc +10%",
+Part_PS_COV_Barrel_02_C,Dmg +10%,,
+Part_PS_COV_Barrel_03_A,Fire Rate +10%,,
+Part_PS_COV_Barrel_03_B,Fire Rate +10%,,
+Part_PS_COV_Barrel_03_C,"Heat per shot -25%, Charge duration -20%",,
+Part_PS_COV_Barrel_Chad,,"Dmg -30%, Acc Bloom +100%, Acc +50%",
+Part_PS_COV_Barrel_Contagion,"Dmg -10%, Reload +50%",Acc +20%,
+Part_PS_COV_Barrel_ETech,,"Heat per shot +100%, Proj Speed -50%",
+Part_PS_COV_Barrel_ETech_A,"Ele Dmg +10%, Heat per Shot -25%, Melee Dmg +60%",,
+Part_PS_COV_Barrel_Mouthpiece,"Acc. Bloom -50%, Dmg +40%","Acc +20%, Heat per Shot +100%",
+Part_PS_COV_Barrel_PsychoStabber,Dmg +25%,,
+Part_PS_COV_Accessory_01,Crit Dmg +10%,,
+Part_PS_COV_Accessory_02,Fire Rate +5%,,
+Part_PS_COV_Accessory_03,"Proj. per shot +1, Acc. Bloom -16%","Acc. +10%, Dmg. -20%",
+Part_PS_COV_Accessory_04,"Dmg. +5%, Melee Dmg. +80%",,
+Part_PS_COV_Grip_01,"Recoil Width -30%, Fire rate +5%",,
+Part_PS_COV_Grip_02,"Acc Bloom -20%, Crit Dmg +10%",,
+Part_PS_COV_Grip_03,"Acc -12%, Heat per Shot -15%",Dmg -5%,
+Part_PS_COV_Material_01_Common,Skin,,
+Part_PS_COV_Material_02_Uncommon,Skin,,
+Part_PS_COV_Material_03_Rare,Skin,,
+Part_PS_COV_Material_04_VeryRare,Skin,,
+Part_PS_COV_Material_Chad,Skin,,
+Part_PS_COV_Material_Contagion,Skin,,
+Part_PS_COV_Material_Legion,Skin,,
+Part_PS_COV_Material_Mouthpiece,Skin,,
+Part_PS_COV_Material_PsychoStabber,Skin,,
+Part_PS_COV_Material_Skeksis,Skin,,
+Part_PS_COV_Scope_01,Iron sights,,
+Part_PS_COV_Scope_02,"Iron sights 2, 1.8x",,
+Part_PS_COV_Scope_03,"Small scope, 2.5x",,
+Part_PS_COV_Scope_04,"Scope, 5.3x",,
+Part_PS_COV_Ele_Corr,Converts Dmg to Corrosive,,
+Part_PS_COV_Ele_Cryo,Converts Dmg to Cryo,,
+Part_PS_COV_Ele_Fire,Converts Dmg to Fire,,
+Part_PS_COV_Ele_Radiation,Converts Dmg to Radiation,,
+Part_PS_COV_Ele_Shock,Converts Dmg to Shock,,
+Part_PS_COV_Stock_01,Weapon sway -30%,,
+Part_PS_COV_Stock_02,"Recoil Height -15%, Proj per Shot +1","Acc +10%, Dmg -20%, Acc Bloom +20%",
+Part_Dal_PS_Acc_01,"Reload Time -10%, Crit Dmg +10%",,
+Part_Dal_PS_Acc_02,"Dmg +10%, Melee Dmg +40%",,
+Part_Dal_PS_Acc_03,"Weapon Sway -30%, Acc -10%",,
+Part_Dal_PS_Acc_04,Fire Rate +10%,,
+Part_Dal_PS_Acc_05,"Recoil Width -25%, Acc Bloom -25%",,
+Part_Dal_PS_Barrel_01_A,Acc -15%,,
+Part_Dal_PS_Barrel_01_B,Acc -15%,,
+Part_Dal_PS_Barrel_01_C,Recoil Height -25%,,
+Part_Dal_PS_Barrel_02_A,Dmg +10%,,
+Part_Dal_PS_Barrel_02_B,Dmg +10%,,
+Part_Dal_PS_Barrel_02_C,Crit Dmg +10%,,
+Part_Dal_PS_Barrel_03_A,Fire Rate +10%,,
+Part_Dal_PS_Barrel_03_B,Acc Bloom -25%,,
+Part_Dal_PS_Barrel_03_C,Fire Rate +10%,,
+Part_Dal_PS_Barrel_ETech,"Mag Size +20%, Melee Dmg +60%",,
+Part_Dal_PS_Barrel_ETech_A,"Proj Speed +30%, Reload Time -10%, Melee Dmg +60%",,
+Part_Dal_PS_Barrel_Hornet,"Splash Dmg Radius +85, Reload Time -5%, Ele Chance +15%",Acc +10%,
+Part_Dal_PS_Barrel_Nemesis,Acc Bloom -30%,,
+Part_Dal_PS_Barrel_Omniloader,Acc +45%,,
+Part_Dal_PS_Barrel_Rakkman,Dmg +35%,,
+Part_Dal_PS_Body,DO NOT REMOVE,,
+Part_Dal_PS_FiringMode_Burst_Single,3 Shot Burst or Semi-Auto,,
+Part_Dal_PS_Grip_01,"Recoil Height -15%, Acc Bloom -20%",,
+Part_Dal_PS_Grip_02,"Weapon Sway -30%, Fire Rate +5%",,
+Part_Dal_PS_Grip_03,"Reload Time -5%, Dmg +5%",,
+Part_Dal_PS_Mag_01,12 Round,Dmg +10%,
+Part_Dal_PS_Mag_02,18 Round,,
+Part_Dal_PS_Mag_03,24 Round,Dmg -10%,
+Part_Dal_PS_Mag_AAA,9 Round,,
+Part_Dal_PS_Mat_01_Common,Skin,,
+Part_Dal_PS_Mat_02_UnCommon,Skin,,
+Part_Dal_PS_Mat_03_Rare,Skin,,
+Part_Dal_PS_Mat_04_VeryRare,Skin,,
+Part_Dal_PS_Mat_AAA,Skin,,
+Part_Dal_PS_Mat_Hornet,Skin,,
+Part_Dal_PS_Mat_Nemesis,Skin,,
+Part_Dal_PS_Mat_Omniloader,Skin,,
+Part_Dal_PS_Mat_Rakkman,Skin,,
+Part_Dal_PS_Scope_01,"2.2x, 4x",,
+Part_Dal_PS_Scope_02,"1.0x, 1x",,
+Part_Dal_PS_Stock_01,"Weapon Sway -30%, Acc -20%",,
+Part_Dal_PS_Stock_02,"Acc Bloom -20%, Mag Size +10%","Dmg -5%, Acc +10%",
+Part_PS_JAK_Barrel_01_A,Dmg +10%,,
+Part_PS_JAK_Barrel_01_B,Crit Dmg +10%,,
+Part_PS_JAK_Barrel_01_C,"Recoil Height -25%, Melee Dmg +60%",,
+Part_PS_JAK_Barrel_01_D,Dmg +10%,,
+Part_PS_JAK_Barrel_02_A,Acc -15%,,
+Part_PS_JAK_Barrel_02_B,Dmg +10%,,
+Part_PS_JAK_Barrel_02_C,"Reload Time -10%, Melee Dmg +40%",,
+Part_PS_JAK_Barrel_03_A,Acc -15%,,
+Part_PS_JAK_Barrel_03_B,Weapon Sway -20%,,
+Part_PS_JAK_Barrel_03_C,Acc -15%,,
+Part_PS_JAK_Barrel_03_D,Reload Time -10%,,
+Part_PS_JAK_Barrel_AmazingGrace,"Recoil Width -60%, Recoil Height -25%, Dmg +30%",,
+Part_PS_JAK_Barrel_Buttplug,Melee Dmg +50%,"Dmg -90%, Acc +110%",
+Part_PS_JAK_Barrel_Doc,Mag Size +3,"Acc +200%, Dmg -10%",
+Part_PS_JAK_Barrel_GodMother,"Acc -50%, Ele Chance +100%","Dmg -35%, Recoil height +50%, Reload Time +20%",
+Part_PS_JAK_Barrel_JabberWeaponBase,Dmg +40%,,
+Part_PS_JAK_Barrel_Maggie,Mag Size +4,"Acc +250%, Dmg -85%",
+Part_PS_JAK_Barrel_MelsCompanion,Mag Size +10,"Acc +35%, Dmg -25%, Ele Chance -100%",
+Part_PS_JAK_Barrel_SpyRevolver,"Recoil Height -50%, Mag Size +8",Dmg -30%,
+Part_PS_JAK_Barrel_TheDuc,"Splash Dmg Radius +100, Dmg +20%",,
+Part_PS_JAK_Barrel_Unforgiven,Crit Dmg +300%,"Dmg -40%, Acc Bloom +200%",
+Part_PS_JAK_Barrel_WagonWheel,Recoil Height -50%,Acc Bloom +200%,
+Part_PS_JAK_Body,DO NOT REMOVE,,
+Part_PS_JAK_Body_A,Dmg +10%,,
+Part_PS_JAK_Body_B,Reload Time -10%,,
+Part_PS_JAK_Body_C,Dmg +10%,,
+Part_PS_JAK_Grip_01,"Reload Time -5%, Crit Dmg +10%",,
+Part_PS_JAK_Grip_02,"Recoil Width -15%, Dmg +5%",,
+Part_PS_JAK_Grip_03,"Weapon Sway -30%, Acc -20%",,
+Part_PS_JAK_Grip_04,Proj per Shot +4,"Dmg -68.5%, Acc +87%, Recoil Height +40%, Acc Bloom +25%",
+Part_PS_JAK_Grip_RoboMelt,Proj per Shot +4,"Dmg -68.5%, Acc +87%, Recoil Height +40%, Acc Bloom +25%",
+Part_PS_JAK_Hammer_01,"Reload Time -5%, Acc -10%",,
+Part_PS_JAK_Hammer_02,"Weapon Sway -30%, Crit Dmg +10%",,
+Part_PS_JAK_Hammer_03,Recoil Height -30%,,
+Part_PS_JAK_Mag_01,6 Round,,
+Part_PS_JAK_Mag_02,6 Round,,
+Part_PS_JAK_Mag_03,4 Round. Dmg +10%,,
+Part_PS_JAK_Material_01_Common,Skin,,
+Part_PS_JAK_Material_02_UnCommon,Skin,,
+Part_PS_JAK_Material_03_Rare,Skin,,
+Part_PS_JAK_Material_04_Epic,Skin,,
+Part_PS_JAK_Material_AmazingGrace,Skin,,
+Part_PS_JAK_Material_Buttplug,Skin,,
+Part_PS_JAK_Material_Clay,Skin,,
+Part_PS_JAK_Material_Doc,Skin,,
+Part_PS_JAK_Material_FirstGunB,Skin,,
+Part_PS_JAK_Material_GodMother,Skin,,
+Part_PS_JAK_Material_Maggie,Skin,,
+Part_PS_JAK_Material_Malevolent,Skin,,
+Part_PS_JAK_Material_MelsCompanion,Skin,,
+Part_PS_JAK_Material_SpyRevolver,Skin,,
+Part_PS_JAK_Material_TheDuc,Skin,,
+Part_PS_JAK_Material_Unforgiven,Skin,,
+Part_PS_JAK_Material_WagonWheel,Skin,,
+Part_PS_JAK_Material_RoboMasher,Skin,,
+Part_PS_JAK_Rail_01,Visual Only,,
+Part_PS_JAK_NoScope,Dmg +35%,,
+Part_PS_JAK_Scope_02,Tear drop scope 5x,,
+Part_PS_JAK_Scope_03,2.2x,,
+Part_PS_JAK_Speedloader,Basic required piece,,
+Part_PS_MAL_Barrel_01_A,Fire rate +10%,,
+Part_PS_MAL_Barrel_01_B,Mag Size +10%,,
+Part_PS_MAL_Barrel_01_C,"Acc Bloom -25%, Acc -15%",,
+Part_PS_MAL_Barrel_02,Splash Dmg Radius +60,,
+Part_PS_MAL_Barrel_02_A,Charge Duration -20%,,
+Part_PS_MAL_Barrel_02_B,Dmg +10%,,
+Part_PS_MAL_Barrel_02_C,Dmg +10%,,
+Part_PS_MAL_Barrel_03_A,Ele Chance +15%,,
+Part_PS_MAL_Barrel_03_B,"Weapon Sway -20%, Charge Duration -20%",,
+Part_PS_MAL_Barrel_03_C,Ele Dmg +10%,Dmg -15%,
+Part_PS_MAL_Barrel_AI_TrooperBadass,Mag Size +5,,
+Part_PS_MAL_Barrel_ETech_A,"Ele Chance +15%, Mag Size +10%, Melee Dmg +60%",,
+Part_PS_MAL_Barrel_HellShock,Mag Size +20,Dmg -15%,
+Part_PS_MAL_Barrel_HyperHydrator,Splash Dmg Radius +60,,
+Part_PS_MAL_Barrel_Plumber,"Splash Dmg Radius +100, Dmg +50%",,
+Part_PS_MAL_Barrel_Starkiller,Mag Size +7,Dmg -70%,
+Part_PS_MAL_Barrel_SuckerPunch,"Ele Chance +75%, Splash Dmg Radius +100","Acc +125%, Dmg -40%, Acc Bloom +300%",
+Part_PS_MAL_Barrel_ThunderballFists,Dmg +25%,,
+Part_PS_MAL_Body,DO NOT REMOVE,,
+Part_PS_MAL_Grip_01,"Charge Duration -10%, Acc Bloom -20%",,
+Part_PS_MAL_Grip_02,"Weapon Sway -30%, Mag Size +10%","Dmg -5%, Acc +10%",
+Part_PS_MAL_Grip_03,"Weapon Sway -30%, Dmg +5%",,
+Part_PS_MAL_Grip_04,"Weapon Sway -30%, Dmg +5%",,
+Part_PS_MAL_Grip_05,"Acc -20%, Fire Rate +5%",,
+Part_PS_MAL_Hammer_01,Fire Rate +10%,,
+Part_PS_MAL_Hammer_02,Dmg +10%,,
+Part_PS_MAL_Hammer_03,"Splash Dmg Radius +20%, Acc -15%",,
+Part_PS_MAL_Hammer_04,"Ele Dmg +10%, Ele Chance +15%",,
+Part_PS_MAL_Mag_01,"10 round, Dmg +10%",,
+Part_PS_MAL_Mag_01_A,Recoil Height -25%,,
+Part_PS_MAL_Mag_02,14 round,,
+Part_PS_MAL_Mag_02_A,Ele Dmg +10%,,
+Part_PS_MAL_Mag_03,"20 Round, Dmg -10%",,
+Part_PS_MAL_Mag_03_A,Reload Time -10%,,
+Part_PS_MAL_Material_01_Common,Skin,,
+Part_PS_MAL_Material_02_UnCommon,Skin,,
+Part_PS_MAL_Material_03_Rare,Skin,,
+Part_PS_MAL_Material_04_VeryRare,Skin,,
+Part_PS_MAL_Material_Hellshock,Skin,,
+Part_PS_MAL_Material_HyperHydrator,Skin,,
+Part_PS_MAL_Material_Plumber,Skin,,
+Part_PS_MAL_Material_Starkiller,Skin,,
+Part_PS_MAL_Material_SuckerPunch,Skin,,
+Part_PS_MAL_Material_ThunderballFists,Skin,,
+Part_PS_MAL_Scope_01,1.5x,,
+Part_PS_MAL_Scope_02,2.9x,,
+Part_PS_MAL_Scope_03,2.2x,,
+Part_PS_TED_Barrel_01_A,Dmg +10%,,
+Part_PS_TED_Barrel_01_B,"Splash Dmg Radius +20%, Dmg +10%",,
+Part_PS_TED_Barrel_01_C,"Fire Rate +10%, Mag Size +10%","Dmg -5%, Acc +10%",
+Part_PS_TED_Barrel_02_A,"Recoil Height -25%, Fire Rate +10%",,
+Part_PS_TED_Barrel_02_B,Fire Rate +10%,,
+Part_PS_TED_Barrel_02_C,Acc -15%,,
+Part_PS_TED_Barrel_03_A,Acc -15%,,
+Part_PS_TED_Barrel_03_B,"Mag Size +7, Dmg +4.5%",Acc +10%,
+Part_PS_TED_Barrel_03_C,Acc -15%,,
+Part_PS_TED_Barrel_BabyMaker,Dmg +20%,,
+Part_PS_TED_Barrel_ETech,Mag Size +10%,,
+Part_PS_TED_Barrel_ETech_A,"Reload Time -10%, Mag Size +10%, Melee Dmg +60%",,
+Part_PS_TED_Barrel_Gunerang,"Mag Size +18, Reload Time -17.5%",,
+Part_PS_TED_Barrel_Sabre,Mag Size +30,"Acc +25%, Dmg -50%",
+Part_PS_TED_Barrel_Execute,"Mag Size +2, Reload Time -35%",,
+Part_PS_TED_Body,DO NOT REMOVE,,
+Part_PS_TED_Body_A,Mag Size +10%,"Acc +10%, Dmg -5%",
+Part_PS_TED_Body_B,Splash Dmg Radius +20%,,
+Part_PS_TED_Body_C,Dmg +10%,,
+Part_PS_TED_Grip_01,"Weapon Sway -30%, Dmg +5%",,
+Part_PS_TED_Grip_02,"Acc -12%, Mag Size +3",Dmg -5%,
+Part_PS_TED_Grip_03,"Splash Dmg Radius +20%, Recoil Width -30%",,
+Part_PS_TED_Grip_04,"Recoil Height -15%, Fire Rate +5",,
+Part_PS_TED_Grip_05,Proj per Shot +1,"Acc Bloom +25%, Acc +10%, Dmg -30%",
+Part_PS_TED_Material_01_Common,Skin,,
+Part_PS_TED_Material_02_UnCommon,Skin,,
+Part_PS_TED_Material_03_Rare,Skin,,
+Part_PS_TED_Material_04_Epic,Skin,,
+Part_PS_TED_Material_Ava,Skin,,
+Part_PS_TED_Material_BabyMaker,Skin,,
+Part_PS_TED_Material_Bangerang,Skin,,
+Part_PS_TED_Material_Gunerang,Skin,,
+Part_PS_TED_Material_Sabre,Skin,,
+Part_PS_TED_Material_Execute,Skin,,
+Part_PS_TED_Scope_01,1.5x,,
+Part_PS_TED_Scope_02,"Small Scope, 2.2x",,
+Part_PS_TED_Scope_03,4.5x,,
+Part_PS_TED_TypeMod_01,Splash Dmg Radius +20%,,
+Part_PS_TED_TypeMod_02,"Acc Bloom -30%, Dmg +5%",,
+Part_PS_TED_TypeMod_03,"Recoil Height -30%, Fire Rate +5%",,
+Part_PS_TED_TypeMod_04,"Weapon Sway -30%, Acc -5%",,
+Part_PS_TED_TypeMod_BabyMaker_Homing,"Acc Bloom -30%, Dmg +5%",,
+Part_PS_TED_TypeMod_BabyMaker_Spider,"Recoil Height -30%, Fire Rate +5%",,
+Part_PS_TOR_Barrel_01_A,Fire Rate +10%,,
+Part_PS_TOR_Barrel_01_B,Proj Speed +30%,,
+Part_PS_TOR_Barrel_01_C,Proj Speed +30%,,
+Part_PS_TOR_Barrel_02_A,Dmg +10%,,
+Part_PS_TOR_Barrel_02_B,Proj Speed +30%,,
+Part_PS_TOR_Barrel_02_C,Dmg +10%,,
+Part_PS_TOR_Barrel_03_A,Dmg +10%,,
+Part_PS_TOR_Barrel_03_B,Splash Dmg Radius +20%,,
+Part_PS_TOR_Barrel_03_C,Splash Dmg Radius +20%,,
+Part_PS_TOR_Barrel_4SUM,"Splash Dmg Radius +200, Dmg +32.5%",,
+Part_PS_TOR_Barrel_Devestator,"Recoil Height -55%, Recoil Width -55%",Acc +450%,
+Part_PS_TOR_Barrel_ETech,"Reload Time -40%, Proj per Shot +8",Acc +600%,
+Part_PS_TOR_Barrel_ETech_A,"Proj Speed +30%, Reload Time -10%, Melee Dmg +60%",,
+Part_PS_TOR_Barrel_Nurf,"Recoil Height -90%, Mag Size +5",Dmg -70%,
+Part_PS_TOR_Barrel_RoisensThorns,Recoil Height -50%,Proj Speed -75%,
+Part_PS_TOR_Barrel_Scoville,"Mag Size +2, Damage +175%, Splash Dmg Radius +350, Reload Time - 30%",,
+Part_PS_TOR_Body,DO NOT REMOVE,,
+Part_PS_TOR_Body_A,Dmg +10%,,
+Part_PS_TOR_Body_B,Dmg +10%,,
+Part_PS_TOR_Body_C,Splash Dmg Radius +20%,,
+Part_PS_TOR_Body_D,Reload Time -10%,,
+Part_PS_TOR_Grip_01,"Recoil Height -15%, Fire Rate +5%",,
+Part_PS_TOR_Grip_02,"Recoil Width -30%, Dmg +5%",,
+Part_PS_TOR_Grip_03,"Proj Speed +15%, Splash Dmg Radius +20%",,
+Part_PS_TOR_Hammer_01,Acc -15%,,
+Part_PS_TOR_Hammer_02,Fire Rate +10%,,
+Part_PS_TOR_Hammer_03,Dmg +10%,,
+Part_PS_TOR_Mag_01,8 Round,,
+Part_PS_TOR_Mag_02,6 Round,,
+Part_PS_TOR_Mag_03,"5 Round, Splash Dmg Radius +20%",,
+Part_PS_TOR_Material_01_Common,Skin,,
+Part_PS_TOR_Material_02_Uncommon,Skin,,
+Part_PS_TOR_Material_03_Rare,Skin,,
+Part_PS_TOR_Material_04_VeryRare,Skin,,
+Part_PS_TOR_Material_4SUM,Skin,,
+Part_PS_TOR_Material_Devestator,Skin,,
+Part_PS_TOR_Material_Echo,Skin,,
+Part_PS_TOR_Material_Heckle,Skin,,
+Part_PS_TOR_Material_Hyde,Skin,,
+Part_PS_TOR_Material_Nurf,Skin,,
+Part_PS_TOR_Material_RoisensThorns,Skin,,
+Part_PS_TOR_Material_Troy,Skin,,
+Part_PS_TOR_TinyTina_Material,Skin,,
+Part_PS_TOR_Material_HandCannon,Skin,,
+Part_PS_TOR_Material_Scoville,Skin,,
+Part_PS_TOR_Scope_01,2.2x,,
+Part_PS_TOR_Stock_01,Proj per Shot +1,"Acc Bloom +20%, Acc +120%, Dmg -20%",
+Part_PS_TOR_Stock_02,Splash Dmg Radius +20%,,
+Part_PS_VLA_Barrel_01,Acc -30%,,
+Part_PS_VLA_Barrel_01_A,Dmg +10%,,
+Part_PS_VLA_Barrel_01_B,Dmg +10%,,
+Part_PS_VLA_Barrel_01_C,Acc Bloom -25%,,
+Part_PS_VLA_Barrel_02,Acc +20%,,
+Part_PS_VLA_Barrel_02_A,Fire Rate +10%,,
+Part_PS_VLA_Barrel_02_B,Acc Bloom -25%,,
+Part_PS_VLA_Barrel_02_C,Fire Rate +10%,,
+Part_PS_VLA_Barrel_03_A,Acc Blom -25%,,
+Part_PS_VLA_Barrel_03_B,Dmg +10%,,
+Part_PS_VLA_Barrel_03_C,Fire Rate +10%,,
+Part_PS_VLA_Barrel_BoneShredder,"Proj per shot +4, Mag Size +40","Dmg -50%, Acc Blom +35%, Acc +400%",
+Part_PS_VLA_Barrel_ETech,Reload Time -20%,,
+Part_PS_VLA_Barrel_ETech_A,"Fire Rate +10%, Mag Size +10%, Mele Dmg +80%",,
+Part_PS_VLA_Barrel_Infiniti,"Weapon Sway -100%, Acc Bloom -100%, Recoil height -100%, Recoil Width -100%",Dmg -50%,
+Part_PS_VLA_Body,DO NOT REMOVE,,
+Part_PS_VLA_Grip_01,"Weapon Sway -30%, Mag Size +10%",,
+Part_PS_VLA_Grip_02,"Acc Bloom -30%, Dmg +5%",,
+Part_PS_VLA_Grip_03,"Recoil Width -30%, Fire Rate +5%",,
+Part_PS_VLA_MagType_01,Dmg +10%,,
+Part_PS_VLA_MagType_02,Acc Bloom -25%,,
+Part_PS_VLA_MagType_03,Recoil Width -25%,,
+Part_PS_VLA_Mag_01_A,"15 round, Dmg +10%",,
+Part_PS_VLA_Mag_01_B,18 Round,,
+Part_PS_VLA_Mag_02_A,18 Round,,
+Part_PS_VLA_Mag_02_A_Infiniti,Inf Mag,,
+Part_PS_VLA_Mag_02_B,18 Round,,
+Part_PS_VLA_Mag_03_A,Dmg -10%,,
+Part_PS_VLA_Mag_03_B,35 round,"Dmg -20%, Recoil Height +25%, Acc Bloom +15%, Recoil Width +20%",
+Part_PS_VLA_Material_01_Common,Skin,,
+Part_PS_VLA_Material_02_Uncommon,Skin,,
+Part_PS_VLA_Material_03_Rare,Skin,,
+Part_PS_VLA_Material_04_VeryRare,Skin,,
+Part_PS_VLA_Material_BoneShredder,Skin,,
+Part_PS_VLA_Material_Infiniti,Skin,,
+Part_PS_VLA_Material_Magnificent,Skin,,
+Part_PS_VLA_Material_TheLeech,Skin,,
+Part_PS_VLA_Rail_01,Acc Bloom -25%,,
+Part_PS_VLA_Rail_02,Fire Rate +10%,,
+Part_PS_VLA_Rail_03,Acc -15%,,
+Part_PS_VLA_Rail_04,Proj per Shot +1,"Acc Bloom +20%, Acc +10%, Dmg -20%",
+Part_PS_VLA_Scope_01,Iron sights,,
+Part_PS_VLA_Scope_02,1.5x,,
+Part_PS_VLA_Scope_04,4.0x,,
+Part_PS_VLA_Slide_01,Dmg +10%,,
+Part_PS_VLA_Slide_02,Fire Rate +10%,,
+Part_PS_VLA_Slide_03,Mag Size +10%,"Acc +10%, Dmg -5%",
+Part_PS_VLA_Underbarrel_01,"Dmg +5%, Extra fire rate +25%",,
+Part_PS_VLA_Underbarrel_01_A,Fire Rate +10%,,
+Part_PS_VLA_Underbarrel_02,Fire Rate +5%,,
+Part_PS_VLA_Underbarrel_03,Mag Size +10%,,
+Part_PS_VLA_Underbarrel_TheLeech,Mag Size +10%,,
+Part_SG_Hyp_Barrel_01_A,Proj per Shot +35%,"Acc Bloom +15%, Acc +10%, Dmg -5%",
+Part_SG_Hyp_Barrel_01_B,Fire Rate +10%,,
+Part_SG_Hyp_Barrel_01_C,Fire Rate +10%,,
+Part_SG_Hyp_Barrel_02_A,Dmg +10%,,
+Part_SG_Hyp_Barrel_02_B,Proj per Shot +35%,"Acc Bloom +15%, Acc +10%, Dmg -5%",
+Part_SG_Hyp_Barrel_02_C,"Dmg +10%, Melee Dmg +60%",,
+Part_SG_Hyp_Barrel_03_A,Dmg +10%,,
+Part_SG_Hyp_Barrel_03_B,Acc -7.5%,,
+Part_SG_Hyp_Barrel_03_C,Acc -7.5%,,
+Part_SG_Hyp_Barrel_ETECH,"Splash Dmg Radius +300, Mag Size +20%",,
+Part_SG_Hyp_Barrel_ETECH_A,"Splash Dmg Radius +20%, Reload Time -10%",,
+Part_SG_Hyp_Barrel_Phebert,"Acc -75%, Dmg +600%, Mag Size +40%",,
+Part_SG_Hyp_Barrel_TheButcher,"Recoil Height -60%, Acc -25%, Dmg +100%",Acc Bloom +100%,
+Part_SG_Hyp_Body_01,DO NOT REMOVE,,
+Part_SG_Hyp_Body_01_A,"Weapon Shield Cap +25%, Crit Dmg +10%",,
+Part_SG_Hyp_Body_01_B,Acc -7.5%,,
+Part_SG_Hyp_Body_01_C,Reload Time -10%,,
+Part_SG_Hyp_Foregrip_01,"Weapon Sway -30%, Dmg +5%",,
+Part_SG_Hyp_Foregrip_02,"Fire Rate +5%, Mag Size +35%","Dmg -5%, Acc +10%",
+Part_SG_Hyp_Foregrip_03,"Weapon Shield Cap +15%, Dmg +5%",,
+Part_SG_Hyp_Foregrip_04,"Recoil Height -30%, Acc -5%",,
+Part_SG_Hyp_Grip_01,"Acc -1%, Proj per Shot +100%","Dmg -30%, Acc Bloom +25%, Proj Cost +1",
+Part_SG_Hyp_Grip_02,"Crit Dmg +10%, Dmg +5%",,
+Part_SG_Hyp_Grip_03,"Recoil Height -15%, Reload Time -5%",,
+Part_SG_Hyp_Grip_04,"Weapon Sway -30%, Fire Rate +5%",,
+Part_SG_Hyp_Mag_01,8 Round,,
+Part_SG_Hyp_Mag_02,10 Round,Dmg -10%,
+Part_SG_Hyp_Mag_03,"6 Round, Dmg +10%",,
+Part_SG_Hyp_Material_01_Common,Skin,,
+Part_SG_Hyp_Material_02_UnCommon,Skin,,
+Part_SG_Hyp_Material_03_Rare,Skin,,
+Part_SG_Hyp_Material_04_Epic,Skin,,
+Part_SG_Hyp_Material_Brick,Skin,,
+Part_SG_Hyp_Material_ConferenceCall,Skin,,
+Part_SG_Hyp_Material_Phebert,Skin,,
+Part_SG_Hyp_Material_Redistributor,Skin,,
+Part_SG_Hyp_Material_TheButcher,Skin,,
+Part_SG_Hyp_Material_Fearmonger,Skin,,
+Part_SG_Hyp_Scope_01,2.7x,,
+Part_SG_Hyp_Scope_02,2.2x,,
+Part_SG_Hyp_Shield_01,Shield,,
+Part_SG_Hyp_Shield_02,Incoming Dmg converted into Ammo in Mag,,
+Part_SG_Hyp_Shield_03,Incoming Dmg converted into Weapon Dmg,,
+Part_SG_Hyp_Shield_04,Incoming Dmg reflected,,
+Part_SG_JAK_Barrel_01,Proj per Shot +7,,
+Part_SG_JAK_Barrel_01_A,Proj per Shot +35%,"Acc Bloom +15%, Acc +10%, Dmg -5%",
+Part_SG_JAK_Barrel_01_B_Stat,"Fire Rate +10%, Melee Dmg +60%",,
+Part_SG_JAK_Barrel_01_C,"Fire Rate +10%, Melee Dmg +60%",,
+Part_SG_JAK_Barrel_02,Proj per Shot +8,,
+Part_SG_JAK_Barrel_02_A,Reload Time -10%,,
+Part_SG_JAK_Barrel_02_B,Dmg +10%,,
+Part_SG_JAK_Barrel_02_C,"Reload Time -10%, Proj per Shot +50%","Acc +10%, Dmg -20%, Acc Bloom +20%",
+Part_SG_JAK_Barrel_03,Proj per Shot +7,,
+Part_SG_JAK_Barrel_03_A,Acc -7.5%,,
+Part_SG_JAK_Barrel_03_B,"Dmg +10%, Melee Dmg +60%",,
+Part_SG_JAK_Barrel_03_C,Acc -7.5%,,
+Part_SG_JAK_Barrel_Garcia,Proj per Shot +6,,
+Part_SG_JAK_Barrel_Hellwalker,"Proj per Shot +10, Reload Time -20%, Dmg +30%","Acc Bloom +75%, Recoil Height +22%, Heat Per shot +900%",
+Part_SG_JAK_Barrel_JabberBeefcake,"Acc -20%, Proj per Shot +4",Dmg -10%,
+Part_SG_JAK_Barrel_Nimble,Proj per Shot +7,Acc +30%,
+Part_SG_JAK_Barrel_OnePunch,"Reload Time -20%, Proj per Shot + 1, Acc -75%, Dmg +900%",,
+Part_SG_JAK_Barrel_Sledge,"Dmg +60%, Mag Size +12","Acc +75%, Recoil Height +22%",
+Part_SG_JAK_Barrel_TKWave,"Crit Dmg 45%, Dmg +50%",,
+Part_SG_JAK_Barrel_TidalWave,"Crit Dmg +65%, Dmg +30%",,
+Part_SG_JAK_Bolt_01,Reload Time -10%,,
+Part_SG_JAK_Bolt_02,Dmg +10%,,
+Part_SG_JAK_Bolt_03,Acc -7.5%,,
+Part_SG_JAK_Bolt_04,Crit Dmg +10%,,
+Part_SG_JAK_Bolt_05,Proj per Shot +35%,"Acc Bloom +15%, Acc +10%, Dmg -5%",
+Part_SG_JAK_Foregrip_01,"Weapon Sway -30%, Recoil Height -30%",,
+Part_SG_JAK_Foregrip_02,"Recoil Width -15%, Fire Rate +5%",,
+Part_SG_JAK_Foregrip_03,"Recoil Height -30%, Crit Dmg +10%",,
+Part_SG_JAK_Foregrip_04,Proj per Shot +15%,"Acc Bloom +15%, Acc +4.5%, Dmg -5%",
+Part_SG_JAK_Foregrip_05,"Weapon Sway -30%, Dmg +5%",,
+Part_SG_JAK_Mag_01,No mag,,
+Part_SG_JAK_Mag_02,"12 Round, Dmg -10%",,
+Part_SG_JAK_Mag_03,8 Round,,
+Part_SG_JAK_Mag_04,"6 Round, Dmg +10%",,
+Part_SG_JAK_Mag_HellWalker,"Mag Size +3, Dmg +10%",,
+Part_SG_JAK_Material_01_Common,Skin,,
+Part_SG_JAK_Material_02_UnCommon,Skin,,
+Part_SG_JAK_Material_03_Rare,Skin,,
+Part_SG_JAK_Material_04_VeryRare,Skin,,
+Part_SG_JAK_Material_Fingerbiter,Skin,,
+Part_SG_JAK_Material_Garcia,Skin,,
+Part_SG_JAK_Material_Hellwalker,Skin,,
+Part_SG_JAK_Material_LGD_Sledge,Skin,,
+Part_SG_JAK_Material_Nimble,Skin,,
+Part_SG_JAK_Material_OnePunch,Skin,,
+Part_SG_JAK_Material_Typhon,Skin,,
+Part_SG_JAK_Scope_03,3.5x,,
+Part_SG_JAK_Stock_01,"Weapon Sway-30%, Reload Time -5%",,
+Part_SG_JAK_Stock_01_A,Acc -7.5%,,
+Part_SG_JAK_Stock_02,"Recoil Width -30%, Acc -10%",,
+Part_SG_JAK_Stock_02_A,Recoil Height -25%,,
+Part_SG_JAK_Stock_03,"Recoil Width -30%, Recoil Height -15%",,
+Part_SG_JAK_Stock_03_A,Reload Time -10%,,
+Part_SG_JAK_Stock_04,"Weapon Sway-30%, Dmg +5%",,
+Part_SG_JAK_Stock_04_A,Proj per Shot +35%,"Acc Bloom +15%, Acc +10%, Dmg -5%",
+Part_SG_JAK_Stock_05,"Recoil -30%, Crit Damage +10%",,
+Part_SG_JAK_Stock_05_A,Dmg +10%,,
+Part_SG_JAK_Trigger_01,Reload Time -10%,,
+Part_SG_JAK_Trigger_02,Dmg +10%,,
+Part_SG_JAK_Trigger_03,Crit Dmg +10%,,
+Part_SG_JAK_Trigger_Fingerbiter,"Reload Time -25%, Proj per Shot +50%, Dmg +43%",Acc +70%,
+Part_SG_JAK_Trigger_Hellwalker,Reload Time -10%,,
+Part_SG_MAL_Barrel_01_A,Acc -7.5%,,
+Part_SG_MAL_Barrel_01_B,Ele Dmg +10%,,
+Part_SG_MAL_Barrel_01_C,Charge Duration -20%,,
+Part_SG_MAL_Barrel_02,Weapon Sway -20%,,
+Part_SG_MAL_Barrel_02_A,Proj Speed +30%,,
+Part_SG_MAL_Barrel_02_B,Dmg +10%,,
+Part_SG_MAL_Barrel_02_C,Dmg +10%,,
+Part_SG_MAL_Barrel_03_A,Ele Dmg +10%,,
+Part_SG_MAL_Barrel_03_B,Ele Dmg +10%,,
+Part_SG_MAL_Barrel_03_C,Acc -7.5%,,
+Part_SG_MAL_Barrel_ETech,"Splash Dmg Radius +210, Mag Size +50%",,
+Part_SG_MAL_Barrel_ETech_A,"Proj Speed +30%, Ele Chance +15%",,
+Part_SG_MAL_Barrel_Mouthpiece2,"Weapon Sway -20%, Dmg +17%",,
+Part_SG_MAL_Barrel_Recursion,"Acc -75%, Dmg +500%, Mag Size +20%",,
+Part_SG_MAL_Barrel_Shriek,Dmg +800%,,
+Part_SG_MAL_Barrel_Trev,"Splash Dmg Radius +75, Dmg +110%, Mag Size +3",,
+Part_SG_MAL_Barrel_Wisp,Dmg +700%,,
+Part_SG_MAL_Barrel_DeathGrip,"Mag Size +6, Dmg +150%",,
+Part_SG_MAL_Body,DO NOT REMOVE,,
+Part_SG_MAL_Grip_01,"Charge Duration -10%, Acc -10%",,
+Part_SG_MAL_Grip_02,Reload Time -5%,"Acc Bloom +25%, Acc +10%, Dmg -30%",
+Part_SG_MAL_Grip_03,"Proj Speed +15%, Dmg +5%",,
+Part_SG_MAL_Grip_04,"Weapon Sway -30%, Fire Rate +5%",,
+Part_SG_MAL_Grip_05,"Recoil Height -30%, Proj per Shot +15%","Acc +10%, Dmg -5%, Acc Bloom +15%",
+Part_SG_MAL_Magazine_01,"6 Round, Dmg +10%",,
+Part_SG_MAL_Magazine_02,12 Round,Dmg -10%,
+Part_SG_MAL_Magazine_03,9 Round,,
+Part_SG_MAL_Magazine_Deathgrip,9 Round,,
+Part_SG_MAL_Material_01_Common,Skin,,
+Part_SG_MAL_Material_02_UnCommon,Skin,,
+Part_SG_MAL_Material_03_Rare,Skin,,
+Part_SG_MAL_Material_04_VeryRare,Skin,,
+Part_SG_MAL_Material_Mouthpiece2,Skin,,
+Part_SG_MAL_Material_Recursion,Skin,,
+Part_SG_MAL_Material_Shriek,Skin,,
+Part_SG_MAL_Material_Trev,Skin,,
+Part_SG_MAL_Material_Wisp,Skin,,
+Part_SG_MAL_Material_DeathGrip,Skin,,
+Part_SG_MAL_Scope_04,2.2x,,
+Part_SG_MAL_Stock_01,"Reload Time -5%, Mag Size +2","Dmg -5%, Acc +10%",
+Part_SG_MAL_Stock_02,"Weapon Sway -30%, Acc -10%",,
+Part_SG_MAL_Stock_03,"Recoil Width -30%, Fire Rate +5%",,
+Part_SG_MAL_Stock_04,"Ele Dmg +10%, Charge Duration -10%",,
+Part_SG_TED_Barrel_01_A,Dmg +10%,,
+Part_SG_TED_Barrel_01_B,Proj per Shot +35%,"Acc Bloom +15%, Acc +10%, Dmg -5%",
+Part_SG_TED_Barrel_01_C,"Splash Dmg Radius +20%, Dmg +10%",,
+Part_SG_TED_Barrel_02_A,Acc -7.5%,,
+Part_SG_TED_Barrel_02_B,Fire Rate +10%,,
+Part_SG_TED_Barrel_02_C,Fire Rate +10%,,
+Part_SG_TED_Barrel_03,Mag Size +2,,
+Part_SG_TED_Barrel_03_A,Acc -7.5%,,
+Part_SG_TED_Barrel_03_B,"Proj per Shot +35%, Mag Size +2","Dmg -5%, Acc Bloom +15%, Acc +10%",
+Part_SG_TED_Barrel_03_C,Acc -7.5%,,
+Part_SG_TED_Barrel_ETECH,"Mag Size +4, Splash Dmg Radius +300",,
+Part_SG_TED_Barrel_ETECH_A,"Splash Dmg Radius +20%, Mag Size +10%",,
+Part_SG_TED_Barrel_FriendZone,"Ele Dmg +100%, Crit Dmg +40%, Dmg +15%",,
+Part_SG_TED_Barrel_Horizon,Dmg +110%,,
+Part_SG_TED_Barrel_Polybius,"Recoil Height -85%, Recoil Width -85%, Dmg +15%",Acc +40%,
+Part_SG_TED_Barrel_Sludge,"Splash Dmg Radius +300, Mag Size +4",Dmg -20%,
+Part_SG_TED_Body,DO NOT REMOVE,,
+Part_SG_TED_Body_A,Splash Dmg Radius +20%,,
+Part_SG_TED_Body_B,"Mag Size +10%, Dmg +5%",Acc +10%,
+Part_SG_TED_Body_C,Dmg +10%,,
+Part_SG_TED_Foregrip_02,"Recoil Height -85%, Acc -5%",,
+Part_SG_TED_Foregrip_03,"Splash Dmg Radius +20%, Dmg +5%",,
+Part_SG_TED_Foregrip_04,"Proj per Shot +50%, Dmg +5%","Acc +4.5%, Acc Bloom +25%",
+Part_SG_TED_Foregrip_05,"Recoil Width -15%, Mag Size +2","Dmg -5%, Acc +10%",
+Part_SG_TED_Grip_01,"Recoil Width -30%, Proj per SHot +15%","Acc +10%, Dmg -5%, Acc Bloom +15%",
+Part_SG_TED_Grip_02,Fire Rate +5%,,
+Part_SG_TED_Grip_03,"Recoil Height -15%, Mag Size +2","Dmg -5%, Acc +10%",
+Part_SG_TED_Grip_04,"Splash Dmg Radius +20%, Acc -20%",,
+Part_SG_TED_Grip_05,"Weapon Sway -30%, Dmg +5%",,
+Part_SG_TED_Material_01_Common,Skin,,
+Part_SG_TED_Material_02_Uncommon,Skin,,
+Part_SG_TED_Material_03_Rare,Skin,,
+Part_SG_TED_Material_04_VeryRare,Skin,,
+Part_SG_TED_Material_FriendZone,Skin,,
+Part_SG_TED_Material_Horizon,Skin,,
+Part_SG_TED_Material_Polybius,Skin,,
+Part_SG_TED_Material_Sludge,Skin,,
+Part_SG_TED_Scope_01,2.2x,,
+Part_SG_TED_Scope_02,4.5x,,
+Part_SG_TED_Scope_03,1.5x,,
+Part_SG_TED_Scope_04,2.9x,,
+Part_SG_TED_TypeMod_01,When thrown detonate on impacting enemy,,
+Part_SG_TED_TypeMod_02,When thrown stick,,
+Part_SG_TED_TypeMod_03,When thrown Home in,,
+Part_SG_TED_TypeMod_04,When thrown Bounce,,
+Part_SG_Torgue_Barrel_01_A,Fire Rate +10%,,
+Part_SG_Torgue_Barrel_01_B,Splash Dmg Radius +20%,,
+Part_SG_Torgue_Barrel_01_C,Splash Dmg Radius +20%,,
+Part_SG_Torgue_Barrel_02_A,Proj per Shot +35%,"Acc Bloom +15%, Acc +10%, Dmg -5%",
+Part_SG_Torgue_Barrel_02_B,Dmg +10%,,
+Part_SG_Torgue_Barrel_02_C,Dmg +10%,,
+Part_SG_Torgue_Barrel_03_A,Proj Speed +30%,,
+Part_SG_Torgue_Barrel_03_B,Proj Speed +30%,,
+Part_SG_Torgue_Barrel_03_C,Acc -7.5%,,
+Part_SG_Torgue_Barrel_Balrog,"Splash Dmg Radius +275, Dmg +40%",,
+Part_SG_Torgue_Barrel_Brewha,"Splash Dmg Radius +300, Dmg +180%, Mag Size +8",,
+Part_SG_Torgue_Barrel_ETech,Mag Size +5,,
+Part_SG_Torgue_Barrel_ETech_A,"Splash Dmg Radius +20%, Reload Time -10%",,
+Part_SG_Torgue_Barrel_ETech_TheLob,Dmg -80%,,
+Part_SG_Torgue_Barrel_Flakker,"Splash Dmg Radius +175, Dmg +200%",Acc +100%,
+Part_SG_Torgue_Barrel_Redline,Recoil Height -50%,Acc +65%,
+Part_SG_Torgue_Barrel_Thumper,Mag Size +4,Acc +200%,
+Part_SG_Torgue_TiggsBoom,Splash Dmg Radius +50,"Dmg -25%, Acc +75%",
+Part_SG_Torgue_Body,DO NOT REMOVE,,
+Part_SG_Torgue_Body_A,Proj per Shot +35%,"Acc Bloom +15%, Acc +10%, Dmg -5%",
+Part_SG_Torgue_Body_B,Dmg +10%,,
+Part_SG_Torgue_Foregrip_01,"Recoil Height -30%, Fire Rate +5%",,
+Part_SG_Torgue_Foregrip_02,Mag Size +10%,"Acc +10%, Dmg -0.3%",
+Part_SG_Torgue_Foregrip_03,"Splash Dmg Radius +20%, Acc -5%",,
+Part_SG_Torgue_Grip_01,Weapon Sway -30%,"Dmg -30%, Acc +10%, Acc Bloom +25%",
+Part_SG_Torgue_Grip_02,Splash Dmg Radius +20%,,
+Part_SG_Torgue_Grip_03,"Acc -10%, Dmg +5%",,
+Part_SG_Torgue_Magazine_01,"3 Round, Proj per Shot +0%, Proj per Shot +1, Dmg +10%",,
+Part_SG_Torgue_Magazine_02,"4 Round, Proj per Shot +0%, Acc -50%, Splash Dmg Radius +300, Proj per Shot +1, Dmg +620%",,
+Part_SG_Torgue_Magazine_03,"5 Round, Proj per Shot +1, Proj per Shot +0%",Dmg -10%,
+Part_SG_Torgue_Magazine_04,"2 Round, Proj per Shot +1, Proj per Shot +0%",Dmg +20%,
+Part_SG_Torgue_Magazine_Flak,Proj per Shot +3,,
+Part_SG_Torgue_Magazine_Redline,"Proj per Shot +1, Proj per Shot +0%",,
+Part_SG_Torgue_Material_01_Common,Skin,,
+Part_SG_Torgue_Material_02_UnCommon,Skin,,
+Part_SG_Torgue_Material_03_Rare,Skin,,
+Part_SG_Torgue_Material_04_VeryRare,Skin,,
+Part_SG_Torgue_Material_Balrog,Skin,,
+Part_SG_Torgue_Material_Brewha,Skin,,
+Part_SG_Torgue_Material_Flakker,Skin,,
+Part_SG_Torgue_Material_Redline,Skin,,
+Part_SG_Torgue_Material_Thumper,Skin,,
+Part_SG_TOR_Material_Boring,Skin,,
+Part_SG_TOR_Material_TheLob,Skin,,
+Part_SG_Torgue_Material_TiggsBoom,Skin,,
+Part_SG_Torgue_Scope_02,2.6x,,
+Part_SG_Torgue_Scope_03,1.5x,,
+Part_AR_ATL_Barrel_01_A,Mag Size +10%,,
+Part_AR_ATL_Barrel_01_B,Fire Rate +10%,,
+Part_AR_ATL_Barrel_01_C,Fire Rate +10%,,
+Part_AR_ATL_Barrel_02_A,Fire Rate +10%,,
+Part_AR_ATL_Barrel_02_B,"Reload Time -10%, Dmg +10%",,
+Part_AR_ATL_Barrel_02_C,Dmg +10%,,
+Part_AR_ATL_Barrel_03_A,"Weapon Sway -20%, Acc Bloom -25%",,
+Part_AR_ATL_Barrel_03_B,Acc +15%,,
+Part_AR_ATL_Barrel_03_C,Acc +15%,,
+Part_AR_ATL_Barrel_Carrier,Acc Bloom -15%,Dmg -50%,
+Part_AR_ATL_Barrel_RebelYell,Recoil height -25%,Dmg -30%,
+Part_AR_ATL_Foregrip_01,"Acc -10%, Dmg +5%",,
+Part_AR_ATL_Foregrip_02,"Weapon Sway -30%, Fire Rate +5%",,
+Part_AR_ATL_Foregrip_03,"Reload Time -5%, Acc Bloom -30%",,
+Part_AR_ATL_Foregrip_04,Crit Dmg +10%,,
+Part_AR_ATL_Grip_01,"Acc Bloom -20%, Fire Rate +5%",,
+Part_AR_ATL_Grip_02,"Reload Time -5%, Acc -20%",,
+Part_AR_ATL_Grip_03,"Crit Dmg +10%, Dmg Size +10%","Dmg -5%, Acc +10%",
+Part_AR_ATL_Grip_04,"Recoil height -15%, Dmg +5%",,
+Part_AR_ATL_Mag_01,"22 Round, Dmg +10%",,
+Part_AR_ATL_Mag_02,28 Round,,
+Part_AR_ATL_Mag_03,34 Round,Dmg -10%,
+Part_AR_ATL_Material_01_Common,Skin,,
+Part_AR_ATL_Material_02_UnCommon,Skin,,
+Part_AR_ATL_Material_03_Rare,Skin,,
+Part_AR_ATL_Material_04_VeryRare,Skin,,
+Part_AR_ATL_Material_Carrier,Skin,,
+Part_AR_ATL_Material_Portals,Skin,,
+Part_AR_ATL_Material_RebelYell,Skin,,
+Part_AR_ATL_Scope_01,1.5x,,
+Part_AR_ATL_Tracker_01,Stick Puck,,
+Part_AR_ATL_Tracker_02,Recoil Heught -25%,,
+Part_AR_ATL_Tracker_03,Weapon Sway -20%,,
+Part_AR_ATL_Tracker_RebelYell,Weapon Sway -20%,,
+Part_ATL_AR_Body_A,Dmg +10%,,
+Part_ATL_AR_Body_B,Fire Rate +10%,,
+Part_ATL_AR_Body_C,"Reload Time -10%, Acc -15%",,
+Part_AR_COV_Barrel_01_A,Fire Rate +10%,,
+Part_AR_COV_Barrel_01_B,Heat per Shot -25%,,
+Part_AR_COV_Barrel_01_C,Dmg +10%,,
+Part_AR_COV_Barrel_02_A,Acc -15%,,
+Part_AR_COV_Barrel_02_B,"Recoil Height -25%, Melee Dmg +80%",,
+Part_AR_COV_Barrel_02_C,Fire Rate +10%,,
+Part_AR_COV_Barrel_02_D,Fire Rate +10%,,
+Part_AR_COV_Barrel_03_A,Dmg +10%,,
+Part_AR_COV_Barrel_03_B,Dmg +10%,,
+Part_AR_COV_Barrel_03_C,Acc Bloom -25%,,
+Part_AR_COV_Barrel_ETech,Heat per Shot +100%,,
+Part_AR_COV_Barrel_ETech_A,Heat per Shot -25%,,
+Part_AR_COV_Barrel_Zheitsev,Dmg +15%,,
+Part_AR_COV_Barrel_Zheitsev_A,Heat per Shot -25%,,
+Part_AR_COV_Barrel_Zheitsev_B,Dmg +10%,,
+Part_AR_COV_Body,DO NOT REMOVE,,
+Part_AR_COV_Body_A,Heat per Shot -25%,"Dmg -5%, Acc +10%",
+Part_AR_COV_Body_B,Heat per Shot -25%,"Dmg -5%, Acc +10%",
+Part_AR_COV_Body_C,Dmg +10%,,
+Part_AR_COV_Foregrip_01,"Weapon Sway -30%, Dmg +5%",,
+Part_AR_COV_Foregrip_02,"Weapon Sway -30%, Recoil Height -30%",,
+Part_AR_COV_Foregrip_03,"Proj per Shot +1, Recoil Width -15%","Acc +10%, Heat per Shot +40%, Acc Bloom +20%, Dmg -20%",
+Part_AR_COV_Foregrip_04,"Recoil Height -30%, Fire Rate +5%",,
+Part_AR_COV_Grip_01,"Weapon Sway -30%, Fire Rate +5%",,
+Part_AR_COV_Grip_02,"Recoil Height -15%, Dmg +5%",,
+Part_AR_COV_Grip_03,"Heat per Shot -15%, Acc Bloom -20%",,
+Part_AR_COV_Grip_04,"Recoil Width -30%, Proj per Shot +1","Acc +10%, Dmg -20%, Acc Bloom +20%",
+Part_AR_COV_Material_01_Common,Skin,,
+Part_AR_COV_Material_02_UnCommon,Skin,,
+Part_AR_COV_Material_04_VeryRare,Skin,,
+Part_AR_COV_Material_KriegAR,Skin,,
+Part_AR_COV_Material_Sawbar,Skin,,
+Part_AR_COV_Material_Zheitsev,Skin,,
+Part_AR_COV_Bottle,Bottle Scope,,
+Part_AR_COV_Scope_01,3.3x,,
+Part_AR_COV_Starter_01,Heat per Shot -25%,"Dmg -5%, Acc +10%",
+Part_AR_COV_Starter_02,Fire Rate +10%,,
+Part_AR_COV_Starter_03,Dmg +10%,,
+Part_DAL_AR_Barrel_01_A,Recoil height -25%,,
+Part_DAL_AR_Barrel_01_B,Dmg +10%,,
+Part_DAL_AR_Barrel_01_C,Dmg +10%,,
+Part_DAL_AR_Barrel_02_A,Acc -15%,,
+Part_DAL_AR_Barrel_02_B,Acc -15%,,
+Part_DAL_AR_Barrel_02_C,Fire Rate +10%,,
+Part_DAL_AR_Barrel_03_A,Fire Rate +10%,,
+Part_DAL_AR_Barrel_03_B,Fire Rate +10%,,
+Part_DAL_AR_Barrel_03_C,Acc Bloom -25%,,
+Part_DAL_AR_Barrel_Barrage,"Mag Size +10, Crit Dmg +15%, Recoil Width -75%, Acc Bloom -50%",,
+Part_DAL_AR_Barrel_ETech,Mag Size +20%,,
+Part_DAL_AR_Barrel_ETech_A,Reload Time -10%,,
+Part_DAL_AR_Barrel_Earworm,Dmg +15%,,
+Part_DAL_AR_Barrel_Hail,Crit Dmg +150%,,
+Part_DAL_AR_Barrel_Kaos,Dmg +15%,Acc +60%,
+Part_DAL_AR_Barrel_ETech_Juju,"Fire Rate +1250%, Dmg +125%",Crit Dmg -50%,
+Part_DAL_AR_Barrel_ETech_Juju_A,Reload Time -10%,,
+Part_DAL_AR_Barrel_Digby,Dmg +20%,,
+Part_DAL_AR_Body,DO NOT REMOVE,,
+Part_DAL_AR_Body_A,Recoil Width -25%,,
+Part_DAL_AR_Body_B,Reload Time -10%,,
+Part_DAL_AR_Body_C,Acc -15%,,
+Part_DAL_AR_Bolt_01,Fire Rate +10%,,
+Part_DAL_AR_Bolt_02,Acc -15%,,
+Part_DAL_AR_Foregrip_01,"Recoil Height -30%, Reload Time -5%",,
+Part_DAL_AR_Foregrip_02,"Weapon Sway -30%, Acc Bloom -30%",,
+Part_DAL_AR_Foregrip_03,"Recoil Height -30%, Acc -10%",,
+Part_DAL_AR_Foregrip_04,"Weapon Sway -30%, Acc Bloom -30%",,
+Part_DAL_AR_Foregrip_05,"Recoil Width -15%, Dmg +5%",,
+Part_DAL_AR_Grip_01,"Recoil Width -30%, Fire Rate +5%",,
+Part_DAL_AR_Grip_02,"Weapon Sway -30%, Recoil Height -15%",,
+Part_DAL_AR_Grip_03,"Reload Time -5%, Crit Dmg +10%",,
+Part_DAL_AR_Grip_04,"Acc Bloom -20%, Dmg +5%",,
+Part_DAL_AR_Grip_05,"Weapon Sway -30%, Mag Size +10%","Dmg -5%, Acc +10%",
+Part_DAL_AR_Grip_06,"Recoil Height -15%, Acc -20%",,
+Part_DAL_AR_Magazine_01,"24 Round, Dmg +10%",,
+Part_DAL_AR_Magazine_02,32 Round,,
+Part_DAL_AR_Magazine_03,45 Round,Dmg -10%,
+Part_DAL_AR_Magazine_Warlord,45 Round,,
+Part_DAL_AR_Material_01_Common,Skin,,
+Part_DAL_AR_Material_02_Uncommon,Skin,,
+Part_DAL_AR_Material_03_Rare,Skin,,
+Part_DAL_AR_Material_04_VeryRare,Skin,,
+Part_DAL_AR_Material_BOTD,Skin,,
+Part_DAL_AR_Material_Barrage,Skin,,
+Part_DAL_AR_Material_DigiClone,Skin,,
+Part_DAL_AR_Material_Earworm,Skin,,
+Part_DAL_AR_Material_Gaige,Skin,,
+Part_DAL_AR_Material_Hail,Skin,,
+Part_DAL_AR_Material_Kaos,Skin,,
+Part_DAL_AR_Material_StarHelix,Skin,,
+Part_DAL_AR_Material_Warlord,Skin,,
+Part_DAL_AR_Material_Juju,Skin,,
+Part_DAL_AR_Material_Digby,Skin,,
+Part_DAL_AR_Rail_04,Iron Sights,,
+Part_DAL_AR_Scope_01,"2.2x, 5x",,
+Part_DAL_AR_Scope_02,2.9x.4x,,
+Part_DAL_AR_Scope_03,"1.5x, 6.0x",,
+Part_AR_JAK_Barrel_01_A,Dmg +10%,,
+Part_AR_JAK_Barrel_01_B,Dmg +10%,,
+Part_AR_JAK_Barrel_01_C,Acc -15%,,
+Part_AR_JAK_Barrel_02_A,Fire Rate +10,,
+Part_AR_JAK_Barrel_02_B,"Acc Bloom -25%, Melee Dmg +60%",,
+Part_AR_JAK_Barrel_02_C,Fire Rate +10,,
+Part_AR_JAK_Barrel_03_A,Acc -15%,,
+Part_AR_JAK_Barrel_03_B,"Crit Dmg +10%, Melee Dmg +60%",,
+Part_AR_JAK_Barrel_03_C,Acc -15%,,
+Part_AR_JAK_Barrel_GatlingGun,"Recoil Height -25%, Mag Size +25, Acc Bloom -15%, Recoild Width -25%",Acc +150%,
+Part_AR_JAK_Barrel_HandOfGlory,"Mag Size +4, Dmg -10%",,
+Part_AR_JAK_Barrel_LeadSprinkler,"Recoil Height -25%, Heat per Shot -90%, Acc Bloom -15%","Crit Cmg -25%, Acc +50%, Dmg -25%",
+Part_AR_JAK_Barrel_PasRifle,Mag Size +6,,
+Part_AR_JAK_Barrel_RowansCall,Recoil Height -30%,Acc +25%,
+Part_AR_JAK_Barrel_TraitorsDeath,Acc Bloom -75%,,
+Part_AR_JAK_Body,DO NOT REMOVE,,
+Part_AR_JAK_Bolt_01,Crit Dmg +10%,,
+Part_AR_JAK_Bolt_02,Fire Rate +10,,
+Part_AR_JAK_Bolt_03,Reload Time -10%,,
+Part_AR_JAK_Foregrip_01,"Weapon Sway -30%, Recoil Height -30%",,
+Part_AR_JAK_Foregrip_02,"Acc -10%, Crit Dmg +10%",,
+Part_AR_JAK_Foregrip_03,"Weapon Sway -30%, Acc Bloom -30%",,
+Part_AR_JAK_Foregrip_04,"Recoil Height -30%, Dmg +5%",,
+Part_AR_JAK_Mag_01,"8 Round, Dmg +20%",,
+Part_AR_JAK_Mag_02,"10 Round, Dmg +10%",,
+Part_AR_JAK_Mag_03,20 Round,Dmg -10%,
+Part_AR_JAK_Mag_04,14 Round,,
+Part_AR_JAK_Scope_01,1.7x,,
+Part_AR_JAK_StockMod_01,Crit Dmg +10%,,
+Part_AR_JAK_StockMod_02,Reload Time -10%,,
+Part_AR_JAK_StockMod_03,Acc -15%,,
+Part_AR_JAK_StockMod_04,Mag Size +4,"Acc +10%, Dmg -5%",
+Part_AR_JAK_StockMod_05,Weapon Sway -20%,,
+Part_AR_JAK_Stock_01,"Weapon Sway -30%, Acc -20%",,
+Part_AR_JAK_Stock_02,"Reload Time -5%, Fire Rate +5%",,
+Part_AR_JAK_Stock_03,"Acc Bloom -20%, Dmg +5%",,
+Part_AR_JAK_Stock_04,"Weapon Sway -30%, Reload Time -5%",,
+Part_AR_JAK_Stock_05,"Recoil Width -30%, Recoil Height -15%",,
+Part_AR_JAK_Trigger_01,Fire Rate +10%,,
+Part_AR_JAK_Trigger_02,Dmg +10%,,
+Part_AR_JAK_Trigger_03,Acc -15%,,
+Part_AR_JAK_Trigger_04,Proj per Shot +3,"Acc Bloom +25%, Fire Rate -30%, Dmg -58%, Acc +120%, Recoil Hight +55%",
+Part_AR_TOR_Barrel_01_A,Proj Speed +30%,,
+Part_AR_TOR_Barrel_01_B,Splash Dmg Radius +20%,,
+Part_AR_TOR_Barrel_01_C,Proj Speed +30%,,
+Part_AR_TOR_Barrel_02_A,Dmg +10%,,
+Part_AR_TOR_Barrel_02_B,Fire Rate +10%,,
+Part_AR_TOR_Barrel_02_C,Dmg +10%,,
+Part_AR_TOR_Barrel_03_A,Acc Bloom -25%,,
+Part_AR_TOR_Barrel_03_B,Fire Rate +10%,,
+Part_AR_TOR_Barrel_03_C,Fire Rate +10%,,
+Part_AR_TOR_Barrel_Alchemist,Dmg -20%,,
+Part_AR_TOR_Barrel_Bearcat,Reload Time -25%,Acc +200%,
+Part_AR_TOR_Barrel_ETech,Mag Size +25%,,
+Part_AR_TOR_Barrel_ETech_A,Ele Dmg +10%,,
+Part_AR_TOR_Barrel_TryBolt,Dmg +60%,,
+Part_AR_TOR_Barrel_Warden,Acc +800%,,
+Part_AR_TOR_Barrel_Juliet,"Recoil Width -50%, Recoil Height -50%, Splash Dmg Radius +50, Dmg +30%",,
+Part_AR_TOR_Barrel_Varlope,"Splash Dmg Radius +30%, Dmg +10%, Mag Size +4",,
+Part_AR_TOR_Body,DO NOT REMOVE,,
+Part_AR_TOR_Body_A,Reload Time -10%,,
+Part_AR_TOR_Body_B,Dmg +10%,,
+Part_AR_TOR_Body_C,Splash Dmg Radius +20%,,
+Part_AR_TOR_Exhaust_01,Dmg +10%,,
+Part_AR_TOR_Exhaust_02,Proj Speed +30%,,
+Part_AR_TOR_Exhaust_03,Splash Dmg Radius +20%,,
+Part_AR_TOR_ForeGrip_01,"Acc Bloom -30%, Fire Rate +5%",,
+Part_AR_TOR_ForeGrip_02,"Proj Speed +15%, Acc -10%",,
+Part_AR_TOR_ForeGrip_03,"Splash Dmg Radius +20%, Recoil Width -15%",,
+Part_AR_TOR_ForeGrip_04,"Weapon Sway -30%, Recoil Height -30%",,
+Part_AR_TOR_ForeGrip_05,"Acc -10%, Dmg +5%",,
+Part_AR_TOR_Grip_01,"Proj Speed +15%, Acc -20%",,
+Part_AR_TOR_Grip_02,"Splash Dmg Radius +20%, Weapon Sway -30%",,
+Part_AR_TOR_Grip_03,"Reload Time -5%, Mag Size +10%","Dmg -5%, Acc +10%",
+Part_AR_TOR_Grip_04,"Acc Bloom -20%, Dmg +5%",,
+Part_AR_TOR_Grip_05,Recoil Width -30%,"Acc Bloom +25%, Acc +10%, Dmg -30%",
+Part_AR_TOR_Magazine_01,22 Round,,
+Part_AR_TOR_Magazine_02,"16 Round, Dmg +10%",,
+Part_AR_TOR_Magazine_03,28 Round,Dmg -10%,
+Part_AR_TOR_Magazine_03_AmberManagement,28 Round,Dmg -10%,
+Part_AR_TOR_Magazine_BearCat,48 Round,Dmg -10%,
+Part_AR_TOR_Material_01_Common,Skin,,
+Part_AR_TOR_Material_02_UnCommon,Skin,,
+Part_AR_TOR_Material_03_Rare,Skin,,
+Part_AR_TOR_Material_04_VeryRare,Skin,,
+Part_AR_TOR_Material_Alchemist,Skin,,
+Part_AR_TOR_Material_AmberManagement,Skin,,
+Part_AR_TOR_Material_Bearcat,Skin,,
+Part_AR_TOR_Material_LaserSploder,Skin,,
+Part_AR_TOR_Material_TryBolt,Skin,,
+Part_AR_TOR_Material_Juliet,Skin,,
+Part_AR_TOR_Material_Varlope,Skin,,
+Part_AR_TOR_Scope_03,3.3x,,
+Part_AR_VLA_Barrel_01_A,Dmg +10%,,
+Part_AR_VLA_Barrel_01_A_FS,Dmg +10%,,
+Part_AR_VLA_Barrel_01_B,Acc -15%,,
+Part_AR_VLA_Barrel_01_FrontSight,Dmg +10%,,
+Part_AR_VLA_Barrel_01_FrontSight2,Fire Rate +10%,,
+Part_AR_VLA_Barrel_02,Acc -15%,,
+Part_AR_VLA_Barrel_02_B,Fire Rate +10%,,
+Part_AR_VLA_Barrel_02_C,Acc -15%,,
+Part_AR_VLA_Barrel_03_A,Fire Rate +10%,,
+Part_AR_VLA_Barrel_03_B,"Acc Bloom -25%, Melee +60%",,
+Part_AR_VLA_Barrel_03_C,Dmg +10%,,
+Part_AR_VLA_Barrel_04_A,Acc Bloom -25%,,
+Part_AR_VLA_Barrel_04_B,Fire Rate +10%,,
+Part_AR_VLA_Barrel_04_C,Fire Rate +10%,,
+Part_AR_VLA_Body,DO NOT REMOVE,,
+Part_AR_VLA_Body_A,Fire Rate +10%,,
+Part_AR_VLA_Body_C,Dmg +10%,,
+Part_AR_VLA_Body_D,Acc Bloom -25%,,
+Part_AR_VLA_BoomSickle,Splash Dmg Radius +150,,
+Part_AR_VLA_Foregrip_01,"Recoil Width -15%, Acc Bloom -30%",,
+Part_AR_VLA_Foregrip_02,"Acc -10%, Fire Rate +5%",,
+Part_AR_VLA_Foregrip_03,"Recoil Height -30%, Dmg +5%",,
+Part_AR_VLA_Grip_01,"Recoil Width -30%, Dmg +5%",,
+Part_AR_VLA_Grip_02,"Recoil Height -15%, Acc Bloom -20%",,
+Part_AR_VLA_Grip_03,"Acc -12%, Mag Size +10%",Dmg -5%,
+Part_AR_VLA_Grip_03_A,Acc -20%,,
+Part_AR_VLA_Grip_03_B,Fire Rate +5%,,
+Part_AR_VLA_Grip_04,"Reload Time -5%, +1 Proj","Acc Bloom +35%, Acc +10%, Dmg -30%",
+Part_AR_VLA_Grip_05,"Weapon Sway -30%, Fire Rate +5%",,
+Part_AR_VLA_Grip_06,"Reload Time -5%, Mag Size +10%",,
+Part_AR_VLA_Magazine_01,"40 Round, Dmg +10%",,
+Part_AR_VLA_Magazine_02,60 Round,Dmg -10%,
+Part_AR_VLA_Magazine_03,60 Round,Dmg -10%,
+Part_AR_VLA_Magazine_Shredifier,100 Round,,
+Part_AR_VLA_Magazine_Sickle,12 Round,,
+Part_AR_VLA_Material_01_Common,Skin,,
+Part_AR_VLA_Material_02_UnCommon,Skin,,
+Part_AR_VLA_Material_03_Rare,Skin,,
+Part_AR_VLA_Material_04_Epic,Skin,,
+Part_AR_VLA_Material_BigSucc,Skin,,
+Part_AR_VLA_Material_Damn,Skin,,
+Part_AR_VLA_Material_Dictator,Skin,,
+Part_AR_VLA_Material_Faisor,Skin,,
+Part_AR_VLA_Material_Lorelei,Skin,,
+Part_AR_VLA_Material_LuciansCall,Skin,,
+Part_AR_VLA_Material_Ogre,Skin,,
+Part_AR_VLA_Material_Shredifier,Skin,,
+Part_AR_VLA_Material_Sickel,Skin,,
+Part_AR_VLA_Rail_01,Acc -10%,,
+Part_AR_VLA_Rail_02,Reload Time -5%,,
+Part_AR_VLA_Rail_03,Iron Sights,,
+Part_AR_VLA_UnderbarrelShield,"Shield, Reflect",,
+Part_AR_VLA_Underbarrel_01,Bipod,,
+Part_AR_VLA_Underbarrel_02,"Grenade Launcher, 2-shot",,
+Part_AR_VLA_Underbarrel_02_A,Twice Grenade Launcher Mag Size,,
+Part_AR_VLA_Underbarrel_03,"Shotgun, 4- Shot Mag",,
+Part_AR_VLA_Underbarrel_03_A,Increase Shotgun Mag Size by 50%,,
+Part_AR_VLA_Underbarrel_04,Fire Rate +15%,,
+Part_AR_VLA_Underbarrel_04_A,Fire Rate +5%,,
+Part_AR_VLA_Underbarrel_04_B,Accuracy -15%,,
+Part_AR_VLA_Underbarrel_Dictator,Bipod,,
+Part_AR_VLA_Underbarrel_DoubleShredifier,"2 barrels, Fire Rate +15%",,
+Part_AR_VLA_Underbarrel_Faisor,"Shotgun, 4- Shot Mag",,
+Part_AR_VLA_Underbarrel_Sickle,Dmg +50%,"Acc Bloom +300%, Acc +700%",
+Part_SM_DAL_Barrel_01_A,Fire Rate +10%,,
+Part_SM_DAL_Barrel_01_B,"Acc Bloom -25%, Melee Dmg +40%",,
+Part_SM_DAL_Barrel_01_C,Fire Rate +10%,,
+Part_SM_DAL_Barrel_02_A,Acc Bloom -25%,,
+Part_SM_DAL_Barrel_02_B,Fire Rate +10%,,
+Part_SM_DAL_Barrel_02_C,"Acc -5%, Fire Rate +5%, Recoil Height -25%, Dmg +5%",,
+Part_SM_DAL_Barrel_03_A,Acc -15%,,
+Part_SM_DAL_Barrel_03_B,Acc -15%,,
+Part_SM_DAL_Barrel_03_C,Dmg +10%,,
+Part_SM_DAL_Barrel_Demoskag,Night Hawk,,
+Part_SM_DAL_Barrel_ETech,Mag Size +20%,,
+Part_SM_DAL_Barrel_ETech_A,"Proj Speed +30%, Reload Time -10%",,
+Part_SM_DAL_Barrel_HellFire,"Splash Dmg Radius +60, Ele Chance +200%, Ele Dmg +150%",Dmg -35%,
+Part_SM_DAL_Barrel_NineVolt,"Recoil Height -75%, Re coild Width -75%, Ele Chance +150%","Acc +70%, Dmg -37.5%",
+Part_SM_DAL_Barrel_RockNRoll,"Weapon Sway -75%, Dmg +75%, Recoil Width -50%, Crit Dmg +200%, Mag Size +10, Reload Time -50%, Recoil Height -50%",,
+Part_SM_DAL_Barrel_SleepingGiant,Dmg +10%,,
+Part_SM_DAL_Body,DO NOT REMOVE,,
+Part_SM_DAL_Body_A,Acc Bloom -25%,,
+Part_SM_DAL_Body_B,Reload Time -10%,,
+Part_SM_DAL_Body_C,Acc -15%,,
+Part_SM_DAL_Bolt_01,Dmg +5%,,
+Part_SM_DAL_Bolt_02,Fire Rate +5%,,
+Part_SM_DAL_Foregrip_01,"Weapon Sway -30%, Fire Rate +5%",,
+Part_SM_DAL_Foregrip_02,"Weapon Sway -30%, Crit Dmg +10%",,
+Part_SM_DAL_Foregrip_03,"Recoil Height -30%, Acc -10%",,
+Part_SM_DAL_Foregrip_04,"Recoil Height -30%, Dmg +5%",,
+Part_SM_DAL_Foregrip_05,"Reload Time -5%, Acc Bloom -30%",,
+Part_SM_DAL_Grip_01,Proj per Shot +1,"Acc Bloom +20%, Acc +10%, Dmg -20%",
+Part_SM_DAL_Grip_02,Fire Rate +5%,,
+Part_SM_DAL_Grip_03,Mag Size +10%,"Acc +10%, Dmg -5%",
+Part_SM_DAL_Mag_01,"18 Round, Dmg +10%",,
+Part_SM_DAL_Mag_02,25 Round,,
+Part_SM_DAL_Mag_03,32 Round,Dmg -10%,
+Part_SM_DAL_Mag_NineVolt,9 Round,,
+Part_SM_DAL_Material_01_Common,Skin,,
+Part_SM_DAL_Material_02_UnCommon,Skin,,
+Part_SM_DAL_Material_03_Rare,Skin,,
+Part_SM_DAL_Material_04_Epic,Skin,,
+Part_SM_DAL_Material_Demoskag,Skin,,
+Part_SM_DAL_Material_HellFire,Skin,,
+Part_SM_DAL_Material_NineVolt,Skin,,
+Part_SM_DAL_Material_Ripper,Skin,,
+Part_SM_DAL_Material_SleepingGiant,Skin,,
+Part_SM_DAL_Material_Vanquisher,Skin,,
+Part_SM_DAL_Material_CraderMP5,Skin,,
+Part_SM_DAL_Rail_04,iron Sights,,
+Part_SM_DAL_Stock_01,"Recoil Width -30%, Acc Bloom -20%",,
+Part_SM_DAL_Stock_02,"Weapon Sway -30%, Fire Rate +5%",,
+Part_SM_DAL_Stock_03,"Acc -20%, Crit Dmg +10%",,
+Part_SM_HYP_Barrel_01_A,Dmg +10%,,
+Part_SM_HYP_Barrel_01_B,Acc -15%,,
+Part_SM_HYP_Barrel_01_C,Dmg +10%,,
+Part_SM_HYP_Barrel_02_A,Acc -15%,,
+Part_SM_HYP_Barrel_02_B,Crit Dmg +10%,,
+Part_SM_HYP_Barrel_02_C,Acc -15%,,
+Part_SM_HYP_Barrel_03_A,"Fire Rate +10%, Melee Dmg +60%",,
+Part_SM_HYP_Barrel_03_B,Fire Rate +10%,,
+Part_SM_HYP_Barrel_03_C,Acc -15%,,
+Part_SM_HYP_Barrel_Bitch,"Crit Dmg +50%, Mag Size +5, Melee Dmg +60%","Dmg -35%, Acc Bloom +150%",
+Part_SM_HYP_Barrel_Crossroad,Proj per Shot +4,"Acc Bloom +15%, Acc +70%, Dmg -20%",
+Part_SM_HYP_Barrel_ETech,Mag Size +25%,,
+Part_SM_HYP_Barrel_ETech_A,"Weapon Shield Cap +25%, Proj Speed +30%",,
+Part_SM_HYP_Barrel_Fork,Dmg -20%,,
+Part_SM_HYP_Barrel_Handsome,Reload Time -50%,Acc +100%,
+Part_SM_HYP_Barrel_L0V3M4CH1N3,"Recoil Height -75%, Dmg +25%, Mag Size +25%",,
+Part_SM_HYP_Barrel_JustCaustic,"Mag Size +12, Elemental Dmg +100%, Elemental Chance +100%",Acc +100%,
+Part_SM_HYP_Body,DO NOT REMOVE,,
+Part_SM_HYP_Body_A,Dmg +10%,,
+Part_SM_HYP_Body_B,Weapon Shield Cap +25%,,
+Part_SM_HYP_Body_C,Crit Dmg +10%,,
+Part_SM_HYP_Grip_01,"Reload Time -5%, Fire Rate +5%",,
+Part_SM_HYP_Grip_02,"Recoil Height -30%, Acc -10%",,
+Part_SM_HYP_Grip_03,"Crit Dmg +10%, Dmg +5%",,
+Part_SM_HYP_Mag_01,"25 Round, Dmg +10%",,
+Part_SM_HYP_Mag_02,"45 Round, Dmg -10%",,
+Part_SM_HYP_Mag_03,35 Round,,
+Part_SM_HYP_Material_01_Common,Skin,,
+Part_SM_HYP_Material_02_UnCommon,Skin,,
+Part_SM_HYP_Material_03_Rare,Skin,,
+Part_SM_HYP_Material_04_VeryRare,Skin,,
+Part_SM_HYP_Material_Bitch,Skin,,
+Part_SM_HYP_Material_Crossroad,Skin,,
+Part_SM_HYP_Material_Fork,Skin,,
+Part_SM_HYP_Material_Handsome,Skin,,
+Part_SM_HYP_Material_L0V3M4CH1N3,Skin,,
+Part_SM_HYP_Material_Lilith,Skin,,
+Part_SM_HYP_Material_PredatoryLending,Skin,,
+Part_SM_HYP_Material_XZ,Skin,,
+Part_SM_HYP_Material_Fork2,Skin,,
+Part_SM_HYP_Material_JustCaustic,Skin,,
+Part_SM_HYP_Rail_01,Weapon Shield Cap +15%,,
+Part_SM_HYP_Rail_02,Reload Time -5%,,
+Part_SM_HYP_Rail_03,Mag Size +10%,"Acc +10%, Dmg -5%",
+Part_SM_HYP_Scope_01,2.6x,,
+Part_SM_HYP_Shield_01,"Weapon Shield Cap +15%, Reload Time -5%",,
+Part_SM_HYP_Shield_02,"Acc -10%, Fire Rate +5%",,
+Part_SM_HYP_Shield_03,"Weapon Sway -30%, Dmg +5%",,
+Part_SM_HYP_Shield_04,"Recoil Height -30%, Acc -10%",,
+Part_SM_HYP_Stock_01,"Recoil Width -30%, Fire Rate +5%",,
+Part_SM_HYP_Stock_02,Acc -20%,,
+Part_SM_HYP_Stock_03,"Recoil Height -15%, Dmg +5%",,
+Part_SM_MAL_Barrel_01_A,Acc Bloom -25%,,
+Part_SM_MAL_Barrel_01_B,Fire Rate +10%,,
+Part_SM_MAL_Barrel_01_C,Fire Rate +10%,,
+Part_SM_MAL_Barrel_02,Splash Dmg Radius +75,,
+Part_SM_MAL_Barrel_02_A,Ele Dmg +10%,,
+Part_SM_MAL_Barrel_02_B,Ele Dmg +10%,,
+Part_SM_MAL_Barrel_02_C,"Proj Speed +30%, Melee Dmg +60%",,
+Part_SM_MAL_Barrel_03_A,Dmg +10%,,
+Part_SM_MAL_Barrel_03_B,Dmg +10%,,
+Part_SM_MAL_Barrel_03_C,Mag Size +10%,,
+Part_SM_MAL_Barrel_Crit,"Crit Dmg +150%, Dmg +25%",,
+Part_SM_MAL_Barrel_Cutsman,"Splash Dmg Radius +5, Dmg +300%",Acc +60%,
+Part_SM_MAL_Barrel_Devoted,Mag Size +30,"Acc +80%, Dmg -20%, Reload Time +50%",
+Part_SM_MAL_Barrel_ETech,Mag Size +20%,,
+Part_SM_MAL_Barrel_ETech_A,"Proj Speed +20%, Recoil Width -25%, Recoil Height -25%",,
+Part_SM_MAL_Barrel_Egon,Dmg -25%,,
+Part_SM_MAL_Barrel_Tsunami,"Ele Dmg +50%, Weapon Sway -20%, Ele Chance +50%, Acc Bloom -35%",,
+Part_SM_MAL_Barrel_westergun,Splash Dmg Radius +75,,
+Part_SM_MAL_Barrel_KybsWorth,"Splash Dmg Radius +75, Reload Time -10%, Ele Dmg +10%, Ele Chance +15%, Dmg +10%",,
+Part_SM_MAL_Barrel_KybsWorth_Shield,"Proj Speed +30%, Melee Dmg +60%",,
+Part_SM_MAL_Barrel_IonLaser,Melee Dmg +40%,Dmg -20%,
+Part_SM_MAL_Body,DO NOT REMOVE,,
+Part_SM_MAL_Body_A,Charge Duration -20%,,
+Part_SM_MAL_Body_B,"Proj Speed +30%, Acc -15%",,
+Part_SM_MAL_Body_C,Ele Dmg +10%,,
+Part_SM_MAL_Grip_01,"Acc Bloom -30%, Fire Rate +5%",,
+Part_SM_MAL_Grip_02,"Ele Dmg +10%, Weapon Sway -30%",,
+Part_SM_MAL_Grip_03,"Charge Duration -10%, Acc -10%",,
+Part_SM_MAL_Grip_03_A,"Proj per Shot +1, Mag Size +10%","Dmg -24%, Acc Bloom +20%, Acc +21%",
+Part_SM_MAL_Mag_01,34 Round,,
+Part_SM_MAL_Mag_02,"24 Round, Dmg +10%",,
+Part_SM_MAL_Mag_03,"44 Round, Dmg -10%",,
+Part_SM_MAL_Mag_Cutsman,20 Round,,
+Part_SM_MAL_Scope_01,Dmg +5%,,
+Part_SM_MAL_Scope_02,Splash Dmg Radius +20%,,
+Part_SM_MAL_Scope_03,"2.9x, Proj Speed +15%",,
+Part_SM_MAL_Scope_04,Reload Time -5%,,
+Part_SM_MAL_Stock_01,"Charge Duration -10%, Fire Rate +5%",,
+Part_SM_MAL_Stock_02,"Ele Dmg +10%, Weapon Sway -30%",,
+Part_SM_MAL_Stock_03,"Acc Bloom -20%, Dmg +5%",,
+Part_SM_TED_Barrel_01_A,Dmg +10%,,
+Part_SM_TED_Barrel_01_B,Fire Rate +10%,,
+Part_SM_TED_Barrel_01_C,Dmg +10%,,
+Part_SM_TED_Barrel_02_A,Fire Rate +10%,,
+Part_SM_TED_Barrel_02_B,Mag Size +10%,,
+Part_SM_TED_Barrel_02_C,Fire Rate +10%,,
+Part_SM_TED_Barrel_03_A,Acc -15%,,
+Part_SM_TED_Barrel_03_B,Mag Size +10%,,
+Part_SM_TED_Barrel_03_C,Acc -15%,,
+Part_SM_TED_Barrel_ETech,Mag Size +20%,,
+Part_SM_TED_Barrel_ETech_A,"Proj Speed +30%, Mag Size +10%",,
+Part_SM_TED_Barrel_NotAFlamethrower,Mag Size +20%,Dmg -20%,
+Part_SM_TED_Barrel_SpiderMind,"Dmg +100%, Mag Size +40%",,
+Part_SM_TED_Barrel_TenGallon,"Acc -40%, Dmg +70%",,
+Part_SM_TED_Body,DO NOT REMOVE,,
+Part_SM_TED_Body_A,Splash Dmg Radius +20%,,
+Part_SM_TED_Body_B,Mag Size +10%,"Acc +10%, Dmg -5%",
+Part_SM_TED_Body_C,Fire Rate +10%,,
+Part_SM_TED_Foregrip_01,"Recoil Width -15%, Mag Size +10%","Dmg -5%, Acc +10%",
+Part_SM_TED_Foregrip_02,"Splash Dmg Radius +20%, Acc -10%",,
+Part_SM_TED_Foregrip_03,"Recoil Height -30%, Dmg +5%",,
+Part_SM_TED_Foregrip_04,"Fire Rate +5%, Dmg +5%",,
+Part_SM_TED_Grip_01,"Recoil Width -30%, Fire Rate +5%",,
+Part_SM_TED_Grip_02,"Acc -20%, Dmg +5%",,
+Part_SM_TED_Grip_03,"Weapon Sway -30%, Mag Size +10%","Dmg -5%, Acc +10%",
+Part_SM_TED_Grip_04,"Splash Dmg Radius +20%, Proj per Shot +1","Acc +10%, Dmg -20%, Acc Bloom +20%",
+Part_SM_TED_Grip_05,"Recoil Height -15%, Acc -20%",,
+Part_SM_TED_TypeMod_01,"When thrown, Home in",,
+Part_SM_TED_TypeMod_02,"When thrown, Stick",,
+Part_SM_TED_TypeMod_03,Splash Dmg Radius +20%,,
+Part_SM_TED_TypeMod_04,"When thrown, Bounce",,
+Part_SR_DAL_Barrel_01_A,Acc Bloom -25%,,
+Part_SR_DAL_Barrel_01_B,Acc -15%,,
+Part_SR_DAL_Barrel_01_C,Acc -15%,,
+Part_SR_DAL_Barrel_02_A,Recoil Height -25%,,
+Part_SR_DAL_Barrel_02_B,Dmg +10%,,
+Part_SR_DAL_Barrel_02_C,Dmg +10%,,
+Part_SR_DAL_Barrel_03_A,Fire Rate +10%,,
+Part_SR_DAL_Barrel_03_B,"Weapon Sway -20%, Recoild Width -25%",,
+Part_SR_DAL_Barrel_03_C,Fire Rate +10%,,
+Part_SR_DAL_Barrel_BrashisDedication,Recoil Height -50%,Dmg -50%,
+Part_SR_DAL_Barrel_ETech,Mag Size +5,,
+Part_SR_DAL_Barrel_ETech_A,"Proj Speed +30%, Reload Time -10%",,
+Part_SR_DAL_Barrel_ETech_MalaksBane,Mag Size +5,,
+Part_SR_DAL_Barrel_WorldDestroyer,Dmg -15%,,
+Part_SR_DAL_Barrel_FBolt,"Mag Size +5, Elemental Dmg +70%",,
+Part_SR_DAL_Body,DO NOT REMOVE,,
+Part_SR_DAL_Body_A,Reload Time -10%,,
+Part_SR_DAL_Body_B,Acc -15%,,
+Part_SR_DAL_Body_C,Acc -15%,,
+Part_SR_DAL_Bolt_A,Reload Time -5%,,
+Part_SR_DAL_Bolt_B,Weapon Sway -20%,,
+Part_SR_DAL_Foregrip_01,"Recoil Height -30%, Mag Size +10","Dmg -5%, Acc +10%",
+Part_SR_DAL_Foregrip_02,"Recoil Width -15%, Acc Bloom -30%",,
+Part_SR_DAL_Foregrip_03,"Weapon Sway -30%, Dmg +5%",,
+Part_SR_DAL_Foregrip_04,"Acc -10%, Fire Rate +5%",,
+Part_SR_DAL_Foregrip_05,"Reload Time -5%, Crit Dmg +10%",,
+Part_SR_DAL_Grip_01,"Recoil Width -15%, Recoil Height -15%",,
+Part_SR_DAL_Grip_02,"Reload Time -5%, Acc -20%",,
+Part_SR_DAL_Grip_03,"Recoil Width -30%, Dmg +5%",,
+Part_SR_DAL_Grip_03_A,Crit Dmg +10%,,
+Part_SR_DAL_Grip_04,"Weapon Sway -30%, Fire Rate +5%",,
+Part_SR_DAL_Grip_05,"Weapon Sway -30%, Recoil Width -30%",,
+Part_SR_DAL_Mag_01,"10 Round, Dmg +10%",,
+Part_SR_DAL_Mag_02,14 Round,,
+Part_SR_DAL_Mag_03,18 Round,Dmg -10%,
+Part_SR_DAL_Material_BrashisDedication,Skin,,
+Part_SR_DAL_Material_MalaksBane,Skin,,
+Part_SR_DAL_WorldDestroyer,Skin,,
+Part_SR_DAL_01_Common,Skin,,
+Part_SR_DAL_02_Uncommon,Skin,,
+Part_SR_DAL_03_Rare,Skin,,
+Part_SR_DAL_04_VeryRare,Skin,,
+Part_SR_DAL_Mat_Fbolt,Skin,,
+Part_SR_DAL_Scope_01,"7.4x, 16x",,
+Part_SR_DAL_Scope_01_A,Weapon Sway -30%,,
+Part_SR_HYP_Barrel_01_A,Acc -15%,,
+Part_SR_HYP_Barrel_01_B,Acc -15%,,
+Part_SR_HYP_Barrel_01_C,Crit Dmg +10%,Acc Bloom +20%,
+Part_SR_HYP_Barrel_02_A,Dmg +10%,,
+Part_SR_HYP_Barrel_02_B,Dmg +10%,,
+Part_SR_HYP_Barrel_02_C,"Crit Dmg +10%, Melee Dmg +80%",,
+Part_SR_HYP_Barrel_02_TwoTime,"Recoil Height -50%, Weapon Shield Cap +50%",Dmg -25%,
+Part_SR_HYP_Barrel_03_A,Fire Rate +10%,,
+Part_SR_HYP_Barrel_03_B,Fire Rate +10%,,
+Part_SR_HYP_Barrel_03_C,Acc -15%,,
+Part_SR_HYP_Barrel_ETech,Mag Size +8,,
+Part_SR_HYP_Barrel_ETech_A,"Weapon Shield Cap +25%, Crit Dmg +10%",,
+Part_SR_HYP_Barrel_Masterwork,"Acc -50%, Crit Dmg +50%, Reload Time -50%, Dmg +250%",,
+Part_SR_HYP_Barrel_Woodblocks,Mag Size +10,Dmg -20%,
+Part_SR_HYP_Barrel_Tankman,Mag Size +4,,
+Part_SR_HYP_Body,DO NOT REMOVE,,
+Part_SR_HYP_Body_A,Reload Time -10%,,
+Part_SR_HYP_Body_B,Weapon Shield Cap +25%,,
+Part_SR_HYP_Body_C,Dmg +10%,,
+Part_SR_HYP_Grip_01,Recoil Height -30%,,
+Part_SR_HYP_Grip_02,Dmg +5%,,
+Part_SR_HYP_Grip_03,Acc -20%,,
+Part_SR_HYP_Grip_04,Mag Size +3,"Acc +10%, Dmg -5%",
+Part_SR_HYP_Mag_01,10 Round,,
+Part_SR_HYP_Mag_02,"7 Round, Dmg +10%",,
+Part_SR_HYP_Mag_03,14 Round,Dmg -10%,
+Part_SR_HYP_Mag_MasterworkCrossbow,1 Round,Dmg -10%,
+Part_SR_HYP_Masterwork,Skin,,
+Part_SR_HYP_Mat_TwoTime,Skin,,
+Part_SR_HYP_Woodblocks,Skin,,
+Part_SR_HYP_Zero,Skin,,
+Part_SR_HYP_ZeroForPlayer,Skin,,
+Part_SR_HYP_01_Common,Skin,,
+Part_SR_HYP_02_Uncommon,Skin,,
+Part_SR_HYP_03_Rare,Skin,,
+Part_SR_HYP_04_VeryRare,Skin,,
+Part_SR_HYP_Tankman,Skin,,
+Part_SR_HYP_Rail_02,Weapon Shield Cap +15%,,
+Part_SR_HYP_Scope_03,6.6x,,
+Part_SR_HYP_Scope_03_A,Crit Dmg +10%,,
+Part_SR_HYP_Shield_01,"Fire Rate +5%, Shield",,
+Part_SR_HYP_Shield_02,Recoil Height -30%,,
+Part_SR_HYP_Shield_03,Crit Dmg +10%,,
+Part_SR_HYP_Shield_04,Acc -10%,,
+Part_SR_HYP_Stock_01,"Acc -20%, Dmg +5%",,
+Part_SR_HYP_Stock_02,Weapon Sway -20%,,
+Part_SR_HYP_Stock_03,"Recoil Height -30%, Crit Dmg +10%",,
+Part_SR_HYP_Stock_04,"Reload Time -5%, Fire Rate +5%",,
+Part_SR_JAK_Barrel_01_A,Fire Rate +10%,,
+Part_SR_JAK_Barrel_01_B,"Weapon Sway -20%, Recoil Width -25%, Recoil Height -25%",,
+Part_SR_JAK_Barrel_01_C,Fire Rate +10%,,
+Part_SR_JAK_Barrel_02_A,"Melee Dmg +10%, Melee Dmg +80%",,
+Part_SR_JAK_Barrel_02_B,Acc -15%,,
+Part_SR_JAK_Barrel_02_C,"Weapon Sway -20%, Acc -15%",,
+Part_SR_JAK_Barrel_03_A,Dmg +10%,,
+Part_SR_JAK_Barrel_03_B,Crit Dmg +10%,,
+Part_SR_JAK_Barrel_03_C,Crit Dmg +10%,,
+Part_SR_JAK_Barrel_Monocle,"Acc -75%, Recoil Height -50%",Dmg -50%,
+Part_SR_JAK_Body,DO NOT REMOVE,,
+Part_SR_JAK_Body_A,Dmg +10%,,
+Part_SR_JAK_Body_B,Reload Time -10%,,
+Part_SR_JAK_Body_C,Fire Rate +10%,,
+Part_SR_JAK_Bolt_02,Dmg +25%,,
+Part_SR_JAK_Bolt_03,Dmg +10%,,
+Part_SR_JAK_Bolt_Headsplosion,Splash Dmg Radius +100,"Dmg -6.2%, Crit Dmg -50%",
+Part_SR_JAK_Bolt_IceQueen,"Ele Dmg +50%, Dmg +25%",,
+Part_SR_JAK_Foregrip_01,"Recoil Height -30%, Acc -10%",,
+Part_SR_JAK_Foregrip_02,"Recoil Width -15%, Recoil Height -30%",,
+Part_SR_JAK_Foregrip_03,Crit Dmg +10%,,
+Part_SR_JAK_Foregrip_04,"Weapon Sway -30%, Damage +5%",,
+Part_SR_JAK_Foregrip_05,"Reload Time -5%, Fire Rate +5%",,
+Part_SR_JAK_IceQueen,Skin,,
+Part_SR_JAK_MAT_Monocle,Skin,,
+Part_SR_JAK_MAterial_Hunter,Skin,,
+Part_SR_JAK_Material_Hammerlock,Skin,,
+Part_SR_JAK_Material_Headsplosion,Skin,,
+Part_SR_JAK_01_Common,Skin,,
+Part_SR_JAK_02_Uncommon,Skin,,
+Part_SR_JAK_03_Rare,Skin,,
+Part_SR_JAK_04_VeryRare,Skin,,
+Part_SR_JAK_Mag_01,8 Round,Dmg -10%,
+Part_SR_JAK_Mag_02,8 Round,,
+Part_SR_JAK_Mag_03,"8 Round, Dmg +10%",,
+Part_SR_JAK_Scope_01_A,Acc -20%,,
+Part_SR_JAK_Scope_02,"Reload Time -5%, Acc -20%",,
+Part_SR_JAK_Scope_02_A,Reload Time -5%,,
+Part_SR_JAK_Scope_02_B,Crit Dmg +10%,,
+Part_SR_JAK_Scope_03_A,"Recoil Width -25%, Recoil Height -25%",,
+Part_SR_JAK_Scope_03_B,Fire Rate +5%,,
+Part_SR_JAK_Stock_01,"Acc Bloom -20%, Crit Dmg +10%",,
+Part_SR_JAK_Stock_01_A,Recoil Height -15%,,
+Part_SR_JAK_Stock_02,"Reload Time -5%, Acc -20%",,
+Part_SR_JAK_Stock_02_A,Reload Time -5%,,
+Part_SR_JAK_Stock_03,"Recoil Width -30%, Dmg +5%",,
+Part_SR_JAK_Stock_03_A,Dmg +5%,,
+Part_SR_JAK_Stock_04,"Weapon Sway -30%, Recoil Height -15%",,
+Part_SR_JAK_Stock_04_A,Fire Rate +5%,,
+Part_SR_JAK_Stock_05,"Acc Bloom -20%, Mag Size +10%",,
+Part_SR_JAK_Stock_05_A,Weapon Sway -30%,,
+Part_MAL_SR_Barrel_01_A,Fire Rate +10%,,
+Part_MAL_SR_Barrel_01_B,Fire Rate +10%,,
+Part_MAL_SR_Barrel_01_C,"Charge Duration -20%, Melee Dmg +80%",,
+Part_MAL_SR_Barrel_02_A,Dmg +10%,,
+Part_MAL_SR_Barrel_02_B,Dmg +10%,,
+Part_MAL_SR_Barrel_02_C,Charge Duration -20%,,
+Part_MAL_SR_Barrel_03,Splash Dmg Radius +80,,
+Part_MAL_SR_Barrel_03_A,Ele Dmg +10%,,
+Part_MAL_SR_Barrel_03_B,Ele Chance +15%,,
+Part_MAL_SR_Barrel_03_C,Ele Dmg +10%,,
+Part_MAL_SR_Barrel_ASMD,"Acc -75%, Splash Dmg Radius +80",Dmg -30%,
+Part_MAL_SR_Barrel_ETech,Mag Size +8,,
+Part_MAL_SR_Barrel_ETech_A,"Fire Rate +10%, Mag Size +10%",,
+Part_MAL_SR_Barrel_FireStorm,Splash Dmg Radius +300,Dmg -30%,
+Part_MAL_SR_Barrel_Soleki,Ele Chance +25%,Dmg -25%,
+Part_MAL_SR_Barrel_Storm,"Splash Dmg Radius +300, Dmg -30%",,
+Part_MAL_SR_Body,DO NOT REMOVE,,
+Part_MAL_SR_Body_A,Dmg +10%,,
+Part_MAL_SR_Body_B,Reload Time -10%,,
+Part_MAL_SR_Body_C,Ele Dmg +10%,,
+Part_MAL_SR_Foregrip_01,Charge Duration -10%,,
+Part_MAL_SR_Foregrip_02,Weapon Sway -30%,,
+Part_MAL_SR_Foregrip_03,Ele Chance +10%,,
+Part_MAL_SR_Foregrip_04,Mag Size +2,"Acc +10%, Dmg -5%",
+Part_MAL_SR_Foregrip_05,Reload Time -5%,,
+Part_MAL_SR_Foregrip_06,Recoil Width -15%,,
+Part_MAL_SR_Grip_01,"Weapon Sway -30%, Dmg +5%",,
+Part_MAL_SR_Grip_02,"Charge Duration -10%, Acc -20%",,
+Part_MAL_SR_Grip_02_A,Acc Blom -20%,,
+Part_MAL_SR_Grip_03,"Weapon Sway -30%, Recoil Width -30%",,
+Part_MAL_SR_Grip_03_A,Reload Time -5%,,
+Part_MAL_SR_Grip_04,"Ele Dmg +10%, Recoil Width -30%",,
+Part_MAL_SR_Grip_05,"Weapon Sway -30%, Acc -20%",,
+Part_MAL_SR_Grip_05_A,Ele Chance +10%,,
+Part_MAL_SR_Grip_06,"Ele Chance +10%, Recoil Width -30%",,
+Part_MAL_SR_Grip_07,"Weapon Sway -30%, Reload Time -5%",,
+Part_MAL_SR_Mag_01,"6 Round, Dmg +10%",,
+Part_MAL_SR_Mag_02,10 Round,,
+Part_MAL_SR_Mag_03,14 Round,Dmg -10%,
+Part_MAL_SR_Material_01_Common,Skin,,
+Part_MAL_SR_Material_02_UnCommon,Skin,,
+Part_MAL_SR_Material_03_Rare,Skin,,
+Part_MAL_SR_Material_04_VeryRare,Skin,,
+Part_MAL_SR_Material_ASMD,Skin,,
+Part_MAL_SR_Material_Krakatoa,Skin,,
+Part_MAL_SR_Material_LGD_FireStorm,Skin,,
+Part_MAL_SR_Material_LGD_Storm,Skin,,
+Part_MAL_SR_Material_Soleki,Skin,,
+Part_MAL_SR_Scope_01,4.2x,,
+Part_MAL_SR_Scope_03,7.7x,,
+Part_SR_VLA_Barrel_01_A,Acc Bloom -25%,,
+Part_SR_VLA_Barrel_01_B,Fire Rate +10%,,
+Part_SR_VLA_Barrel_01_C,Fire Rate +10%,,
+Part_SR_VLA_Barrel_02_A,"Reload Time -10%, Acc Bloom -25%",,
+Part_SR_VLA_Barrel_02_B,"Acc Bloom -25%, Mag Size +10%",,
+Part_SR_VLA_Barrel_02_C,Acc -15%,,
+Part_SR_VLA_Barrel_03_A,Dmg +10%,,
+Part_SR_VLA_Barrel_03_B,Fire Rate +10%,,
+Part_SR_VLA_Barrel_03_C,Dmg +10%,,
+Part_SR_VLA_Barrel_ETech,Mag Size +12,,
+Part_SR_VLA_Barrel_Lyuda,Crit Dmg +40%,Dmg -20%,
+Part_SR_VLA_Barrel_Prison,"Ele Dmg +20%, Dmg +20%",,
+Part_SR_VLA_Body,DO NOT REMOVE,,
+Part_SR_VLA_Body_A,Dmg +10%,,
+Part_SR_VLA_Body_B,Acc Bloom -25%,,
+Part_SR_VLA_Body_C,Fire Rate +10%,,
+Part_SR_VLA_Foregrip_01,"Reload Time -5%, Acc Bloom -30%",,
+Part_SR_VLA_Foregrip_02,"Recoil Height -30%, Mag Size +10%",,
+Part_SR_VLA_Foregrip_03,"Recoil Width -15%, Dmg +5%",,
+Part_SR_VLA_Foregrip_04,"Weapon Sway -30%, Recoil Width -15%",,
+Part_SR_VLA_Foregrip_05,"Acc -10%, Fire Rate +5%",,
+Part_SR_VLA_Grip_01,"Weapon Sway -30%, Recoil Width -30%",,
+Part_SR_VLA_Grip_02,"Recoil Height -15%, Acc -20%",,
+Part_SR_VLA_Grip_03,"Weapon Sway -30%, Fire Rate +5%",,
+Part_SR_VLA_Grip_04,"Acc Bloom -20%, Dmg +5%",,
+Part_SR_VLA_Grip_05,"Proj per Shot +1, Mag Size +10%","Dmg -24%, Acc Bloom +20%, Acc +21%",
+Part_SR_VLA_Mag_01,"15 Round, Dmg +5%",,
+Part_SR_VLA_Mag_02,20 Round,Dmg -10%,
+Part_SR_VLA_Mag_03,"10 Round, Dmg +26.5%",,
+Part_SR_VLA_Scope_01,"7, 7x",,
+Part_SR_VLA_Scope_01_A,Weapon Sway -30%,,
+Part_SR_VLA_Scope_02,5.0X,,
+Part_SR_VLA_Scope_02_A,Dmg +5%,,
+Part_SR_VLA_Scope_02_B,Dmg +5%,,
+Part_SR_VLA_Scope_03,8.2x,,
+Part_SR_VLA_Scope_03_A,Mag Size +10%,,
+Part_SR_VLA_Scope_03_B,Fire Rate +5%,,
+Part_SR_VLA_Underbarrel_01,"Uberbarrel Shotgun, 4 round",,
+Part_SR_VLA_Underbarrel_01_A,Uberbarrel Shotgun Mag Size +50%,,
+Part_SR_VLA_Underbarrel_02_Double,2 X Underbarrel RPG,,
+Part_SR_VLA_Underbarrel_02_Single,Underbarrel RPG,,
+Part_SR_VLA_Underbarrel_03,Bipod,,
+Part_SR_VLA_Underbarrel_04,"Extra Barrels, Fire Rate +35%",,
+Part_SR_VLA_Underbarrel_04_A,Fire Rate +5%,,
+Part_SR_VLA_Underbarrel_04_B,Charge Duration -20%,,
+Part_SR_VLA_Underbarrel_04_C,Fire Rate +5%,,
+Part_ATL_Barrel_01,Splash Dmg Radius +202,,
+Part_ATL_Barrel_01_A,Fire Rate +10%,,
+Part_ATL_Barrel_01_B,Fire Rate +10%,,
+Part_ATL_Barrel_01_C,Dmg +10%,,
+Part_ATL_Barrel_02,Splash Dmg Radius +163,,
+Part_ATL_Barrel_02_A,"Proj per Shot +1, Acc -15%",,
+Part_ATL_Barrel_02_B,Reload Time -10%,,
+Part_ATL_Barrel_02_C,Proj per Shot +1,,
+Part_ATL_Barrel_03,Splash Dmg Radius +176,,
+Part_ATL_Barrel_03_A,"Splash Dmg Radius +20%, Recoil Height -25%",,
+Part_ATL_Barrel_03_B,Dmg +10%,,
+Part_ATL_Barrel_03_C,"Mag Size +2, Dmg +10%",,
+Part_ATL_Barrel_Freeman,"Splash Dmg Radius +176, Dmg +70%",Acc +50%,
+Part_ATL_Barrel_RubysWrath,"Splash Dmg Radius +163, Mag Size +7",Reload Time +50%,
+Part_ATL_Body,DO NOT REMOVE,,
+Part_ATL_Body_A,Dmg +10%,,
+Part_ATL_Body_B,Splash Dmg Radius +20%,,
+Part_ATL_Body_C,Reload Time -10%,,
+Part_ATL_Foregrip_01,Fire Rate +5%,,
+Part_ATL_Foregrip_02,Dmg +5%,,
+Part_ATL_Foregrip_03,"Splash Dmg Radius +20%, Reload Time -5%",,
+Part_ATL_Grip_01,"Splash Dmg Radius +20%, Recoil Height -15%",,
+Part_ATL_Grip_02,"Weapon Sway -30%, Fire Rate +5%",,
+Part_ATL_Grip_03,"Acc -20%, Dmg +5%",,
+Part_ATL_Mag_Pod_01,8 Round,Dmg -10%,
+Part_ATL_Mag_Pod_02,"3 Round, Dmg +10%",,
+Part_ATL_Mag_Pod_03,6 Round,,
+Part_ATL_Marker_01,Marker Grenade,,
+Part_ATL_Marker_02,Sticky Puck,,
+Part_ATL_Marker_03,Sticky Darts,,
+Part_ATL_Marker_Freeman,Sticky Darts,,
+Part_ATL_Marker_RubysWrath,Marker Grenade,,
+Part_ATL_Material_01_Common,Skin,,
+Part_ATL_Material_02_Uncommon,Skin,,
+Part_ATL_Material_03_Rare,Skin,,
+Part_ATL_Material_04_VeryRare,Skin,,
+Part_ATL_Material_Freeman,Skin,,
+Part_ATL_Material_RubysWrath,Skin,,
+Part_ATL_Scope_01,2.2x,,
+Part_ATL_Wire_01,Mag Size +10%,,
+Part_ATL_Wire_02,Splash Dmg Radius +20%,,
+Part_ATL_Wire_03,"Acc Bloom -25%, Acc -15%",,
+Part_HW_COV_Barrel_01_A,Dmg +10%,,
+Part_HW_COV_Barrel_01_B,Dmg +10%,,
+Part_HW_COV_Barrel_01_C,Heat per Shot -25%,,
+Part_HW_COV_Barrel_02,Splash Dmg Radius +300,,
+Part_HW_COV_Barrel_02_A,Splash Dmg Radius +20%,,
+Part_HW_COV_Barrel_02_B,"Dmg +10%, Melee Dmg +80%",,
+Part_HW_COV_Barrel_02_C,Splash Dmg Radius +20%,,
+Part_HW_COV_Barrel_03,Splash Dmg Radius +130,,
+Part_HW_COV_Barrel_03_A,Proj per Shot +1,,
+Part_HW_COV_Barrel_03_B,Acc -15%,,
+Part_HW_COV_Barrel_03_C,"Recoil Height -25%, Fire Rate +10%",,
+Part_HW_COV_Barrel_ETech,Splash Dmg Radius +275,,
+Part_HW_COV_Barrel_HotDrop,"Splash Dmg Radius +300, Acc -50%",,
+Part_HW_COV_Barrel_PortaPooper,"Splash Dmg Radius +400, Dmg +45%",,
+Part_HW_COV_Barrel_Terror,"Splash Dmg Radius +420, Dmg +25%",,
+Part_HW_COV_Body,DO NOT REMOVE,,
+Part_HW_COV_Body_A,Heat per Shot -25%,,
+Part_HW_COV_Body_B,Dmg +10%,,
+Part_HW_COV_Body_C,Heat per Shot -25%,,
+Part_HW_COV_Engine_01,Heat per Shot -15%,,
+Part_HW_COV_Engine_02,Fire Rate +5%,,
+Part_HW_COV_Engine_03,Dmg +5%,,
+Part_HW_COV_Grip_01,"Acc -10%, Fire Rate +5%",,
+Part_HW_COV_Grip_02,"Splash Dmg Radius +20%, Heat per Shot -15%",,
+Part_HW_COV_Grip_03,Dmg +5%,,
+Part_HW_COV_Starter_01,Fire Rate +10%,,
+Part_HW_COV_Starter_02,Heat per Shot -25%,,
+Part_HW_COV_Starter_03,Dmg +10%,,
+Part_HW_COV_Tail_01,Acc -20%,,
+Part_HW_COV_Tail_02,"Recoil height -15%, Dmg +5%",,
+Part_HW_COV_Tail_03,Heat per Shot +75%,,
+Part_HW_COV_Tail_04,Fire Rate +5%,,
+Part_HW_COV_Tail_05,"Splash Dmg Radius +20%, Heat per Shot -15%",,
+Part_HW_COV_Tail_06,"Ele Dmg +10%, Ele Chance +10%",,
+Part_HW_TOR_Barrel_01_A,Dmg +10%,,
+Part_HW_TOR_Barrel_01_B,Proj Speed +30%,,
+Part_HW_TOR_Barrel_01_C,Dmg +10%,,
+Part_HW_TOR_Barrel_02,Splash Dmg Radius +420,,
+Part_HW_TOR_Barrel_02_A,Proj Speed +30%,,
+Part_HW_TOR_Barrel_02_B,Fire Rate +10%,,
+Part_HW_TOR_Barrel_02_C,Splash Dmg Radius +20%,,
+Part_HW_TOR_Barrel_03,Splash Dmg Radius +495,,
+Part_HW_TOR_Barrel_03_A,Proj Speed +30%,,
+Part_HW_TOR_Barrel_03_B,Fire Rate +10%,,
+Part_HW_TOR_Barrel_03_C,Fire Rate +10%,,
+Part_HW_TOR_Barrel_BurgerCannon,"Recoil Width -55%, Splash Dmg Radius +130, Mag Size +6, Recoil Height -55%","Acc +300%, Dmg -40%, Ele Chance -50%",
+Part_HW_TOR_Barrel_ETech,"Splash Dmg Radius +300, Reload Time +25%",,
+Part_HW_TOR_Barrel_ETech_A,"Ele Dmg +10%, Ele Chance +15%",,
+Part_HW_TOR_Barrel_Hive,"Splash Dmg Radius +300, Mag Size +3","Dmg -25%, Reload Time +45%",
+Part_HW_TOR_Barrel_RYNO,Splash Dmg Radius +300,"Dmg -20%, Acc +70%, Reload Time +40%",
+Part_HW_TOR_Barrel_Rampager,"Splash Dmg Radius +450, Mag Size +6","Dmg -20%, Acc +70%",
+Part_HW_TOR_Barrel_Swarm,"Splash Dmg Radius +200, Acc -30%",,
+Part_HW_TOR_Barrel_Tunguska,"Mag Size +2, Splash Dmg Radius +50, Acc -30%",Dmg -75%,
+Part_HW_TOR_Body,DO NOT REMOVE,,
+Part_HW_TOR_Body_A,Proj Speed +30%,,
+Part_HW_TOR_Body_B,Dmg +10%,,
+Part_HW_TOR_Grip_01,Reload Time -5%,,
+Part_HW_TOR_Grip_02,Fire Rate +5%,,
+Part_HW_TOR_Grip_03,Dmg +5%,,
+Part_HW_TOR_Mag_01,3 Round,,
+Part_HW_TOR_Mag_02,4 Round,,
+Part_HW_TOR_Mag_03,2 Round,,
+Part_HW_TOR_Material_01_Common,Skin,,
+Part_HW_TOR_Material_02_Uncommon,Skin,,
+Part_HW_TOR_Material_03_Rare,Skin,,
+Part_HW_TOR_Material_04_VeryRare,Skin,,
+Part_HW_TOR_Material_BurgerCannon,Skin,,
+Part_HW_TOR_Material_Hive,Skin,,
+Part_HW_TOR_Material_Marcus,Skin,,
+Part_HW_TOR_Material_RYNO,Skin,,
+Part_HW_TOR_Material_Rampager,Skin,,
+Part_HW_TOR_Material_Swarm,Skin,,
+Part_HW_TOR_Material_Tunguska,Skin,,
+Part_HW_TOR_Scope_03,1.5x,,
+Part_HW_TOR_Tail_01,Reload Time -5%,,
+Part_HW_TOR_Tail_01_A,Mag Size +1,,
+Part_HW_TOR_Tail_01_B,Mag Size +1,,
+Part_HW_TOR_Tail_02,Fire Rate +5%,,
+Part_HW_TOR_Tail_02_A,Ele Dmg +10%,,
+Part_HW_TOR_Tail_02_B,Splash Dmg Radius +20%,,
+Part_HW_TOR_Tail_03,Dmg +5%,,
+Part_HW_TOR_Tail_03_A,Proj per Shot +1,Acc +25%,
+Part_HW_TOR_Tail_03_B,Dmg +5%,,
+Part_HW_VLA_Barrel_01,Splash Dmg Radius +143,,
+Part_HW_VLA_Barrel_01_A,Proj Speed +30%,,
+Part_HW_VLA_Barrel_01_B,Dmg +10%,,
+Part_HW_VLA_Barrel_01_C,Dmg +10%,,
+Part_HW_VLA_Barrel_02_A,Fire Rate +10%,,
+Part_HW_VLA_Barrel_02_B,Reload Time -10%,,
+Part_HW_VLA_Barrel_02_C,Fire Rate +10%,,
+Part_HW_VLA_Barrel_03,Splash Dmg Radius +195,,
+Part_HW_VLA_Barrel_03_A,Splash Dmg Radius +20%,,
+Part_HW_VLA_Barrel_03_B,Splash Dmg Radius +20%,,
+Part_HW_VLA_Barrel_03_C,Acc -15%,,
+Part_HW_VLA_Barrel_CloudBurst,"Mag Size +8, Splash Dmg Radius +300, Ele Chance +30%",Dmg -50%,
+Part_HW_VLA_Barrel_ETech_A,"Ele Chance +15%, Mag Size +10%",,
+Part_HW_VLA_Barrel_Mongol,"Splash Dmg Radius +175, Mag Size +8","Dmg -40%, Recoil Height +45%",
+Part_HW_VLA_Body,DO NOT REMOVE,,
+Part_HW_VLA_Body_A,Splash Dmg Radius +20%,,
+Part_HW_VLA_Body_B,Dmg +10%,,
+Part_HW_VLA_Body_C,Fire Rate +10%,,
+Part_HW_VLA_Grip_01,"Reload Time -5%, +1 Proj",,
+Part_HW_VLA_Grip_02,"Proj Speed +15%, Fire Rate +5%",,
+Part_HW_VLA_Grip_03,"Acc -10%, Dmg +5%",,
+Part_HW_VLA_Mag_01,"6 Round, Dmg +10%",,
+Part_HW_VLA_Mag_02,10 Round,,
+Part_HW_VLA_Mag_03,16 Round,Dmg -10%,
+Part_HW_VLA_Material_01_Common,Skin,,
+Part_HW_VLA_Material_02_Uncommon,Skin,,
+Part_HW_VLA_Material_03_Rare,Skin,,
+Part_HW_VLA_Material_04_VeryRare,Skin,,
+Part_HW_VLA_Material_CloudBurst,Skin,,
+Part_HW_VLA_Material_Mongol,Skin,,
+Part_HW_VLA_Shoulder_01,"Mag Size +2, Proj Speed +15%",,
+Part_HW_VLA_Shoulder_02,"Reload Time -5%, Fire Rate +5%",,
+Part_HW_VLA_Shoulder_03,"Splash Dmg Radius +20%, Acc -20%",,
+Part_HW_VLA_Tail_01,"Mag Size +2, Fire Rate +5%",,
+Part_HW_VLA_Tail_02,"Proj Speed +15%, Reload Time -5%",,
+Part_HW_VLA_Tail_03,"Acc -20%, Dmg +5%",,
+Part_HW_VLA_Tail_04,"Splash Dmg Radius +20%, Recoil Height -30%",,
+Part_HW_VLA_Underbarrel_01,"Rocket Salvo, 2 rocket at a time",,
+Part_HW_VLA_Underbarrel_02,"Rocket, Big boy",,
+Part_HW_VLA_Underbarrel_03,"Mortar, 4 short burst",,

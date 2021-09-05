@@ -23,13 +23,17 @@ pub enum ProfileCurrency {
 }
 
 impl ProfileCurrency {
+    pub fn get_hash(&self) -> Result<usize> {
+        get_checksum_hash(&self.to_string())
+    }
+
     pub fn get_profile_currency(
         &self,
-        bicl: &RepeatedField<InventoryCategorySaveData>,
+        inv_cat_save_data: &RepeatedField<InventoryCategorySaveData>,
     ) -> Result<i32> {
         let hash = get_checksum_hash(&self.to_string())?;
 
-        let amount = bicl
+        let amount = inv_cat_save_data
             .par_iter()
             .find_first(|i| i.base_category_definition_hash as usize == hash)
             .map(|i| i.quantity)

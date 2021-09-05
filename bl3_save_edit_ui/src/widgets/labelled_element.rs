@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use iced::{Color, Element, Length, Row};
 
-use crate::bl3_ui::Message;
+use crate::bl3_ui::Bl3Message;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 use crate::widgets::text_margin::TextMargin;
 
@@ -10,10 +10,10 @@ use crate::widgets::text_margin::TextMargin;
 pub struct LabelledElement;
 
 impl LabelledElement {
-    pub fn create<'a, S, E>(label: S, label_width: Length, element: E) -> Row<'a, Message>
+    pub fn create<'a, S, E>(label: S, label_width: Length, element: E) -> Row<'a, Bl3Message>
     where
         S: Display,
-        E: Into<Element<'a, Message>>,
+        E: Into<Element<'a, Bl3Message>>,
     {
         Row::new()
             .push(

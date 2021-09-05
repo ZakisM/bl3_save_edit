@@ -14,3 +14,8 @@ pub const JETBRAINS_MONO_BOLD: Font = Font::External {
     name: "Jetbrains Mono Bold",
     bytes: include_bytes!("../../resources/font/JetBrainsMono-Bold.ttf"),
 };
+
+pub const JETBRAINS_MONO_LIGHT_ITALIC: Font = Font::External {
+    name: "Jetbrains Mono Light Italic",
+    bytes: include_bytes!("../../resources/font/JetBrainsMono-LightItalic.ttf"),
+};

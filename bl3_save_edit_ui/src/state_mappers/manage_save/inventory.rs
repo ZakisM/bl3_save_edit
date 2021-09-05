@@ -1,70 +1,81 @@
-use std::convert::TryInto;
+use anyhow::Result;
+use tracing::info;
 
-use crate::views::manage_save::inventory::inventory_item::InventoryListItem;
-use crate::views::manage_save::inventory::InventoryStateExt;
+use bl3_save_edit_core::bl3_save::Bl3Save;
+
+use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
+use crate::views::item_editor::ItemEditorStateExt;
 use crate::views::manage_save::ManageSaveState;
 
-pub fn map_inventory_state(manage_save_state: &mut ManageSaveState) {
+pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
     let save = &manage_save_state.current_file;
 
     manage_save_state
-        .main_state
+        .save_view_state
         .inventory_state
+        .item_editor_state
         .selected_item_index = 0;
 
-    manage_save_state.main_state.inventory_state.items = save
+    *manage_save_state
+        .save_view_state
+        .inventory_state
+        .item_editor_state
+        .items_mut() = save
         .character_data
-        .inventory_items
+        .inventory_items()
         .iter()
         .cloned()
         .enumerate()
-        .map(|(i, item)| InventoryListItem::new(i, item))
+        .map(|(i, item)| ItemEditorListItem::new(i, item))
         .collect();
 
     manage_save_state
-        .main_state
+        .save_view_state
         .inventory_state
+        .item_editor_state
         .item_list_scrollable_state
         .snap_to(0.0);
 
-    map_item_to_inventory_state(manage_save_state);
+    manage_save_state
+        .save_view_state
+        .inventory_state
+        .item_editor_state
+        .map_current_item_if_exists(|i| i.editor.available_parts.scrollable_state.snap_to(0.0));
 }
 
-pub fn map_item_to_inventory_state(manage_save_state: &mut ManageSaveState) {
-    //TODO: Snap to top for every scrollable in each state_mapper when it is required (including pick_list if possible)
-    manage_save_state
-        .main_state
+pub fn map_inventory_state_to_save(
+    manage_save_state: &mut ManageSaveState,
+    save: &mut Bl3Save,
+) -> Result<()> {
+    for (i, edited_item) in manage_save_state
+        .save_view_state
         .inventory_state
-        .map_current_item_if_exists(|i| i.editor.available_parts.scrollable_state.snap_to(0.0));
+        .item_editor_state
+        .items()
+        .iter()
+        .enumerate()
+    {
+        if let Some(original_item) = save.character_data.character.inventory_items.get(i) {
+            let original_serial_number = &original_item.item_serial_number;
 
-    let save = &manage_save_state.current_file;
+            let edited_serial_number = edited_item.item.get_serial_number(true)?;
 
-    let selected_item_index = manage_save_state
-        .main_state
-        .inventory_state
-        .selected_item_index;
-
-    if let Some(item) = save.character_data.inventory_items.get(selected_item_index) {
-        manage_save_state
-            .main_state
-            .inventory_state
-            .selected_item_index = selected_item_index;
-
-        // Only map this initially as we want to maintain state for the changes made to items
-        if let Some(i) = manage_save_state
-            .main_state
-            .inventory_state
-            .items
-            .get_mut(selected_item_index)
-        {
-            if !i.has_mapped_from_save {
-                i.editor.item_level_input = item.level.try_into().unwrap_or(1);
-                i.editor.balance_input = item.balance_part.ident.clone();
-                i.editor.inventory_data_input = item.inv_data.clone();
-                i.editor.manufacturer_input = item.manufacturer.clone();
-
-                i.has_mapped_from_save = true;
+            // If the item we have edited has different serial number
+            // Then we replace it
+            if *original_serial_number != edited_serial_number {
+                info!("Replacing item at index: {}", i);
+                save.character_data
+                    .replace_inventory_item(i as i32, i, &edited_item.item)?;
+            } else {
+                info!("Keeping existing item at index: {}", i);
             }
+        } else {
+            // Otherwise insert our new item in this slot
+            info!("Inserting item at index: {}", i);
+            save.character_data
+                .insert_inventory_item(i as i32, i, &edited_item.item)?;
         }
     }
+
+    Ok(())
 }

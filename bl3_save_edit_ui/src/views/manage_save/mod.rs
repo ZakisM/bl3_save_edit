@@ -1,43 +1,42 @@
 use bl3_save_edit_core::bl3_save::Bl3Save;
 
-use crate::views::manage_save::character::CharacterInteractionMessage;
-use crate::views::manage_save::currency::CurrencyInteractionMessage;
-use crate::views::manage_save::fast_travel::{FastTravelInteractionMessage, FastTravelMessage};
-use crate::views::manage_save::general::{GeneralInteractionMessage, GeneralMessage};
-use crate::views::manage_save::inventory::InventoryInteractionMessage;
-use crate::views::manage_save::main::{MainState, MainTabBarInteractionMessage, MainTabBarView};
+use crate::views::manage_save::character::SaveCharacterInteractionMessage;
+use crate::views::manage_save::currency::SaveCurrencyInteractionMessage;
+use crate::views::manage_save::general::{GeneralMessage, SaveGeneralInteractionMessage};
+use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
+use crate::views::manage_save::main::{
+    SaveTabBarInteractionMessage, SaveTabBarView, SaveViewState,
+};
 
 pub mod character;
 pub mod currency;
-pub mod fast_travel;
 pub mod general;
 pub mod inventory;
 pub mod main;
 
 #[derive(Debug, Default)]
 pub struct ManageSaveState {
-    pub main_state: MainState,
+    pub save_view_state: SaveViewState,
     pub current_file: Bl3Save,
 }
 
+//These messages are currently only being used for async messages
 #[derive(Debug, Clone)]
 pub enum ManageSaveMessage {
     General(GeneralMessage),
-    FastTravel(FastTravelMessage),
 }
 
 #[derive(Debug, Clone)]
 pub enum ManageSaveInteractionMessage {
-    Main(MainTabBarInteractionMessage),
-    General(GeneralInteractionMessage),
-    Character(CharacterInteractionMessage),
-    Inventory(InventoryInteractionMessage),
-    Currency(CurrencyInteractionMessage),
-    FastTravel(FastTravelInteractionMessage),
+    TabBar(SaveTabBarInteractionMessage),
+    General(SaveGeneralInteractionMessage),
+    Character(SaveCharacterInteractionMessage),
+    Inventory(SaveInventoryInteractionMessage),
+    Currency(SaveCurrencyInteractionMessage),
     SaveFilePressed,
 }
 
 #[derive(Debug, PartialEq)]
 pub enum ManageSaveView {
-    TabBar(MainTabBarView),
+    TabBar(SaveTabBarView),
 }
