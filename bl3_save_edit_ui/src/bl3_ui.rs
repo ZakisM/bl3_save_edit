@@ -70,7 +70,7 @@ pub struct Bl3Application {
 }
 
 #[derive(Debug, Clone)]
-pub enum Message {
+pub enum Bl3Message {
     Initialization(InitializationMessage),
     Config(ConfigMessage),
     Interaction(InteractionMessage),
@@ -125,7 +125,7 @@ impl std::default::Default for ViewState {
 
 impl Application for Bl3Application {
     type Executor = tokio::runtime::Runtime;
-    type Message = Message;
+    type Message = Bl3Message;
     type Flags = Bl3Config;
 
     fn new(config: Self::Flags) -> (Self, Command<Self::Message>) {
@@ -136,7 +136,7 @@ impl Application for Bl3Application {
                 ..Bl3Application::default()
             },
             Command::perform(initialization::load_lazy_data(), |_| {
-                Message::Initialization(InitializationMessage::LazyData)
+                Bl3Message::Initialization(InitializationMessage::LazyData)
             }),
         )
     }
@@ -151,7 +151,7 @@ impl Application for Bl3Application {
         _clipboard: &mut Clipboard,
     ) -> Command<Self::Message> {
         match message {
-            Message::Initialization(initialization_msg) => match initialization_msg {
+            Bl3Message::Initialization(initialization_msg) => match initialization_msg {
                 InitializationMessage::LazyData => {
                     if self.config.saves_dir().exists() {
                         return Command::perform(
@@ -159,7 +159,7 @@ impl Application for Bl3Application {
                                 self.config.saves_dir().to_path_buf(),
                             ),
                             |r| {
-                                Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
+                                Bl3Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
                                     MessageResult::handle_result(r),
                                 ))
                             },
@@ -174,13 +174,13 @@ impl Application for Bl3Application {
                     self.view_state = ViewState::ChooseSaveDirectory;
                 }
             },
-            Message::Config(config_msg) => match config_msg {
+            Bl3Message::Config(config_msg) => match config_msg {
                 ConfigMessage::SaveCompleted(res) => match res {
                     MessageResult::Success(_) => info!("Successfully saved config."),
                     MessageResult::Error(e) => error!("Failed to save config: {}", e),
                 },
             },
-            Message::Interaction(interaction_msg) => {
+            Bl3Message::Interaction(interaction_msg) => {
                 self.notification = None;
 
                 match interaction_msg {
@@ -194,9 +194,11 @@ impl Application for Bl3Application {
                                         self.config.saves_dir().to_path_buf(),
                                     ),
                                     |r| {
-                                        Message::ChooseSave(ChooseSaveMessage::ChooseDirCompleted(
-                                            MessageResult::handle_result(r),
-                                        ))
+                                        Bl3Message::ChooseSave(
+                                            ChooseSaveMessage::ChooseDirCompleted(
+                                                MessageResult::handle_result(r),
+                                            ),
+                                        )
                                     },
                                 )
                             }
@@ -253,7 +255,7 @@ impl Application for Bl3Application {
                                     return Command::perform(
                                         interaction::manage_save::general::generate_random_guid(),
                                         |r| {
-                                            Message::ManageSave(ManageSaveMessage::General(
+                                            Bl3Message::ManageSave(ManageSaveMessage::General(
                                                 GeneralMessage::GenerateRandomGuidCompleted(r),
                                             ))
                                         },
@@ -511,7 +513,7 @@ impl Application for Bl3Application {
                                     SaveInventoryInteractionMessage::Editor(
                                         item_editor_message,
                                     ) => {
-                                        let notification = item_editor_message.update_state(
+                                        let res = item_editor_message.update_state(
                                             &mut self
                                                 .manage_save_state
                                                 .save_view_state
@@ -522,7 +524,21 @@ impl Application for Bl3Application {
                                             ),
                                         );
 
-                                        self.notification = notification;
+                                        self.notification = res.notification;
+
+                                        if let Some(command) = res.command {
+                                            return command.map(|m| {
+                                                Bl3Message::Interaction(
+                                                    InteractionMessage::ManageSaveInteraction(
+                                                        ManageSaveInteractionMessage::Inventory(
+                                                            SaveInventoryInteractionMessage::Editor(
+                                                                m,
+                                                            ),
+                                                        ),
+                                                    ),
+                                                )
+                                            });
+                                        }
                                     }
                                 }
                             }
@@ -562,7 +578,7 @@ impl Application for Bl3Application {
                                                 save_file,
                                             ),
                                             |r| {
-                                                Message::SaveFileCompleted(
+                                                Bl3Message::SaveFileCompleted(
                                                     MessageResult::handle_result(r),
                                                 )
                                             },
@@ -765,7 +781,7 @@ impl Application for Bl3Application {
                             ManageProfileInteractionMessage::Bank(bank_message) => {
                                 match bank_message {
                                     ProfileBankInteractionMessage::Editor(item_editor_message) => {
-                                        let notification = item_editor_message.update_state(
+                                        let res = item_editor_message.update_state(
                                             &mut self
                                                 .manage_profile_state
                                                 .profile_view_state
@@ -776,7 +792,21 @@ impl Application for Bl3Application {
                                             ),
                                         );
 
-                                        self.notification = notification;
+                                        self.notification = res.notification;
+
+                                        if let Some(command) = res.command {
+                                            return command.map(|m| {
+                                                Bl3Message::Interaction(
+                                                    InteractionMessage::ManageProfileInteraction(
+                                                        ManageProfileInteractionMessage::Bank(
+                                                            ProfileBankInteractionMessage::Editor(
+                                                                m,
+                                                            ),
+                                                        ),
+                                                    ),
+                                                )
+                                            });
+                                        }
                                     }
                                 }
                             }
@@ -817,7 +847,7 @@ impl Application for Bl3Application {
                                                 profile,
                                             ),
                                             |r| {
-                                                Message::SaveProfileCompleted(
+                                                Bl3Message::SaveProfileCompleted(
                                                     MessageResult::handle_result(r),
                                                 )
                                             },
@@ -844,7 +874,7 @@ impl Application for Bl3Application {
                     }
                     InteractionMessage::OpenBackupFolder => {
                         return Command::perform(Bl3Config::open_dir(), |r| {
-                            Message::OpenBackupFolderCompleted(MessageResult::handle_result(r))
+                            Bl3Message::OpenBackupFolderCompleted(MessageResult::handle_result(r))
                         });
                     }
                     InteractionMessage::RefreshSavesDirectory => {
@@ -855,7 +885,7 @@ impl Application for Bl3Application {
                                 self.config.saves_dir().to_path_buf(),
                             ),
                             |r| {
-                                Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
+                                Bl3Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
                                     MessageResult::handle_result(r),
                                 ))
                             },
@@ -864,7 +894,7 @@ impl Application for Bl3Application {
                     InteractionMessage::Ignore => {}
                 }
             }
-            Message::ChooseSave(choose_save_msg) => match choose_save_msg {
+            Bl3Message::ChooseSave(choose_save_msg) => match choose_save_msg {
                 ChooseSaveMessage::ChooseDirCompleted(choose_dir_res) => {
                     self.choose_save_directory_state.choose_dir_window_open = false;
 
@@ -875,7 +905,7 @@ impl Application for Bl3Application {
                             return Command::perform(
                                 interaction::choose_save_directory::load_files_in_directory(dir),
                                 |r| {
-                                    Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
+                                    Bl3Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
                                         MessageResult::handle_result(r),
                                     ))
                                 },
@@ -908,7 +938,7 @@ impl Application for Bl3Application {
                         self.config.set_saves_dir(dir);
 
                         return Command::perform(self.config.clone().save(), |r| {
-                            Message::Config(ConfigMessage::SaveCompleted(
+                            Bl3Message::Config(ConfigMessage::SaveCompleted(
                                 MessageResult::handle_result(r),
                             ))
                         });
@@ -925,7 +955,7 @@ impl Application for Bl3Application {
                     }
                 },
             },
-            Message::ManageSave(manage_save_msg) => match manage_save_msg {
+            Bl3Message::ManageSave(manage_save_msg) => match manage_save_msg {
                 ManageSaveMessage::General(general_msg) => match general_msg {
                     GeneralMessage::GenerateRandomGuidCompleted(guid) => {
                         self.manage_save_state
@@ -935,7 +965,7 @@ impl Application for Bl3Application {
                     }
                 },
             },
-            Message::SaveFileCompleted(res) => match res {
+            Bl3Message::SaveFileCompleted(res) => match res {
                 MessageResult::Success(save) => {
                     self.notification = Some(Notification::new(
                         "Successfully saved file!",
@@ -986,7 +1016,7 @@ impl Application for Bl3Application {
                         Some(Notification::new(msg, NotificationSentiment::Negative));
                 }
             },
-            Message::SaveProfileCompleted(res) => match res {
+            Bl3Message::SaveProfileCompleted(res) => match res {
                 MessageResult::Success(profile) => {
                     self.notification = Some(Notification::new(
                         "Successfully saved profile!",
@@ -1037,7 +1067,7 @@ impl Application for Bl3Application {
                         Some(Notification::new(msg, NotificationSentiment::Negative));
                 }
             },
-            Message::OpenBackupFolderCompleted(res) => {
+            Bl3Message::OpenBackupFolderCompleted(res) => {
                 if let MessageResult::Error(e) = res {
                     let msg = format!("Failed to open backups folder: {}", e);
 
@@ -1047,7 +1077,7 @@ impl Application for Bl3Application {
                         Some(Notification::new(msg, NotificationSentiment::Negative));
                 }
             }
-            Message::ClearNotification => {
+            Bl3Message::ClearNotification => {
                 self.notification = None;
             }
         };

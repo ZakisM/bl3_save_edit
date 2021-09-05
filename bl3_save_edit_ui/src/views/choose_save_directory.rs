@@ -4,7 +4,7 @@ use iced::{button, Align, Button, Color, Column, Container, HorizontalAlignment,
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
-use crate::bl3_ui::{InteractionMessage, Message, MessageResult};
+use crate::bl3_ui::{Bl3Message, InteractionMessage, MessageResult};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::InteractionExt;
@@ -26,7 +26,7 @@ pub enum ChooseSaveInteractionMessage {
     ChooseDirPressed,
 }
 
-pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Container<Message> {
+pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Container<Bl3Message> {
     let dir_button_text = Text::new("Select Borderlands 3 Save/Profile folder")
         .font(JETBRAINS_MONO)
         .size(20)

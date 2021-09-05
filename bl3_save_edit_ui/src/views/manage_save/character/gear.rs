@@ -5,7 +5,7 @@ use iced::{Align, Checkbox, Color, Column, Container, Element, Length};
 
 use bl3_save_edit_core::bl3_save::inventory_slot::InventorySlot;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::character::{
@@ -42,7 +42,7 @@ impl GearUnlockCheckbox {
         }
     }
 
-    pub fn view(&mut self) -> Element<Message> {
+    pub fn view(&mut self) -> Element<Bl3Message> {
         let on_checked = self.on_checked.clone();
 
         Checkbox::new(self.is_unlocked, &self.name, move |c| {
@@ -99,7 +99,7 @@ impl std::default::Default for GearUnlocker {
 }
 
 impl GearUnlocker {
-    pub fn view(&mut self) -> Container<Message> {
+    pub fn view(&mut self) -> Container<Bl3Message> {
         Container::new(
             Column::new()
                 .push(

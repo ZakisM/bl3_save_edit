@@ -5,7 +5,7 @@ use iced::{
 
 use bl3_save_edit_core::parser::HeaderType;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::ManageSaveInteractionMessage;
@@ -39,7 +39,7 @@ pub enum SaveGeneralInteractionMessage {
     SaveTypeSelected(HeaderType),
 }
 
-pub fn view(general_state: &mut GeneralState) -> Container<Message> {
+pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
     let file = Container::new(
         Row::new()
             .push(

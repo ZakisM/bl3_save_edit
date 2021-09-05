@@ -3,7 +3,7 @@ use std::fmt::Display;
 use iced::{button, Button, Color, Element, HorizontalAlignment, Length, Text};
 use strum::Display;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 use crate::views::InteractionExt;
 
@@ -41,7 +41,7 @@ pub fn parts_tab_bar_button<'a, T>(
     current_tab_bar_view: &T,
     on_press_message: InteractionMessage,
     extra_title_content: Option<String>,
-) -> Element<'a, Message>
+) -> Element<'a, Bl3Message>
 where
     T: Display + PartialEq,
 {

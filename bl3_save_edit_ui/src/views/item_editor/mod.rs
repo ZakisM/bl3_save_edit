@@ -1,9 +1,10 @@
 use std::convert::TryInto;
+use std::time::Duration;
 
 use anyhow::Result;
 use iced::{
-    button, scrollable, text_input, tooltip, Align, Button, Color, Column, Container, Length, Row,
-    Scrollable, Text, TextInput, Tooltip,
+    button, scrollable, text_input, tooltip, Align, Button, Color, Column, Command, Container,
+    Length, Row, Scrollable, Text, TextInput, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
@@ -14,7 +15,7 @@ use bl3_save_edit_core::bl3_save::bl3_item::{
 use bl3_save_edit_core::bl3_save::Bl3Save;
 use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
@@ -142,6 +143,8 @@ pub enum ItemEditorFileType<'a> {
 pub enum ItemEditorInteractionMessage {
     ItemPressed(usize),
     ShowAllAvailablePartsSelected(bool),
+    AvailablePartsSearchInputChanged(String),
+    AvailablePartsSearchInputDebounced(String),
     AvailablePartsTabPressed,
     AvailableAnointmentsTabPressed,
     CurrentPartsTabPressed,
@@ -154,6 +157,7 @@ pub enum ItemEditorInteractionMessage {
     CreateItemPressed,
     ImportItemFromSerialPressed,
     AllItemLevel(i32),
+    AllItemLevelDebounced,
     ItemLevel(i32),
     DeleteItem(usize),
     BalanceInputSelected(BalancePart),
@@ -161,13 +165,20 @@ pub enum ItemEditorInteractionMessage {
     ManufacturerInputSelected(ManufacturerPart),
 }
 
+#[derive(Debug)]
+pub struct ItemEditorInteractionResponse {
+    pub notification: Option<Notification>,
+    pub command: Option<Command<ItemEditorInteractionMessage>>,
+}
+
 impl ItemEditorInteractionMessage {
     pub fn update_state(
         self,
         item_editor_state: &mut ItemEditorState,
         item_editor_file_type: ItemEditorFileType,
-    ) -> Option<Notification> {
+    ) -> ItemEditorInteractionResponse {
         let mut notification = None;
+        let mut command = None;
 
         match self {
             ItemEditorInteractionMessage::ItemPressed(item_index) => {
@@ -186,14 +197,40 @@ impl ItemEditorInteractionMessage {
                     i.editor.available_parts.show_all_available_parts = selected;
                 })
             }
+            ItemEditorInteractionMessage::AvailablePartsSearchInputChanged(search_input) => {
+                item_editor_state.map_current_item_if_exists(|i| {
+                    i.editor.available_parts.search_input = search_input.clone();
+                });
+
+                command = Some(Command::perform(
+                    async {
+                        //Debounce
+                        tokio::time::sleep(Duration::from_millis(1000)).await;
+                    },
+                    move |_| {
+                        ItemEditorInteractionMessage::AvailablePartsSearchInputDebounced(
+                            search_input.to_lowercase(),
+                        )
+                    },
+                ));
+            }
+            ItemEditorInteractionMessage::AvailablePartsSearchInputDebounced(search_query) => {
+                item_editor_state.map_current_item_if_exists(|i| {
+                    i.editor.available_parts.search_query = search_query;
+                });
+            }
             ItemEditorInteractionMessage::AvailablePartsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
                     i.editor.available_parts.scrollable_state.snap_to(0.0);
+                    i.editor.available_parts.search_query = "".to_owned();
+                    i.editor.available_parts.search_input = "".to_owned();
                     i.editor.available_parts.parts_tab_view = AvailablePartType::Parts;
                 }),
             ItemEditorInteractionMessage::AvailableAnointmentsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
                     i.editor.available_parts.scrollable_state.snap_to(0.0);
+                    i.editor.available_parts.search_query = "".to_owned();
+                    i.editor.available_parts.search_input = "".to_owned();
                     i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments;
                 }),
             ItemEditorInteractionMessage::AvailablePartPressed(available_part_type_index) => {
@@ -375,7 +412,16 @@ impl ItemEditorInteractionMessage {
             ItemEditorInteractionMessage::AllItemLevel(item_level_input) => {
                 item_editor_state.all_item_levels_input = item_level_input;
 
-                let item_level = item_level_input as usize;
+                command = Some(Command::perform(
+                    async {
+                        //Debounce
+                        tokio::time::sleep(Duration::from_millis(1000)).await;
+                    },
+                    |_| ItemEditorInteractionMessage::AllItemLevelDebounced,
+                ));
+            }
+            ItemEditorInteractionMessage::AllItemLevelDebounced => {
+                let item_level = item_editor_state.all_item_levels_input as usize;
 
                 let mut error_notification = None;
 
@@ -408,7 +454,6 @@ impl ItemEditorInteractionMessage {
             ItemEditorInteractionMessage::DeleteItem(id) => {
                 item_editor_state.remove_item(id);
 
-                //TODO: Map this correctly
                 match item_editor_file_type {
                     ItemEditorFileType::Save(s) => s.character_data.remove_inventory_item(id),
                     ItemEditorFileType::ProfileBank(p) => p.profile_data.remove_bank_item(id),
@@ -449,14 +494,17 @@ impl ItemEditorInteractionMessage {
             }
         }
 
-        notification
+        ItemEditorInteractionResponse {
+            notification,
+            command,
+        }
     }
 }
 
 pub fn view<F>(
     item_editor_state: &mut ItemEditorState,
     interaction_message: F,
-) -> Container<Message>
+) -> Container<Bl3Message>
 where
     F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
 {

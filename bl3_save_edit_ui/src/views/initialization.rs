@@ -1,6 +1,6 @@
 use iced::{Align, Color, Container, Length, Text};
 
-use crate::bl3_ui::Message;
+use crate::bl3_ui::Bl3Message;
 use crate::resources::fonts::JETBRAINS_MONO;
 
 #[derive(Debug, Clone)]
@@ -8,7 +8,7 @@ pub enum InitializationMessage {
     LazyData,
 }
 
-pub fn view<'a>() -> Container<'a, Message> {
+pub fn view<'a>() -> Container<'a, Bl3Message> {
     let initializing_text = Text::new("Initializing...")
         .font(JETBRAINS_MONO)
         .size(20)

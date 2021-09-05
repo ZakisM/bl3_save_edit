@@ -5,7 +5,7 @@ use iced::{
     Text,
 };
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 
 pub mod choose_save_directory;
@@ -19,16 +19,16 @@ pub trait InteractionExt<'a, T>
 where
     T: Into<Element<'a, InteractionMessage>>,
 {
-    fn into_element(self) -> Element<'a, Message>;
+    fn into_element(self) -> Element<'a, Bl3Message>;
 }
 
 impl<'a, T> InteractionExt<'a, T> for T
 where
     T: Into<Element<'a, InteractionMessage>>,
 {
-    fn into_element(self) -> Element<'a, Message> {
+    fn into_element(self) -> Element<'a, Bl3Message> {
         let element: Element<'a, InteractionMessage> = self.into();
-        element.map(Message::Interaction)
+        element.map(Bl3Message::Interaction)
     }
 }
 
@@ -39,7 +39,7 @@ fn tab_bar_button<'a, V: Display + PartialEq>(
     on_press_message: InteractionMessage,
     icon_handle: svg::Handle,
     length: u16,
-) -> Element<'a, Message> {
+) -> Element<'a, Bl3Message> {
     let icon = Svg::new(icon_handle)
         .height(Length::Units(17))
         .width(Length::Units(17));

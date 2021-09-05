@@ -1,6 +1,6 @@
 use iced::{button, text_input, Align, Button, Column, Container, Length, Row, Text};
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_profile::ManageProfileInteractionMessage;
@@ -36,7 +36,7 @@ pub enum ProfileKeysInteractionMessage {
     MaxVaultCard1ChestsPressed,
 }
 
-pub fn view(keys_state: &mut KeysState) -> Container<Message> {
+pub fn view(keys_state: &mut KeysState) -> Container<Bl3Message> {
     let golden_keys = Container::new(
         Row::new()
             .push(

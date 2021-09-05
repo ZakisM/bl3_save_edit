@@ -9,7 +9,7 @@ use bl3_save_edit_core::resources::{
     INVENTORY_PARTS_ALL_CATEGORIZED, INVENTORY_SERIAL_DB_PARTS_CATEGORIZED,
 };
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::available_parts::AvailableParts;
@@ -45,7 +45,7 @@ impl Editor {
         item_id: usize,
         item: &Bl3Item,
         interaction_message: F,
-    ) -> Container<Message>
+    ) -> Container<Bl3Message>
     where
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {

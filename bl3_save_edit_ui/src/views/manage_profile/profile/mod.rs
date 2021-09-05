@@ -2,7 +2,7 @@ use iced::{pick_list, text_input, Align, Column, Container, Length, PickList, Ro
 
 use bl3_save_edit_core::bl3_profile::science_levels::BorderlandsScienceLevel;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_profile::profile::sdu::SduUnlocker;
@@ -57,7 +57,7 @@ pub enum ProfileSduMessage {
     LostLoot(i32),
 }
 
-pub fn view(profile_state: &mut ProfileState) -> Container<Message> {
+pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
     let guardian_rank = Container::new(
         LabelledElement::create(
             "Guardian Rank",

@@ -1,12 +1,14 @@
 use iced::{
-    button, scrollable, Align, Button, Checkbox, Color, Column, Container, Element, Length, Row,
-    Scrollable, Text,
+    button, scrollable, text_input, Align, Button, Checkbox, Color, Column, Container, Element,
+    Length, Row, Scrollable, Text, TextInput,
 };
+use rayon::iter::ParallelIterator;
+use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator};
 
 use bl3_save_edit_core::bl3_save::bl3_item::Bl3Item;
 use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart};
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::extra_part_info::add_extra_part_info;
@@ -64,7 +66,7 @@ impl AvailableCategorizedPart {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct AvailableResourcePart {
     category_index: usize,
     part_index: usize,
@@ -89,7 +91,7 @@ impl AvailableResourcePart {
         }
     }
 
-    pub fn view<F>(&mut self, is_active: bool, interaction_message: F) -> Element<Message>
+    pub fn view<F>(&mut self, is_active: bool, interaction_message: F) -> Element<Bl3Message>
     where
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {
@@ -139,6 +141,9 @@ pub struct AvailableParts {
     pub parts_tab_view: AvailablePartType,
     pub available_parts_tab_button_state: button::State,
     pub available_anointments_tab_button_state: button::State,
+    pub search_query: String,
+    pub search_input: String,
+    pub search_input_state: text_input::State,
 }
 
 impl AvailableParts {
@@ -149,7 +154,7 @@ impl AvailableParts {
         specific_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         interaction_message: F,
-    ) -> Container<Message>
+    ) -> Container<Bl3Message>
     where
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {
@@ -242,29 +247,97 @@ impl AvailableParts {
             None
         };
 
+        if let Some(available_parts) = &available_parts {
+            let amount: usize = available_parts.iter().map(|cat_p| cat_p.parts.len()).sum();
+
+            let placeholder = match self.parts_tab_view {
+                AvailablePartType::Parts => format!("Search {} Available Parts...", amount),
+                AvailablePartType::Anointments => {
+                    format!("Search {} Available Anointments...", amount)
+                }
+            };
+
+            let search_input = TextInput::new(
+                &mut self.search_input_state,
+                &placeholder,
+                &self.search_input,
+                move |s| {
+                    interaction_message(
+                        ItemEditorInteractionMessage::AvailablePartsSearchInputChanged(s),
+                    )
+                },
+            )
+            .font(JETBRAINS_MONO)
+            .padding(10)
+            .size(17)
+            .style(Bl3UiStyle)
+            .into_element();
+
+            available_parts_column = available_parts_column.push(search_input);
+        }
+
         if let Some(available_parts) = available_parts {
-            self.parts = available_parts;
+            let search_query = self.search_query.clone();
+
+            self.parts = available_parts.clone();
+
+            let filtered_parts = available_parts
+                .into_par_iter()
+                .map(|cat_p| {
+                    cat_p
+                        .parts
+                        .into_par_iter()
+                        .filter(|p| {
+                            p.part.name.to_lowercase().contains(&search_query)
+                                || p.part
+                                    .info
+                                    .positives
+                                    .par_iter()
+                                    .any(|p| p.to_lowercase().contains(&search_query))
+                                || p.part
+                                    .info
+                                    .negatives
+                                    .par_iter()
+                                    .any(|n| n.to_lowercase().contains(&search_query))
+                                || p.part
+                                    .info
+                                    .effects
+                                    .par_iter()
+                                    .any(|e| e.to_lowercase().contains(&search_query))
+                        })
+                        .collect::<Vec<AvailableResourcePart>>()
+                })
+                .flatten()
+                .collect::<Vec<_>>();
 
             let available_parts_list = self.parts.iter_mut().enumerate().fold(
                 Column::new(),
                 |mut curr, (cat_index, cat_parts)| {
-                    curr = curr.push(
-                        Container::new(
-                            Text::new(&cat_parts.category)
-                                .font(JETBRAINS_MONO_BOLD)
-                                .size(17)
-                                .color(Color::from_rgb8(242, 203, 5)),
-                        )
-                        .width(Length::Fill)
-                        .style(Bl3UiStyleNoBorder)
-                        .padding(10),
-                    );
+                    if cat_parts
+                        .parts
+                        .iter()
+                        .any(|cat_p| filtered_parts.contains(cat_p))
+                    {
+                        curr = curr.push(
+                            Container::new(
+                                Text::new(&cat_parts.category)
+                                    .font(JETBRAINS_MONO_BOLD)
+                                    .size(17)
+                                    .color(Color::from_rgb8(242, 203, 5)),
+                            )
+                            .width(Length::Fill)
+                            .style(Bl3UiStyleNoBorder)
+                            .padding(10),
+                        );
+                    }
 
                     for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
-                        let is_active = selected_available_part_type_index.category_index
-                            == cat_index
-                            && selected_available_part_type_index.part_index == part_index;
-                        curr = curr.push(p.view(is_active, interaction_message));
+                        if filtered_parts.contains(&*p) {
+                            let is_active = selected_available_part_type_index.category_index
+                                == cat_index
+                                && selected_available_part_type_index.part_index == part_index;
+                            curr = curr.push(p.view(is_active, interaction_message));
+                        }
                     }
 
                     curr

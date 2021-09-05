@@ -1,7 +1,7 @@
 use iced::{button, svg, Column, Container, Length, Row};
 use strum::Display;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::resources::svgs::{BANK, GENERAL, KEYS, PROFILE};
 use crate::views::manage_profile::bank::BankState;
 use crate::views::manage_profile::general::GeneralState;
@@ -49,7 +49,7 @@ pub enum ProfileTabBarView {
 pub fn view<'a>(
     manage_profile_state: &'a mut ManageProfileState,
     tab_bar_view: &ProfileTabBarView,
-) -> Container<'a, Message> {
+) -> Container<'a, Bl3Message> {
     let general_button = tab_bar_button(
         &mut manage_profile_state
             .profile_view_state

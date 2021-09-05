@@ -10,7 +10,7 @@ use bl3_save_edit_core::bl3_save::bl3_item::{
 };
 use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart, ResourcePartInfo};
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::extra_part_info::add_extra_part_info;
@@ -74,7 +74,7 @@ impl CurrentItemEditorPart {
         }
     }
 
-    pub fn view<F>(&mut self, interaction_message: F) -> Element<Message>
+    pub fn view<F>(&mut self, interaction_message: F) -> Element<Bl3Message>
     where
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {
@@ -148,7 +148,7 @@ impl CurrentParts {
         anointments_list: &[ResourceCategorizedParts],
         all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         interaction_message: F,
-    ) -> Container<Message>
+    ) -> Container<Bl3Message>
     where
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {

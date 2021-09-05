@@ -1,7 +1,7 @@
 use iced::{button, svg, Column, Container, Length, Row};
 use strum::Display;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::resources::svgs::{CHARACTER, CURRENCY, GENERAL, INVENTORY};
 use crate::views::manage_save::character::CharacterState;
 use crate::views::manage_save::currency::CurrencyState;
@@ -49,7 +49,7 @@ pub enum SaveTabBarView {
 pub fn view<'a>(
     manage_save_state: &'a mut ManageSaveState,
     tab_bar_view: &SaveTabBarView,
-) -> Container<'a, Message> {
+) -> Container<'a, Bl3Message> {
     let general_button = tab_bar_button(
         &mut manage_save_state
             .save_view_state

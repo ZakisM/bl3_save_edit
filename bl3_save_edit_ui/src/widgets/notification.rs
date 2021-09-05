@@ -1,6 +1,6 @@
 use iced::{button, container, svg, Align, Button, Color, Container, Length, Row, Svg, Text};
 
-use crate::bl3_ui::Message;
+use crate::bl3_ui::Bl3Message;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 use crate::resources::svgs::{NEGATIVE_CLOSE, POSITIVE_CLOSE};
 
@@ -32,7 +32,7 @@ impl Notification {
         }
     }
 
-    pub fn view(&mut self) -> Container<Message> {
+    pub fn view(&mut self) -> Container<Bl3Message> {
         let close_handle = match self.sentiment {
             NotificationSentiment::Positive => svg::Handle::from_memory(POSITIVE_CLOSE),
             NotificationSentiment::Negative => svg::Handle::from_memory(NEGATIVE_CLOSE),
@@ -43,7 +43,7 @@ impl Notification {
             .width(Length::Units(18));
 
         let close_button = Button::new(&mut self.close_button_state, close_icon)
-            .on_press(Message::ClearNotification)
+            .on_press(Bl3Message::ClearNotification)
             .style(NotificationStyle {
                 sentiment: self.sentiment,
             });

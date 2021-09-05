@@ -7,7 +7,7 @@ use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
 use bl3_save_edit_core::bl3_save::util::REQUIRED_XP_LIST;
 use bl3_save_edit_core::game_data::GameDataKv;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::manage_save::character::ammo::AmmoSetter;
@@ -110,7 +110,7 @@ pub enum CharacterAmmoMessage {
     Heavy(i32),
 }
 
-pub fn view(character_state: &mut CharacterState) -> Container<Message> {
+pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
     let selected_class = character_state.player_class_selected_class;
 
     let character_name = Container::new(

@@ -3,7 +3,7 @@ use iced::{button, container, Button, Color, Column, Container, Element, Length,
 
 use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, ItemRarity, ItemType};
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::item_editor::editor::Editor;
 use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
@@ -31,7 +31,7 @@ impl ItemEditorListItem {
         &mut self,
         is_active: bool,
         interaction_message: F,
-    ) -> (Element<Message>, Option<Container<Message>>)
+    ) -> (Element<Bl3Message>, Option<Container<Bl3Message>>)
     where
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {

@@ -1,6 +1,6 @@
 use iced::{button, text_input, Align, Button, Column, Container, Length, Row, Text};
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_save::ManageSaveInteractionMessage;
@@ -26,7 +26,7 @@ pub enum SaveCurrencyInteractionMessage {
     MaxEridiumPressed,
 }
 
-pub fn view(general_state: &mut CurrencyState) -> Container<Message> {
+pub fn view(general_state: &mut CurrencyState) -> Container<Bl3Message> {
     let money = Container::new(
         Row::new()
             .push(

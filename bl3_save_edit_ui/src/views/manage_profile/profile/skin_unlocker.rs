@@ -7,7 +7,7 @@ use bl3_save_edit_core::bl3_profile::skins::{
     ProfileSkinData, ProfileSkinType, SkinSet, WeaponSkinSet,
 };
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_profile::profile::{
@@ -44,7 +44,7 @@ impl SkinUnlockCheckbox {
         }
     }
 
-    pub fn view(&mut self) -> Element<Message> {
+    pub fn view(&mut self) -> Element<Bl3Message> {
         let on_checked = self.on_checked.clone();
 
         Checkbox::new(
@@ -126,7 +126,7 @@ impl std::default::Default for SkinUnlocker {
 }
 
 impl SkinUnlocker {
-    pub fn view(&mut self) -> Container<Message> {
+    pub fn view(&mut self) -> Container<Bl3Message> {
         Container::new(
             Column::new()
                 .push(

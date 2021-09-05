@@ -8,7 +8,7 @@ use iced::{
 
 use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
 
-use crate::bl3_ui::{InteractionMessage, Message};
+use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::manage_profile::profile::{ProfileProfileInteractionMessage, ProfileSduMessage};
@@ -49,7 +49,7 @@ impl SduUnlockField {
         }
     }
 
-    pub fn view(&mut self) -> Row<Message> {
+    pub fn view(&mut self) -> Row<Bl3Message> {
         let on_changed = self.on_changed.clone();
         let minimum = 0;
         let maximum = self.sdu_slot.maximum();
@@ -122,7 +122,7 @@ impl std::default::Default for SduUnlocker {
 }
 
 impl SduUnlocker {
-    pub fn view(&mut self) -> Container<Message> {
+    pub fn view(&mut self) -> Container<Bl3Message> {
         Container::new(
             Column::new()
                 .push(
