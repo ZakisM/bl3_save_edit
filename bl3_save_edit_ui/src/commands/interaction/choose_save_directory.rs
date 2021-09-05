@@ -11,7 +11,7 @@ use bl3_save_edit_core::file_helper::Bl3FileType;
 pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
     use native_dialog::FileDialog;
 
-    let home_dir = if existing_dir.exists {
+    let home_dir = if existing_dir.exists() {
         existing_dir
     } else {
         dirs::home_dir().unwrap_or_default()
