@@ -19,7 +19,7 @@ use bl3_save_edit_core::parser::HeaderType;
 use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::commands::{initialization, interaction};
 use crate::config::{Bl3Config, ConfigMessage};
-use crate::resources::fonts::{COMPACTA, JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD, OSWALD_MEDIUM};
 use crate::resources::svgs::REFRESH;
 use crate::state_mappers::{manage_profile, manage_save};
 use crate::views::choose_save_directory::{
@@ -1087,7 +1087,7 @@ impl Application for Bl3Application {
 
     fn view(&mut self) -> Element<'_, Self::Message> {
         let title = Text::new("Borderlands 3 Save Editor".to_uppercase())
-            .font(COMPACTA)
+            .font(OSWALD_MEDIUM)
             .size(48)
             .color(Color::from_rgb8(242, 203, 5))
             .width(Length::Fill)
