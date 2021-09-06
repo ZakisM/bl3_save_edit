@@ -99,7 +99,7 @@ jobs:
       - run: chmod +x /tmp/cross
 
       - name: Install dependencies
-        run: sudo apt install libxkbcommon-dev libfreetype6-dev libfontconfig1-dev xclip
+        run: sudo apt install libxkbcommon-dev libfreetype6-dev libfreetype6 libfontconfig1-dev xclip
 
       - run: ci/set_rust_version.bash ${{ matrix.channel }} ${{ matrix.target }}
       - run: ci/build.bash /tmp/cross ${{ matrix.target }}
