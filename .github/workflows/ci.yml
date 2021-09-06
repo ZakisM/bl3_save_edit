@@ -69,6 +69,11 @@ jobs:
 
       - run: chmod +x /usr/local/bin/cross
 
+      - name: Do we need GNU tar? # Fix for macOS caching, https://github.com/actions/cache/issues/403
+        run: |
+          brew install gnu-tar
+          echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
+
       - run: ci/set_rust_version.bash ${{ matrix.channel }} ${{ matrix.target }}
       - run: ci/build.bash cross ${{ matrix.target }}
         # Only test on macOS platforms since we can't simulate the others.
