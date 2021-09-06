@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>CFBundleDevelopmentRegion</key>
+        <string>en</string>
+        <key>CFBundleExecutable</key>
+        <string>bl3_save_edit_ui</string>
+        <key>CFBundleIdentifier</key>
+        <string>com.zak.bl3_save_edit</string>
+        <key>CFBundleInfoDictionaryVersion</key>
+        <string>6.0</string>
+        <key>CFBundleName</key>
+        <string>bl3_save_edit</string>
+        <key>CFBundlePackageType</key>
+        <string>APPL</string>
+        <key>CFBundleShortVersionString</key>
+        <string>0.1.0</string>
+        <key>CFBundleSupportedPlatforms</key>
+        <array>
+            <string>MacOSX</string>
+        </array>
+        <key>CFBundleVersion</key>
+        <string>1</string>
+        <key>CFBundleIconFile</key>
+        <string>bl3_save_edit.icns</string>
+        <key>NSHighResolutionCapable</key>
+        <true/>
+        <key>NSMainNibFile</key>
+        <string/>
+        <key>NSSupportsAutomaticGraphicsSwitching</key>
+        <true/>
+        <key>CFBundleDisplayName</key>
+        <string>Bl3 Save Editor</string>
+        <key>NSRequiresAquaSystemAppearance</key>
+        <string>NO</string>
+    </dict>
+</plist>

@@ -1,8 +1,8 @@
 use iced::Font;
 
-pub const COMPACTA: Font = Font::External {
-    name: "Compacta",
-    bytes: include_bytes!("../../resources/font/Compacta.otf"),
+pub const OSWALD_MEDIUM: Font = Font::External {
+    name: "Oswald Medium",
+    bytes: include_bytes!("../../resources/font/Oswald-Medium.ttf"),
 };
 
 pub const JETBRAINS_MONO: Font = Font::External {
