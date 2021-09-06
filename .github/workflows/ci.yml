@@ -91,28 +91,16 @@ jobs:
         with:
           depth: 50
 
-      - name: Download Cross
-        uses: actions/download-artifact@v1
-        with:
-          name: cross-linux-musl
-          path: /tmp/
-      - run: chmod +x /tmp/cross
-
       - name: Install dependencies
-        run: sudo apt install libxkbcommon-dev libfreetype6-dev
+        run: sudo apt install libxkbcommon-dev
 
       - run: ci/set_rust_version.bash ${{ matrix.channel }} ${{ matrix.target }}
-      - run: ci/build.bash /tmp/cross ${{ matrix.target }}
-        # These targets have issues with being tested so they are disabled
-        # by default. You can try disabling to see if they work for
-        # your project.
-      - run: ci/test.bash /tmp/cross ${{ matrix.target }}
-        if: |
-          !contains(matrix.target, 'android') &&
-          !contains(matrix.target, 'bsd') &&
-          !contains(matrix.target, 'solaris') &&
-          matrix.target != 'armv5te-unknown-linux-musleabi' &&
-          matrix.target != 'sparc64-unknown-linux-gnu'
+
+      - name: Build
+        run: cargo build --target=${{ matrix.target }}
+
+      - name: Run tests
+        run: cargo test --verbose
     strategy:
       fail-fast: true
       matrix:
