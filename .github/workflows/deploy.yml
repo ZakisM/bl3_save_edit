@@ -90,6 +90,11 @@ jobs:
           path: /usr/local/bin/
       - run: chmod +x /usr/local/bin/cross
 
+      - name: Do we need GNU tar? # Fix for macOS caching, https://github.com/actions/cache/issues/403
+        run: |
+          brew install gnu-tar
+          echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
+
       - run: ci/set_rust_version.bash stable ${{ matrix.target }}
       - run: ci/build.bash cross ${{ matrix.target }} RELEASE
       - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=target/${{ matrix.target }}/release ${{ env.BIN }}
@@ -131,7 +136,7 @@ jobs:
       - name: Build
         run: cargo build --release
 
-      - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=target/${{ matrix.target }}/release ${{ env.BIN }}
+      - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=target/release ${{ env.BIN }}
       - uses: XAMPPRocky/create-release@v1.0.2
         id: create_release
         env:
