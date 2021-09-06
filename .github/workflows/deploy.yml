@@ -119,23 +119,18 @@ jobs:
       matrix:
         target:
           # Linux
-          - aarch64-unknown-linux-gnu
-          - aarch64-unknown-linux-musl
           - x86_64-unknown-linux-gnu
-          - x86_64-unknown-linux-musl
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
-        with:
-          name: cross-linux-musl
-          path: /tmp/
-      - run: chmod +x /tmp/cross
 
       - name: Install dependencies
         run: sudo apt install libxkbcommon-dev
 
       - run: ci/set_rust_version.bash stable ${{ matrix.target }}
-      - run: ci/build.bash /tmp/cross ${{ matrix.target }} RELEASE
+
+      - name: Build
+        run: cargo build --release
+
       - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=target/${{ matrix.target }}/release ${{ env.BIN }}
       - uses: XAMPPRocky/create-release@v1.0.2
         id: create_release
