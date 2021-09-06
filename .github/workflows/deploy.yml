@@ -131,6 +131,10 @@ jobs:
           path: /tmp/
       - run: chmod +x /tmp/cross
 
+      - name: Install dependencies
+        if: ${{ matrix.target.os == 'ubuntu-16.04' }}
+        run: sudo apt install libxkbcommon-dev
+
       - run: ci/set_rust_version.bash stable ${{ matrix.target }}
       - run: ci/build.bash /tmp/cross ${{ matrix.target }} RELEASE
       - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=target/${{ matrix.target }}/release ${{ env.BIN }}
