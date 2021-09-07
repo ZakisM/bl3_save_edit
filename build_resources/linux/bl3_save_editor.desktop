@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Terminal=false
-Exec=bl3_save_edit
-Name=bl3_save_edit
+Exec=bl3_save_edit_ui
+Name=bl3_save_editor
 Icon=bl3_save_edit
 Categories=Game;

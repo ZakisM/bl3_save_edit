@@ -12,10 +12,10 @@ APP_BINARY_DIR  = $(APP_DIR)/$(APP_NAME)/Contents/MacOS
 APP_RESOURCES_DIR = $(APP_DIR)/$(APP_NAME)/Contents/Resources
 
 # Linux
-APPIMAGE_NAME ?=
+APPIMAGE_NAME = bl3_save_editor.AppImage
 APPIMAGE_DIR = $(RELEASE_DIR)/AppDir
-APPIMAGE_DESKTOP_FILE = $(RESOURCES_DIR)/linux/bl3_save_edit.desktop
-APPIMAGE_ICON_FILE = $(RESOURCES_DIR)/icons/bl3_save_edit-256x256.png
+APPIMAGE_DESKTOP_FILE = $(RESOURCES_DIR)/linux/bl3_save_editor.desktop
+APPIMAGE_ICON_FILE = $(RESOURCES_DIR)/icons/256x256/bl3_save_edit.png
 
 DMG_NAME ?=
 DMG_DIR = $(RELEASE_DIR)/osx
@@ -60,7 +60,7 @@ $(APPIMAGE_NAME): $(TARGET)
 		--output appimage
 	@rm -rf $(APPIMAGE_DIR)
 
-.PHONY: app binary dmg appimage tar
+.PHONY: app dmg appimage tar
 
 clean: ## Remove all artifacts
 	-rm -rf $(APP_DIR)
