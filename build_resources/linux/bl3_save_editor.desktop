@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=bl3_save_edit
+Name=bl3_save_edit
+Icon=bl3_save_edit
+Categories=Game;
