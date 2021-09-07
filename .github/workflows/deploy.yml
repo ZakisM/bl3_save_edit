@@ -130,7 +130,7 @@ jobs:
         include:
           # Linux
           - target: x86_64-unknown-linux-gnu
-          make: make appimage RELEASE_DIR=target/x86_64-unknown-linux-gnu/release
+            make: make appimage RELEASE_DIR=target/x86_64-unknown-linux-gnu/release
 
     steps:
       - uses: actions/checkout@v2
