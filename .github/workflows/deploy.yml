@@ -151,7 +151,7 @@ jobs:
       - name: Bundle Into App
         run: ${{ matrix.make }}
 
-      - run: tar -czvf ${{ env.BIN }}.tar.gz bl3_save_edit.AppImage
+      - run: tar -czvf ${{ env.BIN }}.tar.gz bl3_save_editor.AppImage
       - uses: XAMPPRocky/create-release@v1.0.2
         id: create_release
         env:
