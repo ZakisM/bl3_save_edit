@@ -31,7 +31,7 @@ jobs:
           path: ${{ steps.cross.outputs.install_path }}
     strategy:
       matrix:
-        platform: [linux-musl, apple-darwin]
+        platform: [ linux-musl, apple-darwin ]
 
   windows:
     runs-on: windows-latest
@@ -54,7 +54,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        channel: [stable]
+        channel: [ stable ]
         target:
           # MSVC
           - x86_64-pc-windows-msvc
@@ -88,7 +88,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        channel: [stable]
+        channel: [ stable ]
         target:
           # macOS
           - x86_64-apple-darwin
@@ -113,7 +113,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        channel: [stable]
+        channel: [ stable ]
         target:
           # Linux
           - x86_64-unknown-linux-gnu

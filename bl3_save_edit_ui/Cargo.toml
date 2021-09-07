@@ -51,3 +51,5 @@ git = "https://github.com/ZakisM/iced"
 branch = "bl3_save_edit"
 features = ["tokio", "svg"]
 
+[build-dependencies]
+embed-resource = "1.6"
