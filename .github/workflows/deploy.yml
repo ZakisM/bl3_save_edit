@@ -32,7 +32,7 @@ jobs:
           path: ${{ steps.cross.outputs.install_path }}
     strategy:
       matrix:
-        platform: [linux-musl, apple-darwin]
+        platform: [ linux-musl, apple-darwin ]
 
   windows:
     runs-on: windows-latest
@@ -81,7 +81,8 @@ jobs:
       matrix:
         target:
           # macOS
-          - x86_64-apple-darwin
+          - target: x86_64-apple-darwin
+            make: make mac_os_app RELEASE_DIR=target/x86_64-apple-darwin/release
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -95,9 +96,13 @@ jobs:
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
 
-      - run: ci/set_rust_version.bash stable ${{ matrix.target }}
-      - run: ci/build.bash cross ${{ matrix.target }} RELEASE
-      - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=target/${{ matrix.target }}/release ${{ env.BIN }}
+      - run: ci/set_rust_version.bash stable ${{ matrix.target.target }}
+      - run: ci/build.bash cross ${{ matrix.target.target }} RELEASE
+
+      - name: Bundle Into App
+        run: ${{ matrix.target.make }
+
+      - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=target/${{ matrix.target }}/release/osx ${{ env.BIN }}
       - uses: XAMPPRocky/create-release@v1.0.2
         id: create_release
         env:
