@@ -97,7 +97,7 @@ jobs:
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
 
-      - run: ci/set_rust_version.bash stable ${{ matrix.target.target }}
+      - run: ci/set_rust_version.bash stable ${{ matrix.target }}
       - run: ci/build.bash cross ${{ matrix.target }} RELEASE
 
       - name: Bundle Into App
