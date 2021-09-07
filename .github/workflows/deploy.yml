@@ -92,7 +92,7 @@ jobs:
           path: /usr/local/bin/
       - run: chmod +x /usr/local/bin/cross
 
-      - name: Do we need GNU tar? # Fix for macOS caching, https://github.com/actions/cache/issues/403
+      - name: Install GNU tar # Fix for macOS caching, https://github.com/actions/cache/issues/403
         run: |
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
@@ -138,7 +138,7 @@ jobs:
       - name: Install dependencies
         run: sudo apt install libxkbcommon-dev
 
-      - name: Do we need linuxdeploy?
+      - name: Install
         run: |
           wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy-x86_64.AppImage
@@ -148,7 +148,10 @@ jobs:
       - name: Build
         run: cargo build --release
 
-      - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=bl3_save_edit.AppImage
+      - name: Bundle Into App
+        run: ${{ matrix.make }}
+
+      - run: tar -czvf ${{ env.BIN }}.tar.gz bl3_save_edit.AppImage
       - uses: XAMPPRocky/create-release@v1.0.2
         id: create_release
         env:
