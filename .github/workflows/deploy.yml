@@ -98,10 +98,10 @@ jobs:
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
 
       - run: ci/set_rust_version.bash stable ${{ matrix.target.target }}
-      - run: ci/build.bash cross ${{ matrix.target.target }} RELEASE
+      - run: ci/build.bash cross ${{ matrix.target }} RELEASE
 
       - name: Bundle Into App
-        run: ${{ matrix.target.make }}
+        run: ${{ matrix.make }}
 
       - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=target/${{ matrix.target }}/release/osx ${{ env.BIN }}
       - uses: XAMPPRocky/create-release@v1.0.2
