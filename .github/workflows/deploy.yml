@@ -82,8 +82,8 @@ jobs:
         include:
           # Mac OS
           - target: x86_64-apple-darwin
-            make: make mac_os_app RELEASE_DIR=target/x86_64-apple-darwin/release
-          
+            make: make mac_os_app RELEASE_DIR=target/x86_64-apple-darwin/release MACOS=1
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -125,24 +125,30 @@ jobs:
 
   linux:
     runs-on: ubuntu-latest
-    needs: install-cross
     strategy:
       matrix:
-        target:
+        include:
           # Linux
-          - x86_64-unknown-linux-gnu
+          - target: x86_64-unknown-linux-gnu
+          make: make appimage RELEASE_DIR=target/x86_64-unknown-linux-gnu/release
+
     steps:
       - uses: actions/checkout@v2
 
       - name: Install dependencies
         run: sudo apt install libxkbcommon-dev
 
+      - name: Do we need linuxdeploy?
+        run: |
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy-x86_64.AppImage
+
       - run: ci/set_rust_version.bash stable ${{ matrix.target }}
 
       - name: Build
         run: cargo build --release
 
-      - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=target/release ${{ env.BIN }}
+      - run: tar -czvf ${{ env.BIN }}.tar.gz --directory=bl3_save_edit.AppImage
       - uses: XAMPPRocky/create-release@v1.0.2
         id: create_release
         env:

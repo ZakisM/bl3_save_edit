@@ -2,7 +2,6 @@
 TARGET = bl3_save_edit_ui
 
 RESOURCES_DIR = build_resources
-RELEASE_DIR = ?=
 
 # Mac OS
 APP_NAME = Bl3SaveEditor.app
@@ -16,7 +15,7 @@ APP_RESOURCES_DIR = $(APP_DIR)/$(APP_NAME)/Contents/Resources
 APPIMAGE_NAME ?=
 APPIMAGE_DIR = $(RELEASE_DIR)/AppDir
 APPIMAGE_DESKTOP_FILE = $(RESOURCES_DIR)/linux/bl3_save_edit.desktop
-APPIMAGE_LOGO_FILE = $(RESOURCES_DIR)/logo/256x256/bl3_save_edit.png
+APPIMAGE_ICON_FILE = $(RESOURCES_DIR)/icons/bl3_save_edit-256x256.png
 
 DMG_NAME ?=
 DMG_DIR = $(RELEASE_DIR)/osx
@@ -57,7 +56,7 @@ $(APPIMAGE_NAME): $(TARGET)
 		--appdir $(APPIMAGE_DIR) \
 		-e $(APP_BINARY) \
 		-d $(APPIMAGE_DESKTOP_FILE) \
-		-i $(APPIMAGE_LOGO_FILE) \
+		-i $(APPIMAGE_ICON_FILE) \
 		--output appimage
 	@rm -rf $(APPIMAGE_DIR)
 
