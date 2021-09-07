@@ -24,3 +24,7 @@ code was based off of their work.
 
 Thanks to HackerSmacker for their PS4
 bitmasks: https://github.com/HackerSmacker/CSave/blob/022c4e78ac7fa68e2338804bc0148ac9be3296f7/FileTranslator.c.
+
+Thanks to those who created these docs:
+https://docs.google.com/spreadsheets/d/1XYG30B6CulmcmmVDuq-PkLEJVtjAFacx7cuSkqbv5N4/edit#gid=236414762
+https://docs.google.com/spreadsheets/d/16b7bGPFKIrNg_cJm_WCMO6cKahexBs7BiJ6ja0RlD04/edit#gid=133903911
