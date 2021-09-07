@@ -75,14 +75,14 @@ jobs:
           asset_content_type: application/zip
 
   macos:
-    runs-on: macos-latest
-    needs: install-cross
     strategy:
       matrix:
-        target:
-          # macOS
+        include:
           - target: x86_64-apple-darwin
             make: make mac_os_app RELEASE_DIR=target/x86_64-apple-darwin/release
+    runs-on: macos-latest
+    needs: install-cross
+          
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
