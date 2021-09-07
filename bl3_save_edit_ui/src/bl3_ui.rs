@@ -22,6 +22,7 @@ use crate::config::{Bl3Config, ConfigMessage};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD, OSWALD_MEDIUM};
 use crate::resources::svgs::REFRESH;
 use crate::state_mappers::{manage_profile, manage_save};
+use crate::update::Release;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -50,7 +51,7 @@ use crate::views::manage_save::{
 };
 use crate::views::InteractionExt;
 use crate::widgets::notification::{Notification, NotificationSentiment};
-use crate::{state_mappers, views, VERSION};
+use crate::{state_mappers, update, views, VERSION};
 
 #[derive(Debug, Default)]
 pub struct Bl3Application {
@@ -72,6 +73,7 @@ pub struct Bl3Application {
 #[derive(Debug, Clone)]
 pub enum Bl3Message {
     Initialization(InitializationMessage),
+    LatestRelease(MessageResult<Release>),
     Config(ConfigMessage),
     Interaction(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
@@ -129,15 +131,22 @@ impl Application for Bl3Application {
     type Flags = Bl3Config;
 
     fn new(config: Self::Flags) -> (Self, Command<Self::Message>) {
+        let startup_commands = [
+            Command::perform(initialization::load_lazy_data(), |_| {
+                Bl3Message::Initialization(InitializationMessage::LazyData)
+            }),
+            Command::perform(update::get_latest_release(), |r| {
+                Bl3Message::LatestRelease(MessageResult::handle_result(r))
+            }),
+        ];
+
         (
             Bl3Application {
                 config,
                 view_state: ViewState::Initializing,
                 ..Bl3Application::default()
             },
-            Command::perform(initialization::load_lazy_data(), |_| {
-                Bl3Message::Initialization(InitializationMessage::LazyData)
-            }),
+            Command::batch(startup_commands),
         )
     }
 
@@ -172,6 +181,14 @@ impl Application for Bl3Application {
                     }
 
                     self.view_state = ViewState::ChooseSaveDirectory;
+                }
+            },
+            Bl3Message::LatestRelease(res) => match res {
+                MessageResult::Success(r) => {
+                    println!("{:?}", r);
+                }
+                MessageResult::Error(e) => {
+                    eprintln!("{}", e);
                 }
             },
             Bl3Message::Config(config_msg) => match config_msg {
