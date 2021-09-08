@@ -1,16 +1,18 @@
-use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context, Result};
-use flate2::read::GzDecoder;
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::{Client, ClientBuilder};
 use retry::delay::Fibonacci;
 use retry::{retry, Error as RetryError, OperationResult};
 use serde::Deserialize;
-use tar::Archive;
 use tracing::info;
 use version_compare::Version;
+#[cfg(target_os = "windows")]
+use zip::ZipArchive;
+
+#[cfg(not(target_os = "windows"))]
+use {flate2::read::GzDecoder, std::os::unix::fs::PermissionsExt, tar::Archive};
 
 use crate::VERSION;
 
@@ -48,11 +50,6 @@ impl Release {
         client: &Client,
         new_release_executable_path: PathBuf,
     ) -> Result<()> {
-        #[cfg(not(target_arch = "x86_64"))]
-        {
-            bail!("Automatic updates are not supported for non x86_64 architectures currently");
-        }
-
         let asset = self
             .assets
             .iter()
@@ -80,21 +77,19 @@ impl Release {
         // Unarchive zip
         let res: Result<bool> = {
             tokio::task::spawn_blocking(move || {
-                let mut archive = zip::ZipArchive::new(asset_file);
+                let mut archive = ZipArchive::new(asset_file)?;
 
                 let mut new_release_executable_file =
                     std::fs::File::create(new_release_executable_path)?;
 
-                for file in archive.entries()? {
-                    let mut file = file?;
+                for i in 0..archive.len() {
+                    if let Ok(mut file) = archive.by_index(i) {
+                        if let Some(name) = file.enclosed_name().and_then(|n| n.file_name()) {
+                            if name == ASSET {
+                                std::io::copy(&mut file, &mut new_release_executable_file)?;
 
-                    let path = file.path()?;
-
-                    if let Some(name) = path.to_str() {
-                        if name == ASSET {
-                            std::io::copy(&mut file, &mut new_release_executable_file)?;
-
-                            return Ok(true);
+                                return Ok(true);
+                            }
                         }
                     }
                 }
@@ -116,9 +111,9 @@ impl Release {
                 for file in archive.entries()? {
                     let mut file = file?;
 
-                    let path = file.path()?;
+                    let name = file.path()?.file_name();
 
-                    if let Some(name) = path.to_str() {
+                    if let Some(name) = name {
                         if name == ASSET {
                             std::io::copy(&mut file, &mut new_release_executable_file)?;
 
@@ -151,6 +146,11 @@ pub struct ReleaseAsset {
 }
 
 pub async fn get_latest_release() -> Result<Release> {
+    #[cfg(not(target_arch = "x86_64"))]
+    {
+        bail!("Automatic updates are only currently supported for x86_64 architectures.");
+    }
+
     info!("Checking for the latest release...");
 
     let client = create_download_client()?;
