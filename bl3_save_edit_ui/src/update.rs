@@ -111,9 +111,11 @@ impl Release {
                 for file in archive.entries()? {
                     let mut file = file?;
 
-                    let name = file.path()?.file_name();
+                    let path = file.path()?;
 
-                    if let Some(name) = name {
+                    let file_name = path.file_name();
+
+                    if let Some(name) = file_name {
                         if name == ASSET {
                             std::io::copy(&mut file, &mut new_release_executable_file)?;
 
