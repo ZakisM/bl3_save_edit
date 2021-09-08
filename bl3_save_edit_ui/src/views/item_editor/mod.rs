@@ -31,7 +31,6 @@ use crate::widgets::text_margin::TextMargin;
 
 pub mod available_parts;
 pub mod current_parts;
-pub mod delete_item_button_style;
 pub mod editor;
 pub mod extra_part_info;
 pub mod item_button_style;

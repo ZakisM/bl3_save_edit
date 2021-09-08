@@ -234,3 +234,77 @@ impl container::StyleSheet for Bl3UiTooltipStyle {
         }
     }
 }
+
+pub struct Bl3UiPositiveButtonStyle;
+
+impl button::StyleSheet for Bl3UiPositiveButtonStyle {
+    fn active(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(29, 54, 35).into()),
+            text_color: Color::from_rgb8(149, 240, 172),
+            border_radius: 1.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(36, 61, 42),
+            ..button::Style::default()
+        }
+    }
+
+    fn hovered(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(25, 54, 32).into()),
+            text_color: Color::from_rgb8(125, 240, 153),
+            border_radius: 1.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(41, 61, 46),
+            ..button::Style::default()
+        }
+    }
+
+    fn pressed(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(29, 54, 35).into()),
+            text_color: Color::from_rgb8(149, 240, 171),
+            border_radius: 1.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(36, 61, 42),
+            ..button::Style::default()
+        }
+    }
+}
+
+pub struct Bl3UiNegativeButtonStyle;
+
+impl button::StyleSheet for Bl3UiNegativeButtonStyle {
+    fn active(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(54, 29, 29).into()),
+            text_color: Color::from_rgb8(240, 149, 149),
+            border_radius: 1.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(61, 36, 36),
+            ..button::Style::default()
+        }
+    }
+
+    fn hovered(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(54, 25, 25).into()),
+            text_color: Color::from_rgb8(240, 125, 125),
+            border_radius: 1.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(61, 41, 41),
+            ..button::Style::default()
+        }
+    }
+
+    fn pressed(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(54, 29, 29).into()),
+            text_color: Color::from_rgb8(240, 149, 149),
+            border_radius: 1.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(61, 36, 36),
+            ..button::Style::default()
+        }
+    }
+}

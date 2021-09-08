@@ -48,7 +48,8 @@ jobs:
       - run: bash ci/build.bash cargo ${{ matrix.target }} RELEASE
       - run: |
           cd ./target/${{ matrix.target }}/release/
-          7z a "${{ env.BIN }}.zip" "${{ env.BIN }}.exe"
+          mv "${{ env.BIN }}.exe" "Bl3SaveEditor.exe"
+          7z a "${{ env.BIN }}.zip" "Bl3SaveEditor.exe"
           mv "${{ env.BIN }}.zip" $GITHUB_WORKSPACE
         shell: bash
         # We're using using a fork of `actions/create-release` that detects
@@ -71,7 +72,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.BIN }}.zip
-          asset_name: ${{ env.BIN }}-${{ matrix.target }}.zip
+          asset_name: Bl3SaveEditor-${{ matrix.target }}.zip
           asset_content_type: application/zip
 
   macos:
@@ -120,7 +121,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.BIN }}.tar.gz
-          asset_name: ${{ env.BIN }}-${{ matrix.target }}.tar.gz
+          asset_name: Bl3SaveEditor-${{ matrix.target }}.tar.gz
           asset_content_type: application/gzip
 
   linux:
@@ -169,5 +170,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.BIN }}.tar.gz
-          asset_name: ${{ env.BIN }}-${{ matrix.target }}.tar.gz
+          asset_name: bl3_save_edit-${{ matrix.target }}.tar.gz
           asset_content_type: application/gzip

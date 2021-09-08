@@ -16,9 +16,23 @@ use crate::VERSION;
 
 const RELEASES_API: &str = "https://api.github.com/repos/ZakisM/bl3_save_edit/releases";
 
-const LINUX_ASSET: &str = "bl3_save_edit_ui-x86_64-unknown-linux-gnu.tar.gz";
-const MAC_OS_ASSET: &str = "bl3_save_edit_ui-x86_64-apple-darwin.tar.gz";
-const WINDOWS_ASSET: &str = "bl3_save_edit_ui-x86_64-pc-windows-msvc.zip";
+#[cfg(target_os = "linux")]
+const ASSET_ARCHIVE: &str = "bl3_save_edit-x86_64-unknown-linux-gnu.tar.gz";
+
+#[cfg(target_os = "linux")]
+const ASSET: &str = "bl3_save_editor.AppImage";
+
+#[cfg(target_os = "macos")]
+const ASSET_ARCHIVE: &str = "Bl3SaveEditor-x86_64-apple-darwin.tar.gz";
+
+#[cfg(target_os = "macos")]
+const ASSET: &str = "Bl3SaveEditor.app/Contents/MacOS/bl3_save_edit_ui";
+
+#[cfg(target_os = "windows")]
+const ASSET_ARCHIVE: &str = "Bl3SaveEditor-x86_64-pc-windows-msvc.zip";
+
+#[cfg(target_os = "windows")]
+const ASSET: &str = "Bl3SaveEditor.exe";
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Release {
@@ -34,11 +48,16 @@ impl Release {
         client: &Client,
         new_release_executable_path: PathBuf,
     ) -> Result<()> {
+        #[cfg(not(target_arch = "x86_64"))]
+        {
+            bail!("Automatic updates are not supported for non x86_64 architectures currently");
+        }
+
         let asset = self
             .assets
             .iter()
             .find(|a| a.name == asset_name)
-            .context("Failed to find Linux Asset")?;
+            .with_context(|| format!("Failed to find Asset: {}", asset_name))?;
 
         let asset_bytes = client
             .get(&asset.browser_download_url)
@@ -55,41 +74,68 @@ impl Release {
         // First download the archive
         tokio::fs::write(&asset_path, asset_bytes).await?;
 
-        // #[cfg(target_os = "windows")]
-        // Unarchive zip
-
-        #[cfg(target_os = "linux")]
-        //Unarchive tar
         let asset_file = std::fs::File::open(&asset_path)?;
 
-        let res: Result<bool> = tokio::task::spawn_blocking(move || {
-            let mut archive = Archive::new(GzDecoder::new(asset_file));
+        #[cfg(target_os = "windows")]
+        // Unarchive zip
+        let res: Result<bool> = {
+            tokio::task::spawn_blocking(move || {
+                let mut archive = zip::ZipArchive::new(asset_file);
 
-            let mut new_release_executable_file =
-                std::fs::File::create(new_release_executable_path)?;
+                let mut new_release_executable_file =
+                    std::fs::File::create(new_release_executable_path)?;
 
-            for file in archive.entries()? {
-                let mut file = file?;
+                for file in archive.entries()? {
+                    let mut file = file?;
 
-                let path = file.path()?;
+                    let path = file.path()?;
 
-                if let Some(name) = path.to_str() {
-                    if name == "bl3_save_editor.AppImage" {
-                        std::io::copy(&mut file, &mut new_release_executable_file)?;
+                    if let Some(name) = path.to_str() {
+                        if name == ASSET {
+                            std::io::copy(&mut file, &mut new_release_executable_file)?;
 
-                        return Ok(true);
+                            return Ok(true);
+                        }
                     }
                 }
-            }
 
-            Ok(false)
-        })
-        .await?;
+                Ok(false)
+            })
+            .await?
+        };
+
+        #[cfg(not(target_os = "windows"))]
+        //Unarchive tarball
+        let res: Result<bool> = {
+            tokio::task::spawn_blocking(move || {
+                let mut archive = Archive::new(GzDecoder::new(asset_file));
+
+                let mut new_release_executable_file =
+                    std::fs::File::create(new_release_executable_path)?;
+
+                for file in archive.entries()? {
+                    let mut file = file?;
+
+                    let path = file.path()?;
+
+                    if let Some(name) = path.to_str() {
+                        if name == ASSET {
+                            std::io::copy(&mut file, &mut new_release_executable_file)?;
+
+                            return Ok(true);
+                        }
+                    }
+                }
+
+                Ok(false)
+            })
+            .await?
+        };
 
         let res = res?;
 
         if res {
-            tokio::fs::remove_file(asset_path).await?;
+            tokio::task::spawn_blocking(move || remove_file(asset_path)).await??;
 
             Ok(())
         } else {
@@ -128,12 +174,12 @@ pub async fn get_latest_release() -> Result<Release> {
 
     info!("Found a new release: {}.", latest_release.tag_name);
 
-    download_release_to_temp_dir(latest_release.clone()).await?;
-
     Ok(latest_release)
 }
 
-pub async fn download_release_to_temp_dir(release: Release) -> Result<()> {
+pub async fn download_release(release: Release) -> Result<()> {
+    info!("Downloading release: {}", release.tag_name);
+
     let binary_name = "bl3_save_edit_ui";
 
     #[cfg(not(target_os = "linux"))]
@@ -156,30 +202,13 @@ pub async fn download_release_to_temp_dir(release: Release) -> Result<()> {
 
     let client = create_download_client()?;
 
-    #[cfg(target_os = "linux")]
-    {
-        release
-            .download_asset(
-                LINUX_ASSET,
-                &client,
-                new_release_executable_path.to_path_buf(),
-            )
-            .await?;
-    }
-
-    #[cfg(target_os = "macos")]
-    {
-        release
-            .download_asset(MAC_OS_ASSET, &client, &new_release_executable_path)
-            .await?;
-    }
-
-    #[cfg(target_os = "windows")]
-    {
-        release
-            .download_asset(WINDOWS_ASSET, &client, &new_release_executable_path)
-            .await?;
-    }
+    release
+        .download_asset(
+            ASSET_ARCHIVE,
+            &client,
+            new_release_executable_path.to_path_buf(),
+        )
+        .await?;
 
     #[cfg(not(target_os = "windows"))]
     {
@@ -191,16 +220,24 @@ pub async fn download_release_to_temp_dir(release: Release) -> Result<()> {
         tokio::fs::set_permissions(&new_release_executable_path, permissions).await?;
     }
 
-    rename(&current_executable_path, &current_executable_temp_path)?;
-    rename(&new_release_executable_path, &current_executable_path)?;
+    let current_executable_path_clone = current_executable_path.clone();
+    let current_executable_temp_path_clone = current_executable_temp_path.clone();
 
-    std::process::Command::new(current_executable_path)
+    let _: Result<()> = tokio::task::spawn_blocking(move || {
+        rename(&current_executable_path, &current_executable_temp_path)?;
+        rename(&new_release_executable_path, &current_executable_path)?;
+
+        Ok(())
+    })
+    .await?;
+
+    std::process::Command::new(current_executable_path_clone)
         .spawn()
         .context("Failed to start newly downloaded application")?;
 
-    tokio::fs::remove_file(current_executable_temp_path).await?;
+    tokio::task::spawn_blocking(move || remove_file(&current_executable_temp_path_clone)).await??;
 
-    std::process::exit(0);
+    Ok(())
 }
 
 pub fn create_download_client() -> Result<Client> {
@@ -233,6 +270,31 @@ where
     retry(
         Fibonacci::from_millis(1).take(21),
         || match std::fs::rename(from, to) {
+            Ok(_) => OperationResult::Ok(()),
+            Err(e) => match e.kind() {
+                std::io::ErrorKind::PermissionDenied => OperationResult::Retry(e),
+                _ => OperationResult::Err(e),
+            },
+        },
+    )
+    .map_err(|e| match e {
+        RetryError::Operation { error, .. } => error,
+        RetryError::Internal(message) => std::io::Error::new(std::io::ErrorKind::Other, message),
+    })
+}
+
+pub fn remove_file<P>(path: P) -> std::io::Result<()>
+where
+    P: AsRef<Path>,
+{
+    // 21 Fibonacci steps starting at 1 ms is ~28 seconds total
+    // See https://github.com/rust-lang/rustup/pull/1873 where this was used by Rustup to work around
+    // virus scanning file locks
+    let path = path.as_ref();
+
+    retry(
+        Fibonacci::from_millis(1).take(21),
+        || match std::fs::remove_file(path) {
             Ok(_) => OperationResult::Ok(()),
             Err(e) => match e.kind() {
                 std::io::ErrorKind::PermissionDenied => OperationResult::Retry(e),
