@@ -186,7 +186,7 @@ dependencies = [
 
 [[package]]
 name = "bl3_save_edit_ui"
-version = "0.0.9"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "bl3_save_edit_core",
@@ -201,6 +201,7 @@ dependencies = [
  "native-dialog 0.4.4",
  "native-dialog 0.5.5",
  "open",
+ "pico-args 0.4.2",
  "rayon",
  "reqwest",
  "retry",
@@ -2242,6 +2243,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "28b9b4df73455c861d7cbf8be42f01d3b373ed7f02e378d55fa84eafc6f638b1"
 
 [[package]]
+name = "pico-args"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "db8bcd96cb740d03149cbad5518db9fd87126a10ab519c011893b1754134c468"
+
+[[package]]
 name = "pin-project-lite"
 version = "0.2.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2596,7 +2603,7 @@ checksum = "6989baba2fe2d85b0daaea5e897ba842c42bd7bff59cb0c5fb099bdcead70421"
 dependencies = [
  "jpeg-decoder",
  "log",
- "pico-args",
+ "pico-args 0.3.4",
  "png",
  "rgb",
  "svgfilters",
@@ -3414,7 +3421,7 @@ dependencies = [
  "kurbo",
  "log",
  "memmap2 0.1.0",
- "pico-args",
+ "pico-args 0.3.4",
  "rctree",
  "roxmltree",
  "rustybuzz",

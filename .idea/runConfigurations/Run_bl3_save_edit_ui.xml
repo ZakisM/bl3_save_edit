@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run bl3_save_edit_ui" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-    <option name="command" value="run --package bl3_save_edit_ui --bin bl3_save_edit_ui" />
+    <option name="command" value="run --package bl3_save_edit_ui --bin bl3_save_edit_ui -- --cleanup_previous_path=" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$" />
     <option name="channel" value="DEFAULT" />
     <option name="requiredFeatures" value="true" />
