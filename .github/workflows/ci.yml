@@ -7,6 +7,9 @@ on:
       - '.github/**'
     branches: [ master ]
 
+env:
+  RUST_TEST_THREADS: 1
+
 jobs:
   # This job downloads and stores `cross` as an artifact, so that it can be
   # redownloaded across all of the jobs. Currently this copied pasted between
