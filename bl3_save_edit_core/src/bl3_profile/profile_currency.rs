@@ -20,6 +20,10 @@ pub enum ProfileCurrency {
         to_string = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard1Key"
     )]
     VaultCardOneId,
+    #[strum(
+        to_string = "/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard2Key"
+    )]
+    VaultCardTwoId,
 }
 
 impl ProfileCurrency {

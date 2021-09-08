@@ -4,7 +4,7 @@ use once_cell::sync::Lazy;
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
 
-use crate::bl3_save::bl3_item::{BalancePart, InvDataPart, ManufacturerPart};
+use crate::bl3_item::{BalancePart, InvDataPart, ManufacturerPart};
 use crate::models::inventory_serial_db::InventorySerialDb;
 
 type InventoryPartsAll = HashMap<String, ResourceItem>;

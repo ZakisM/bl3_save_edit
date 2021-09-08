@@ -1,3 +1,4 @@
+pub mod bl3_item;
 pub mod bl3_profile;
 pub mod bl3_save;
 pub mod error;

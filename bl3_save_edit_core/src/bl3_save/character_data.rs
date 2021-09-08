@@ -6,8 +6,8 @@ use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 use strum::{EnumMessage, IntoEnumIterator};
 
+use crate::bl3_item::Bl3Item;
 use crate::bl3_save::ammo::{AmmoPool, AmmoPoolData};
-use crate::bl3_save::bl3_item::Bl3Item;
 use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};

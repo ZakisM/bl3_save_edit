@@ -280,11 +280,6 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
         .push(sdu_unlocker)
         .spacing(20);
 
-    //TODO:
-    // Set .invbal_ when setting the skin inside save
-    // /game/playercharacters/_customizations/beastmaster/heads/customhead_beastmaster_4.customhead_beastmaster_4
-    // /game/playercharacters/_customizations/beastmaster/heads/customhead_beastmaster_4.invbal_customhead_beastmaster_4
-
     let all_contents = Column::new()
         .push(name_class_row)
         .push(xp_row)

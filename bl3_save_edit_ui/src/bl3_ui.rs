@@ -697,14 +697,6 @@ impl Application for Bl3Application {
                             }
                             ManageProfileInteractionMessage::Profile(profile_msg) => {
                                 match profile_msg {
-                                    ProfileProfileInteractionMessage::GuardianRank(
-                                        guardian_rank,
-                                    ) => {
-                                        self.manage_profile_state
-                                            .profile_view_state
-                                            .profile_state
-                                            .guardian_rank_input = guardian_rank;
-                                    }
                                     ProfileProfileInteractionMessage::GuardianRankTokens(
                                         guardian_rank_tokens,
                                     ) => {
@@ -823,6 +815,16 @@ impl Application for Bl3Application {
                                     ) => {
                                         keys_state.vault_card_1_chests_input = vault_card_1_chests;
                                     }
+                                    ProfileKeysInteractionMessage::VaultCard2Keys(
+                                        vault_card_2_keys,
+                                    ) => {
+                                        keys_state.vault_card_2_keys_input = vault_card_2_keys;
+                                    }
+                                    ProfileKeysInteractionMessage::VaultCard2Chests(
+                                        vault_card_2_chests,
+                                    ) => {
+                                        keys_state.vault_card_2_chests_input = vault_card_2_chests;
+                                    }
                                     ProfileKeysInteractionMessage::MaxGoldenKeysPressed => {
                                         keys_state.golden_keys_input = i32::MAX;
                                     }
@@ -834,6 +836,12 @@ impl Application for Bl3Application {
                                     }
                                     ProfileKeysInteractionMessage::MaxVaultCard1ChestsPressed => {
                                         keys_state.vault_card_1_chests_input = i32::MAX;
+                                    }
+                                    ProfileKeysInteractionMessage::MaxVaultCard2KeysPressed => {
+                                        keys_state.vault_card_2_keys_input = i32::MAX;
+                                    }
+                                    ProfileKeysInteractionMessage::MaxVaultCard2ChestsPressed => {
+                                        keys_state.vault_card_2_chests_input = i32::MAX;
                                     }
                                 }
                             }

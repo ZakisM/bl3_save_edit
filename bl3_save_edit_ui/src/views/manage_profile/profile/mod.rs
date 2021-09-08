@@ -17,8 +17,6 @@ pub mod skin_unlocker;
 
 #[derive(Debug, Default)]
 pub struct ProfileState {
-    pub guardian_rank_input: i32,
-    pub guardian_rank_input_state: text_input::State,
     pub guardian_rank_tokens_input: i32,
     pub guardian_rank_tokens_input_state: text_input::State,
     pub science_level_selector: pick_list::State<BorderlandsScienceLevel>,
@@ -31,7 +29,6 @@ pub struct ProfileState {
 
 #[derive(Debug, Clone)]
 pub enum ProfileProfileInteractionMessage {
-    GuardianRank(i32),
     GuardianRankTokens(i32),
     ScienceLevelSelected(BorderlandsScienceLevel),
     ScienceTokens(i32),
@@ -58,37 +55,6 @@ pub enum ProfileSduMessage {
 }
 
 pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
-    let guardian_rank = Container::new(
-        LabelledElement::create(
-            "Guardian Rank",
-            Length::Units(215),
-            NumberInput::new(
-                &mut profile_state.guardian_rank_input_state,
-                profile_state.guardian_rank_input,
-                0,
-                None,
-                |v| {
-                    InteractionMessage::ManageProfileInteraction(
-                        ManageProfileInteractionMessage::Profile(
-                            ProfileProfileInteractionMessage::GuardianRank(v),
-                        ),
-                    )
-                },
-            )
-            .0
-            .font(JETBRAINS_MONO)
-            .padding(10)
-            .size(17)
-            .style(Bl3UiStyle)
-            .into_element(),
-        )
-        .spacing(15)
-        .align_items(Align::Center),
-    )
-    .width(Length::Fill)
-    .height(Length::Units(36))
-    .style(Bl3UiStyle);
-
     let guardian_rank_tokens = Container::new(
         LabelledElement::create(
             "Guardian Rank Tokens",
@@ -202,7 +168,6 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
         .spacing(20);
 
     let all_contents = Column::new()
-        .push(guardian_rank)
         .push(guardian_rank_tokens)
         .push(borderlands_science_row)
         .push(skin_sdu_row)

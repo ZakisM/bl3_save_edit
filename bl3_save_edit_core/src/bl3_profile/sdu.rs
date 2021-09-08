@@ -23,7 +23,7 @@ pub enum ProfileSduSlot {
 impl ProfileSduSlot {
     pub fn maximum(&self) -> i32 {
         match self {
-            ProfileSduSlot::Bank => 23,
+            ProfileSduSlot::Bank => 28,
             ProfileSduSlot::LostLoot => 10,
         }
     }
