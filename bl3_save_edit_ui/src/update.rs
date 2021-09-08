@@ -6,7 +6,7 @@ use reqwest::{Client, ClientBuilder};
 use retry::delay::Fibonacci;
 use retry::{retry, Error as RetryError, OperationResult};
 use serde::Deserialize;
-use tracing::info;
+use tracing::{error, info};
 use version_compare::Version;
 #[cfg(target_os = "windows")]
 use zip::ZipArchive;
@@ -302,11 +302,11 @@ where
         Fibonacci::from_millis(1).take(21),
         || match std::fs::remove_file(path) {
             Ok(_) => {
-                println!("Successfully removed file");
+                info!("Successfully removed file");
                 OperationResult::Ok(())
             }
             Err(e) => {
-                eprintln!("Failed to remove file: {}", e);
+                error!("Failed to remove file: {}", e);
 
                 match e.kind() {
                     std::io::ErrorKind::PermissionDenied => OperationResult::Retry(e),
