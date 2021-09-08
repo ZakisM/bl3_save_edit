@@ -15,6 +15,7 @@ mod commands;
 mod config;
 mod resources;
 mod state_mappers;
+mod update;
 mod views;
 mod widgets;
 

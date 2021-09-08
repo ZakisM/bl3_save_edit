@@ -16,12 +16,15 @@ use bl3_save_edit_core::bl3_save::Bl3Save;
 use bl3_save_edit_core::file_helper::Bl3FileType;
 use bl3_save_edit_core::parser::HeaderType;
 
-use crate::bl3_ui_style::{Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiStyle, Bl3UiTooltipStyle};
+use crate::bl3_ui_style::{
+    Bl3UiContentStyle, Bl3UiMenuBarStyle, Bl3UiPositiveButtonStyle, Bl3UiStyle, Bl3UiTooltipStyle,
+};
 use crate::commands::{initialization, interaction};
 use crate::config::{Bl3Config, ConfigMessage};
-use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD, OSWALD_MEDIUM};
+use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD, JETBRAINS_MONO_NL_EXTRA_BOLD};
 use crate::resources::svgs::REFRESH;
 use crate::state_mappers::{manage_profile, manage_save};
+use crate::update::Release;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -50,7 +53,7 @@ use crate::views::manage_save::{
 };
 use crate::views::InteractionExt;
 use crate::widgets::notification::{Notification, NotificationSentiment};
-use crate::{state_mappers, views, VERSION};
+use crate::{state_mappers, update, views, VERSION};
 
 #[derive(Debug, Default)]
 pub struct Bl3Application {
@@ -65,13 +68,19 @@ pub struct Bl3Application {
     backups_button_state: button::State,
     change_dir_button_state: button::State,
     refresh_button_state: button::State,
+    update_button_state: button::State,
     save_file_button_state: button::State,
     notification: Option<Notification>,
+    latest_release: Option<Release>,
+    is_updating: bool,
 }
 
 #[derive(Debug, Clone)]
 pub enum Bl3Message {
     Initialization(InitializationMessage),
+    LatestRelease(MessageResult<Release>),
+    UpdateToLatestRelease,
+    UpdateToLatestReleaseCompleted(MessageResult<()>),
     Config(ConfigMessage),
     Interaction(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
@@ -129,15 +138,22 @@ impl Application for Bl3Application {
     type Flags = Bl3Config;
 
     fn new(config: Self::Flags) -> (Self, Command<Self::Message>) {
+        let startup_commands = [
+            Command::perform(initialization::load_lazy_data(), |_| {
+                Bl3Message::Initialization(InitializationMessage::LazyData)
+            }),
+            Command::perform(update::get_latest_release(), |r| {
+                Bl3Message::LatestRelease(MessageResult::handle_result(r))
+            }),
+        ];
+
         (
             Bl3Application {
                 config,
                 view_state: ViewState::Initializing,
                 ..Bl3Application::default()
             },
-            Command::perform(initialization::load_lazy_data(), |_| {
-                Bl3Message::Initialization(InitializationMessage::LazyData)
-            }),
+            Command::batch(startup_commands),
         )
     }
 
@@ -174,6 +190,49 @@ impl Application for Bl3Application {
                     self.view_state = ViewState::ChooseSaveDirectory;
                 }
             },
+            Bl3Message::LatestRelease(res) => match res {
+                MessageResult::Success(r) => {
+                    self.latest_release = Some(r);
+                }
+                MessageResult::Error(e) => {
+                    error!("Failed to get latest update: {}", e);
+                }
+            },
+            Bl3Message::UpdateToLatestRelease => {
+                if let Some(latest_release) = &self.latest_release {
+                    self.is_updating = true;
+
+                    return Command::perform(
+                        update::download_release(latest_release.clone()),
+                        |r| {
+                            Bl3Message::UpdateToLatestReleaseCompleted(
+                                MessageResult::handle_result(r),
+                            )
+                        },
+                    );
+                } else {
+                    error!("Expected latest release to not be None when updating.");
+                }
+            }
+            Bl3Message::UpdateToLatestReleaseCompleted(res) => {
+                self.is_updating = false;
+
+                match res {
+                    MessageResult::Success(_) => {
+                        info!("Successfully updated, exiting older version");
+
+                        std::process::exit(0);
+                    }
+                    MessageResult::Error(e) => {
+                        let msg = format!("Failed to update to latest release: {}.", e);
+
+                        error!("{}", msg);
+
+                        self.notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    }
+                }
+            }
             Bl3Message::Config(config_msg) => match config_msg {
                 ConfigMessage::SaveCompleted(res) => match res {
                     MessageResult::Success(_) => info!("Successfully saved config."),
@@ -1087,8 +1146,8 @@ impl Application for Bl3Application {
 
     fn view(&mut self) -> Element<'_, Self::Message> {
         let title = Text::new("Borderlands 3 Save Editor".to_uppercase())
-            .font(OSWALD_MEDIUM)
-            .size(48)
+            .font(JETBRAINS_MONO_NL_EXTRA_BOLD)
+            .size(40)
             .color(Color::from_rgb8(242, 203, 5))
             .width(Length::Fill)
             .horizontal_alignment(HorizontalAlignment::Left);
@@ -1179,18 +1238,53 @@ impl Application for Bl3Application {
             ));
         }
 
-        let mut menu_bar_content = Row::new()
+        let mut menu_bar_editor_content = Row::new()
             .push(title)
             .spacing(15)
             .align_items(Align::Center);
 
         if view_state_discrim == manage_save_discrim || view_state_discrim == manage_profile_discrim
         {
-            menu_bar_content = menu_bar_content.push(backups_button);
-            menu_bar_content = menu_bar_content.push(change_dir_button.into_element());
-            menu_bar_content = menu_bar_content.push(refresh_button);
-            menu_bar_content = menu_bar_content.push(all_saves_picklist);
-            menu_bar_content = menu_bar_content.push(save_button.into_element());
+            menu_bar_editor_content = menu_bar_editor_content.push(backups_button);
+            menu_bar_editor_content =
+                menu_bar_editor_content.push(change_dir_button.into_element());
+            menu_bar_editor_content = menu_bar_editor_content.push(refresh_button);
+            menu_bar_editor_content = menu_bar_editor_content.push(all_saves_picklist);
+            menu_bar_editor_content = menu_bar_editor_content.push(save_button.into_element());
+        }
+
+        let mut menu_bar_content = Column::new().push(menu_bar_editor_content).spacing(10);
+
+        if let Some(latest_release) = &self.latest_release {
+            let mut update_button = Button::new(
+                &mut self.update_button_state,
+                Text::new(match self.is_updating {
+                    true => "Updating...".to_string(),
+                    false => format!(
+                        "Click here to update to version: {}",
+                        latest_release.tag_name
+                    ),
+                })
+                .font(JETBRAINS_MONO_BOLD)
+                .size(17),
+            )
+            .padding(10)
+            .style(Bl3UiPositiveButtonStyle);
+
+            if !self.is_updating {
+                update_button = update_button.on_press(Bl3Message::UpdateToLatestRelease);
+            }
+
+            let update_content = Container::new(
+                Row::new()
+                    .push(update_button)
+                    .spacing(10)
+                    .align_items(Align::Center),
+            )
+            .width(Length::Fill)
+            .align_x(Align::Start);
+
+            menu_bar_content = menu_bar_content.push(update_content);
         }
 
         let menu_bar = Container::new(menu_bar_content)

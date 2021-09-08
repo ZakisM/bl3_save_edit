@@ -10,11 +10,10 @@ use bl3_save_edit_core::resources::{
 };
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
-use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
+use crate::bl3_ui_style::{Bl3UiNegativeButtonStyle, Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::available_parts::AvailableParts;
 use crate::views::item_editor::current_parts::CurrentParts;
-use crate::views::item_editor::delete_item_button_style::DeleteItemButtonStyle;
 use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
 use crate::views::InteractionExt;
@@ -144,7 +143,7 @@ impl Editor {
                     ItemEditorInteractionMessage::DeleteItem(item_id),
                 ))
                 .padding(10)
-                .style(DeleteItemButtonStyle)
+                .style(Bl3UiNegativeButtonStyle)
                 .into_element(),
             )
             .spacing(20);
