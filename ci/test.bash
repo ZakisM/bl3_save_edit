@@ -14,5 +14,5 @@ required_arg $TARGET_TRIPLE '<Target Triple>'
 
 export RUST_TEST_THREADS=1
 
-$CROSS test --target $TARGET_TRIPLE --
-$CROSS test --target $TARGET_TRIPLE --all-features --
+$CROSS test --target $TARGET_TRIPLE
+$CROSS test --target $TARGET_TRIPLE --all-features
