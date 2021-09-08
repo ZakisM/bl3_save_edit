@@ -12,5 +12,5 @@ TARGET_TRIPLE=$2
 required_arg $CROSS 'CROSS'
 required_arg $TARGET_TRIPLE '<Target Triple>'
 
-$CROSS test --test-threads=1 --target $TARGET_TRIPLE
-$CROSS test --test-threads=1 --target $TARGET_TRIPLE --all-features
+$CROSS test --target $TARGET_TRIPLE -- --test-threads=1
+$CROSS test --target $TARGET_TRIPLE --all-features -- --test-threads=1
