@@ -9,11 +9,6 @@ pub fn map_profile_to_profile_state(manage_profile_state: &mut ManageProfileStat
     manage_profile_state
         .profile_view_state
         .profile_state
-        .guardian_rank_input = profile.profile_data.guardian_rank();
-
-    manage_profile_state
-        .profile_view_state
-        .profile_state
         .guardian_rank_tokens_input = profile.profile_data.guardian_rank_tokens();
 
     manage_profile_state
@@ -86,11 +81,6 @@ pub fn map_profile_state_to_profile(
     profile: &mut Bl3Profile,
 ) {
     let profile_state = &manage_profile_state.profile_view_state.profile_state;
-
-    profile.profile_data.set_guardian_rank(
-        profile_state.guardian_rank_input,
-        Some(profile_state.guardian_rank_tokens_input),
-    );
 
     profile
         .profile_data

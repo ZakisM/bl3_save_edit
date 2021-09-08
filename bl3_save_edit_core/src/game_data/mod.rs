@@ -1080,7 +1080,7 @@ pub const MISSION: [GameDataKv; 208] = [
     GameDataKv { ident: "/Game/PatchDLC/Takedown2/Missions/Side/Mission_Takedown2_Intro", name: "Discovery: Takedown at the Guardian Breach" },
 ];
 
-pub const PROFILE_ROOM_DECORATIONS: [GameDataKv; 97] = [
+pub const PROFILE_ROOM_DECORATIONS: [GameDataKv; 99] = [
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/RoomDeco/RoomDeco_DLC4_01_Orbs.RoomDeco_DLC4_01_Orbs", name: "Memory Orbs" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/RoomDeco/RoomDeco_DLC4_02_Trophy.RoomDeco_DLC4_02_Trophy", name: "Psychoreaver Trophy" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/RoomDeco/RoomDeco_DLC4_03_Axe.RoomDeco_DLC4_03_Axe", name: "Golden Buzz-axe" },
@@ -1117,6 +1117,8 @@ pub const PROFILE_ROOM_DECORATIONS: [GameDataKv; 97] = [
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/RoomDeco/RoomDecoration_VC1_1.RoomDecoration_VC1_1", name: "Roland and Tina Photo" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/RoomDeco/RoomDecoration_VC1_2.RoomDecoration_VC1_2", name: "Maya's Book" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/RoomDeco/RoomDecoration_VC1_3.RoomDecoration_VC1_3", name: "Bloodwing Statue" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/RoomDeco/RoomDecoration_VC2_1.RoomDecoration_VC2_1", name: "Dead Fish" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/RoomDeco/RoomDecoration_VC2_2.RoomDecoration_VC2_2", name: "Fyrestone" },
     GameDataKv { ident: "/Game/Pickups/RoomDecoration/RoomDecoration_10.RoomDecoration_10", name: "Skag Skull" },
     GameDataKv { ident: "/Game/Pickups/RoomDecoration/RoomDecoration_11.RoomDecoration_11", name: "Life Preserver" },
     GameDataKv { ident: "/Game/Pickups/RoomDecoration/RoomDecoration_12.RoomDecoration_12", name: "Bug Zapper" },
@@ -1180,7 +1182,7 @@ pub const PROFILE_ROOM_DECORATIONS: [GameDataKv; 97] = [
     GameDataKv { ident: "/Game/Pickups/RoomDecoration/RoomDecoration_9.RoomDecoration_9", name: "Dynasty Diner" },
 ];
 
-pub const PROFILE_WEAPON_SKINS: [GameDataKv; 31] = [
+pub const PROFILE_WEAPON_SKINS: [GameDataKv; 32] = [
     GameDataKv { ident: "/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_1.WeaponSkin_1", name: "Burnished Steele" },
     GameDataKv { ident: "/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_10.WeaponSkin_10", name: "Ink and Kill" },
     GameDataKv { ident: "/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_11.WeaponSkin_11", name: "It's Poop!" },
@@ -1212,9 +1214,10 @@ pub const PROFILE_WEAPON_SKINS: [GameDataKv; 31] = [
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/WeaponSkin/WeaponSkin_VC1_1.WeaponSkin_VC1_1", name: "Phaselocked and Loaded" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/WeaponSkin/WeaponSkin_VC1_2.WeaponSkin_VC1_2", name: "Scoot and Loot" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/WeaponSkin/WeaponSkin_VC1_3.WeaponSkin_VC1_3", name: "Runic Relic" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Gear/_Design/WeaponSkins/WeaponSkin_VC2_1.WeaponSkin_VC2_1", name: "Homecoming" },
 ];
 
-pub const PROFILE_WEAPON_TRINKETS: [GameDataKv; 76] = [
+pub const PROFILE_WEAPON_TRINKETS: [GameDataKv; 82] = [
     GameDataKv { ident: "/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_10.WeaponTrinket_10", name: "Super General Claptrap" },
     GameDataKv { ident: "/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_11.WeaponTrinket_11", name: "Keep Your Eye Out" },
     GameDataKv { ident: "/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_12.WeaponTrinket_12", name: "Ellie's Power Flower" },
@@ -1291,9 +1294,15 @@ pub const PROFILE_WEAPON_TRINKETS: [GameDataKv; 76] = [
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC1_2.WeaponTrinket_VC1_2", name: "Tinker's Trinket" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC1_3.WeaponTrinket_VC1_3", name: "Deploy and Destroy" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC1_4.WeaponTrinket_VC1_4", name: "De Leon's Lash" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_1.WeaponTrinket_VC2_1", name: "Tchotchkey" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_2.WeaponTrinket_VC2_2", name: "Shooter's Shuttle" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_3.WeaponTrinket_VC2_3", name: "Relaxtrap" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_4.WeaponTrinket_VC2_4", name: "Tiny Vault" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_5.WeaponTrinket_VC2_5", name: "Dry Heat" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_6.WeaponTrinket_VC2_6", name: "Warm Welcome" },
 ];
 
-pub const PROFILE_ECHO_THEMES: [GameDataKv; 67] = [
+pub const PROFILE_ECHO_THEMES: [GameDataKv; 72] = [
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_79.ECHOTheme_79", name: "Message from Beyond" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC4_01.ECHOTheme_DLC4_01", name: "Grapevine Hotline" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC4_02.ECHOTheme_DLC4_02", name: "Hotwire Handheld" },
@@ -1328,6 +1337,11 @@ pub const PROFILE_ECHO_THEMES: [GameDataKv; 67] = [
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/EchoDevice/ECHOTheme_VC1_2.ECHOTheme_VC1_2", name: "Call A Ride" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/EchoDevice/ECHOTheme_VC1_3.ECHOTheme_VC1_3", name: "ECHO From Beyond" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/EchoDevice/ECHOTheme_VC1_4.ECHOTheme_VC1_4", name: "Glyphed Up the Receiver" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_1.ECHOTheme_VC2_1", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_2.ECHOTheme_VC2_2", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_3.ECHOTheme_VC2_3", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_4.ECHOTheme_VC2_4", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_5.ECHOTheme_VC2_5", name: "Unknown" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_01.ECHOTheme_01", name: "Potato Phone" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_02.ECHOTheme_02", name: "Power Surge" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_03.ECHOTheme_03", name: "Psychodelic" },
@@ -1368,7 +1382,7 @@ pub const PROFILE_ECHO_THEMES_DEFAULTS: [GameDataKv; 1] = [GameDataKv {
     name: "ECHO-3 Classic",
 }];
 
-pub const PROFILE_EMOTES: [GameDataKv; 64] = [
+pub const PROFILE_EMOTES: [GameDataKv; 72] = [
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/Emotes/Beastmaster/CustomEmote_Beastmaster_DLC4_01.CustomEmote_Beastmaster_DLC4_01", name: "Rage" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/Emotes/Beastmaster/CustomEmote_Beastmaster_DLC4_02.CustomEmote_Beastmaster_DLC4_02", name: "Mindblowing" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/Emotes/Gunner/CustomEmote_Gunner_DLC4_01.CustomEmote_Gunner_DLC4_01", name: "Rage" },
@@ -1409,6 +1423,14 @@ pub const PROFILE_EMOTES: [GameDataKv; 64] = [
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/Emotes/Operative/CustomEmote_Operative_VC1_2.CustomEmote_Operative_VC1_2", name: "Inflatable Dance" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/Emotes/SirenBrawler/CustomEmote_Siren_VC1_1.CustomEmote_Siren_VC1_1", name: "Happy Dance" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/Customizations/Emotes/SirenBrawler/CustomEmote_Siren_VC1_2.CustomEmote_Siren_VC1_2", name: "Inflatable Dance" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/Emotes/Beastmaster/CustomEmote_Beastmaster_VC2_1.CustomEmote_Beastmaster_VC2_1", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/Emotes/Beastmaster/CustomEmote_Beastmaster_VC2_2.CustomEmote_Beastmaster_VC2_2", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/Emotes/Gunner/CustomEmote_Gunner_VC2_1.CustomEmote_Gunner_VC2_1", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/Emotes/Gunner/CustomEmote_Gunner_VC2_2.CustomEmote_Gunner_VC2_2", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/Emotes/Operative/CustomEmote_Operative_VC2_1.CustomEmote_Operative_VC2_1", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/Emotes/Operative/CustomEmote_Operative_VC2_2.CustomEmote_Operative_VC2_2", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/Emotes/Siren/CustomEmote_Siren_VC2_1.CustomEmote_Siren_VC2_1", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/Customizations/Emotes/Siren/CustomEmote_Siren_VC2_2.CustomEmote_Siren_VC2_2", name: "Unknown" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Emotes/CustomEmote_Beastmaster_05_Heart.CustomEmote_Beastmaster_05_Heart", name: "Heart" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Emotes/CustomEmote_Beastmaster_06_FingerGuns.CustomEmote_Beastmaster_06_FingerGuns", name: "Finger Guns" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Emotes/CustomEmote_Beastmaster_09_RobotDance.CustomEmote_Beastmaster_09_RobotDance", name: "Robot Dance" },
@@ -1454,7 +1476,7 @@ pub const PROFILE_EMOTES_DEFAULTS: [GameDataKv; 16] = [
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/SirenBrawler/Emotes/CustomEmote_Siren_04_Laugh.CustomEmote_Siren_04_Laugh", name: "Laugh" },
 ];
 
-pub const PROFILE_HEADS: [GameDataKv; 164] = [
+pub const PROFILE_HEADS: [GameDataKv; 172] = [
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/_Shared/CustomHead_Beastmaster_DLC4_01.CustomHead_Beastmaster_DLC4_01", name: "Lumin4ry" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/_Shared/CustomHead_Gunner_DLC4_01.CustomHead_Gunner_DLC4_01", name: "Spark of Genius" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/_Shared/CustomHead_Operative_DLC4_01.CustomHead_Operative_DLC4_01", name: "Thinking Clearly" },
@@ -1527,6 +1549,14 @@ pub const PROFILE_HEADS: [GameDataKv; 164] = [
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/PlayerCharacters/_Shared/CustomHeads/CustomHead47/CustomHead_Gunner_47.CustomHead_Gunner_47", name: "Typhon's Legacy" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/PlayerCharacters/_Shared/CustomHeads/CustomHead47/CustomHead_Operative_47.CustomHead_Operative_47", name: "Crimson Operator" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/PlayerCharacters/_Shared/CustomHeads/CustomHead47/CustomHead_Siren_47.CustomHead_Siren_47", name: "Siren's Cowl" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomHeads/CustomHead_Beastmaster_49.CustomHead_Beastmaster_49", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomHeads/CustomHead_Gunner_49.CustomHead_Gunner_49", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomHeads/CustomHead_Operative_49.CustomHead_Operative_49", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomHeads/CustomHead_Siren_49.CustomHead_Siren_49", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/Beastmaster/Heads/DA_BMHead03.DA_BMHead03", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/Gunner/Heads/DA_GNRHead03.DA_GNRHead03", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/Operative/Heads/DA_OPHead03.DA_OPHead03", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/SirenBrawler/Heads/DA_SRNHead03.DA_SRNHead03", name: "Unknown" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Heads/CustomHead_Beastmaster_1.CustomHead_Beastmaster_1", name: "Simul4crum" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Heads/CustomHead_Beastmaster_10.CustomHead_Beastmaster_10", name: "Sh4man" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Heads/CustomHead_Beastmaster_11.CustomHead_Beastmaster_11", name: "M4nta Ray" },
@@ -1628,7 +1658,7 @@ pub const PROFILE_HEADS_DEFAULTS: [GameDataKv; 4] = [
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/SirenBrawler/Heads/CustomHead_Siren_Default.CustomHead_Siren_Default", name: "Amara" },
 ];
 
-pub const PROFILE_SKINS: [GameDataKv; 248] = [
+pub const PROFILE_SKINS: [GameDataKv; 264] = [
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/_Shared/CustomSkin_Beastmaster_DLC4_01.CustomSkin_Beastmaster_DLC4_01", name: "Spl4tter" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/_Shared/CustomSkin_Gunner_DLC4_01.CustomSkin_Gunner_DLC4_01", name: "Splatter" },
     GameDataKv { ident: "/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/_Shared/CustomSkin_Operative__DLC4_01.CustomSkin_Operative__DLC4_01", name: "Splatter" },
@@ -1717,6 +1747,22 @@ pub const PROFILE_SKINS: [GameDataKv; 248] = [
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/PlayerCharacters/_Shared/CustomSkin_Siren_68.CustomSkin_Siren_68", name: "Le Chandail de Roland" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/PlayerCharacters/_Shared/CustomSkin_Siren_69.CustomSkin_Siren_69", name: "Serene Siren" },
     GameDataKv { ident: "/Game/PatchDLC/VaultCard/PlayerCharacters/_Shared/CustomSkin_Siren_70.CustomSkin_Siren_70", name: "Step One" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Beastmaster_75.CustomSkin_Beastmaster_75", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Beastmaster_76.CustomSkin_Beastmaster_76", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Beastmaster_77.CustomSkin_Beastmaster_77", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Beastmaster_78.CustomSkin_Beastmaster_78", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Gunner_75.CustomSkin_Gunner_75", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Gunner_76.CustomSkin_Gunner_76", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Gunner_77.CustomSkin_Gunner_77", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Gunner_78.CustomSkin_Gunner_78", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Operative_75.CustomSkin_Operative_75", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Operative_76.CustomSkin_Operative_76", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Operative_77.CustomSkin_Operative_77", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Operative_78.CustomSkin_Operative_78", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Siren_75.CustomSkin_Siren_75", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Siren_76.CustomSkin_Siren_76", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Siren_77.CustomSkin_Siren_77", name: "Unknown" },
+    GameDataKv { ident: "/Game/PatchDLC/VaultCard2/PlayerCharacters/_Shared/CustomSkin_Siren_78.CustomSkin_Siren_78", name: "Unknown" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Skins/CustomSkin_Beastmaster_1.CustomSkin_Beastmaster_1", name: "Jungle Jams" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Skins/CustomSkin_Beastmaster_10.CustomSkin_Beastmaster_10", name: "Funk Off" },
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Skins/CustomSkin_Beastmaster_11.CustomSkin_Beastmaster_11", name: "Neon Dreams" },

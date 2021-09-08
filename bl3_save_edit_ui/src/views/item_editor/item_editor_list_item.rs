@@ -1,7 +1,7 @@
 use heck::TitleCase;
 use iced::{button, container, Button, Color, Column, Container, Element, Length, Row, Text};
 
-use bl3_save_edit_core::bl3_save::bl3_item::{Bl3Item, ItemRarity, ItemType};
+use bl3_save_edit_core::bl3_item::{Bl3Item, ItemRarity, ItemType};
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::resources::fonts::JETBRAINS_MONO;

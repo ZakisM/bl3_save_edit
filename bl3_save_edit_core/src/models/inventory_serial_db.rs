@@ -5,7 +5,7 @@ use anyhow::{bail, Context, Result};
 use json::JsonValue;
 use rayon::iter::{ParallelBridge, ParallelIterator};
 
-use crate::bl3_save::bl3_item::Bl3Part;
+use crate::bl3_item::Bl3Part;
 use crate::resources::INVENTORY_SERIAL_DB_JSON_COMPRESSED;
 
 pub struct InventorySerialDb {

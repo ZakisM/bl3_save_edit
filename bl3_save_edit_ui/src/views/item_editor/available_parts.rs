@@ -5,7 +5,7 @@ use iced::{
 use rayon::iter::ParallelIterator;
 use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator};
 
-use bl3_save_edit_core::bl3_save::bl3_item::Bl3Item;
+use bl3_save_edit_core::bl3_item::Bl3Item;
 use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart};
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};

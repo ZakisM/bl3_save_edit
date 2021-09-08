@@ -1,12 +1,14 @@
+name: Mean Bean Deploy
+
 on:
   push:
     # Sequence of patterns matched against refs/tags
     tags:
       - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
 
-name: Mean Bean Deploy
 env:
   BIN: bl3_save_edit_ui
+  RUST_TEST_THREADS: 1
 
 jobs:
   # This job downloads and stores `cross` as an artifact, so that it can be

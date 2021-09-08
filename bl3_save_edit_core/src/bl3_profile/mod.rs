@@ -309,12 +309,12 @@ mod tests {
                 ProfileSduSlotData {
                     slot: ProfileSduSlot::Bank,
                     current: 23,
-                    max: 23,
+                    max: ProfileSduSlot::Bank.maximum(),
                 },
                 ProfileSduSlotData {
                     slot: ProfileSduSlot::LostLoot,
                     current: 8,
-                    max: 10,
+                    max: ProfileSduSlot::LostLoot.maximum(),
                 },
             ]
         );
@@ -367,12 +367,12 @@ mod tests {
                 ProfileSduSlotData {
                     slot: ProfileSduSlot::Bank,
                     current: 8,
-                    max: 23,
+                    max: ProfileSduSlot::Bank.maximum(),
                 },
                 ProfileSduSlotData {
                     slot: ProfileSduSlot::LostLoot,
                     current: 8,
-                    max: 10,
+                    max: ProfileSduSlot::LostLoot.maximum(),
                 },
             ]
         );
@@ -425,12 +425,12 @@ mod tests {
                 ProfileSduSlotData {
                     slot: ProfileSduSlot::Bank,
                     current: 23,
-                    max: 23,
+                    max: ProfileSduSlot::Bank.maximum(),
                 },
                 ProfileSduSlotData {
                     slot: ProfileSduSlot::LostLoot,
                     current: 8,
-                    max: 10,
+                    max: ProfileSduSlot::LostLoot.maximum(),
                 },
             ]
         );

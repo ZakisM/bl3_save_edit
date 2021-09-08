@@ -7,11 +7,11 @@ use iced::{
     Length, Row, Scrollable, Text, TextInput, Tooltip,
 };
 
-use bl3_save_edit_core::bl3_profile::Bl3Profile;
-use bl3_save_edit_core::bl3_save::bl3_item::{
+use bl3_save_edit_core::bl3_item::{
     BalancePart, Bl3Item, InvDataPart, ManufacturerPart, MAX_BL3_ITEM_ANOINTMENTS,
     MAX_BL3_ITEM_PARTS,
 };
+use bl3_save_edit_core::bl3_profile::Bl3Profile;
 use bl3_save_edit_core::bl3_save::Bl3Save;
 use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
 

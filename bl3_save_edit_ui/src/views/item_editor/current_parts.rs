@@ -5,7 +5,7 @@ use iced::{
     Text,
 };
 
-use bl3_save_edit_core::bl3_save::bl3_item::{
+use bl3_save_edit_core::bl3_item::{
     Bl3Item, Bl3Part, MAX_BL3_ITEM_ANOINTMENTS, MAX_BL3_ITEM_PARTS,
 };
 use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart, ResourcePartInfo};

@@ -7,12 +7,12 @@ use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 use strum::{EnumMessage, IntoEnumIterator};
 
+use crate::bl3_item::Bl3Item;
 use crate::bl3_profile::profile_currency::ProfileCurrency;
 use crate::bl3_profile::science_levels::{BorderlandsScienceInfo, BorderlandsScienceLevel};
 use crate::bl3_profile::sdu::{ProfileSduSlot, ProfileSduSlotData};
 use crate::bl3_profile::skins::{ProfileSkinType, SkinSet, WeaponSkinSet};
 use crate::bl3_profile::util::get_checksum_hash;
-use crate::bl3_save::bl3_item::Bl3Item;
 use crate::game_data::{
     PROFILE_ECHO_THEMES, PROFILE_ECHO_THEMES_DEFAULTS, PROFILE_EMOTES, PROFILE_EMOTES_DEFAULTS,
     PROFILE_HEADS, PROFILE_HEADS_DEFAULTS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS,
@@ -34,6 +34,8 @@ pub struct ProfileData {
     diamond_keys: i32,
     vault_card_1_keys: i32,
     vault_card_1_chests: i32,
+    vault_card_2_keys: i32,
+    vault_card_2_chests: i32,
     guardian_rank: i32,
     guardian_rank_tokens: i32,
     borderlands_science_info: BorderlandsScienceInfo,
@@ -68,6 +70,21 @@ impl ProfileData {
                 vc.vault_card_claimed_rewards
                     .par_iter()
                     .find_first(|v| v.vault_card_id == 1)
+                    .map(|v| v.vault_card_chests)
+            })
+            .unwrap_or(0);
+
+        let vault_card_2_keys = ProfileCurrency::VaultCardTwoId
+            .get_profile_currency(&profile.bank_inventory_category_list)
+            .unwrap_or(0);
+
+        let vault_card_2_chests = profile
+            .vault_card
+            .as_ref()
+            .and_then(|vc| {
+                vc.vault_card_claimed_rewards
+                    .par_iter()
+                    .find_first(|v| v.vault_card_id == 2)
                     .map(|v| v.vault_card_chests)
             })
             .unwrap_or(0);
@@ -207,6 +224,8 @@ impl ProfileData {
             diamond_keys,
             vault_card_1_keys,
             vault_card_1_chests,
+            vault_card_2_keys,
+            vault_card_2_chests,
             guardian_rank,
             guardian_rank_tokens,
             borderlands_science_info,
@@ -237,6 +256,13 @@ impl ProfileData {
 
     pub fn vault_card_1_chests(&self) -> i32 {
         self.vault_card_1_chests
+    }
+    pub fn vault_card_2_keys(&self) -> i32 {
+        self.vault_card_2_keys
+    }
+
+    pub fn vault_card_2_chests(&self) -> i32 {
+        self.vault_card_2_chests
     }
 
     pub fn set_currency(&mut self, currency: &ProfileCurrency, quantity: i32) -> Result<()> {
@@ -273,6 +299,9 @@ impl ProfileData {
             ProfileCurrency::VaultCardOneId => {
                 self.vault_card_1_keys = quantity;
             }
+            ProfileCurrency::VaultCardTwoId => {
+                self.vault_card_2_keys = quantity;
+            }
         }
 
         Ok(())
@@ -300,7 +329,7 @@ impl ProfileData {
             if let Some(claimed_rewards) = vault_card
                 .vault_card_claimed_rewards
                 .iter_mut()
-                .find(|v| v.vault_card_id == 1)
+                .find(|v| v.vault_card_id == vault_card_id)
             {
                 claimed_rewards.vault_card_chests = vault_card_chests;
             } else {
@@ -321,7 +350,11 @@ impl ProfileData {
             .into();
         }
 
-        self.vault_card_1_chests = vault_card_chests;
+        match vault_card_id {
+            1 => self.vault_card_1_chests = vault_card_chests,
+            2 => self.vault_card_2_chests = vault_card_chests,
+            _ => (),
+        }
     }
 
     pub fn guardian_rank(&self) -> i32 {
@@ -523,24 +556,18 @@ impl ProfileData {
                     });
                 }
                 _ => {
-                    let previous_customizations = self.profile.unlocked_customizations.clone();
-
-                    self.profile.unlocked_customizations.clear();
-
                     skins.iter().for_each(|c| {
-                        self.profile
-                            .unlocked_customizations
-                            .push(OakCustomizationSaveGameData {
-                                is_new: true,
-                                customization_asset_path: c.ident.to_owned(),
-                                unknown_fields: Default::default(),
-                                cached_size: Default::default(),
-                            });
-                    });
-
-                    previous_customizations.iter().for_each(|pc| {
-                        if !self.profile.unlocked_customizations.contains(pc) {
-                            self.profile.unlocked_customizations.push(pc.to_owned());
+                        if !self.profile.unlocked_customizations.iter().any(|uc| {
+                            uc.customization_asset_path.to_lowercase() == c.ident.to_lowercase()
+                        }) {
+                            self.profile.unlocked_customizations.push(
+                                OakCustomizationSaveGameData {
+                                    is_new: true,
+                                    customization_asset_path: c.ident.to_owned(),
+                                    unknown_fields: Default::default(),
+                                    cached_size: Default::default(),
+                                },
+                            );
                         }
                     });
                 }
