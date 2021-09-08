@@ -182,6 +182,10 @@ pub async fn get_latest_release() -> Result<Release> {
 pub async fn download_release(release: Release) -> Result<()> {
     info!("Downloading release: {}", release.tag_name);
 
+    #[cfg(target_os = "windows")]
+    let binary_name = "Bl3SaveEditor.exe";
+
+    #[cfg(not(target_os = "windows"))]
     let binary_name = "bl3_save_edit_ui";
 
     #[cfg(not(target_os = "linux"))]
@@ -234,10 +238,10 @@ pub async fn download_release(release: Release) -> Result<()> {
     .await?;
 
     std::process::Command::new(current_executable_path_clone)
+        .arg("--cleanup_previous_path")
+        .arg(current_executable_temp_path_clone.to_str().unwrap_or(""))
         .spawn()
         .context("Failed to start newly downloaded application")?;
-
-    tokio::task::spawn_blocking(move || remove_file(&current_executable_temp_path_clone)).await??;
 
     Ok(())
 }
@@ -297,11 +301,18 @@ where
     retry(
         Fibonacci::from_millis(1).take(21),
         || match std::fs::remove_file(path) {
-            Ok(_) => OperationResult::Ok(()),
-            Err(e) => match e.kind() {
-                std::io::ErrorKind::PermissionDenied => OperationResult::Retry(e),
-                _ => OperationResult::Err(e),
-            },
+            Ok(_) => {
+                println!("Successfully removed file");
+                OperationResult::Ok(())
+            }
+            Err(e) => {
+                eprintln!("Failed to remove file: {}", e);
+
+                match e.kind() {
+                    std::io::ErrorKind::PermissionDenied => OperationResult::Retry(e),
+                    _ => OperationResult::Err(e),
+                }
+            }
         },
     )
     .map_err(|e| match e {
