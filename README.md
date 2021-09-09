@@ -1,3 +1,6 @@
+![](https://img.shields.io/github/downloads/ZakisM/bl3_save_edit/latest/total)
+![](https://img.shields.io/github/downloads/ZakisM/bl3_save_edit/total)
+
 # Borderlands 3 Save Editor
 
 A tool to help you modify your Borderlands 3 Saves and Profiles.
