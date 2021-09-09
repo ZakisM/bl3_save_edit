@@ -5,7 +5,8 @@
 
 A tool to help you modify your Borderlands 3 Saves and Profiles.
 
-Currently it runs on Windows, Mac OS and Linux. It supports modifying PC saves as well as decrypted PS4 saves (and converting between them).
+Currently it runs on Windows, Mac OS and Linux. It supports modifying PC saves as well as decrypted PS4 saves (and
+converting between them).
 
 # Screenshot
 
