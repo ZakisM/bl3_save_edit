@@ -25,6 +25,16 @@ folder the next time you open the program.
 
 The editor will make backups for you before saving your files but I recommend you make your own backups just in case.
 
+# Building from scratch
+
+Clone the project and run
+
+`cargo build`
+
+Or for a release optimized build run
+
+`cargo build --release`
+
 # Credits
 
 Huge credits to apocalyptech for their editor at https://github.com/apocalyptech/bl3-cli-saveedit. The majority of this
