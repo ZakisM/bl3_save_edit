@@ -39,6 +39,7 @@ const ASSET: &str = "Bl3SaveEditor.exe";
 #[derive(Debug, Deserialize, Clone)]
 pub struct Release {
     pub tag_name: String,
+    pub prerelease: bool,
     pub assets: Vec<ReleaseAsset>,
     pub body: String,
 }
@@ -46,15 +47,14 @@ pub struct Release {
 impl Release {
     pub async fn download_asset(
         &self,
-        asset_name: &str,
         client: &Client,
         new_release_executable_path: PathBuf,
     ) -> Result<()> {
         let asset = self
             .assets
             .iter()
-            .find(|a| a.name == asset_name)
-            .with_context(|| format!("Failed to find Asset: {}", asset_name))?;
+            .find(|a| a.name == ASSET_ARCHIVE)
+            .with_context(|| format!("failed to find Asset - {}", ASSET_ARCHIVE))?;
 
         let asset_bytes = client
             .get(&asset.browser_download_url)
@@ -65,8 +65,8 @@ impl Release {
 
         let asset_path = new_release_executable_path
             .parent()
-            .context("Failed to read new_release_exec_path when downloading archived asset")?
-            .join(asset_name);
+            .context("failed to read new_release_exec_path when downloading archived asset.")?
+            .join(ASSET_ARCHIVE);
 
         // First download the archive
         tokio::fs::write(&asset_path, asset_bytes).await?;
@@ -136,7 +136,7 @@ impl Release {
         if res {
             Ok(())
         } else {
-            bail!("Failed to find new application inside downloaded archive")
+            bail!("failed to find new application inside downloaded archive.")
         }
     }
 }
@@ -159,20 +159,23 @@ pub async fn get_latest_release() -> Result<Release> {
 
     let res = client.get(RELEASES_API).send().await?.text().await?;
 
-    let current_version = Version::from(VERSION).expect("Failed to read current_version");
+    let current_version =
+        Version::from(VERSION).expect("failed to read current Application version.");
 
     let releases = serde_json::from_str::<Vec<Release>>(&res)?;
 
     let latest_release = releases
         .into_iter()
+        .filter(|r| !r.prerelease)
         .find(|r| {
             if let Some(release_version) = Version::from(&r.tag_name.replace("v", "")) {
                 release_version > current_version
+                    && r.assets.iter().any(|a| a.name == ASSET_ARCHIVE)
             } else {
                 false
             }
         })
-        .context("Failed to find a newer release")?;
+        .context("failed to find a newer release.")?;
 
     info!("Found a new release: {}.", latest_release.tag_name);
 
@@ -197,7 +200,7 @@ pub async fn download_release(release: Release) -> Result<()> {
 
     let current_executable_path_parent = current_executable_path
         .parent()
-        .context("Failed to read current_executable_path_parent")?;
+        .context("failed to read current_executable_path_parent.")?;
 
     let new_release_executable_path =
         current_executable_path_parent.join(&format!("new_{}", binary_name));
@@ -209,11 +212,7 @@ pub async fn download_release(release: Release) -> Result<()> {
     let client = create_download_client()?;
 
     release
-        .download_asset(
-            ASSET_ARCHIVE,
-            &client,
-            new_release_executable_path.to_path_buf(),
-        )
+        .download_asset(&client, new_release_executable_path.to_path_buf())
         .await?;
 
     #[cfg(not(target_os = "windows"))]
@@ -241,7 +240,7 @@ pub async fn download_release(release: Release) -> Result<()> {
         .arg("--cleanup_previous_path")
         .arg(current_executable_temp_path_clone.to_str().unwrap_or(""))
         .spawn()
-        .context("Failed to start newly downloaded application")?;
+        .context("failed to start newly downloaded application.")?;
 
     Ok(())
 }
@@ -251,13 +250,13 @@ pub fn create_download_client() -> Result<Client> {
     default_headers.insert(
         "user-agent",
         HeaderValue::from_str(&format!("bl3_save_edit/{}", VERSION))
-            .expect("Failed to create header value for latest release user-agent"),
+            .expect("failed to create header value for latest release user-agent."),
     );
 
     let client = ClientBuilder::new()
         .default_headers(default_headers)
         .build()
-        .context("Failed to build latest release client")?;
+        .context("failed to build release client downloader.")?;
 
     Ok(client)
 }
@@ -302,11 +301,11 @@ where
         Fibonacci::from_millis(1).take(21),
         || match std::fs::remove_file(path) {
             Ok(_) => {
-                info!("Successfully removed file");
+                info!("successfully removed file.");
                 OperationResult::Ok(())
             }
             Err(e) => {
-                error!("Failed to remove file: {}", e);
+                error!("failed to remove file: {}.", e);
 
                 match e.kind() {
                     std::io::ErrorKind::PermissionDenied => OperationResult::Retry(e),
