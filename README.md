@@ -19,8 +19,7 @@ folder the next time you open the program.
 
 # Notices
 
-I recommend you make your own backups before using this editor, however the editor will also make backups for you before
-saving.
+The editor will make backups for you before saving your files but I recommend you make your own backups just in case.
 
 # Credits
 
