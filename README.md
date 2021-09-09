@@ -27,11 +27,13 @@ The editor will make backups for you before saving your files but I recommend yo
 
 # Building from scratch
 
-Clone the project and run
+First you must install [Rust](https://www.rust-lang.org/).
+
+Then, clone the project and run:
 
 `cargo build`
 
-Or for a release optimized build run
+For a release optimized build run:
 
 `cargo build --release`
 
