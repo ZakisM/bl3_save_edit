@@ -28,7 +28,7 @@ const ASSET: &str = "bl3_save_editor.AppImage";
 const ASSET_ARCHIVE: &str = "Bl3SaveEditor-x86_64-apple-darwin.tar.gz";
 
 #[cfg(target_os = "macos")]
-const ASSET: &str = "Bl3SaveEditor.app/Contents/MacOS/bl3_save_edit_ui";
+const ASSET: &str = "bl3_save_edit_ui";
 
 #[cfg(target_os = "windows")]
 const ASSET_ARCHIVE: &str = "Bl3SaveEditor-x86_64-pc-windows-msvc.zip";
@@ -79,13 +79,13 @@ impl Release {
             tokio::task::spawn_blocking(move || {
                 let mut archive = ZipArchive::new(asset_file)?;
 
-                let mut new_release_executable_file =
-                    std::fs::File::create(new_release_executable_path)?;
-
                 for i in 0..archive.len() {
                     if let Ok(mut file) = archive.by_index(i) {
                         if let Some(name) = file.enclosed_name().and_then(|n| n.file_name()) {
                             if name == ASSET {
+                                let mut new_release_executable_file =
+                                    std::fs::File::create(new_release_executable_path)?;
+
                                 std::io::copy(&mut file, &mut new_release_executable_file)?;
 
                                 return Ok(true);
@@ -105,9 +105,6 @@ impl Release {
             tokio::task::spawn_blocking(move || {
                 let mut archive = Archive::new(GzDecoder::new(asset_file));
 
-                let mut new_release_executable_file =
-                    std::fs::File::create(new_release_executable_path)?;
-
                 for file in archive.entries()? {
                     let mut file = file?;
 
@@ -117,6 +114,9 @@ impl Release {
 
                     if let Some(name) = file_name {
                         if name == ASSET {
+                            let mut new_release_executable_file =
+                                std::fs::File::create(new_release_executable_path)?;
+
                             std::io::copy(&mut file, &mut new_release_executable_file)?;
 
                             return Ok(true);
@@ -131,9 +131,9 @@ impl Release {
 
         let res = res?;
 
-        if res {
-            tokio::task::spawn_blocking(move || remove_file(asset_path)).await??;
+        tokio::task::spawn_blocking(move || remove_file(asset_path)).await??;
 
+        if res {
             Ok(())
         } else {
             bail!("Failed to find new application inside downloaded archive")
