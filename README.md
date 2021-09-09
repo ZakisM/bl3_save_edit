@@ -10,7 +10,7 @@ converting between them).
 
 # Screenshot
 
-<img width="1762" alt="bl3_save_editor_screen_2" src="https://user-images.githubusercontent.com/8143258/132736781-5b853927-69ad-4264-b1eb-7035d7afe753.png">
+<img width="1762" alt="bl3_save_editor_screenshot" src="https://user-images.githubusercontent.com/8143258/132767695-dadff3ba-8328-4513-96dd-c682531e9214.png">
 
 # How to use
 
