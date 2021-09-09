@@ -4,6 +4,10 @@ A tool to help you modify your Borderlands 3 Saves and Profiles.
 
 Currently it runs on Windows, Mac OS and Linux. It supports modifying PC saves as well as decrypted PS4 saves.
 
+# Screenshot
+
+<img width="1762" alt="bl3_save_editor_screen_2" src="https://user-images.githubusercontent.com/8143258/132736781-5b853927-69ad-4264-b1eb-7035d7afe753.png">
+
 # How to use
 
 Visit [Releases](https://github.com/ZakisM/bl3_save_edit/releases) and download the corresponding version for your
