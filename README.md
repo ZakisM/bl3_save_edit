@@ -53,5 +53,5 @@ Thanks to those who created these docs:
 
 Tool to download data from these docs can be found [here](https://github.com/ZakisM/bl3_save_edit_resource_downloader).
 
-Thanks to [Ajour](https://github.com/ajour/ajour) project for their methods of bundling Rust Apps as well as updating
+Thanks to the [Ajour](https://github.com/ajour/ajour) project for their methods of bundling Rust Apps as well as updating
 them.
