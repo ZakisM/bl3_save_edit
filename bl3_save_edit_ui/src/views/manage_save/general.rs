@@ -12,6 +12,7 @@ use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
+use crate::widgets::text_input_limited::TextInputLimited;
 
 #[derive(Debug, Default)]
 pub struct GeneralState {
@@ -83,10 +84,11 @@ pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
                 LabelledElement::create(
                     "Save GUID",
                     Length::Units(90),
-                    TextInput::new(
+                    TextInputLimited::new(
                         &mut general_state.guid_input_state,
                         "00000000000000000000000000000000",
                         &general_state.guid_input,
+                        500,
                         |s| {
                             InteractionMessage::ManageSaveInteraction(
                                 ManageSaveInteractionMessage::General(
@@ -95,6 +97,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
                             )
                         },
                     )
+                    .0
                     .font(JETBRAINS_MONO)
                     .padding(10)
                     .size(17)
