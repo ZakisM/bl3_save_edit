@@ -1,6 +1,6 @@
 use iced::{
     button, scrollable, text_input, Align, Button, Checkbox, Color, Column, Container, Element,
-    Length, Row, Scrollable, Text, TextInput,
+    Length, Row, Scrollable, Text,
 };
 use rayon::iter::ParallelIterator;
 use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator};
@@ -16,6 +16,7 @@ use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
 use crate::views::item_editor::parts_tab_bar::{parts_tab_bar_button, AvailablePartType};
 use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::InteractionExt;
+use crate::widgets::text_input_limited::TextInputLimited;
 use crate::widgets::text_margin::TextMargin;
 
 #[derive(Debug, Copy, Clone, Default)]
@@ -257,16 +258,18 @@ impl AvailableParts {
                 }
             };
 
-            let search_input = TextInput::new(
+            let search_input = TextInputLimited::new(
                 &mut self.search_input_state,
                 &placeholder,
                 &self.search_input,
+                500,
                 move |s| {
                     interaction_message(
                         ItemEditorInteractionMessage::AvailablePartsSearchInputChanged(s),
                     )
                 },
             )
+            .0
             .font(JETBRAINS_MONO)
             .padding(10)
             .size(17)

@@ -1,6 +1,5 @@
 use iced::{
-    pick_list, text_input, tooltip, Align, Column, Container, Length, PickList, Row, TextInput,
-    Tooltip,
+    pick_list, text_input, tooltip, Align, Column, Container, Length, PickList, Row, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
@@ -18,6 +17,7 @@ use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
+use crate::widgets::text_input_limited::TextInputLimited;
 
 mod ammo;
 mod gear;
@@ -117,10 +117,11 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
         LabelledElement::create(
             "Name",
             Length::Units(75),
-            TextInput::new(
+            TextInputLimited::new(
                 &mut character_state.name_input_state,
                 "FL4K",
                 &character_state.name_input,
+                500,
                 |c| {
                     InteractionMessage::ManageSaveInteraction(
                         ManageSaveInteractionMessage::Character(
@@ -129,6 +130,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
                     )
                 },
             )
+            .0
             .font(JETBRAINS_MONO)
             .padding(10)
             .size(17)

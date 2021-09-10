@@ -4,7 +4,7 @@ use std::time::Duration;
 use anyhow::Result;
 use iced::{
     button, scrollable, text_input, tooltip, Align, Button, Color, Column, Command, Container,
-    Length, Row, Scrollable, Text, TextInput, Tooltip,
+    Length, Row, Scrollable, Text, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_item::{
@@ -27,6 +27,7 @@ use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::notification::{Notification, NotificationSentiment};
 use crate::widgets::number_input::NumberInput;
+use crate::widgets::text_input_limited::TextInputLimited;
 use crate::widgets::text_margin::TextMargin;
 
 pub mod available_parts;
@@ -515,12 +516,14 @@ where
             LabelledElement::create(
                 "Import Serial",
                 Length::Units(120),
-                TextInput::new(
+                TextInputLimited::new(
                     &mut item_editor_state.import_serial_input_state,
                     "BL3(AwAAAABmboC7I9xAEzwShMJVX8nPYwsAAA==)",
                     &item_editor_state.import_serial_input,
+                    500,
                     move |s| interaction_message(ItemEditorInteractionMessage::ImportItem(s)),
                 )
+                .0
                 .font(JETBRAINS_MONO)
                 .padding(10)
                 .size(17)
