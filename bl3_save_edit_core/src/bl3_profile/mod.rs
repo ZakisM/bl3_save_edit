@@ -326,7 +326,7 @@ mod tests {
         assert_eq!(bl3_profile.profile_data.echo_themes_unlocked(), 57);
         assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked(), 72);
         assert_eq!(bl3_profile.profile_data.room_decorations_unlocked(), 93);
-        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 26);
+        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 27);
         assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked(), 68);
     }
 
@@ -442,7 +442,7 @@ mod tests {
         assert_eq!(bl3_profile.profile_data.echo_themes_unlocked(), 57);
         assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked(), 64);
         assert_eq!(bl3_profile.profile_data.room_decorations_unlocked(), 94);
-        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 27);
+        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 28);
         assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked(), 68);
     }
 }
