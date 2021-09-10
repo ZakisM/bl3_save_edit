@@ -164,18 +164,18 @@ pub fn map_character_state_to_save(
         .name_input
         .clone();
 
-    save.character_data.set_player_class(
-        manage_save_state
-            .save_view_state
-            .character_state
-            .player_class_selected_class,
-    )?;
-
     save.character_data.set_player_level(
         manage_save_state
             .save_view_state
             .character_state
             .experience_points_input,
+    )?;
+
+    save.character_data.set_player_class(
+        manage_save_state
+            .save_view_state
+            .character_state
+            .player_class_selected_class,
     )?;
 
     save.character_data.set_head_skin_selected(

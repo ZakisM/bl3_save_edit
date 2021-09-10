@@ -367,8 +367,6 @@ impl CharacterData {
     }
 
     pub fn set_player_class(&mut self, player_class: PlayerClass) -> Result<()> {
-        self.player_class = player_class;
-
         let player_class_data = self
             .character
             .player_class_data
@@ -376,6 +374,18 @@ impl CharacterData {
             .with_context(|| "failed to read Player Class data")?;
 
         player_class_data.player_class_path = player_class.get_serializations()[0].to_string();
+
+        let ability_data = self
+            .character
+            .ability_data
+            .as_mut()
+            .context("failed to read Player ability data")?;
+
+        if self.player_level > 2 {
+            ability_data.ability_points = self.player_level - 2;
+        }
+
+        self.player_class = player_class;
 
         Ok(())
     }
