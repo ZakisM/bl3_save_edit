@@ -2,6 +2,7 @@ use iced::{
     pick_list, text_input, tooltip, Align, Column, Container, Length, PickList, Row, Tooltip,
 };
 
+use bl3_save_edit_core::bl3_save::character_data::MAX_CHARACTER_LEVEL;
 use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
 use bl3_save_edit_core::bl3_save::util::REQUIRED_XP_LIST;
 use bl3_save_edit_core::game_data::GameDataKv;
@@ -23,8 +24,6 @@ mod ammo;
 mod gear;
 mod sdu;
 mod skins;
-
-pub const MAX_CHARACTER_LEVEL: usize = 72;
 
 #[derive(Debug, Default)]
 pub struct CharacterState {

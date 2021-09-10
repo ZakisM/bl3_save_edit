@@ -31,6 +31,8 @@ use crate::protos::oak_shared::{
 };
 use crate::vehicle_data::{VehicleName, VehicleStats};
 
+pub const MAX_CHARACTER_LEVEL: usize = 72;
+
 #[derive(Derivative)]
 #[derivative(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
 pub struct CharacterData {
@@ -367,25 +369,33 @@ impl CharacterData {
     }
 
     pub fn set_player_class(&mut self, player_class: PlayerClass) -> Result<()> {
-        let player_class_data = self
-            .character
-            .player_class_data
-            .as_mut()
-            .with_context(|| "failed to read Player Class data")?;
+        if player_class != self.player_class {
+            let player_class_data = self
+                .character
+                .player_class_data
+                .as_mut()
+                .with_context(|| "failed to read Player Class data")?;
 
-        player_class_data.player_class_path = player_class.get_serializations()[0].to_string();
+            player_class_data.player_class_path = player_class.get_serializations()[0].to_string();
 
-        let ability_data = self
-            .character
-            .ability_data
-            .as_mut()
-            .context("failed to read Player ability data")?;
+            let ability_data = self
+                .character
+                .ability_data
+                .as_mut()
+                .context("failed to read Player ability data")?;
 
-        if self.player_level > 2 {
-            ability_data.ability_points = self.player_level - 2;
+            //Reset our skill tree also
+            ability_data
+                .tree_item_list
+                .iter_mut()
+                .for_each(|ti| ti.points = 0);
+
+            if self.player_level > 2 {
+                ability_data.ability_points = self.player_level - 2;
+            }
+
+            self.player_class = player_class;
         }
-
-        self.player_class = player_class;
 
         Ok(())
     }
@@ -395,31 +405,43 @@ impl CharacterData {
     }
 
     pub fn set_player_level(&mut self, experience_points: i32) -> Result<()> {
-        self.player_level = experience_to_level(experience_points).with_context(|| {
-            format!(
-                "failed to set level for experience points: {}",
-                experience_points
-            )
-        })?;
+        if experience_points != self.character.experience_points {
+            self.player_level = experience_to_level(experience_points).with_context(|| {
+                format!(
+                    "failed to set level for experience points: {}",
+                    experience_points
+                )
+            })?;
 
-        self.character.experience_points = experience_points;
+            self.character.experience_points = experience_points;
 
-        self.set_game_stat(LEVEL_STAT, self.player_level);
+            self.set_game_stat(LEVEL_STAT, self.player_level);
 
-        let ability_data = self
-            .character
-            .ability_data
-            .as_mut()
-            .context("failed to read Player ability data")?;
+            let ability_data = self
+                .character
+                .ability_data
+                .as_mut()
+                .context("failed to read Player ability data")?;
 
-        //Unlock skill tree
-        if self.player_level > 1 && ability_data.tree_grade == 0 {
-            ability_data.tree_grade = 2;
-        }
+            //Reset existing skill tree
+            ability_data
+                .tree_item_list
+                .iter_mut()
+                .for_each(|ti| ti.points = 0);
 
-        for (challenge_level, challenge_obj) in LEVEL_CHALLENGES {
-            if self.player_level >= challenge_level {
-                self.unlock_challenge_obj(challenge_obj, 1, 0)?;
+            //Unlock skill tree
+            if self.player_level > 1 && ability_data.tree_grade == 0 {
+                ability_data.tree_grade = 2;
+            }
+
+            if self.player_level > 2 {
+                ability_data.ability_points = self.player_level - 2;
+            }
+
+            for (challenge_level, challenge_obj) in LEVEL_CHALLENGES {
+                if self.player_level >= challenge_level {
+                    self.unlock_challenge_obj(challenge_obj, 1, 0)?;
+                }
             }
         }
 

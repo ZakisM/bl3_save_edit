@@ -4,6 +4,7 @@ use iced::{
 };
 
 use bl3_save_edit_core::bl3_item::{BalancePart, Bl3Item, InvDataPart, ManufacturerPart};
+use bl3_save_edit_core::bl3_save::character_data::MAX_CHARACTER_LEVEL;
 use bl3_save_edit_core::resources::{
     INVENTORY_BALANCE_PARTS, INVENTORY_INV_DATA_PARTS, INVENTORY_MANUFACTURER_PARTS,
     INVENTORY_PARTS_ALL_CATEGORIZED, INVENTORY_SERIAL_DB_PARTS_CATEGORIZED,
@@ -15,7 +16,6 @@ use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::available_parts::AvailableParts;
 use crate::views::item_editor::current_parts::CurrentParts;
 use crate::views::item_editor::ItemEditorInteractionMessage;
-use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
