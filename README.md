@@ -49,6 +49,9 @@ Thanks to those who created these docs:
 
 - https://docs.google.com/spreadsheets/d/1XYG30B6CulmcmmVDuq-PkLEJVtjAFacx7cuSkqbv5N4
 - https://docs.google.com/spreadsheets/d/16b7bGPFKIrNg_cJm_WCMO6cKahexBs7BiJ6ja0RlD04
+- https://docs.google.com/spreadsheets/d/1v-F_3C2ceaFKJae1b6wmbelw_jLjmPPriBLzGTZMqRc
+
+Tool to download data from these docs can be found [here](https://github.com/ZakisM/bl3_save_edit_resource_downloader).
 
 Thanks to [Ajour](https://github.com/ajour/ajour) project for their methods of bundling Rust Apps as well as updating
 them.
