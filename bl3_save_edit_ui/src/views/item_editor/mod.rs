@@ -12,6 +12,7 @@ use bl3_save_edit_core::bl3_item::{
     MAX_BL3_ITEM_PARTS,
 };
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
+use bl3_save_edit_core::bl3_save::character_data::MAX_CHARACTER_LEVEL;
 use bl3_save_edit_core::bl3_save::Bl3Save;
 use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
 
@@ -22,7 +23,6 @@ use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
 use crate::views::item_editor::current_parts::CurrentPartTypeIndex;
 use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
 use crate::views::item_editor::parts_tab_bar::{AvailablePartType, CurrentPartType};
-use crate::views::manage_save::character::MAX_CHARACTER_LEVEL;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::notification::{Notification, NotificationSentiment};
