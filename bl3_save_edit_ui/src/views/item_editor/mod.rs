@@ -23,7 +23,7 @@ use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
 use crate::views::item_editor::current_parts::CurrentPartTypeIndex;
 use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
 use crate::views::item_editor::parts_tab_bar::{AvailablePartType, CurrentPartType};
-use crate::views::InteractionExt;
+use crate::views::{InteractionExt, NO_SEARCH_RESULTS_FOUND_MESSAGE};
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::notification::{Notification, NotificationSentiment};
 use crate::widgets::number_input::NumberInput;
@@ -144,7 +144,6 @@ pub enum ItemEditorInteractionMessage {
     ItemPressed(usize),
     ShowAllAvailablePartsSelected(bool),
     AvailablePartsSearchInputChanged(String),
-    AvailablePartsSearchInputDebounced(String),
     AvailablePartsTabPressed,
     AvailableAnointmentsTabPressed,
     CurrentPartsTabPressed,
@@ -160,8 +159,12 @@ pub enum ItemEditorInteractionMessage {
     AllItemLevelDebounced,
     ItemLevel(i32),
     DeleteItem(usize),
+    DuplicateItem(usize),
     BalanceInputSelected(BalancePart),
+    BalanceSearchInputChanged(String),
     InvDataInputSelected(InvDataPart),
+    InvDataSearchInputChanged(String),
+    ManufacturerSearchInputChanged(String),
     ManufacturerInputSelected(ManufacturerPart),
 }
 
@@ -199,37 +202,18 @@ impl ItemEditorInteractionMessage {
             }
             ItemEditorInteractionMessage::AvailablePartsSearchInputChanged(search_input) => {
                 item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.available_parts.search_input = search_input.clone();
-                });
-
-                command = Some(Command::perform(
-                    async {
-                        //Debounce
-                        tokio::time::sleep(Duration::from_millis(1000)).await;
-                    },
-                    move |_| {
-                        ItemEditorInteractionMessage::AvailablePartsSearchInputDebounced(
-                            search_input.to_lowercase(),
-                        )
-                    },
-                ));
-            }
-            ItemEditorInteractionMessage::AvailablePartsSearchInputDebounced(search_query) => {
-                item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.available_parts.search_query = search_query;
+                    i.editor.available_parts.search_input = search_input.to_lowercase();
                 });
             }
             ItemEditorInteractionMessage::AvailablePartsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
                     i.editor.available_parts.scrollable_state.snap_to(0.0);
-                    i.editor.available_parts.search_query = "".to_owned();
                     i.editor.available_parts.search_input = "".to_owned();
                     i.editor.available_parts.parts_tab_view = AvailablePartType::Parts;
                 }),
             ItemEditorInteractionMessage::AvailableAnointmentsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
                     i.editor.available_parts.scrollable_state.snap_to(0.0);
-                    i.editor.available_parts.search_query = "".to_owned();
                     i.editor.available_parts.search_input = "".to_owned();
                     i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments;
                 }),
@@ -415,7 +399,7 @@ impl ItemEditorInteractionMessage {
                 command = Some(Command::perform(
                     async {
                         //Debounce
-                        tokio::time::sleep(Duration::from_millis(1000)).await;
+                        tokio::time::sleep(Duration::from_millis(500)).await;
                     },
                     |_| ItemEditorInteractionMessage::AllItemLevelDebounced,
                 ));
@@ -465,32 +449,89 @@ impl ItemEditorInteractionMessage {
 
                 item_editor_state.map_current_item_if_exists_to_editor_state();
             }
-            ItemEditorInteractionMessage::BalanceInputSelected(balance_selected) => {
-                if let Err(e) = item_editor_state
-                    .map_current_item_if_exists_result(|i| i.item.set_balance(balance_selected))
-                {
-                    let msg = format!("Failed to set balance for item: {}", e);
+            ItemEditorInteractionMessage::DuplicateItem(id) => {
+                match item_editor_state.items.get(id) {
+                    Some(item) => {
+                        let item = item.item.clone();
 
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                        item_editor_state.add_item(item);
+
+                        item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+
+                        item_editor_state.map_current_item_if_exists_to_editor_state();
+
+                        item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                    }
+                    None => {
+                        let msg = format!("Failed to duplicate item number {}: could not find this item to duplicate.", id);
+
+                        notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    }
                 }
+            }
+            ItemEditorInteractionMessage::BalanceInputSelected(balance_selected) => {
+                if balance_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
+                    if let Err(e) = item_editor_state
+                        .map_current_item_if_exists_result(|i| i.item.set_balance(balance_selected))
+                    {
+                        let msg = format!("Failed to set balance for item: {}", e);
+
+                        notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    } else {
+                        item_editor_state
+                            .map_current_item_if_exists(|i| i.editor.balance_search_input.clear())
+                    }
+                }
+            }
+            ItemEditorInteractionMessage::BalanceSearchInputChanged(balance_search_query) => {
+                item_editor_state.map_current_item_if_exists(|i| {
+                    i.editor.balance_search_input = balance_search_query.to_lowercase()
+                });
             }
             ItemEditorInteractionMessage::InvDataInputSelected(inv_data_selected) => {
-                if let Err(e) = item_editor_state
-                    .map_current_item_if_exists_result(|i| i.item.set_inv_data(inv_data_selected))
-                {
-                    let msg = format!("Failed to set inventory data for item: {}", e);
+                if inv_data_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
+                    if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
+                        i.item.set_inv_data(inv_data_selected)
+                    }) {
+                        let msg = format!("Failed to set inventory data for item: {}", e);
 
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                        notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    } else {
+                        item_editor_state
+                            .map_current_item_if_exists(|i| i.editor.inv_data_search_input.clear())
+                    }
                 }
             }
+            ItemEditorInteractionMessage::InvDataSearchInputChanged(inv_data_search_query) => {
+                item_editor_state.map_current_item_if_exists(|i| {
+                    i.editor.inv_data_search_input = inv_data_search_query.to_lowercase()
+                });
+            }
             ItemEditorInteractionMessage::ManufacturerInputSelected(manufacturer_selected) => {
-                if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
-                    i.item.set_manufacturer(manufacturer_selected)
-                }) {
-                    let msg = format!("Failed to set manufacturer for item: {}", e);
+                if manufacturer_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
+                    if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
+                        i.item.set_manufacturer(manufacturer_selected)
+                    }) {
+                        let msg = format!("Failed to set manufacturer for item: {}", e);
 
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                        notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    } else {
+                        item_editor_state.map_current_item_if_exists(|i| {
+                            i.editor.manufacturer_search_input.clear()
+                        })
+                    }
                 }
+            }
+            ItemEditorInteractionMessage::ManufacturerSearchInputChanged(
+                manufacturer_search_query,
+            ) => {
+                item_editor_state.map_current_item_if_exists(|i| {
+                    i.editor.manufacturer_search_input = manufacturer_search_query.to_lowercase()
+                });
             }
         }
 

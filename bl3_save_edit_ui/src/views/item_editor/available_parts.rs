@@ -15,7 +15,7 @@ use crate::views::item_editor::extra_part_info::add_extra_part_info;
 use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
 use crate::views::item_editor::parts_tab_bar::{parts_tab_bar_button, AvailablePartType};
 use crate::views::item_editor::ItemEditorInteractionMessage;
-use crate::views::InteractionExt;
+use crate::views::{InteractionExt, NO_SEARCH_RESULTS_FOUND_MESSAGE};
 use crate::widgets::text_input_limited::TextInputLimited;
 use crate::widgets::text_margin::TextMargin;
 
@@ -142,7 +142,6 @@ pub struct AvailableParts {
     pub parts_tab_view: AvailablePartType,
     pub available_parts_tab_button_state: button::State,
     pub available_anointments_tab_button_state: button::State,
-    pub search_query: String,
     pub search_input: String,
     pub search_input_state: text_input::State,
 }
@@ -280,7 +279,7 @@ impl AvailableParts {
         }
 
         if let Some(available_parts) = available_parts {
-            let search_query = self.search_query.clone();
+            let search_query = &self.search_input;
 
             self.parts = available_parts.clone();
 
@@ -291,71 +290,86 @@ impl AvailableParts {
                         .parts
                         .into_par_iter()
                         .filter(|p| {
-                            p.part.name.to_lowercase().contains(&search_query)
+                            p.part.name.to_lowercase().contains(search_query)
                                 || p.part
                                     .info
                                     .positives
                                     .par_iter()
-                                    .any(|p| p.to_lowercase().contains(&search_query))
+                                    .any(|p| p.to_lowercase().contains(search_query))
                                 || p.part
                                     .info
                                     .negatives
                                     .par_iter()
-                                    .any(|n| n.to_lowercase().contains(&search_query))
+                                    .any(|n| n.to_lowercase().contains(search_query))
                                 || p.part
                                     .info
                                     .effects
                                     .par_iter()
-                                    .any(|e| e.to_lowercase().contains(&search_query))
+                                    .any(|e| e.to_lowercase().contains(search_query))
                         })
                         .collect::<Vec<AvailableResourcePart>>()
                 })
                 .flatten()
                 .collect::<Vec<_>>();
 
-            let available_parts_list = self.parts.iter_mut().enumerate().fold(
-                Column::new(),
-                |mut curr, (cat_index, cat_parts)| {
-                    if cat_parts
-                        .parts
-                        .iter()
-                        .any(|cat_p| filtered_parts.contains(cat_p))
-                    {
-                        curr = curr.push(
-                            Container::new(
-                                Text::new(&cat_parts.category)
-                                    .font(JETBRAINS_MONO_BOLD)
-                                    .size(17)
-                                    .color(Color::from_rgb8(242, 203, 5)),
-                            )
-                            .width(Length::Fill)
-                            .style(Bl3UiStyleNoBorder)
-                            .padding(10),
-                        );
-                    }
-
-                    for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
-                        if filtered_parts.contains(&*p) {
-                            let is_active = selected_available_part_type_index.category_index
-                                == cat_index
-                                && selected_available_part_type_index.part_index == part_index;
-                            curr = curr.push(p.view(is_active, interaction_message));
+            if !filtered_parts.is_empty() {
+                let available_parts_list = self.parts.iter_mut().enumerate().fold(
+                    Column::new(),
+                    |mut curr, (cat_index, cat_parts)| {
+                        if cat_parts
+                            .parts
+                            .iter()
+                            .any(|cat_p| filtered_parts.contains(cat_p))
+                        {
+                            curr = curr.push(
+                                Container::new(
+                                    Text::new(&cat_parts.category)
+                                        .font(JETBRAINS_MONO_BOLD)
+                                        .size(17)
+                                        .color(Color::from_rgb8(242, 203, 5)),
+                                )
+                                .width(Length::Fill)
+                                .style(Bl3UiStyleNoBorder)
+                                .padding(10),
+                            );
                         }
-                    }
 
-                    curr
-                },
-            );
+                        for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
+                            if filtered_parts.contains(&*p) {
+                                let is_active = selected_available_part_type_index.category_index
+                                    == cat_index
+                                    && selected_available_part_type_index.part_index == part_index;
+                                curr = curr.push(p.view(is_active, interaction_message));
+                            }
+                        }
 
-            available_parts_column = available_parts_column.push(
-                Container::new(
-                    Scrollable::new(&mut self.scrollable_state)
-                        .push(available_parts_list)
-                        .height(Length::Fill)
-                        .width(Length::Fill),
-                )
-                .padding(1),
-            );
+                        curr
+                    },
+                );
+
+                available_parts_column = available_parts_column.push(
+                    Container::new(
+                        Scrollable::new(&mut self.scrollable_state)
+                            .push(available_parts_list)
+                            .height(Length::Fill)
+                            .width(Length::Fill),
+                    )
+                    .padding(1),
+                );
+            } else {
+                available_parts_column = available_parts_column.push(
+                    Container::new(
+                        Text::new(NO_SEARCH_RESULTS_FOUND_MESSAGE)
+                            .font(JETBRAINS_MONO)
+                            .size(17)
+                            .color(Color::from_rgb8(220, 220, 220)),
+                    )
+                    .width(Length::Fill)
+                    .height(Length::Fill)
+                    .align_x(Align::Center)
+                    .align_y(Align::Center),
+                );
+            }
         } else {
             available_parts_column = available_parts_column.push(
                 Container::new(

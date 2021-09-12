@@ -353,7 +353,7 @@ impl CurrentParts {
         .padding(1);
 
         if let Some(item_parts) = &item.item_parts {
-            if !item_parts.parts().is_empty() {
+            if !item_parts.parts().is_empty() || !item_parts.generic_parts().is_empty() {
                 current_parts_column = current_parts_column.push(
                     Container::new(
                         Scrollable::new(&mut self.scrollable_state)

@@ -13,7 +13,6 @@ use crate::parser::{decrypt, encrypt, HeaderType};
 use crate::{file_helper, parser};
 
 pub mod ammo;
-pub mod arbitrary_bits;
 pub mod challenge_data;
 pub mod character_data;
 pub mod fast_travel_unlock_data;

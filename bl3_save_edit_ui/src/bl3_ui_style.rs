@@ -1,5 +1,5 @@
 use iced::pick_list::Menu;
-use iced::{button, checkbox, container, pick_list, text_input, text_input_with_picklist, Color};
+use iced::{button, checkbox, container, pick_list, searchable_pick_list, text_input, Color};
 
 pub struct Bl3UiStyleNoBorder;
 
@@ -95,7 +95,7 @@ impl pick_list::StyleSheet for Bl3UiStyle {
     }
 }
 
-impl text_input_with_picklist::StyleSheet for Bl3UiStyle {
+impl searchable_pick_list::StyleSheet for Bl3UiStyle {
     fn menu(&self) -> Menu {
         Menu {
             text_color: Color::from_rgb8(220, 220, 220),
@@ -107,36 +107,62 @@ impl text_input_with_picklist::StyleSheet for Bl3UiStyle {
         }
     }
 
-    fn active(&self) -> text_input_with_picklist::Style {
-        text_input_with_picklist::Style {
+    fn icon_size(&self) -> f32 {
+        0.5
+    }
+
+    fn text_input_active(&self) -> text_input::Style {
+        text_input::Style {
             background: Color::from_rgb8(23, 23, 23).into(),
             border_width: 1.0,
             border_radius: 1.0,
             border_color: Color::from_rgb8(35, 35, 35),
-            icon_size: 0.5,
         }
     }
 
-    fn focused(&self) -> text_input_with_picklist::Style {
-        text_input_with_picklist::Style {
+    fn text_input_focused(&self) -> text_input::Style {
+        text_input::Style {
             background: Color::from_rgb8(23, 23, 23).into(),
             border_width: 1.0,
             border_radius: 1.0,
             border_color: Color::from_rgb8(45, 45, 45),
-            icon_size: 0.5,
         }
     }
 
-    fn placeholder_color(&self) -> Color {
+    fn text_input_placeholder_color(&self) -> Color {
         Color::from_rgba8(255, 255, 255, 0.1)
     }
 
-    fn value_color(&self) -> Color {
+    fn text_input_value_color(&self) -> Color {
         Color::from_rgb8(220, 220, 220)
     }
 
-    fn selection_color(&self) -> Color {
+    fn text_input_selection_color(&self) -> Color {
         Color::from_rgba8(255, 255, 255, 0.1)
+    }
+
+    fn pick_list_active(&self) -> pick_list::Style {
+        pick_list::Style {
+            background: Color::from_rgb8(23, 23, 23).into(),
+            text_color: Color::from_rgb8(220, 220, 220),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(35, 35, 35),
+            icon_size: 0.5,
+            placeholder_color: Default::default(),
+        }
+    }
+
+    fn pick_list_hovered(&self) -> pick_list::Style {
+        pick_list::Style {
+            background: Color::from_rgb8(30, 30, 30).into(),
+            text_color: Color::from_rgb8(220, 220, 220),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(45, 45, 45),
+            icon_size: 0.5,
+            placeholder_color: Default::default(),
+        }
     }
 }
 

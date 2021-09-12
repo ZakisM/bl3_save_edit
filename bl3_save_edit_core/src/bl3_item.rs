@@ -10,7 +10,7 @@ use serde::Deserialize;
 use strum::{Display, EnumString};
 use tracing::warn;
 
-use crate::bl3_save::arbitrary_bits::{ArbitraryBitVec, ArbitraryBits};
+use crate::arbitrary_bits::{ArbitraryBitVec, ArbitraryBits};
 use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
 use crate::parser::read_be_signed_int;
 use crate::resources::{
