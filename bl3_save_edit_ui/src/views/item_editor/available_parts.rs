@@ -2,8 +2,8 @@ use iced::{
     button, scrollable, text_input, Align, Button, Checkbox, Color, Column, Container, Element,
     Length, Row, Scrollable, Text,
 };
+use rayon::iter::IntoParallelRefIterator;
 use rayon::iter::ParallelIterator;
-use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator};
 
 use bl3_save_edit_core::bl3_item::Bl3Item;
 use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart};
@@ -284,11 +284,11 @@ impl AvailableParts {
             self.parts = available_parts.clone();
 
             let filtered_parts = available_parts
-                .into_par_iter()
+                .par_iter()
                 .map(|cat_p| {
                     cat_p
                         .parts
-                        .into_par_iter()
+                        .par_iter()
                         .filter(|p| {
                             p.part.name.to_lowercase().contains(search_query)
                                 || p.part
@@ -307,7 +307,7 @@ impl AvailableParts {
                                     .par_iter()
                                     .any(|e| e.to_lowercase().contains(search_query))
                         })
-                        .collect::<Vec<AvailableResourcePart>>()
+                        .collect::<Vec<&AvailableResourcePart>>()
                 })
                 .flatten()
                 .collect::<Vec<_>>();
@@ -319,7 +319,7 @@ impl AvailableParts {
                         if cat_parts
                             .parts
                             .iter()
-                            .any(|cat_p| filtered_parts.contains(cat_p))
+                            .any(|cat_p| filtered_parts.contains(&cat_p))
                         {
                             curr = curr.push(
                                 Container::new(
@@ -335,7 +335,7 @@ impl AvailableParts {
                         }
 
                         for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
-                            if filtered_parts.contains(&*p) {
+                            if filtered_parts.contains(&&*p) {
                                 let is_active = selected_available_part_type_index.category_index
                                     == cat_index
                                     && selected_available_part_type_index.part_index == part_index;

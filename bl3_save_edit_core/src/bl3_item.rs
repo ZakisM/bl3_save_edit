@@ -172,7 +172,7 @@ pub enum WeaponType {
     Shotgun,
     #[strum(to_string = "SMG")]
     Smg,
-    #[strum(to_string = "AR")]
+    #[strum(to_string = "Assault Rifle")]
     Ar,
     #[strum(to_string = "Sniper")]
     Sniper,

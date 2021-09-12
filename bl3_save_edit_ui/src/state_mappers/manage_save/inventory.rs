@@ -40,7 +40,17 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
         .save_view_state
         .inventory_state
         .item_editor_state
-        .map_current_item_if_exists(|i| i.editor.available_parts.scrollable_state.snap_to(0.0));
+        .map_current_item_if_exists(|i| {
+            i.editor.available_parts.scrollable_state.snap_to(0.0);
+            i.editor.current_parts.scrollable_state.snap_to(0.0);
+        });
+
+    manage_save_state
+        .save_view_state
+        .inventory_state
+        .item_editor_state
+        .search_items_input
+        .clear();
 }
 
 pub fn map_inventory_state_to_save(

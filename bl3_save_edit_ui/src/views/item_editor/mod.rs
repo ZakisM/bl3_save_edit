@@ -6,6 +6,7 @@ use iced::{
     button, scrollable, text_input, tooltip, Align, Button, Color, Column, Command, Container,
     Length, Row, Scrollable, Text, Tooltip,
 };
+use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
 
 use bl3_save_edit_core::bl3_item::{
     BalancePart, Bl3Item, InvDataPart, ManufacturerPart, MAX_BL3_ITEM_ANOINTMENTS,
@@ -28,7 +29,6 @@ use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::notification::{Notification, NotificationSentiment};
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_input_limited::TextInputLimited;
-use crate::widgets::text_margin::TextMargin;
 
 pub mod available_parts;
 pub mod current_parts;
@@ -49,6 +49,8 @@ pub struct ItemEditorState {
     pub all_item_levels_button_state: button::State,
     pub import_serial_button_state: button::State,
     items: Vec<ItemEditorListItem>,
+    pub search_items_input_state: text_input::State,
+    pub search_items_input: String,
     pub item_list_scrollable_state: scrollable::State,
 }
 
@@ -142,6 +144,7 @@ pub enum ItemEditorFileType<'a> {
 #[derive(Debug, Clone)]
 pub enum ItemEditorInteractionMessage {
     ItemPressed(usize),
+    ItemsSearchInputChanged(String),
     ShowAllAvailablePartsSelected(bool),
     AvailablePartsSearchInputChanged(String),
     AvailablePartsTabPressed,
@@ -194,6 +197,9 @@ impl ItemEditorInteractionMessage {
                             part_index: 0,
                         }
                 });
+            }
+            ItemEditorInteractionMessage::ItemsSearchInputChanged(search_items_query) => {
+                item_editor_state.search_items_input = search_items_query.to_lowercase();
             }
             ItemEditorInteractionMessage::ShowAllAvailablePartsSelected(selected) => {
                 item_editor_state.map_current_item_if_exists(|i| {
@@ -486,9 +492,11 @@ impl ItemEditorInteractionMessage {
                 }
             }
             ItemEditorInteractionMessage::BalanceSearchInputChanged(balance_search_query) => {
-                item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.balance_search_input = balance_search_query.to_lowercase()
-                });
+                if balance_search_query.len() <= 500 {
+                    item_editor_state.map_current_item_if_exists(|i| {
+                        i.editor.balance_search_input = balance_search_query.to_lowercase()
+                    });
+                }
             }
             ItemEditorInteractionMessage::InvDataInputSelected(inv_data_selected) => {
                 if inv_data_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
@@ -506,9 +514,11 @@ impl ItemEditorInteractionMessage {
                 }
             }
             ItemEditorInteractionMessage::InvDataSearchInputChanged(inv_data_search_query) => {
-                item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.inv_data_search_input = inv_data_search_query.to_lowercase()
-                });
+                if inv_data_search_query.len() <= 500 {
+                    item_editor_state.map_current_item_if_exists(|i| {
+                        i.editor.inv_data_search_input = inv_data_search_query.to_lowercase()
+                    });
+                }
             }
             ItemEditorInteractionMessage::ManufacturerInputSelected(manufacturer_selected) => {
                 if manufacturer_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
@@ -529,9 +539,12 @@ impl ItemEditorInteractionMessage {
             ItemEditorInteractionMessage::ManufacturerSearchInputChanged(
                 manufacturer_search_query,
             ) => {
-                item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.manufacturer_search_input = manufacturer_search_query.to_lowercase()
-                });
+                if manufacturer_search_query.len() <= 500 {
+                    item_editor_state.map_current_item_if_exists(|i| {
+                        i.editor.manufacturer_search_input =
+                            manufacturer_search_query.to_lowercase()
+                    });
+                }
             }
         }
 
@@ -654,66 +667,171 @@ where
 
     let mut item_editor = None;
 
+    let search_items_query = &item_editor_state.search_items_input;
+
+    let filtered_items = item_editor_state
+        .items
+        .par_iter()
+        .enumerate()
+        .map(|(i, item)| (i, &item.item))
+        .filter(|(_, item)| {
+            if search_items_query.is_empty() {
+                return true;
+            }
+
+            // Handle this scenario explicitly as we want to search one if the other doesn't exist
+            let balance_part_to_search = if let Some(name) = &item.balance_part().name {
+                Some(name.to_lowercase())
+            } else {
+                item.balance_part()
+                    .short_ident
+                    .as_ref()
+                    .map(|short_ident| short_ident.to_lowercase())
+            };
+
+            balance_part_to_search
+                .map(|n| n.contains(search_items_query))
+                .unwrap_or(false)
+                || item
+                    .manufacturer_part()
+                    .short_ident
+                    .as_ref()
+                    .map(|mp| mp.to_lowercase().contains(search_items_query))
+                    .unwrap_or(false)
+                || item.level().to_string().contains(search_items_query)
+                || item
+                    .item_parts
+                    .as_ref()
+                    .map(|ip| {
+                        ip.item_type
+                            .to_string()
+                            .to_lowercase()
+                            .contains(search_items_query)
+                            || ip
+                                .rarity
+                                .to_string()
+                                .to_lowercase()
+                                .contains(search_items_query)
+                            || ip
+                                .weapon_type
+                                .as_ref()
+                                .map(|wt| {
+                                    wt.to_string().to_lowercase().contains(search_items_query)
+                                })
+                                .unwrap_or(false)
+                    })
+                    .unwrap_or(false)
+        })
+        .map(|(i, item)| (i, item.clone()))
+        .collect::<Vec<_>>();
+
     let inventory_items = item_editor_state.items.iter_mut().enumerate().fold(
         Column::new().align_items(Align::Start),
-        |inventory_items, (i, item)| {
+        |mut inventory_items, (i, item)| {
             let is_active = i == selected_item_index;
 
             let (list_item_button, curr_item_editor) = item.view(is_active, interaction_message);
+
+            // Check if the curr item index is in our filtered_items to decide whether to show the
+            // list item button or not.
+            if !filtered_items.is_empty()
+                && filtered_items.iter().any(|(fi_index, _)| *fi_index == i)
+            {
+                inventory_items = inventory_items.push(list_item_button);
+            }
 
             if is_active {
                 item_editor = curr_item_editor;
             }
 
-            inventory_items.push(list_item_button)
+            inventory_items
         },
     );
 
-    let item_editor = if let Some(item_editor) = item_editor {
-        item_editor
-    } else {
+    let mut item_list_contents = Column::new().push(
         Container::new(
-            Text::new("Please Import/Create an item to get started.")
+            Text::new("Items")
                 .font(JETBRAINS_MONO_BOLD)
                 .size(17)
-                .color(Color::from_rgb8(220, 220, 220)),
+                .color(Color::from_rgb8(242, 203, 5)),
         )
+        .padding(10)
         .align_x(Align::Center)
-        .align_y(Align::Center)
-        .style(Bl3UiStyle)
-    }
-    .width(Length::FillPortion(7))
-    .height(Length::Fill);
+        .width(Length::Fill)
+        .style(Bl3UiStyle),
+    );
 
-    let item_list = Container::new(
-        Column::new()
-            .push(
-                Container::new(
-                    TextMargin::new(format!("Items ({})", number_of_items), 2)
-                        .0
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
-                        .color(Color::from_rgb8(242, 203, 5)),
-                )
-                .padding(10)
-                .align_x(Align::Center)
-                .width(Length::Fill)
-                .style(Bl3UiStyle),
+    if number_of_items > 0 {
+        item_list_contents = item_list_contents.push(
+            TextInputLimited::new(
+                &mut item_editor_state.search_items_input_state,
+                &format!("Search {} items...", number_of_items),
+                &item_editor_state.search_items_input,
+                500,
+                move |s| {
+                    interaction_message(ItemEditorInteractionMessage::ItemsSearchInputChanged(s))
+                },
             )
-            .push(
+            .0
+            .font(JETBRAINS_MONO)
+            .padding(10)
+            .size(18)
+            .style(Bl3UiStyle)
+            .into_element(),
+        );
+
+        if !filtered_items.is_empty() {
+            item_list_contents = item_list_contents.push(
                 Container::new(
                     Scrollable::new(&mut item_editor_state.item_list_scrollable_state)
                         .push(inventory_items)
                         .height(Length::Fill),
                 )
                 .padding(1),
-            ),
-    )
-    .width(Length::FillPortion(3))
-    .height(Length::Fill)
-    .style(Bl3UiStyle);
+            );
+        } else {
+            item_list_contents = item_list_contents.push(
+                Container::new(
+                    Text::new(NO_SEARCH_RESULTS_FOUND_MESSAGE)
+                        .font(JETBRAINS_MONO_BOLD)
+                        .size(17)
+                        .color(Color::from_rgb8(220, 220, 220)),
+                )
+                .width(Length::Fill)
+                .height(Length::Fill)
+                .align_x(Align::Center)
+                .align_y(Align::Center),
+            );
+        }
+    } else {
+        item_list_contents = item_list_contents.push(
+            Container::new(
+                Text::new("Please Import/Create an item to get started.")
+                    .font(JETBRAINS_MONO_BOLD)
+                    .size(17)
+                    .color(Color::from_rgb8(220, 220, 220)),
+            )
+            .width(Length::Fill)
+            .height(Length::Fill)
+            .align_x(Align::Center)
+            .align_y(Align::Center),
+        );
+    }
 
-    let item_list_and_editor = Row::new().push(item_list).push(item_editor).spacing(20);
+    let item_list = Container::new(item_list_contents)
+        .width(Length::FillPortion(3))
+        .height(Length::Fill)
+        .style(Bl3UiStyle);
+
+    let mut item_list_and_editor = Row::new().push(item_list).spacing(20);
+
+    if let Some(item_editor) = item_editor {
+        item_list_and_editor = item_list_and_editor.push(
+            item_editor
+                .width(Length::FillPortion(7))
+                .height(Length::Fill),
+        );
+    }
 
     let all_contents = Column::new()
         .push(general_options_row)
