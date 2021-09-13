@@ -2,8 +2,8 @@ use std::mem;
 use std::path::PathBuf;
 
 use iced::{
-    button, pick_list, svg, tooltip, Align, Application, Button, Clipboard, Color, Column, Command,
-    Container, Element, HorizontalAlignment, Length, PickList, Row, Svg, Text, Tooltip,
+    button, pick_list, svg, tooltip, Align, Application, Button, Color, Column, Command, Container,
+    Element, HorizontalAlignment, Length, PickList, Row, Svg, Text, Tooltip,
 };
 use tracing::{error, info};
 
@@ -185,11 +185,7 @@ impl Application for Bl3Application {
         format!("Borderlands 3 Save Editor - v{}", VERSION)
     }
 
-    fn update(
-        &mut self,
-        message: Self::Message,
-        _clipboard: &mut Clipboard,
-    ) -> Command<Self::Message> {
+    fn update(&mut self, message: Self::Message) -> Command<Self::Message> {
         match message {
             Bl3Message::Initialization(initialization_msg) => match initialization_msg {
                 InitializationMessage::LazyData => {
