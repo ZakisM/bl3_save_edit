@@ -14,6 +14,7 @@ pub mod item_editor;
 pub mod loading;
 pub mod manage_profile;
 pub mod manage_save;
+pub mod settings;
 
 pub const NO_SEARCH_RESULTS_FOUND_MESSAGE: &str = "No results found.";
 

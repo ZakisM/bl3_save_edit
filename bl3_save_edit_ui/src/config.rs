@@ -19,6 +19,12 @@ pub enum ConfigMessage {
 pub struct Bl3Config {
     config_dir: PathBuf,
     saves_dir: PathBuf,
+    #[serde(default = "default_scale_factor")]
+    ui_scale_factor: f64,
+}
+
+fn default_scale_factor() -> f64 {
+    1.0
 }
 
 impl Bl3Config {
@@ -51,6 +57,7 @@ impl Bl3Config {
             Self {
                 config_dir,
                 saves_dir: Default::default(),
+                ui_scale_factor: default_scale_factor(),
             }
         }
     }
@@ -88,5 +95,13 @@ impl Bl3Config {
 
     pub fn set_saves_dir(&mut self, dir: PathBuf) {
         self.saves_dir = dir;
+    }
+
+    pub fn ui_scale_factor(&self) -> f64 {
+        self.ui_scale_factor
+    }
+
+    pub fn set_ui_scale_factor(&mut self, ui_scale_factor: f64) {
+        self.ui_scale_factor = ui_scale_factor;
     }
 }
