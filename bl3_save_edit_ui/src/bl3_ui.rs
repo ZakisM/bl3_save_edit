@@ -75,6 +75,7 @@ pub struct Bl3Application {
     notification: Option<Notification>,
     latest_release: Option<Release>,
     is_updating: bool,
+    is_reloading_saves: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -89,6 +90,7 @@ pub enum Bl3Message {
     ManageSave(ManageSaveMessage),
     SaveFileCompleted(MessageResult<Bl3Save>),
     SaveProfileCompleted(MessageResult<Bl3Profile>),
+    FilesLoadedAfterSave(MessageResult<(Bl3FileType, Vec<Bl3FileType>)>),
     OpenBackupFolderCompleted(MessageResult<()>),
     ClearNotification,
 }
@@ -1041,17 +1043,7 @@ impl Application for Bl3Application {
                         NotificationSentiment::Positive,
                     ));
 
-                    let loaded_file_selected = &*self.loaded_files_selected;
-
-                    let loaded_file = self
-                        .loaded_files
-                        .iter_mut()
-                        .find(|f| *f == loaded_file_selected)
-                        .expect("failed to find loaded file");
-
-                    self.manage_save_state.current_file = save.clone();
-
-                    let save_file_name = save.file_name.clone();
+                    self.is_reloading_saves = true;
 
                     let bl3_file_type = match save.header_type {
                         HeaderType::PcSave => Bl3FileType::PcSave(save),
@@ -1064,17 +1056,13 @@ impl Application for Bl3Application {
                         }
                     };
 
-                    if loaded_file.filename() == save_file_name {
-                        *loaded_file = bl3_file_type.clone();
-                    } else {
-                        self.loaded_files.push(bl3_file_type.clone());
-                    }
-
-                    self.loaded_files.sort();
-
-                    self.loaded_files_selected = Box::new(bl3_file_type);
-
-                    state_mappers::map_loaded_file_to_state(self);
+                    return Command::perform(
+                        interaction::save::load_files_after_save(
+                            self.config.saves_dir().to_path_buf(),
+                            bl3_file_type,
+                        ),
+                        |r| Bl3Message::FilesLoadedAfterSave(MessageResult::handle_result(r)),
+                    );
                 }
                 MessageResult::Error(e) => {
                     let msg = format!("Failed to save file: {}", e);
@@ -1092,17 +1080,7 @@ impl Application for Bl3Application {
                         NotificationSentiment::Positive,
                     ));
 
-                    let loaded_file_selected = &*self.loaded_files_selected;
-
-                    let loaded_file = self
-                        .loaded_files
-                        .iter_mut()
-                        .find(|f| *f == loaded_file_selected)
-                        .expect("failed to find loaded file");
-
-                    self.manage_profile_state.current_file = profile.clone();
-
-                    let profile_file_name = profile.file_name.clone();
+                    self.is_reloading_saves = true;
 
                     let bl3_file_type = match profile.header_type {
                         HeaderType::PcProfile => Bl3FileType::PcProfile(profile),
@@ -1115,17 +1093,13 @@ impl Application for Bl3Application {
                         }
                     };
 
-                    if loaded_file.filename() == profile_file_name {
-                        *loaded_file = bl3_file_type.clone();
-                    } else {
-                        self.loaded_files.push(bl3_file_type.clone());
-                    }
-
-                    self.loaded_files.sort();
-
-                    self.loaded_files_selected = Box::new(bl3_file_type);
-
-                    state_mappers::map_loaded_file_to_state(self);
+                    return Command::perform(
+                        interaction::save::load_files_after_save(
+                            self.config.saves_dir().to_path_buf(),
+                            bl3_file_type,
+                        ),
+                        |r| Bl3Message::FilesLoadedAfterSave(MessageResult::handle_result(r)),
+                    );
                 }
                 MessageResult::Error(e) => {
                     let msg = format!("Failed to save profile: {}", e);
@@ -1136,6 +1110,41 @@ impl Application for Bl3Application {
                         Some(Notification::new(msg, NotificationSentiment::Negative));
                 }
             },
+            Bl3Message::FilesLoadedAfterSave(res) => {
+                match res {
+                    MessageResult::Success((saved_file, mut files)) => {
+                        files.sort();
+
+                        self.loaded_files = files;
+
+                        let selected_file = self.loaded_files.iter().find(|f| **f == saved_file);
+
+                        self.loaded_files_selected =
+                            Box::new(if let Some(selected_file) = selected_file {
+                                selected_file.to_owned()
+                            } else {
+                                self.loaded_files
+                                    .get(0)
+                                    .expect("loaded_files was empty")
+                                    .clone()
+                            });
+
+                        state_mappers::map_loaded_file_to_state(self);
+                    }
+                    MessageResult::Error(e) => {
+                        let msg = format!("Failed to load save folder: {}", e);
+
+                        error!("{}", msg);
+
+                        self.view_state = ViewState::ChooseSaveDirectory;
+
+                        self.notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    }
+                }
+
+                self.is_reloading_saves = false;
+            }
             Bl3Message::OpenBackupFolderCompleted(res) => {
                 if let MessageResult::Error(e) = res {
                     let msg = format!("Failed to open backups folder: {}", e);
@@ -1210,18 +1219,31 @@ impl Application for Bl3Application {
                 ));
         }
 
-        let all_saves_picklist = PickList::new(
-            &mut self.loaded_files_selector,
-            &self.loaded_files,
-            Some(*self.loaded_files_selected.clone()),
-            |f| InteractionMessage::LoadedFileSelected(Box::new(f)),
-        )
-        .font(JETBRAINS_MONO)
-        .text_size(17)
-        .width(Length::Fill)
-        .padding(10)
-        .style(Bl3UiStyle)
-        .into_element();
+        let all_saves_picklist = if !self.is_reloading_saves {
+            PickList::new(
+                &mut self.loaded_files_selector,
+                &self.loaded_files,
+                Some(*self.loaded_files_selected.clone()),
+                |f| InteractionMessage::LoadedFileSelected(Box::new(f)),
+            )
+            .font(JETBRAINS_MONO)
+            .text_size(17)
+            .width(Length::Fill)
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into_element()
+        } else {
+            Container::new(
+                Text::new("Reloading saves...")
+                    .font(JETBRAINS_MONO)
+                    .color(Color::from_rgb8(220, 220, 200))
+                    .size(17),
+            )
+            .width(Length::Fill)
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into()
+        };
 
         let view_state_discrim = mem::discriminant(&self.view_state);
         let manage_save_discrim = mem::discriminant(&ViewState::ManageSave(

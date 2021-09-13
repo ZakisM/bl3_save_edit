@@ -6,6 +6,9 @@ use tracing::info;
 
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
 use bl3_save_edit_core::bl3_save::Bl3Save;
+use bl3_save_edit_core::file_helper::Bl3FileType;
+
+use crate::commands::interaction::choose_save_directory;
 
 pub async fn save_file(
     config_dir: PathBuf,
@@ -71,4 +74,13 @@ pub async fn save_profile(
     tokio::fs::write(output_file, output).await?;
 
     Ok(new_profile)
+}
+
+pub async fn load_files_after_save(
+    dir: PathBuf,
+    file_saved: Bl3FileType,
+) -> Result<(Bl3FileType, Vec<Bl3FileType>)> {
+    let (_, all_files) = choose_save_directory::load_files_in_directory(dir).await?;
+
+    Ok((file_saved, all_files))
 }
