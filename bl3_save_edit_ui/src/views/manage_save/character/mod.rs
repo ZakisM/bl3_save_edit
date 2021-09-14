@@ -261,7 +261,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
 
     let ability_points = Container::new(
         LabelledElement::create(
-            "Ability Points",
+            "Skill Points",
             Length::Units(130),
             NumberInput::new(
                 &mut character_state.ability_points_input_state,
