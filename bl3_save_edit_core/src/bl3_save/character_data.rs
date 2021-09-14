@@ -40,6 +40,7 @@ pub struct CharacterData {
     pub character: Character,
     player_class: PlayerClass,
     player_level: i32,
+    ability_points: i32,
     guardian_rank: i32,
     head_skin_selected: GameDataKv,
     character_skin_selected: GameDataKv,
@@ -64,7 +65,15 @@ impl CharacterData {
                 .map(|p| p.player_class_path.as_str())
                 .context("failed to read player class")?,
         )?;
+
         let player_level = experience_to_level(character.experience_points)?;
+
+        let ability_points = character
+            .ability_data
+            .as_ref()
+            .context("failed to read Player ability data")?
+            .ability_points;
+
         let guardian_rank = character
             .guardian_rank_character_data
             .as_ref()
@@ -348,6 +357,7 @@ impl CharacterData {
             character,
             player_class,
             player_level,
+            ability_points,
             guardian_rank,
             head_skin_selected,
             character_skin_selected,
@@ -443,6 +453,26 @@ impl CharacterData {
                     self.unlock_challenge_obj(challenge_obj, 1, 0)?;
                 }
             }
+        }
+
+        Ok(())
+    }
+
+    pub fn ability_points(&self) -> i32 {
+        self.ability_points
+    }
+
+    pub fn set_ability_points(&mut self, ability_points: i32) -> Result<()> {
+        let ability_data = self
+            .character
+            .ability_data
+            .as_mut()
+            .context("failed to read Player ability data")?;
+
+        if ability_points != ability_data.ability_points {
+            ability_data.ability_points = ability_points;
+
+            self.ability_points = ability_points;
         }
 
         Ok(())

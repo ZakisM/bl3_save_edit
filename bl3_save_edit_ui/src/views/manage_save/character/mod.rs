@@ -34,7 +34,9 @@ pub struct CharacterState {
     pub level_input: i32,
     pub xp_level_input_state: text_input::State,
     pub experience_points_input: i32,
-    pub xp_points_input_state: text_input::State,
+    pub experience_points_input_state: text_input::State,
+    pub ability_points_input: i32,
+    pub ability_points_input_state: text_input::State,
     pub skin_selectors: SkinSelectors,
     pub gear_unlocker: GearUnlocker,
     pub ammo_setter: AmmoSetter,
@@ -44,8 +46,9 @@ pub struct CharacterState {
 #[derive(Debug, Clone)]
 pub enum SaveCharacterInteractionMessage {
     Name(String),
-    XpLevel(i32),
-    XpPoints(i32),
+    Level(i32),
+    ExperiencePoints(i32),
+    AbilityPoints(i32),
     PlayerClassSelected(PlayerClass),
     SkinMessage(CharacterSkinSelectedMessage),
     GearMessage(CharacterGearUnlockedMessage),
@@ -176,7 +179,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
         .push(player_class)
         .spacing(20);
 
-    let xp_level = Container::new(
+    let level = Container::new(
         LabelledElement::create(
             "Level",
             Length::Units(60),
@@ -189,7 +192,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                SaveCharacterInteractionMessage::XpLevel(v),
+                                SaveCharacterInteractionMessage::Level(v),
                             ),
                         )
                     },
@@ -216,20 +219,20 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
-    let xp_points = Container::new(
+    let experience_points = Container::new(
         LabelledElement::create(
             "Experience",
             Length::Units(95),
             Tooltip::new(
                 NumberInput::new(
-                    &mut character_state.xp_points_input_state,
+                    &mut character_state.experience_points_input_state,
                     character_state.experience_points_input,
                     0,
                     Some(REQUIRED_XP_LIST[MAX_CHARACTER_LEVEL - 1][0]),
                     |v| {
                         InteractionMessage::ManageSaveInteraction(
                             ManageSaveInteractionMessage::Character(
-                                SaveCharacterInteractionMessage::XpPoints(v),
+                                SaveCharacterInteractionMessage::ExperiencePoints(v),
                             ),
                         )
                     },
@@ -256,7 +259,42 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
-    let xp_row = Row::new().push(xp_level).push(xp_points).spacing(20);
+    let ability_points = Container::new(
+        LabelledElement::create(
+            "Ability Points",
+            Length::Units(130),
+            NumberInput::new(
+                &mut character_state.ability_points_input_state,
+                character_state.ability_points_input,
+                0,
+                Some(i32::MAX),
+                |v| {
+                    InteractionMessage::ManageSaveInteraction(
+                        ManageSaveInteractionMessage::Character(
+                            SaveCharacterInteractionMessage::AbilityPoints(v),
+                        ),
+                    )
+                },
+            )
+            .0
+            .font(JETBRAINS_MONO)
+            .padding(10)
+            .size(17)
+            .style(Bl3UiStyle)
+            .into_element(),
+        )
+        .spacing(15)
+        .align_items(Align::Center),
+    )
+    .width(Length::Fill)
+    .height(Length::Units(36))
+    .style(Bl3UiStyle);
+
+    let experience_and_level_row = Row::new()
+        .push(level)
+        .push(experience_points)
+        .push(ability_points)
+        .spacing(20);
 
     let skin_unlocker = character_state.skin_selectors.view(&selected_class);
 
@@ -283,7 +321,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
 
     let all_contents = Column::new()
         .push(name_class_row)
-        .push(xp_row)
+        .push(experience_and_level_row)
         .push(skin_unlocker)
         .push(slot_sdu_row)
         .spacing(20);

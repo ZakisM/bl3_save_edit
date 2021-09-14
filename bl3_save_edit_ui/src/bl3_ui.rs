@@ -362,7 +362,7 @@ impl Application for Bl3Application {
                                             .character_state
                                             .name_input = name_input;
                                     }
-                                    SaveCharacterInteractionMessage::XpLevel(level) => {
+                                    SaveCharacterInteractionMessage::Level(level) => {
                                         let xp_points = if level > 0 {
                                             REQUIRED_XP_LIST[level as usize - 1][0]
                                         } else {
@@ -378,7 +378,7 @@ impl Application for Bl3Application {
 
                                         character_state.experience_points_input = xp_points;
                                     }
-                                    SaveCharacterInteractionMessage::XpPoints(xp) => {
+                                    SaveCharacterInteractionMessage::ExperiencePoints(xp) => {
                                         let level = experience_to_level(xp as i32).unwrap_or(1);
 
                                         let character_state = &mut self
@@ -389,6 +389,12 @@ impl Application for Bl3Application {
                                         character_state.experience_points_input = xp;
 
                                         character_state.level_input = level;
+                                    }
+                                    SaveCharacterInteractionMessage::AbilityPoints(points) => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .ability_points_input = points;
                                     }
                                     SaveCharacterInteractionMessage::SduMessage(sdu_message) => {
                                         let sdu_unlocker = &mut self

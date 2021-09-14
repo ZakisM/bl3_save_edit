@@ -34,6 +34,11 @@ pub fn map_save_to_character_state(manage_save_state: &mut ManageSaveState) {
     manage_save_state
         .save_view_state
         .character_state
+        .ability_points_input = save.character_data.ability_points();
+
+    manage_save_state
+        .save_view_state
+        .character_state
         .skin_selectors
         .head_skin
         .selected = save.character_data.head_skin_selected();
@@ -176,6 +181,13 @@ pub fn map_character_state_to_save(
             .save_view_state
             .character_state
             .player_class_selected_class,
+    )?;
+
+    save.character_data.set_ability_points(
+        manage_save_state
+            .save_view_state
+            .character_state
+            .ability_points_input,
     )?;
 
     save.character_data.set_head_skin_selected(
