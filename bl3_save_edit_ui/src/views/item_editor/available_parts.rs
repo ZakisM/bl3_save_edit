@@ -17,7 +17,6 @@ use crate::views::item_editor::parts_tab_bar::{parts_tab_bar_button, AvailablePa
 use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::{InteractionExt, NO_SEARCH_RESULTS_FOUND_MESSAGE};
 use crate::widgets::text_input_limited::TextInputLimited;
-use crate::widgets::text_margin::TextMargin;
 
 #[derive(Debug, Copy, Clone, Default)]
 pub struct AvailablePartTypeIndex {
@@ -97,12 +96,7 @@ impl AvailableResourcePart {
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {
         let part_contents_col = Column::new()
-            .push(
-                TextMargin::new(&self.part.name, 1)
-                    .0
-                    .font(JETBRAINS_MONO)
-                    .size(16),
-            )
+            .push(Text::new(&self.part.name).font(JETBRAINS_MONO).size(16))
             .spacing(10);
 
         let part_contents_col = add_extra_part_info(part_contents_col, &self.part.info);
