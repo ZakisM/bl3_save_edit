@@ -401,7 +401,11 @@ impl CharacterData {
                 .for_each(|ti| ti.points = 0);
 
             if self.player_level > 2 {
-                ability_data.ability_points = self.player_level - 2;
+                let new_ability_points = self.player_level - 2;
+
+                ability_data.ability_points = new_ability_points;
+
+                self.ability_points = new_ability_points;
             }
 
             self.player_class = player_class;
@@ -445,7 +449,11 @@ impl CharacterData {
             }
 
             if self.player_level > 2 {
-                ability_data.ability_points = self.player_level - 2;
+                let new_ability_points = self.player_level - 2;
+
+                ability_data.ability_points = new_ability_points;
+
+                self.ability_points = new_ability_points;
             }
 
             for (challenge_level, challenge_obj) in LEVEL_CHALLENGES {
