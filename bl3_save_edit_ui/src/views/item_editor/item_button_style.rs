@@ -8,7 +8,7 @@ impl button::StyleSheet for ItemEditorButtonStyle {
     fn active(&self) -> button::Style {
         let (background, text_color) = if self.is_active {
             (
-                Some(Color::from_rgb8(30, 30, 30).into()),
+                Some(Color::from_rgb8(28, 28, 28).into()),
                 Color::from_rgb8(255, 255, 255),
             )
         } else {

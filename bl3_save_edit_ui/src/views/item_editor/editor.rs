@@ -1,7 +1,8 @@
 use iced::{
-    button, pick_list, text_input, tooltip, Align, Button, Column, Container, Length, PickList,
-    Row, Text, TextInput, Tooltip,
+    button, searchable_pick_list, text_input, tooltip, Align, Button, Column, Container, Length,
+    Row, SearchablePickList, Text, TextInput, Tooltip,
 };
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use bl3_save_edit_core::bl3_item::{BalancePart, Bl3Item, InvDataPart, ManufacturerPart};
 use bl3_save_edit_core::bl3_save::character_data::MAX_CHARACTER_LEVEL;
@@ -16,7 +17,7 @@ use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::available_parts::AvailableParts;
 use crate::views::item_editor::current_parts::CurrentParts;
 use crate::views::item_editor::ItemEditorInteractionMessage;
-use crate::views::InteractionExt;
+use crate::views::{InteractionExt, NO_SEARCH_RESULTS_FOUND_MESSAGE};
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
 
@@ -27,12 +28,19 @@ pub struct Editor {
     pub sync_item_level_char_level_button: button::State,
     pub serial_input: String,
     pub serial_input_state: text_input::State,
-    pub delete_item_button: button::State,
-    pub balance_input_state: pick_list::State<BalancePart>,
+    pub delete_item_button_state: button::State,
+    pub duplicate_item_button_state: button::State,
+    pub balance_input_state: searchable_pick_list::State<BalancePart>,
+    pub balance_search_input: String,
+    pub balance_parts_list: Vec<BalancePart>,
     pub balance_input_selected: BalancePart,
-    pub inv_data_input_state: pick_list::State<InvDataPart>,
+    pub inv_data_input_state: searchable_pick_list::State<InvDataPart>,
+    pub inv_data_search_input: String,
+    pub inv_data_parts_list: Vec<InvDataPart>,
     pub inv_data_input_selected: InvDataPart,
-    pub manufacturer_input_state: pick_list::State<ManufacturerPart>,
+    pub manufacturer_search_input: String,
+    pub manufacturer_parts_list: Vec<ManufacturerPart>,
+    pub manufacturer_input_state: searchable_pick_list::State<ManufacturerPart>,
     pub manufacturer_input_selected: ManufacturerPart,
     pub available_parts: AvailableParts,
     pub current_parts: CurrentParts,
@@ -136,7 +144,21 @@ impl Editor {
             )
             .push(
                 Button::new(
-                    &mut self.delete_item_button,
+                    &mut self.duplicate_item_button_state,
+                    Text::new("Duplicate Item")
+                        .font(JETBRAINS_MONO_BOLD)
+                        .size(17),
+                )
+                .on_press(interaction_message(
+                    ItemEditorInteractionMessage::DuplicateItem(item_id),
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
+            .push(
+                Button::new(
+                    &mut self.delete_item_button_state,
                     Text::new("Delete Item").font(JETBRAINS_MONO_BOLD).size(17),
                 )
                 .on_press(interaction_message(
@@ -148,6 +170,84 @@ impl Editor {
             )
             .spacing(20);
 
+        // Balance search
+        let balance_search_query = &self.balance_search_input;
+
+        if !balance_search_query.is_empty() {
+            let filtered_results = INVENTORY_BALANCE_PARTS
+                .par_iter()
+                .filter(|i| {
+                    i.ident.to_lowercase().contains(balance_search_query)
+                        || i.name
+                            .as_ref()
+                            .map(|n| n.to_lowercase().contains(balance_search_query))
+                            .unwrap_or(false)
+                })
+                .cloned()
+                .collect::<Vec<_>>();
+
+            self.balance_parts_list = if !filtered_results.is_empty() {
+                filtered_results
+            } else {
+                // Probably not the best way to handle this but doing it anyway...
+                vec![BalancePart {
+                    ident: NO_SEARCH_RESULTS_FOUND_MESSAGE.to_owned(),
+                    short_ident: None,
+                    name: None,
+                    idx: 0,
+                }]
+            };
+        } else {
+            self.balance_parts_list = INVENTORY_BALANCE_PARTS.to_vec();
+        }
+
+        // Inventory Data search
+        let inv_data_search_query = &self.inv_data_search_input;
+
+        if !inv_data_search_query.is_empty() {
+            let filtered_results = INVENTORY_INV_DATA_PARTS
+                .par_iter()
+                .filter(|i| i.ident.to_lowercase().contains(inv_data_search_query))
+                .cloned()
+                .collect::<Vec<_>>();
+
+            self.inv_data_parts_list = if !filtered_results.is_empty() {
+                filtered_results
+            } else {
+                // Probably not the best way to handle this but doing it anyway...
+                vec![InvDataPart {
+                    ident: NO_SEARCH_RESULTS_FOUND_MESSAGE.to_owned(),
+                    idx: 0,
+                }]
+            };
+        } else {
+            self.inv_data_parts_list = INVENTORY_INV_DATA_PARTS.to_vec();
+        }
+
+        // Manufacturer search
+        let manufacturer_search_query = &self.manufacturer_search_input;
+
+        if !manufacturer_search_query.is_empty() {
+            let filtered_results = INVENTORY_MANUFACTURER_PARTS
+                .par_iter()
+                .filter(|i| i.ident.to_lowercase().contains(manufacturer_search_query))
+                .cloned()
+                .collect::<Vec<_>>();
+
+            self.manufacturer_parts_list = if !filtered_results.is_empty() {
+                filtered_results
+            } else {
+                // Probably not the best way to handle this but doing it anyway...
+                vec![ManufacturerPart {
+                    ident: NO_SEARCH_RESULTS_FOUND_MESSAGE.to_owned(),
+                    short_ident: None,
+                    idx: 0,
+                }]
+            };
+        } else {
+            self.manufacturer_parts_list = INVENTORY_MANUFACTURER_PARTS.to_vec();
+        }
+
         let item_editor_contents = Column::new()
             .push(level_serial_delete_row)
             .push(
@@ -155,10 +255,17 @@ impl Editor {
                     LabelledElement::create(
                         "Balance",
                         Length::Units(130),
-                        PickList::new(
+                        SearchablePickList::new(
                             &mut self.balance_input_state,
-                            &INVENTORY_BALANCE_PARTS[..],
+                            &format!("Search {} Balance Parts...", self.inv_data_parts_list.len()),
+                            &self.balance_search_input,
                             Some(self.balance_input_selected.clone()),
+                            &self.balance_parts_list[..],
+                            move |s| {
+                                interaction_message(
+                                    ItemEditorInteractionMessage::BalanceSearchInputChanged(s),
+                                )
+                            },
                             move |s| {
                                 interaction_message(
                                     ItemEditorInteractionMessage::BalanceInputSelected(s),
@@ -166,7 +273,7 @@ impl Editor {
                             },
                         )
                         .font(JETBRAINS_MONO)
-                        .text_size(16)
+                        .size(16)
                         .padding(10)
                         .style(Bl3UiStyle)
                         .width(Length::Fill)
@@ -183,10 +290,20 @@ impl Editor {
                     LabelledElement::create(
                         "Inventory Data",
                         Length::Units(130),
-                        PickList::new(
+                        SearchablePickList::new(
                             &mut self.inv_data_input_state,
-                            &INVENTORY_INV_DATA_PARTS[..],
+                            &format!(
+                                "Search {} Inventory Data Parts...",
+                                self.inv_data_parts_list.len()
+                            ),
+                            &self.inv_data_search_input,
                             Some(self.inv_data_input_selected.clone()),
+                            &self.inv_data_parts_list[..],
+                            move |s| {
+                                interaction_message(
+                                    ItemEditorInteractionMessage::InvDataSearchInputChanged(s),
+                                )
+                            },
                             move |s| {
                                 interaction_message(
                                     ItemEditorInteractionMessage::InvDataInputSelected(s),
@@ -194,7 +311,7 @@ impl Editor {
                             },
                         )
                         .font(JETBRAINS_MONO)
-                        .text_size(16)
+                        .size(16)
                         .padding(10)
                         .style(Bl3UiStyle)
                         .width(Length::Fill)
@@ -211,10 +328,20 @@ impl Editor {
                     LabelledElement::create(
                         "Manufacturer",
                         Length::Units(130),
-                        PickList::new(
+                        SearchablePickList::new(
                             &mut self.manufacturer_input_state,
-                            &INVENTORY_MANUFACTURER_PARTS[..],
+                            &format!(
+                                "Search {} Manufacturer Parts...",
+                                self.manufacturer_parts_list.len()
+                            ),
+                            &self.manufacturer_search_input,
                             Some(self.manufacturer_input_selected.clone()),
+                            &self.manufacturer_parts_list,
+                            move |s| {
+                                interaction_message(
+                                    ItemEditorInteractionMessage::ManufacturerSearchInputChanged(s),
+                                )
+                            },
                             move |s| {
                                 interaction_message(
                                     ItemEditorInteractionMessage::ManufacturerInputSelected(s),
@@ -222,7 +349,7 @@ impl Editor {
                             },
                         )
                         .font(JETBRAINS_MONO)
-                        .text_size(16)
+                        .size(16)
                         .padding(10)
                         .style(Bl3UiStyle)
                         .width(Length::Fill)

@@ -14,7 +14,7 @@ pub fn add_extra_part_info<'a>(
 
     if let Some(effects) = &part_info.effects {
         part_contents_col = part_contents_col.push(
-            TextMargin::new(effects, 2)
+            TextMargin::new(effects, 1)
                 .0
                 .font(JETBRAINS_MONO_LIGHT_ITALIC)
                 .color(Color::from_rgb8(180, 180, 180))
@@ -35,7 +35,7 @@ pub fn add_extra_part_info<'a>(
 
     if !positives_negatives.is_empty() {
         part_contents_col = part_contents_col.push(
-            TextMargin::new(positives_negatives, 2)
+            TextMargin::new(positives_negatives, 1)
                 .0
                 .font(JETBRAINS_MONO_LIGHT_ITALIC)
                 .color(Color::from_rgb8(180, 180, 180))

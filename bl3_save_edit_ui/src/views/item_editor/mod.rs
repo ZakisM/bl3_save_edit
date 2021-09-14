@@ -6,6 +6,7 @@ use iced::{
     button, scrollable, text_input, tooltip, Align, Button, Color, Column, Command, Container,
     Length, Row, Scrollable, Text, Tooltip,
 };
+use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
 
 use bl3_save_edit_core::bl3_item::{
     BalancePart, Bl3Item, InvDataPart, ManufacturerPart, MAX_BL3_ITEM_ANOINTMENTS,
@@ -23,12 +24,11 @@ use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
 use crate::views::item_editor::current_parts::CurrentPartTypeIndex;
 use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
 use crate::views::item_editor::parts_tab_bar::{AvailablePartType, CurrentPartType};
-use crate::views::InteractionExt;
+use crate::views::{InteractionExt, NO_SEARCH_RESULTS_FOUND_MESSAGE};
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::notification::{Notification, NotificationSentiment};
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_input_limited::TextInputLimited;
-use crate::widgets::text_margin::TextMargin;
 
 pub mod available_parts;
 pub mod current_parts;
@@ -49,6 +49,8 @@ pub struct ItemEditorState {
     pub all_item_levels_button_state: button::State,
     pub import_serial_button_state: button::State,
     items: Vec<ItemEditorListItem>,
+    pub search_items_input_state: text_input::State,
+    pub search_items_input: String,
     pub item_list_scrollable_state: scrollable::State,
 }
 
@@ -142,9 +144,9 @@ pub enum ItemEditorFileType<'a> {
 #[derive(Debug, Clone)]
 pub enum ItemEditorInteractionMessage {
     ItemPressed(usize),
+    ItemsSearchInputChanged(String),
     ShowAllAvailablePartsSelected(bool),
     AvailablePartsSearchInputChanged(String),
-    AvailablePartsSearchInputDebounced(String),
     AvailablePartsTabPressed,
     AvailableAnointmentsTabPressed,
     CurrentPartsTabPressed,
@@ -160,8 +162,12 @@ pub enum ItemEditorInteractionMessage {
     AllItemLevelDebounced,
     ItemLevel(i32),
     DeleteItem(usize),
+    DuplicateItem(usize),
     BalanceInputSelected(BalancePart),
+    BalanceSearchInputChanged(String),
     InvDataInputSelected(InvDataPart),
+    InvDataSearchInputChanged(String),
+    ManufacturerSearchInputChanged(String),
     ManufacturerInputSelected(ManufacturerPart),
 }
 
@@ -192,6 +198,9 @@ impl ItemEditorInteractionMessage {
                         }
                 });
             }
+            ItemEditorInteractionMessage::ItemsSearchInputChanged(search_items_query) => {
+                item_editor_state.search_items_input = search_items_query.to_lowercase();
+            }
             ItemEditorInteractionMessage::ShowAllAvailablePartsSelected(selected) => {
                 item_editor_state.map_current_item_if_exists(|i| {
                     i.editor.available_parts.show_all_available_parts = selected;
@@ -199,37 +208,18 @@ impl ItemEditorInteractionMessage {
             }
             ItemEditorInteractionMessage::AvailablePartsSearchInputChanged(search_input) => {
                 item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.available_parts.search_input = search_input.clone();
-                });
-
-                command = Some(Command::perform(
-                    async {
-                        //Debounce
-                        tokio::time::sleep(Duration::from_millis(1000)).await;
-                    },
-                    move |_| {
-                        ItemEditorInteractionMessage::AvailablePartsSearchInputDebounced(
-                            search_input.to_lowercase(),
-                        )
-                    },
-                ));
-            }
-            ItemEditorInteractionMessage::AvailablePartsSearchInputDebounced(search_query) => {
-                item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.available_parts.search_query = search_query;
+                    i.editor.available_parts.search_input = search_input.to_lowercase();
                 });
             }
             ItemEditorInteractionMessage::AvailablePartsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
                     i.editor.available_parts.scrollable_state.snap_to(0.0);
-                    i.editor.available_parts.search_query = "".to_owned();
                     i.editor.available_parts.search_input = "".to_owned();
                     i.editor.available_parts.parts_tab_view = AvailablePartType::Parts;
                 }),
             ItemEditorInteractionMessage::AvailableAnointmentsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
                     i.editor.available_parts.scrollable_state.snap_to(0.0);
-                    i.editor.available_parts.search_query = "".to_owned();
                     i.editor.available_parts.search_input = "".to_owned();
                     i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments;
                 }),
@@ -415,7 +405,7 @@ impl ItemEditorInteractionMessage {
                 command = Some(Command::perform(
                     async {
                         //Debounce
-                        tokio::time::sleep(Duration::from_millis(1000)).await;
+                        tokio::time::sleep(Duration::from_millis(500)).await;
                     },
                     |_| ItemEditorInteractionMessage::AllItemLevelDebounced,
                 ));
@@ -465,31 +455,95 @@ impl ItemEditorInteractionMessage {
 
                 item_editor_state.map_current_item_if_exists_to_editor_state();
             }
-            ItemEditorInteractionMessage::BalanceInputSelected(balance_selected) => {
-                if let Err(e) = item_editor_state
-                    .map_current_item_if_exists_result(|i| i.item.set_balance(balance_selected))
-                {
-                    let msg = format!("Failed to set balance for item: {}", e);
+            ItemEditorInteractionMessage::DuplicateItem(id) => {
+                match item_editor_state.items.get(id) {
+                    Some(item) => {
+                        let item = item.item.clone();
 
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                        item_editor_state.add_item(item);
+
+                        item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+
+                        item_editor_state.map_current_item_if_exists_to_editor_state();
+
+                        item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                    }
+                    None => {
+                        let msg = format!("Failed to duplicate item number {}: could not find this item to duplicate.", id);
+
+                        notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    }
+                }
+            }
+            ItemEditorInteractionMessage::BalanceInputSelected(balance_selected) => {
+                if balance_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
+                    if let Err(e) = item_editor_state
+                        .map_current_item_if_exists_result(|i| i.item.set_balance(balance_selected))
+                    {
+                        let msg = format!("Failed to set balance for item: {}", e);
+
+                        notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    } else {
+                        item_editor_state
+                            .map_current_item_if_exists(|i| i.editor.balance_search_input.clear())
+                    }
+                }
+            }
+            ItemEditorInteractionMessage::BalanceSearchInputChanged(balance_search_query) => {
+                if balance_search_query.len() <= 500 {
+                    item_editor_state.map_current_item_if_exists(|i| {
+                        i.editor.balance_search_input = balance_search_query.to_lowercase()
+                    });
                 }
             }
             ItemEditorInteractionMessage::InvDataInputSelected(inv_data_selected) => {
-                if let Err(e) = item_editor_state
-                    .map_current_item_if_exists_result(|i| i.item.set_inv_data(inv_data_selected))
-                {
-                    let msg = format!("Failed to set inventory data for item: {}", e);
+                if inv_data_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
+                    if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
+                        i.item.set_inv_data(inv_data_selected)
+                    }) {
+                        let msg = format!("Failed to set inventory data for item: {}", e);
 
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                        notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    } else {
+                        item_editor_state
+                            .map_current_item_if_exists(|i| i.editor.inv_data_search_input.clear())
+                    }
+                }
+            }
+            ItemEditorInteractionMessage::InvDataSearchInputChanged(inv_data_search_query) => {
+                if inv_data_search_query.len() <= 500 {
+                    item_editor_state.map_current_item_if_exists(|i| {
+                        i.editor.inv_data_search_input = inv_data_search_query.to_lowercase()
+                    });
                 }
             }
             ItemEditorInteractionMessage::ManufacturerInputSelected(manufacturer_selected) => {
-                if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
-                    i.item.set_manufacturer(manufacturer_selected)
-                }) {
-                    let msg = format!("Failed to set manufacturer for item: {}", e);
+                if manufacturer_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
+                    if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
+                        i.item.set_manufacturer(manufacturer_selected)
+                    }) {
+                        let msg = format!("Failed to set manufacturer for item: {}", e);
 
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                        notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    } else {
+                        item_editor_state.map_current_item_if_exists(|i| {
+                            i.editor.manufacturer_search_input.clear()
+                        })
+                    }
+                }
+            }
+            ItemEditorInteractionMessage::ManufacturerSearchInputChanged(
+                manufacturer_search_query,
+            ) => {
+                if manufacturer_search_query.len() <= 500 {
+                    item_editor_state.map_current_item_if_exists(|i| {
+                        i.editor.manufacturer_search_input =
+                            manufacturer_search_query.to_lowercase()
+                    });
                 }
             }
         }
@@ -613,66 +667,171 @@ where
 
     let mut item_editor = None;
 
+    let search_items_query = &item_editor_state.search_items_input;
+
+    let filtered_items = item_editor_state
+        .items
+        .par_iter()
+        .enumerate()
+        .map(|(i, item)| (i, &item.item))
+        .filter(|(_, item)| {
+            if search_items_query.is_empty() {
+                return true;
+            }
+
+            // Handle this scenario explicitly as we want to search one if the other doesn't exist
+            let balance_part_to_search = if let Some(name) = &item.balance_part().name {
+                Some(name.to_lowercase())
+            } else {
+                item.balance_part()
+                    .short_ident
+                    .as_ref()
+                    .map(|short_ident| short_ident.to_lowercase())
+            };
+
+            balance_part_to_search
+                .map(|n| n.contains(search_items_query))
+                .unwrap_or(false)
+                || item
+                    .manufacturer_part()
+                    .short_ident
+                    .as_ref()
+                    .map(|mp| mp.to_lowercase().contains(search_items_query))
+                    .unwrap_or(false)
+                || item.level().to_string().contains(search_items_query)
+                || item
+                    .item_parts
+                    .as_ref()
+                    .map(|ip| {
+                        ip.item_type
+                            .to_string()
+                            .to_lowercase()
+                            .contains(search_items_query)
+                            || ip
+                                .rarity
+                                .to_string()
+                                .to_lowercase()
+                                .contains(search_items_query)
+                            || ip
+                                .weapon_type
+                                .as_ref()
+                                .map(|wt| {
+                                    wt.to_string().to_lowercase().contains(search_items_query)
+                                })
+                                .unwrap_or(false)
+                    })
+                    .unwrap_or(false)
+        })
+        .map(|(i, item)| (i, item.clone()))
+        .collect::<Vec<_>>();
+
     let inventory_items = item_editor_state.items.iter_mut().enumerate().fold(
         Column::new().align_items(Align::Start),
-        |inventory_items, (i, item)| {
+        |mut inventory_items, (i, item)| {
             let is_active = i == selected_item_index;
 
             let (list_item_button, curr_item_editor) = item.view(is_active, interaction_message);
+
+            // Check if the curr item index is in our filtered_items to decide whether to show the
+            // list item button or not.
+            if !filtered_items.is_empty()
+                && filtered_items.iter().any(|(fi_index, _)| *fi_index == i)
+            {
+                inventory_items = inventory_items.push(list_item_button);
+            }
 
             if is_active {
                 item_editor = curr_item_editor;
             }
 
-            inventory_items.push(list_item_button)
+            inventory_items
         },
     );
 
-    let item_editor = if let Some(item_editor) = item_editor {
-        item_editor
-    } else {
+    let mut item_list_contents = Column::new().push(
         Container::new(
-            Text::new("Please Import/Create an item to get started.")
+            Text::new("Items")
                 .font(JETBRAINS_MONO_BOLD)
                 .size(17)
-                .color(Color::from_rgb8(220, 220, 220)),
+                .color(Color::from_rgb8(242, 203, 5)),
         )
+        .padding(10)
         .align_x(Align::Center)
-        .align_y(Align::Center)
-        .style(Bl3UiStyle)
-    }
-    .width(Length::FillPortion(7))
-    .height(Length::Fill);
+        .width(Length::Fill)
+        .style(Bl3UiStyle),
+    );
 
-    let item_list = Container::new(
-        Column::new()
-            .push(
-                Container::new(
-                    TextMargin::new(format!("Items ({})", number_of_items), 2)
-                        .0
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
-                        .color(Color::from_rgb8(242, 203, 5)),
-                )
-                .padding(10)
-                .align_x(Align::Center)
-                .width(Length::Fill)
-                .style(Bl3UiStyle),
+    if number_of_items > 0 {
+        item_list_contents = item_list_contents.push(
+            TextInputLimited::new(
+                &mut item_editor_state.search_items_input_state,
+                &format!("Search {} items...", number_of_items),
+                &item_editor_state.search_items_input,
+                500,
+                move |s| {
+                    interaction_message(ItemEditorInteractionMessage::ItemsSearchInputChanged(s))
+                },
             )
-            .push(
+            .0
+            .font(JETBRAINS_MONO)
+            .padding(10)
+            .size(18)
+            .style(Bl3UiStyle)
+            .into_element(),
+        );
+
+        if !filtered_items.is_empty() {
+            item_list_contents = item_list_contents.push(
                 Container::new(
                     Scrollable::new(&mut item_editor_state.item_list_scrollable_state)
                         .push(inventory_items)
                         .height(Length::Fill),
                 )
                 .padding(1),
-            ),
-    )
-    .width(Length::FillPortion(3))
-    .height(Length::Fill)
-    .style(Bl3UiStyle);
+            );
+        } else {
+            item_list_contents = item_list_contents.push(
+                Container::new(
+                    Text::new(NO_SEARCH_RESULTS_FOUND_MESSAGE)
+                        .font(JETBRAINS_MONO_BOLD)
+                        .size(17)
+                        .color(Color::from_rgb8(220, 220, 220)),
+                )
+                .width(Length::Fill)
+                .height(Length::Fill)
+                .align_x(Align::Center)
+                .align_y(Align::Center),
+            );
+        }
+    } else {
+        item_list_contents = item_list_contents.push(
+            Container::new(
+                Text::new("Please Import/Create an item to get started.")
+                    .font(JETBRAINS_MONO_BOLD)
+                    .size(17)
+                    .color(Color::from_rgb8(220, 220, 220)),
+            )
+            .width(Length::Fill)
+            .height(Length::Fill)
+            .align_x(Align::Center)
+            .align_y(Align::Center),
+        );
+    }
 
-    let item_list_and_editor = Row::new().push(item_list).push(item_editor).spacing(20);
+    let item_list = Container::new(item_list_contents)
+        .width(Length::FillPortion(3))
+        .height(Length::Fill)
+        .style(Bl3UiStyle);
+
+    let mut item_list_and_editor = Row::new().push(item_list).spacing(20);
+
+    if let Some(item_editor) = item_editor {
+        item_list_and_editor = item_list_and_editor.push(
+            item_editor
+                .width(Length::FillPortion(7))
+                .height(Length::Fill),
+        );
+    }
 
     let all_contents = Column::new()
         .push(general_options_row)

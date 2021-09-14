@@ -40,7 +40,17 @@ pub fn map_profile_to_bank_state(manage_profile_state: &mut ManageProfileState) 
         .profile_view_state
         .bank_state
         .item_editor_state
-        .map_current_item_if_exists(|i| i.editor.available_parts.scrollable_state.snap_to(0.0));
+        .map_current_item_if_exists(|i| {
+            i.editor.available_parts.scrollable_state.snap_to(0.0);
+            i.editor.current_parts.scrollable_state.snap_to(0.0);
+        });
+
+    manage_profile_state
+        .profile_view_state
+        .bank_state
+        .item_editor_state
+        .search_items_input
+        .clear();
 }
 
 pub fn map_bank_state_to_profile(
@@ -58,8 +68,6 @@ pub fn map_bank_state_to_profile(
         if let Some(original_serial_number) =
             profile.profile_data.profile.bank_inventory_list.get(i)
         {
-            // let original_serial_number = &original_item.item_serial_number;
-
             let edited_serial_number = edited_item.item.get_serial_number(true)?;
 
             // If the item we have edited has different serial number

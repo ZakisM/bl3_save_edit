@@ -2,7 +2,8 @@ use iced::{button, svg, Column, Container, Length, Row};
 use strum::Display;
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
-use crate::resources::svgs::{CHARACTER, CURRENCY, GENERAL, INVENTORY};
+use crate::resources::svgs::{CHARACTER, CURRENCY, GENERAL, INVENTORY, SETTINGS};
+use crate::views;
 use crate::views::manage_save::character::CharacterState;
 use crate::views::manage_save::currency::CurrencyState;
 use crate::views::manage_save::general::GeneralState;
@@ -10,6 +11,7 @@ use crate::views::manage_save::inventory::InventoryState;
 use crate::views::manage_save::{
     character, currency, general, inventory, ManageSaveInteractionMessage, ManageSaveState,
 };
+use crate::views::settings::SettingsState;
 use crate::views::{tab_bar_button, ManageTabBarStyle};
 
 #[derive(Debug, Default)]
@@ -27,6 +29,7 @@ pub struct SaveTabBarState {
     character_button_state: button::State,
     inventory_button_state: button::State,
     currency_button_state: button::State,
+    settings_button_state: button::State,
 }
 
 #[derive(Debug, Clone)]
@@ -35,6 +38,7 @@ pub enum SaveTabBarInteractionMessage {
     Character,
     Inventory,
     Currency,
+    Settings,
 }
 
 #[derive(Debug, Display, PartialEq)]
@@ -44,9 +48,12 @@ pub enum SaveTabBarView {
     Character,
     Inventory,
     Currency,
+    Settings,
 }
 
 pub fn view<'a>(
+    settings_state: &'a mut SettingsState,
+    choose_dir_window_open: bool,
     manage_save_state: &'a mut ManageSaveState,
     tab_bar_view: &SaveTabBarView,
 ) -> Container<'a, Bl3Message> {
@@ -106,12 +113,27 @@ pub fn view<'a>(
         105,
     );
 
+    let settings_button = tab_bar_button(
+        &mut manage_save_state
+            .save_view_state
+            .tab_bar_state
+            .settings_button_state,
+        SaveTabBarView::Settings,
+        tab_bar_view,
+        InteractionMessage::ManageSaveInteraction(ManageSaveInteractionMessage::TabBar(
+            SaveTabBarInteractionMessage::Settings,
+        )),
+        svg::Handle::from_memory(SETTINGS),
+        105,
+    );
+
     let tab_bar = Container::new(
         Row::new()
             .push(general_button)
             .push(character_button)
             .push(inventory_button)
-            .push(currency_button),
+            .push(currency_button)
+            .push(settings_button),
     )
     .width(Length::Fill)
     .style(ManageTabBarStyle);
@@ -129,6 +151,7 @@ pub fn view<'a>(
         SaveTabBarView::Inventory => {
             inventory::view(&mut manage_save_state.save_view_state.inventory_state)
         }
+        SaveTabBarView::Settings => views::settings::view(settings_state, choose_dir_window_open),
     };
 
     let all_contents = Column::new().push(tab_bar).push(tab_content);

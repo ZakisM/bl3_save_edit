@@ -1,3 +1,4 @@
+pub mod arbitrary_bits;
 pub mod bl3_item;
 pub mod bl3_profile;
 pub mod bl3_save;

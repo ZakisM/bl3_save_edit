@@ -18,7 +18,6 @@ use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
 use crate::views::item_editor::parts_tab_bar::{parts_tab_bar_button, CurrentPartType};
 use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::InteractionExt;
-use crate::widgets::text_margin::TextMargin;
 
 #[derive(Debug, Copy, Clone, Default)]
 pub struct CurrentPartTypeIndex {
@@ -80,15 +79,13 @@ impl CurrentItemEditorPart {
     {
         let part_contents_col = Column::new()
             .push(
-                TextMargin::new(
+                Text::new(
                     self.part
                         .part
                         .short_ident
                         .as_ref()
                         .unwrap_or(&self.part.part.ident),
-                    1,
                 )
-                .0
                 .font(JETBRAINS_MONO)
                 .size(16),
             )
@@ -353,7 +350,7 @@ impl CurrentParts {
         .padding(1);
 
         if let Some(item_parts) = &item.item_parts {
-            if !item_parts.parts().is_empty() {
+            if !item_parts.parts().is_empty() || !item_parts.generic_parts().is_empty() {
                 current_parts_column = current_parts_column.push(
                     Container::new(
                         Scrollable::new(&mut self.scrollable_state)

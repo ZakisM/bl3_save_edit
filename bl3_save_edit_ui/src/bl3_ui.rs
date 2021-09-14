@@ -2,8 +2,8 @@ use std::mem;
 use std::path::PathBuf;
 
 use iced::{
-    button, pick_list, svg, tooltip, Align, Application, Button, Clipboard, Color, Column, Command,
-    Container, Element, HorizontalAlignment, Length, PickList, Row, Svg, Text, Tooltip,
+    button, pick_list, svg, tooltip, Align, Application, Button, Color, Column, Command, Container,
+    Element, HorizontalAlignment, Length, PickList, Row, Svg, Text, Tooltip,
 };
 use tracing::{error, info};
 
@@ -53,6 +53,7 @@ use crate::views::manage_save::main::{SaveTabBarInteractionMessage, SaveTabBarVi
 use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
 };
+use crate::views::settings::{SettingsInteractionMessage, SettingsState};
 use crate::views::InteractionExt;
 use crate::widgets::notification::{Notification, NotificationSentiment};
 use crate::{state_mappers, update, views, VERSION};
@@ -75,6 +76,8 @@ pub struct Bl3Application {
     notification: Option<Notification>,
     latest_release: Option<Release>,
     is_updating: bool,
+    is_reloading_saves: bool,
+    settings_state: SettingsState,
 }
 
 #[derive(Debug, Clone)]
@@ -89,6 +92,7 @@ pub enum Bl3Message {
     ManageSave(ManageSaveMessage),
     SaveFileCompleted(MessageResult<Bl3Save>),
     SaveProfileCompleted(MessageResult<Bl3Profile>),
+    FilesLoadedAfterSave(MessageResult<(Bl3FileType, Vec<Bl3FileType>)>),
     OpenBackupFolderCompleted(MessageResult<()>),
     ClearNotification,
 }
@@ -113,8 +117,8 @@ pub enum InteractionMessage {
     ChooseSaveInteraction(ChooseSaveInteractionMessage),
     ManageSaveInteraction(ManageSaveInteractionMessage),
     ManageProfileInteraction(ManageProfileInteractionMessage),
+    SettingsInteraction(SettingsInteractionMessage),
     LoadedFileSelected(Box<Bl3FileType>),
-    OpenBackupFolder,
     RefreshSavesDirectory,
     Ignore,
 }
@@ -149,25 +153,39 @@ impl Application for Bl3Application {
             }),
         ];
 
+        let saves_folder_input = config.saves_dir().to_string_lossy().to_string();
+        let backup_folder_input = config.config_dir().to_string_lossy().to_string();
+        let ui_scale_factor = config.ui_scale_factor();
+
         (
             Bl3Application {
                 config,
                 view_state: ViewState::Initializing,
+                settings_state: SettingsState {
+                    backup_folder_input,
+                    saves_folder_input,
+                    ui_scale_factor,
+                    ..SettingsState::default()
+                },
                 ..Bl3Application::default()
             },
             Command::batch(startup_commands),
         )
     }
 
+    fn background_color(&self) -> Color {
+        Color::from_rgb8(23, 23, 23)
+    }
+
+    fn scale_factor(&self) -> f64 {
+        self.settings_state.ui_scale_factor
+    }
+
     fn title(&self) -> String {
         format!("Borderlands 3 Save Editor - v{}", VERSION)
     }
 
-    fn update(
-        &mut self,
-        message: Self::Message,
-        _clipboard: &mut Clipboard,
-    ) -> Command<Self::Message> {
+    fn update(&mut self, message: Self::Message) -> Command<Self::Message> {
         match message {
             Bl3Message::Initialization(initialization_msg) => match initialization_msg {
                 InitializationMessage::LazyData => {
@@ -237,7 +255,9 @@ impl Application for Bl3Application {
             }
             Bl3Message::Config(config_msg) => match config_msg {
                 ConfigMessage::SaveCompleted(res) => match res {
-                    MessageResult::Success(_) => info!("Successfully saved config."),
+                    MessageResult::Success(_) => {
+                        info!("Successfully saved config.");
+                    }
                     MessageResult::Error(e) => error!("Failed to save config: {}", e),
                 },
             },
@@ -289,6 +309,11 @@ impl Application for Bl3Application {
                                             ManageSaveView::TabBar(SaveTabBarView::Currency),
                                         )
                                     }
+                                    SaveTabBarInteractionMessage::Settings => {
+                                        self.view_state = ViewState::ManageSave(
+                                            ManageSaveView::TabBar(SaveTabBarView::Settings),
+                                        )
+                                    }
                                 }
                             }
                             ManageSaveInteractionMessage::General(general_msg) => match general_msg
@@ -337,7 +362,7 @@ impl Application for Bl3Application {
                                             .character_state
                                             .name_input = name_input;
                                     }
-                                    SaveCharacterInteractionMessage::XpLevel(level) => {
+                                    SaveCharacterInteractionMessage::Level(level) => {
                                         let xp_points = if level > 0 {
                                             REQUIRED_XP_LIST[level as usize - 1][0]
                                         } else {
@@ -353,7 +378,7 @@ impl Application for Bl3Application {
 
                                         character_state.experience_points_input = xp_points;
                                     }
-                                    SaveCharacterInteractionMessage::XpPoints(xp) => {
+                                    SaveCharacterInteractionMessage::ExperiencePoints(xp) => {
                                         let level = experience_to_level(xp as i32).unwrap_or(1);
 
                                         let character_state = &mut self
@@ -364,6 +389,12 @@ impl Application for Bl3Application {
                                         character_state.experience_points_input = xp;
 
                                         character_state.level_input = level;
+                                    }
+                                    SaveCharacterInteractionMessage::AbilityPoints(points) => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .character_state
+                                            .ability_points_input = points;
                                     }
                                     SaveCharacterInteractionMessage::SduMessage(sdu_message) => {
                                         let sdu_unlocker = &mut self
@@ -683,6 +714,11 @@ impl Application for Bl3Application {
                                             ManageProfileView::TabBar(ProfileTabBarView::Bank),
                                         )
                                     }
+                                    ProfileTabBarInteractionMessage::Settings => {
+                                        self.view_state = ViewState::ManageProfile(
+                                            ManageProfileView::TabBar(ProfileTabBarView::Settings),
+                                        )
+                                    }
                                 }
                             }
                             ManageProfileInteractionMessage::General(general_msg) => {
@@ -936,15 +972,47 @@ impl Application for Bl3Application {
                             }
                         }
                     }
+                    InteractionMessage::SettingsInteraction(settings_msg) => match settings_msg {
+                        SettingsInteractionMessage::OpenBackupFolder => {
+                            return Command::perform(Bl3Config::open_dir(), |r| {
+                                Bl3Message::OpenBackupFolderCompleted(MessageResult::handle_result(
+                                    r,
+                                ))
+                            });
+                        }
+                        SettingsInteractionMessage::DecreaseUIScale => {
+                            if self.settings_state.ui_scale_factor >= 0.50 {
+                                self.settings_state.ui_scale_factor -= 0.05;
+
+                                self.config
+                                    .set_ui_scale_factor(self.settings_state.ui_scale_factor);
+
+                                return Command::perform(self.config.clone().save(), |r| {
+                                    Bl3Message::Config(ConfigMessage::SaveCompleted(
+                                        MessageResult::handle_result(r),
+                                    ))
+                                });
+                            }
+                        }
+                        SettingsInteractionMessage::IncreaseUIScale => {
+                            if self.settings_state.ui_scale_factor < 2.0 {
+                                self.settings_state.ui_scale_factor += 0.05;
+
+                                self.config
+                                    .set_ui_scale_factor(self.settings_state.ui_scale_factor);
+
+                                return Command::perform(self.config.clone().save(), |r| {
+                                    Bl3Message::Config(ConfigMessage::SaveCompleted(
+                                        MessageResult::handle_result(r),
+                                    ))
+                                });
+                            }
+                        }
+                    },
                     InteractionMessage::LoadedFileSelected(loaded_file) => {
                         self.loaded_files_selected = loaded_file;
 
                         state_mappers::map_loaded_file_to_state(self);
-                    }
-                    InteractionMessage::OpenBackupFolder => {
-                        return Command::perform(Bl3Config::open_dir(), |r| {
-                            Bl3Message::OpenBackupFolderCompleted(MessageResult::handle_result(r))
-                        });
                     }
                     InteractionMessage::RefreshSavesDirectory => {
                         self.view_state = ViewState::Loading;
@@ -1041,17 +1109,7 @@ impl Application for Bl3Application {
                         NotificationSentiment::Positive,
                     ));
 
-                    let loaded_file_selected = &*self.loaded_files_selected;
-
-                    let loaded_file = self
-                        .loaded_files
-                        .iter_mut()
-                        .find(|f| *f == loaded_file_selected)
-                        .expect("failed to find loaded file");
-
-                    self.manage_save_state.current_file = save.clone();
-
-                    let save_file_name = save.file_name.clone();
+                    self.is_reloading_saves = true;
 
                     let bl3_file_type = match save.header_type {
                         HeaderType::PcSave => Bl3FileType::PcSave(save),
@@ -1064,17 +1122,13 @@ impl Application for Bl3Application {
                         }
                     };
 
-                    if loaded_file.filename() == save_file_name {
-                        *loaded_file = bl3_file_type.clone();
-                    } else {
-                        self.loaded_files.push(bl3_file_type.clone());
-                    }
-
-                    self.loaded_files.sort();
-
-                    self.loaded_files_selected = Box::new(bl3_file_type);
-
-                    state_mappers::map_loaded_file_to_state(self);
+                    return Command::perform(
+                        interaction::save::load_files_after_save(
+                            self.config.saves_dir().to_path_buf(),
+                            bl3_file_type,
+                        ),
+                        |r| Bl3Message::FilesLoadedAfterSave(MessageResult::handle_result(r)),
+                    );
                 }
                 MessageResult::Error(e) => {
                     let msg = format!("Failed to save file: {}", e);
@@ -1092,17 +1146,7 @@ impl Application for Bl3Application {
                         NotificationSentiment::Positive,
                     ));
 
-                    let loaded_file_selected = &*self.loaded_files_selected;
-
-                    let loaded_file = self
-                        .loaded_files
-                        .iter_mut()
-                        .find(|f| *f == loaded_file_selected)
-                        .expect("failed to find loaded file");
-
-                    self.manage_profile_state.current_file = profile.clone();
-
-                    let profile_file_name = profile.file_name.clone();
+                    self.is_reloading_saves = true;
 
                     let bl3_file_type = match profile.header_type {
                         HeaderType::PcProfile => Bl3FileType::PcProfile(profile),
@@ -1115,17 +1159,13 @@ impl Application for Bl3Application {
                         }
                     };
 
-                    if loaded_file.filename() == profile_file_name {
-                        *loaded_file = bl3_file_type.clone();
-                    } else {
-                        self.loaded_files.push(bl3_file_type.clone());
-                    }
-
-                    self.loaded_files.sort();
-
-                    self.loaded_files_selected = Box::new(bl3_file_type);
-
-                    state_mappers::map_loaded_file_to_state(self);
+                    return Command::perform(
+                        interaction::save::load_files_after_save(
+                            self.config.saves_dir().to_path_buf(),
+                            bl3_file_type,
+                        ),
+                        |r| Bl3Message::FilesLoadedAfterSave(MessageResult::handle_result(r)),
+                    );
                 }
                 MessageResult::Error(e) => {
                     let msg = format!("Failed to save profile: {}", e);
@@ -1136,6 +1176,41 @@ impl Application for Bl3Application {
                         Some(Notification::new(msg, NotificationSentiment::Negative));
                 }
             },
+            Bl3Message::FilesLoadedAfterSave(res) => {
+                match res {
+                    MessageResult::Success((saved_file, mut files)) => {
+                        files.sort();
+
+                        self.loaded_files = files;
+
+                        let selected_file = self.loaded_files.iter().find(|f| **f == saved_file);
+
+                        self.loaded_files_selected =
+                            Box::new(if let Some(selected_file) = selected_file {
+                                selected_file.to_owned()
+                            } else {
+                                self.loaded_files
+                                    .get(0)
+                                    .expect("loaded_files was empty")
+                                    .clone()
+                            });
+
+                        state_mappers::map_loaded_file_to_state(self);
+                    }
+                    MessageResult::Error(e) => {
+                        let msg = format!("Failed to load save folder: {}", e);
+
+                        error!("{}", msg);
+
+                        self.view_state = ViewState::ChooseSaveDirectory;
+
+                        self.notification =
+                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                    }
+                }
+
+                self.is_reloading_saves = false;
+            }
             Bl3Message::OpenBackupFolderCompleted(res) => {
                 if let MessageResult::Error(e) = res {
                     let msg = format!("Failed to open backups folder: {}", e);
@@ -1162,26 +1237,6 @@ impl Application for Bl3Application {
             .width(Length::Fill)
             .horizontal_alignment(HorizontalAlignment::Left);
 
-        let backups_button = Button::new(
-            &mut self.backups_button_state,
-            Text::new("Open Backup Folder")
-                .font(JETBRAINS_MONO_BOLD)
-                .size(17),
-        )
-        .on_press(InteractionMessage::OpenBackupFolder)
-        .padding(10)
-        .style(Bl3UiStyle)
-        .into_element();
-
-        let mut change_dir_button = Button::new(
-            &mut self.change_dir_button_state,
-            Text::new("Change Saves Folder")
-                .font(JETBRAINS_MONO_BOLD)
-                .size(17),
-        )
-        .padding(10)
-        .style(Bl3UiStyle);
-
         let refresh_icon_handle = svg::Handle::from_memory(REFRESH);
 
         let refresh_icon = Svg::new(refresh_icon_handle)
@@ -1203,25 +1258,31 @@ impl Application for Bl3Application {
         .size(17)
         .style(Bl3UiTooltipStyle);
 
-        if !self.choose_save_directory_state.choose_dir_window_open {
-            change_dir_button =
-                change_dir_button.on_press(InteractionMessage::ChooseSaveInteraction(
-                    ChooseSaveInteractionMessage::ChooseDirPressed,
-                ));
-        }
-
-        let all_saves_picklist = PickList::new(
-            &mut self.loaded_files_selector,
-            &self.loaded_files,
-            Some(*self.loaded_files_selected.clone()),
-            |f| InteractionMessage::LoadedFileSelected(Box::new(f)),
-        )
-        .font(JETBRAINS_MONO)
-        .text_size(17)
-        .width(Length::Fill)
-        .padding(10)
-        .style(Bl3UiStyle)
-        .into_element();
+        let all_saves_picklist = if !self.is_reloading_saves {
+            PickList::new(
+                &mut self.loaded_files_selector,
+                &self.loaded_files,
+                Some(*self.loaded_files_selected.clone()),
+                |f| InteractionMessage::LoadedFileSelected(Box::new(f)),
+            )
+            .font(JETBRAINS_MONO)
+            .text_size(17)
+            .width(Length::Fill)
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into_element()
+        } else {
+            Container::new(
+                Text::new("Reloading saves...")
+                    .font(JETBRAINS_MONO)
+                    .color(Color::from_rgb8(220, 220, 200))
+                    .size(17),
+            )
+            .width(Length::Fill)
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into()
+        };
 
         let view_state_discrim = mem::discriminant(&self.view_state);
         let manage_save_discrim = mem::discriminant(&ViewState::ManageSave(
@@ -1255,9 +1316,6 @@ impl Application for Bl3Application {
 
         if view_state_discrim == manage_save_discrim || view_state_discrim == manage_profile_discrim
         {
-            menu_bar_editor_content = menu_bar_editor_content.push(backups_button);
-            menu_bar_editor_content =
-                menu_bar_editor_content.push(change_dir_button.into_element());
             menu_bar_editor_content = menu_bar_editor_content.push(refresh_button);
             menu_bar_editor_content = menu_bar_editor_content.push(all_saves_picklist);
             menu_bar_editor_content = menu_bar_editor_content.push(save_button.into_element());
@@ -1309,12 +1367,17 @@ impl Application for Bl3Application {
                 views::choose_save_directory::view(&mut self.choose_save_directory_state)
             }
             ViewState::ManageSave(manage_save_view) => match manage_save_view {
-                ManageSaveView::TabBar(main_tab_bar_view) => {
-                    views::manage_save::main::view(&mut self.manage_save_state, main_tab_bar_view)
-                }
+                ManageSaveView::TabBar(main_tab_bar_view) => views::manage_save::main::view(
+                    &mut self.settings_state,
+                    self.choose_save_directory_state.choose_dir_window_open,
+                    &mut self.manage_save_state,
+                    main_tab_bar_view,
+                ),
             },
             ViewState::ManageProfile(manage_profile_view) => match manage_profile_view {
                 ManageProfileView::TabBar(main_tab_bar_view) => views::manage_profile::main::view(
+                    &mut self.settings_state,
+                    self.choose_save_directory_state.choose_dir_window_open,
                     &mut self.manage_profile_state,
                     main_tab_bar_view,
                 ),

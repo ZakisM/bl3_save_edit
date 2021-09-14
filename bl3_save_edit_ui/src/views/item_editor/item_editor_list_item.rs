@@ -4,7 +4,7 @@ use iced::{button, container, Button, Color, Column, Container, Element, Length,
 use bl3_save_edit_core::bl3_item::{Bl3Item, ItemRarity, ItemType};
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
-use crate::resources::fonts::JETBRAINS_MONO;
+use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::editor::Editor;
 use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
 use crate::views::item_editor::ItemEditorInteractionMessage;
@@ -107,7 +107,7 @@ impl ItemEditorListItem {
         }
 
         let button_content = Column::new()
-            .push(Text::new(&label).font(JETBRAINS_MONO).size(17))
+            .push(Text::new(&label).font(JETBRAINS_MONO_BOLD).size(18))
             .push(tags_row)
             .spacing(10);
 
