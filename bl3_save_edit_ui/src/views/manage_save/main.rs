@@ -53,7 +53,6 @@ pub enum SaveTabBarView {
 
 pub fn view<'a>(
     settings_state: &'a mut SettingsState,
-    choose_dir_window_open: bool,
     manage_save_state: &'a mut ManageSaveState,
     tab_bar_view: &SaveTabBarView,
 ) -> Container<'a, Bl3Message> {
@@ -151,7 +150,7 @@ pub fn view<'a>(
         SaveTabBarView::Inventory => {
             inventory::view(&mut manage_save_state.save_view_state.inventory_state)
         }
-        SaveTabBarView::Settings => views::settings::view(settings_state, choose_dir_window_open),
+        SaveTabBarView::Settings => views::settings::view(settings_state),
     };
 
     let all_contents = Column::new().push(tab_bar).push(tab_content);

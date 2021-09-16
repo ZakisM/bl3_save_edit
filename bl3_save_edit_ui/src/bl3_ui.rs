@@ -68,8 +68,6 @@ pub struct Bl3Application {
     loaded_files_selector: pick_list::State<Bl3FileType>,
     pub loaded_files_selected: Box<Bl3FileType>,
     loaded_files: Vec<Bl3FileType>,
-    backups_button_state: button::State,
-    change_dir_button_state: button::State,
     refresh_button_state: button::State,
     update_button_state: button::State,
     save_file_button_state: button::State,
@@ -93,7 +91,7 @@ pub enum Bl3Message {
     SaveFileCompleted(MessageResult<Bl3Save>),
     SaveProfileCompleted(MessageResult<Bl3Profile>),
     FilesLoadedAfterSave(MessageResult<(Bl3FileType, Vec<Bl3FileType>)>),
-    OpenBackupFolderCompleted(MessageResult<()>),
+    OpenBackupDirCompleted(MessageResult<()>),
     ClearNotification,
 }
 
@@ -153,8 +151,8 @@ impl Application for Bl3Application {
             }),
         ];
 
-        let saves_folder_input = config.saves_dir().to_string_lossy().to_string();
-        let backup_folder_input = config.config_dir().to_string_lossy().to_string();
+        let saves_dir_input = config.saves_dir().to_string_lossy().to_string();
+        let backup_dir_input = config.config_dir().to_string_lossy().to_string();
         let ui_scale_factor = config.ui_scale_factor();
 
         (
@@ -162,8 +160,8 @@ impl Application for Bl3Application {
                 config,
                 view_state: ViewState::Initializing,
                 settings_state: SettingsState {
-                    backup_folder_input,
-                    saves_folder_input,
+                    backup_dir_input,
+                    saves_dir_input,
                     ui_scale_factor,
                     ..SettingsState::default()
                 },
@@ -973,12 +971,118 @@ impl Application for Bl3Application {
                         }
                     }
                     InteractionMessage::SettingsInteraction(settings_msg) => match settings_msg {
-                        SettingsInteractionMessage::OpenBackupFolder => {
-                            return Command::perform(Bl3Config::open_dir(), |r| {
-                                Bl3Message::OpenBackupFolderCompleted(MessageResult::handle_result(
-                                    r,
-                                ))
-                            });
+                        SettingsInteractionMessage::OpenBackupDir => {
+                            return Command::perform(
+                                interaction::settings::open_dir(
+                                    self.config.backup_dir().to_path_buf(),
+                                ),
+                                |r| {
+                                    Bl3Message::OpenBackupDirCompleted(
+                                        MessageResult::handle_result(r),
+                                    )
+                                },
+                            );
+                        }
+                        SettingsInteractionMessage::ChangeBackupDir => {
+                            self.settings_state.choose_backup_dir_window_open = true;
+
+                            return Command::perform(
+                                interaction::choose_dir(self.config.backup_dir().to_path_buf()),
+                                |r| {
+                                    Bl3Message::Interaction(
+                                        InteractionMessage::SettingsInteraction(
+                                            SettingsInteractionMessage::ChangeBackupDirCompleted(
+                                                MessageResult::handle_result(r),
+                                            ),
+                                        ),
+                                    )
+                                },
+                            );
+                        }
+                        SettingsInteractionMessage::ChangeBackupDirCompleted(choose_dir_res) => {
+                            self.settings_state.choose_backup_dir_window_open = false;
+
+                            match choose_dir_res {
+                                MessageResult::Success(dir) => {
+                                    self.config.set_backup_dir(dir);
+                                    self.settings_state.backup_dir_input =
+                                        self.config.backup_dir().to_string_lossy().to_string();
+
+                                    return Command::perform(self.config.clone().save(), |r| {
+                                        Bl3Message::Config(ConfigMessage::SaveCompleted(
+                                            MessageResult::handle_result(r),
+                                        ))
+                                    });
+                                }
+                                MessageResult::Error(e) => {
+                                    let msg = format!("Failed to choose backups folder: {}", e);
+
+                                    error!("{}", msg);
+
+                                    self.notification = Some(Notification::new(
+                                        msg,
+                                        NotificationSentiment::Negative,
+                                    ));
+                                }
+                            }
+                        }
+                        SettingsInteractionMessage::OpenSavesDir => {
+                            return Command::perform(
+                                interaction::settings::open_dir(
+                                    self.config.saves_dir().to_path_buf(),
+                                ),
+                                |r| {
+                                    Bl3Message::OpenBackupDirCompleted(
+                                        MessageResult::handle_result(r),
+                                    )
+                                },
+                            );
+                        }
+                        SettingsInteractionMessage::ChangeSavesDir => {
+                            self.settings_state.choose_saves_dir_window_open = true;
+
+                            return Command::perform(
+                                interaction::choose_dir(self.config.saves_dir().to_path_buf()),
+                                |r| {
+                                    Bl3Message::Interaction(
+                                        InteractionMessage::SettingsInteraction(
+                                            SettingsInteractionMessage::ChangeSavesDirCompleted(
+                                                MessageResult::handle_result(r),
+                                            ),
+                                        ),
+                                    )
+                                },
+                            );
+                        }
+                        SettingsInteractionMessage::ChangeSavesDirCompleted(choose_dir_res) => {
+                            self.settings_state.choose_saves_dir_window_open = false;
+
+                            match choose_dir_res {
+                                MessageResult::Success(dir) => {
+                                    self.view_state = ViewState::Loading;
+
+                                    return Command::perform(
+                                        interaction::choose_save_directory::load_files_in_directory(
+                                            dir,
+                                        ),
+                                        |r| {
+                                            Bl3Message::ChooseSave(ChooseSaveMessage::FilesLoaded(
+                                                MessageResult::handle_result(r),
+                                            ))
+                                        },
+                                    );
+                                }
+                                MessageResult::Error(e) => {
+                                    let msg = format!("Failed to choose saves folder: {}", e);
+
+                                    error!("{}", msg);
+
+                                    self.notification = Some(Notification::new(
+                                        msg,
+                                        NotificationSentiment::Negative,
+                                    ));
+                                }
+                            }
                         }
                         SettingsInteractionMessage::DecreaseUIScale => {
                             if self.settings_state.ui_scale_factor >= 0.50 {
@@ -1049,7 +1153,7 @@ impl Application for Bl3Application {
                             );
                         }
                         MessageResult::Error(e) => {
-                            let msg = format!("Failed to choose save folder: {}", e);
+                            let msg = format!("Failed to choose saves folder: {}", e);
 
                             error!("{}", msg);
 
@@ -1073,6 +1177,8 @@ impl Application for Bl3Application {
                         state_mappers::map_loaded_file_to_state(self);
 
                         self.config.set_saves_dir(dir);
+                        self.settings_state.saves_dir_input =
+                            self.config.saves_dir().to_string_lossy().to_string();
 
                         return Command::perform(self.config.clone().save(), |r| {
                             Bl3Message::Config(ConfigMessage::SaveCompleted(
@@ -1211,7 +1317,7 @@ impl Application for Bl3Application {
 
                 self.is_reloading_saves = false;
             }
-            Bl3Message::OpenBackupFolderCompleted(res) => {
+            Bl3Message::OpenBackupDirCompleted(res) => {
                 if let MessageResult::Error(e) = res {
                     let msg = format!("Failed to open backups folder: {}", e);
 
@@ -1369,7 +1475,6 @@ impl Application for Bl3Application {
             ViewState::ManageSave(manage_save_view) => match manage_save_view {
                 ManageSaveView::TabBar(main_tab_bar_view) => views::manage_save::main::view(
                     &mut self.settings_state,
-                    self.choose_save_directory_state.choose_dir_window_open,
                     &mut self.manage_save_state,
                     main_tab_bar_view,
                 ),
@@ -1377,7 +1482,6 @@ impl Application for Bl3Application {
             ViewState::ManageProfile(manage_profile_view) => match manage_profile_view {
                 ManageProfileView::TabBar(main_tab_bar_view) => views::manage_profile::main::view(
                     &mut self.settings_state,
-                    self.choose_save_directory_state.choose_dir_window_open,
                     &mut self.manage_profile_state,
                     main_tab_bar_view,
                 ),

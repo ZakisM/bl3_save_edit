@@ -1,7 +1,7 @@
 use std::convert::TryInto;
-use std::time::Duration;
 
 use anyhow::Result;
+use derivative::Derivative;
 use iced::{
     button, scrollable, text_input, tooltip, Align, Button, Color, Column, Command, Container,
     Length, Row, Scrollable, Text, Tooltip,
@@ -38,12 +38,14 @@ pub mod item_button_style;
 pub mod item_editor_list_item;
 pub mod parts_tab_bar;
 
-#[derive(Debug, Default)]
+#[derive(Derivative)]
+#[derivative(Debug, Default)]
 pub struct ItemEditorState {
     pub selected_item_index: usize,
     pub create_item_button_state: button::State,
     pub import_serial_input: String,
     pub import_serial_input_state: text_input::State,
+    #[derivative(Default(value = "1"))]
     pub all_item_levels_input: i32,
     pub all_item_levels_input_state: text_input::State,
     pub all_item_levels_button_state: button::State,
@@ -159,7 +161,7 @@ pub enum ItemEditorInteractionMessage {
     CreateItemPressed,
     ImportItemFromSerialPressed,
     AllItemLevel(i32),
-    AllItemLevelDebounced,
+    SetAllItemLevelsPressed,
     ItemLevel(i32),
     DeleteItem(usize),
     DuplicateItem(usize),
@@ -184,7 +186,7 @@ impl ItemEditorInteractionMessage {
         item_editor_file_type: ItemEditorFileType,
     ) -> ItemEditorInteractionResponse {
         let mut notification = None;
-        let mut command = None;
+        let command = None;
 
         match self {
             ItemEditorInteractionMessage::ItemPressed(item_index) => {
@@ -401,16 +403,8 @@ impl ItemEditorInteractionMessage {
             }
             ItemEditorInteractionMessage::AllItemLevel(item_level_input) => {
                 item_editor_state.all_item_levels_input = item_level_input;
-
-                command = Some(Command::perform(
-                    async {
-                        //Debounce
-                        tokio::time::sleep(Duration::from_millis(500)).await;
-                    },
-                    |_| ItemEditorInteractionMessage::AllItemLevelDebounced,
-                ));
             }
-            ItemEditorInteractionMessage::AllItemLevelDebounced => {
+            ItemEditorInteractionMessage::SetAllItemLevelsPressed => {
                 let item_level = item_editor_state.all_item_levels_input as usize;
 
                 let mut error_notification = None;
@@ -615,39 +609,57 @@ where
         .into_element(),
     );
 
-    let edit_all_item_levels_input = Row::new()
-        .push(
-            LabelledElement::create(
-                "All Levels",
-                Length::Units(95),
-                Tooltip::new(
-                    NumberInput::new(
-                        &mut item_editor_state.all_item_levels_input_state,
-                        item_editor_state.all_item_levels_input,
-                        1,
-                        Some(MAX_CHARACTER_LEVEL as i32),
-                        move |v| interaction_message(ItemEditorInteractionMessage::AllItemLevel(v)),
+    let edit_all_item_levels_input = Container::new(
+        Row::new()
+            .push(
+                LabelledElement::create(
+                    "All Levels",
+                    Length::Units(95),
+                    Tooltip::new(
+                        NumberInput::new(
+                            &mut item_editor_state.all_item_levels_input_state,
+                            item_editor_state.all_item_levels_input,
+                            1,
+                            Some(MAX_CHARACTER_LEVEL as i32),
+                            move |v| {
+                                interaction_message(ItemEditorInteractionMessage::AllItemLevel(v))
+                            },
+                        )
+                        .0
+                        .font(JETBRAINS_MONO)
+                        .padding(10)
+                        .size(17)
+                        .style(Bl3UiStyle)
+                        .into_element(),
+                        format!("Level must be between 1 and {}", MAX_CHARACTER_LEVEL),
+                        tooltip::Position::Top,
                     )
-                    .0
-                    .font(JETBRAINS_MONO)
+                    .gap(10)
                     .padding(10)
+                    .font(JETBRAINS_MONO)
                     .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                    format!("Level must be between 1 and {}", MAX_CHARACTER_LEVEL),
-                    tooltip::Position::Top,
+                    .style(Bl3UiTooltipStyle),
                 )
-                .gap(10)
-                .padding(10)
-                .font(JETBRAINS_MONO)
-                .size(17)
-                .style(Bl3UiTooltipStyle),
+                .spacing(15)
+                .width(Length::FillPortion(9))
+                .align_items(Align::Center),
             )
-            .spacing(15)
-            .width(Length::FillPortion(9))
+            .push(
+                Button::new(
+                    &mut item_editor_state.all_item_levels_button_state,
+                    Text::new("Set").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(interaction_message(
+                    ItemEditorInteractionMessage::SetAllItemLevelsPressed,
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
             .align_items(Align::Center),
-        )
-        .align_items(Align::Center);
+    )
+    .width(Length::Fill)
+    .style(Bl3UiStyle);
 
     let general_options_row = Row::new()
         .push(create_item_button)

@@ -1,22 +1,27 @@
+use std::path::PathBuf;
+
 use iced::{
     button, text_input, Align, Button, Color, Column, Container, Length, Row, Text, TextInput,
 };
 
-use crate::bl3_ui::{Bl3Message, InteractionMessage};
+use crate::bl3_ui::{Bl3Message, InteractionMessage, MessageResult};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::choose_save_directory::ChooseSaveInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 
 #[derive(Debug, Default)]
 pub struct SettingsState {
-    pub backup_folder_input: String,
-    pub backup_folder_input_state: text_input::State,
-    pub open_backup_folder_button_state: button::State,
-    pub saves_folder_input: String,
-    pub saves_folder_input_state: text_input::State,
-    pub change_saves_folder_button_state: button::State,
+    pub backup_dir_input: String,
+    pub backup_dir_input_state: text_input::State,
+    pub open_backup_dir_button_state: button::State,
+    pub change_backup_dir_button_state: button::State,
+    pub choose_backup_dir_window_open: bool,
+    pub saves_dir_input: String,
+    pub saves_dir_input_state: text_input::State,
+    pub open_saves_dir_button_state: button::State,
+    pub change_saves_dir_button_state: button::State,
+    pub choose_saves_dir_window_open: bool,
     pub decrease_ui_scale_button_state: button::State,
     pub increase_ui_scale_button_state: button::State,
     pub ui_scale_factor: f64,
@@ -24,25 +29,42 @@ pub struct SettingsState {
 
 #[derive(Debug, Clone)]
 pub enum SettingsInteractionMessage {
-    OpenBackupFolder,
+    OpenBackupDir,
+    ChangeBackupDir,
+    ChangeBackupDirCompleted(MessageResult<PathBuf>),
+    OpenSavesDir,
+    ChangeSavesDir,
+    ChangeSavesDirCompleted(MessageResult<PathBuf>),
     DecreaseUIScale,
     IncreaseUIScale,
 }
 
-pub fn view(
-    settings_state: &mut SettingsState,
-    choose_dir_window_open: bool,
-) -> Container<Bl3Message> {
-    let backup_folder = Container::new(
+pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
+    let mut change_backup_dir_button = Button::new(
+        &mut settings_state.change_backup_dir_button_state,
+        Text::new("Change Folder")
+            .font(JETBRAINS_MONO_BOLD)
+            .size(17),
+    )
+    .padding(10)
+    .style(Bl3UiStyle);
+
+    if !settings_state.choose_backup_dir_window_open {
+        change_backup_dir_button = change_backup_dir_button.on_press(
+            InteractionMessage::SettingsInteraction(SettingsInteractionMessage::ChangeBackupDir),
+        );
+    }
+
+    let backup_dir = Container::new(
         Row::new()
             .push(
                 LabelledElement::create(
-                    "Backup folder",
+                    "Backups folder",
                     Length::Units(140),
                     TextInput::new(
-                        &mut settings_state.backup_folder_input_state,
+                        &mut settings_state.backup_dir_input_state,
                         "Choose a saves folder first...",
-                        &settings_state.backup_folder_input,
+                        &settings_state.backup_dir_input,
                         |_| InteractionMessage::Ignore,
                     )
                     .font(JETBRAINS_MONO)
@@ -57,50 +79,48 @@ pub fn view(
             )
             .push(
                 Button::new(
-                    &mut settings_state.open_backup_folder_button_state,
-                    Text::new("Open Backups Folder")
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(17),
+                    &mut settings_state.open_backup_dir_button_state,
+                    Text::new("Open Folder").font(JETBRAINS_MONO_BOLD).size(17),
                 )
                 .on_press(InteractionMessage::SettingsInteraction(
-                    SettingsInteractionMessage::OpenBackupFolder,
+                    SettingsInteractionMessage::OpenBackupDir,
                 ))
                 .padding(10)
                 .style(Bl3UiStyle)
                 .into_element(),
             )
+            .push(change_backup_dir_button.into_element())
             .align_items(Align::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
     .style(Bl3UiStyle);
 
-    let mut change_saves_folder_button = Button::new(
-        &mut settings_state.change_saves_folder_button_state,
-        Text::new("Change Saves Folder")
+    let mut change_saves_dir_button = Button::new(
+        &mut settings_state.change_saves_dir_button_state,
+        Text::new("Change Folder")
             .font(JETBRAINS_MONO_BOLD)
             .size(17),
     )
     .padding(10)
     .style(Bl3UiStyle);
 
-    if !choose_dir_window_open {
-        change_saves_folder_button =
-            change_saves_folder_button.on_press(InteractionMessage::ChooseSaveInteraction(
-                ChooseSaveInteractionMessage::ChooseDirPressed,
-            ));
+    if !settings_state.choose_saves_dir_window_open {
+        change_saves_dir_button = change_saves_dir_button.on_press(
+            InteractionMessage::SettingsInteraction(SettingsInteractionMessage::ChangeSavesDir),
+        );
     }
 
-    let saves_folder = Container::new(
+    let saves_dir = Container::new(
         Row::new()
             .push(
                 LabelledElement::create(
                     "Saves folder",
                     Length::Units(140),
                     TextInput::new(
-                        &mut settings_state.saves_folder_input_state,
+                        &mut settings_state.saves_dir_input_state,
                         "Choose a saves folder first...",
-                        &settings_state.saves_folder_input,
+                        &settings_state.saves_dir_input,
                         |_| InteractionMessage::Ignore,
                     )
                     .font(JETBRAINS_MONO)
@@ -113,7 +133,19 @@ pub fn view(
                 .width(Length::FillPortion(9))
                 .align_items(Align::Center),
             )
-            .push(change_saves_folder_button.into_element())
+            .push(
+                Button::new(
+                    &mut settings_state.open_saves_dir_button_state,
+                    Text::new("Open Folder").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(InteractionMessage::SettingsInteraction(
+                    SettingsInteractionMessage::OpenSavesDir,
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
+            .push(change_saves_dir_button.into_element())
             .align_items(Align::Center),
     )
     .width(Length::Fill)
@@ -165,8 +197,8 @@ pub fn view(
     .style(Bl3UiStyle);
 
     let all_contents = Column::new()
-        .push(backup_folder)
-        .push(saves_folder)
+        .push(backup_dir)
+        .push(saves_dir)
         .push(ui_scale)
         .spacing(20);
 

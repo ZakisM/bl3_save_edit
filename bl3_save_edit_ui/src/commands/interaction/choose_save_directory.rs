@@ -1,16 +1,16 @@
 use std::ffi::OsStr;
 use std::path::PathBuf;
 
-use anyhow::{bail, Context, Result};
+use anyhow::{bail, Result};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use tracing::{error, info};
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
+use crate::commands::interaction::choose_dir;
+
 #[cfg(not(target_os = "macos"))]
 pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
-    use native_dialog::FileDialog;
-
     let home_dir = if existing_dir.exists() {
         existing_dir
     } else {
@@ -23,23 +23,11 @@ pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
     #[cfg(target_os = "linux")]
     let default_dir = home_dir.join("IdeaProjects/bl3_save_edit/bl3_save_edit_core/test_files/");
 
-    let mut file_dialog = FileDialog::new();
-
-    if default_dir.exists() {
-        file_dialog = file_dialog.set_location(&default_dir);
-    }
-
-    let res = file_dialog
-        .show_open_single_dir()?
-        .context("No folder was selected.")?;
-
-    Ok(res)
+    choose_dir(default_dir).await
 }
 
 #[cfg(target_os = "macos")]
 pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
-    use native_dialog::{Dialog, OpenSingleDir};
-
     let home_dir = if existing_dir.exists() {
         existing_dir
     } else {
@@ -48,21 +36,7 @@ pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
             .join("Library/Application Support/GearboxSoftware/OakGame/Saved/SaveGames")
     };
 
-    let mut default_dir = None;
-
-    if home_dir.exists() {
-        let home_dir_str = home_dir.to_str().unwrap_or("");
-
-        if !home_dir_str.is_empty() {
-            default_dir = Some(home_dir_str);
-        }
-    }
-
-    let dialog = OpenSingleDir { dir: default_dir };
-
-    let res = dialog.show()?.context("No folder was selected.")?;
-
-    Ok(res)
+    choose_dir(default_dir).await
 }
 
 pub async fn load_files_in_directory(dir: PathBuf) -> Result<(PathBuf, Vec<Bl3FileType>)> {
