@@ -25,7 +25,7 @@ pub async fn choose_dir(existing_dir: PathBuf) -> Result<PathBuf> {
 }
 
 #[cfg(target_os = "macos")]
-pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
+pub async fn choose_dir(existing_dir: PathBuf) -> Result<PathBuf> {
     use native_dialog::{Dialog, OpenSingleDir};
 
     let mut default_dir = None;
