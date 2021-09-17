@@ -1,16 +1,19 @@
 use std::collections::HashMap;
 
 use once_cell::sync::Lazy;
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use rayon::prelude::ParallelSliceMut;
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
+use tracing::info;
 
-use crate::bl3_item::{BalancePart, InvDataPart, ManufacturerPart};
+use crate::bl3_item::{BalancePart, Bl3Item, InvDataPart, ManufacturerPart};
 use crate::models::inventory_serial_db::InventorySerialDb;
 
 type InventoryPartsAll = HashMap<String, ResourceItem>;
 type InventorySerialDbCategorizedParts = HashMap<String, Vec<ResourceCategorizedParts>>;
 
-pub(crate) const INVENTORY_SERIAL_DB_JSON_COMPRESSED: &[u8] =
+pub const INVENTORY_SERIAL_DB_JSON_COMPRESSED: &[u8] =
     include_bytes!("../../resources/INVENTORY_SERIAL_DB.json.sz");
 
 const INVENTORY_PARTS_ALL_CATEGORIZED_RON_COMPRESSED: &[u8] =
@@ -27,6 +30,8 @@ const INVENTORY_INV_DATA_COMPRESSED: &[u8] =
 
 const INVENTORY_MANUFACTURER_PARTS_COMPRESSED: &[u8] =
     include_bytes!("../../resources/INVENTORY_MANUFACTURER_PARTS.ron.sz");
+
+const LOOTLEMON_ITEMS_COMPRESSED: &[u8] = include_bytes!("../../resources/LOOTLEMON_ITEMS.ron.sz");
 
 pub static INVENTORY_SERIAL_DB: Lazy<InventorySerialDb> =
     Lazy::new(|| InventorySerialDb::load().expect("failed to load inventory serial db"));
@@ -45,6 +50,32 @@ pub static INVENTORY_INV_DATA_PARTS: Lazy<Vec<InvDataPart>> =
 
 pub static INVENTORY_MANUFACTURER_PARTS: Lazy<Vec<ManufacturerPart>> =
     Lazy::new(|| load_compressed_data(INVENTORY_MANUFACTURER_PARTS_COMPRESSED));
+
+pub static LOOTLEMON_ITEMS: Lazy<Vec<LootlemonItem>> = Lazy::new(|| {
+    let items = load_compressed_data::<Vec<LootlemonItemRaw>>(LOOTLEMON_ITEMS_COMPRESSED);
+
+    let start_time = std::time::Instant::now();
+
+    let mut lootlemon_items = items
+        .into_par_iter()
+        .map(|i| LootlemonItem {
+            item: Bl3Item::from_serial_base64(&i.serial).expect("Failed to read Lootlemon Item"),
+            link: i.link,
+        })
+        .collect::<Vec<_>>();
+
+    lootlemon_items.par_sort_by_key(|i| i.item.balance_part().name.to_owned());
+
+    if let Some(end_time) = std::time::Instant::now().checked_duration_since(start_time) {
+        info!(
+            "Read {} Lootlemon items in {} milliseconds",
+            lootlemon_items.len(),
+            end_time.as_millis()
+        );
+    }
+
+    lootlemon_items
+});
 
 pub fn load_compressed_data<T: DeserializeOwned>(input: &'static [u8]) -> T {
     let mut rdr = snap::read::FrameDecoder::new(input);
@@ -80,4 +111,16 @@ pub struct ResourcePartInfo {
     pub positives: Option<String>,
     pub negatives: Option<String>,
     pub effects: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct LootlemonItemRaw {
+    pub serial: String,
+    pub link: String,
+}
+
+#[derive(Debug, Default, Clone, Ord, PartialOrd, Eq, PartialEq)]
+pub struct LootlemonItem {
+    pub item: Bl3Item,
+    pub link: String,
 }

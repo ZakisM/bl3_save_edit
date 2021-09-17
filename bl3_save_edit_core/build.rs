@@ -3,12 +3,14 @@ use std::fmt::Write as Write2;
 use std::fs::OpenOptions;
 use std::io::{Read, Write};
 
+use csv::StringRecord;
 use heck::TitleCase;
 use json::JsonValue;
 use protobuf_codegen_pure::{Codegen, Customize};
 use rayon::iter::{
     IntoParallelIterator, IntoParallelRefIterator, ParallelBridge, ParallelIterator,
 };
+use rayon::prelude::ParallelSliceMut;
 use serde::{Deserialize, Serialize};
 
 fn main() {
@@ -17,6 +19,7 @@ fn main() {
         "protobufs/oak_save.proto",
         "protobufs/oak_shared.proto",
     ];
+
     let game_data_inputs_kv = vec![
         "game_data/FAST_TRAVEL.csv",
         "game_data/MISSION.csv",
@@ -34,6 +37,7 @@ fn main() {
         "game_data/BALANCE_NAME_MAPPING.csv",
         "game_data/BALANCE_TO_INV_KEY.csv",
     ];
+
     let game_data_inputs_array = vec![
         "game_data/VEHICLE_CHASSIS_OUTRUNNER.csv",
         "game_data/VEHICLE_CHASSIS_TECHNICAL.csv",
@@ -49,6 +53,14 @@ fn main() {
         "game_data/VEHICLE_SKINS_JETBEAST.csv",
     ];
 
+    let lootlemon_items = vec![
+        "resources/Lootlemon Artifacts (BL3).csv",
+        "resources/Lootlemon Class Mods (BL3).csv",
+        "resources/Lootlemon Grenades (BL3).csv",
+        "resources/Lootlemon Shields (BL3).csv",
+        "resources/Lootlemon Weapons (BL3).csv",
+    ];
+
     for input in proto_inputs {
         println!("cargo:rerun-if-changed={}", input);
     }
@@ -58,6 +70,10 @@ fn main() {
     }
 
     for input in &game_data_inputs_array {
+        println!("cargo:rerun-if-changed={}", input);
+    }
+
+    for input in &lootlemon_items {
         println!("cargo:rerun-if-changed={}", input);
     }
 
@@ -141,20 +157,34 @@ fn main() {
 
     //INVENTORY_BALANCE_PARTS
     let mut inventory_balance_parts = gen_balance_parts(&inventory_serial_db_json);
-    inventory_balance_parts.sort_by(|a, b| a.short_ident.cmp(&b.short_ident));
+    inventory_balance_parts.par_sort_by(|a, b| a.short_ident.cmp(&b.short_ident));
     let inventory_balance_parts_ron = ron::to_string(&inventory_balance_parts).unwrap();
 
     //INVENTORY_INV_DATA_PARTS
     let mut inventory_inv_data_parts = gen_inventory_data_parts(&inventory_serial_db_json);
     inventory_inv_data_parts
-        .sort_by(|a, b| a.ident.rsplit('.').next().cmp(&b.ident.rsplit('.').next()));
+        .par_sort_by(|a, b| a.ident.rsplit('.').next().cmp(&b.ident.rsplit('.').next()));
     let inventory_inv_data_parts_ron = ron::to_string(&inventory_inv_data_parts).unwrap();
 
     //INVENTORY_MANUFACTURER_PARTS
     let mut inventory_manufacturer_parts = gen_manufacturer_parts(&inventory_serial_db_json);
-    inventory_manufacturer_parts.sort_by(|a, b| a.short_ident.cmp(&b.short_ident));
+    inventory_manufacturer_parts.par_sort_by(|a, b| a.short_ident.cmp(&b.short_ident));
     let inventory_manufacturer_parts_ron = ron::to_string(&inventory_manufacturer_parts).unwrap();
 
+    //Lootlemon Items
+    let all_lootlemon_items = lootlemon_items
+        .into_iter()
+        .map(|items_path| {
+            let items_data = std::fs::read(items_path).unwrap();
+
+            gen_lootlemon_items(&items_data)
+        })
+        .flatten()
+        .collect::<Vec<_>>();
+
+    let all_lootlemon_items_ron = ron::to_string(&all_lootlemon_items).unwrap();
+
+    // Compress everything we need
     for (filename, output_data) in [
         (
             "resources/INVENTORY_SERIAL_DB_PARTS_CATEGORIZED",
@@ -176,6 +206,7 @@ fn main() {
             "resources/INVENTORY_MANUFACTURER_PARTS",
             inventory_manufacturer_parts_ron,
         ),
+        ("resources/LOOTLEMON_ITEMS", all_lootlemon_items_ron),
     ] {
         let output_file = std::fs::OpenOptions::new()
             .create(true)
@@ -745,4 +776,30 @@ fn gen_manufacturer_parts(inventory_serial_db_json: &JsonValue) -> Vec<Manufactu
             }
         })
         .collect::<Vec<_>>()
+}
+
+#[derive(Debug, Serialize)]
+pub struct LootlemonItem {
+    pub serial: String,
+    pub link: String,
+}
+
+impl LootlemonItem {
+    pub fn from_record(record: StringRecord) -> Self {
+        Self {
+            serial: record.get(3).unwrap().trim().to_owned(),
+            link: record.get(4).unwrap().trim().to_owned(),
+        }
+    }
+}
+
+pub fn gen_lootlemon_items(input_data: &[u8]) -> Vec<LootlemonItem> {
+    let mut rdr = csv::ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(input_data);
+
+    rdr.records()
+        .into_iter()
+        .map(|r| LootlemonItem::from_record(r.unwrap()))
+        .collect()
 }

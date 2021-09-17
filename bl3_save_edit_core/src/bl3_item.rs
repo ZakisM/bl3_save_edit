@@ -152,16 +152,37 @@ impl std::default::Default for ItemType {
 
 #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display, EnumString)]
 pub enum ItemRarity {
-    #[strum(serialize = "01/Common", to_string = "Common")]
+    #[strum(
+        serialize = "01/Common",
+        serialize = "01/Common (Starting Gear)",
+        to_string = "Common"
+    )]
     Common,
     #[strum(serialize = "02/Uncommon", to_string = "Uncommon")]
     Uncommon,
-    #[strum(serialize = "03/Rare", to_string = "Rare")]
+    #[strum(
+        serialize = "03/Rare",
+        serialize = "03/Rare E-Tech",
+        to_string = "Rare"
+    )]
     Rare,
-    #[strum(serialize = "04/Very Rare", to_string = "Very Rare")]
+    #[strum(
+        serialize = "04/Very Rare",
+        serialize = "04/Very Rare E-Tech",
+        to_string = "Very Rare"
+    )]
     VeryRare,
-    #[strum(to_string = "Legendary")]
+    #[strum(serialize = "05/Legendary", to_string = "Legendary")]
     Legendary,
+    #[strum(serialize = "Named Weapon")]
+    NamedWeapon,
+    Unknown,
+}
+
+impl std::default::Default for ItemRarity {
+    fn default() -> Self {
+        Self::Unknown
+    }
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display)]
@@ -178,12 +199,6 @@ pub enum WeaponType {
     Sniper,
     #[strum(to_string = "Heavy")]
     Heavy,
-}
-
-impl std::default::Default for ItemRarity {
-    fn default() -> Self {
-        Self::Legendary
-    }
 }
 
 impl Bl3Item {
@@ -269,7 +284,13 @@ impl Bl3Item {
 
         let balance_eng_name = BALANCE_NAME_MAPPING
             .par_iter()
-            .find_first(|gd| balance.to_lowercase().contains(gd.ident))
+            .find_first(|gd| {
+                balance_short_name
+                    .as_ref()
+                    .unwrap_or(&balance)
+                    .to_lowercase()
+                    == gd.ident.rsplit('/').next().unwrap_or(gd.ident)
+            })
             .map(|gd| gd.name.to_owned());
 
         let balance_part = BalancePart {

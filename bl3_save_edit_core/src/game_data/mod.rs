@@ -1941,7 +1941,7 @@ pub const PROFILE_SKINS_DEFAULTS: [GameDataKv; 4] = [
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/SirenBrawler/Skins/CustomSkin_Siren_Default.CustomSkin_Siren_Default", name: "Siren Skin Default" },
 ];
 
-pub const BALANCE_NAME_MAPPING: [GameDataKv; 768] = [
+pub const BALANCE_NAME_MAPPING: [GameDataKv; 769] = [
     GameDataKv { ident: "/game/gear/artifacts/_design/balancedefs/invbald_artifact_01_common", name: "White Artifact" },
     GameDataKv { ident: "/game/gear/artifacts/_design/balancedefs/invbald_artifact_02_uncommon", name: "Green Artifact" },
     GameDataKv { ident: "/game/gear/artifacts/_design/balancedefs/invbald_artifact_03_rare", name: "Blue Artifact" },
@@ -2710,6 +2710,7 @@ pub const BALANCE_NAME_MAPPING: [GameDataKv; 768] = [
     GameDataKv { ident: "/game/patchdlc/vaultcard2/gear/grenademods/unique/pyroburst/balance/invbald_gm_pyroburst", name: "Pyroburst" },
     GameDataKv { ident: "/game/patchdlc/vaultcard2/gear/weapons/unique/goldrush/balance/balance_sm_hyp_goldrush", name: "Gold Rush" },
     GameDataKv { ident: "/game/patchdlc/vaultcard2/gear/weapons/unique/troubleshooter/balance/balance_sm_hyp_etech_troubleshooter", name: "Troubleshooter" },
+    GameDataKv { ident: "/game/enemies/punk_female/_unique/skaglady/_design/weapon/balance/balance_skaglady_hw_cov_veryrare_shock", name: "Sheega's Launcher" },
 ];
 
 pub const BALANCE_TO_INV_KEY: [GameDataKv; 1413] = [

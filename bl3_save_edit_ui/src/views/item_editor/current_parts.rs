@@ -15,8 +15,9 @@ use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::extra_part_info::add_extra_part_info;
 use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
-use crate::views::item_editor::parts_tab_bar::{parts_tab_bar_button, CurrentPartType};
+use crate::views::item_editor::parts_tab_bar::CurrentPartType;
 use crate::views::item_editor::ItemEditorInteractionMessage;
+use crate::views::tab_bar_button::tab_bar_button;
 use crate::views::InteractionExt;
 
 #[derive(Debug, Copy, Clone, Default)]
@@ -298,7 +299,7 @@ impl CurrentParts {
         let mut title_row = Row::new().align_items(Align::Center);
 
         title_row = title_row.push(
-            Container::new(parts_tab_bar_button(
+            Container::new(tab_bar_button(
                 &mut self.current_parts_tab_button_state,
                 CurrentPartType::Parts,
                 &self.parts_tab_view,
@@ -317,7 +318,7 @@ impl CurrentParts {
         );
 
         title_row = title_row.push(
-            Container::new(parts_tab_bar_button(
+            Container::new(tab_bar_button(
                 &mut self.current_anointments_tab_button_state,
                 CurrentPartType::Anointments,
                 &self.parts_tab_view,
@@ -375,9 +376,11 @@ impl CurrentParts {
 }
 
 fn part_contains(short_ident: Option<&String>, ident: &str, cat_part_name: &str) -> bool {
+    let name_with_stop = format!("{}.", cat_part_name.to_lowercase());
+
     if let Some(short_ident) = short_ident {
         cat_part_name.to_lowercase() == short_ident.to_lowercase()
     } else {
-        ident.to_lowercase().contains(&cat_part_name.to_lowercase())
+        ident.to_lowercase().contains(&name_with_stop)
     }
 }
