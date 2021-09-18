@@ -106,6 +106,12 @@ impl ItemEditorState {
         self.items.push(ItemEditorListItem::new(item));
     }
 
+    pub fn insert_item(&mut self, index: usize, item: Bl3Item) {
+        if index < self.items.len() {
+            self.items.insert(index, ItemEditorListItem::new(item));
+        }
+    }
+
     pub fn remove_item(&mut self, remove_id: usize) {
         if remove_id <= self.items.len() {
             self.items.remove(remove_id);
@@ -287,17 +293,25 @@ impl ItemEditorInteractionMessage {
                 if let Some(lootlemon_item) = item_editor_state.lootlemon_items.items.get(id) {
                     let item = lootlemon_item.item.clone();
 
-                    item_editor_state.add_item(item);
+                    match item_editor_state.item_list_is_reverse_order {
+                        true => {
+                            item_editor_state.insert_item(0, item);
 
-                    item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+                            item_editor_state.selected_item_index = 0;
+
+                            item_editor_state.item_list_scrollable_state.snap_to(0.0);
+                        }
+                        false => {
+                            item_editor_state.add_item(item);
+
+                            item_editor_state.selected_item_index =
+                                item_editor_state.items().len() - 1;
+
+                            item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                        }
+                    }
 
                     item_editor_state.map_current_item_if_exists_to_editor_state();
-
-                    item_editor_state.search_items_input.clear();
-
-                    item_editor_state.search_items_input_state.focus();
-
-                    item_editor_state.item_list_scrollable_state.snap_to(1.0);
                 } else {
                     let msg = format!("Failed to import item from Lootlemon: couldn't find an item with index {}.", id);
 
@@ -512,16 +526,28 @@ impl ItemEditorInteractionMessage {
                 item_editor_state.import_serial_input = s;
             }
             ItemEditorInteractionMessage::CreateItemPressed => {
-                item_editor_state
-                    .add_item(Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap());
+                let item = Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap();
 
-                item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+                match item_editor_state.item_list_is_reverse_order {
+                    true => {
+                        item_editor_state.insert_item(0, item);
+
+                        item_editor_state.selected_item_index = 0;
+
+                        item_editor_state.item_list_scrollable_state.snap_to(0.0);
+                    }
+                    false => {
+                        item_editor_state.add_item(item);
+
+                        item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+
+                        item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                    }
+                }
 
                 item_editor_state.map_current_item_if_exists_to_editor_state();
 
                 item_editor_state.search_items_input_state.focus();
-
-                item_editor_state.item_list_scrollable_state.snap_to(1.0);
 
                 item_editor_state.item_list_tab_type = ItemListTabType::Items;
             }
@@ -529,16 +555,28 @@ impl ItemEditorInteractionMessage {
                 let item_serial = item_editor_state.import_serial_input.trim();
 
                 match Bl3Item::from_serial_base64(item_serial) {
-                    Ok(bl3_item) => {
-                        item_editor_state.add_item(bl3_item);
+                    Ok(item) => {
+                        match item_editor_state.item_list_is_reverse_order {
+                            true => {
+                                item_editor_state.insert_item(0, item);
 
-                        item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+                                item_editor_state.selected_item_index = 0;
+
+                                item_editor_state.item_list_scrollable_state.snap_to(0.0);
+                            }
+                            false => {
+                                item_editor_state.add_item(item);
+
+                                item_editor_state.selected_item_index =
+                                    item_editor_state.items().len() - 1;
+
+                                item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                            }
+                        }
 
                         item_editor_state.map_current_item_if_exists_to_editor_state();
 
                         item_editor_state.search_items_input_state.focus();
-
-                        item_editor_state.item_list_scrollable_state.snap_to(1.0);
 
                         item_editor_state.item_list_tab_type = ItemListTabType::Items;
                     }
@@ -609,13 +647,27 @@ impl ItemEditorInteractionMessage {
                     Some(item) => {
                         let item = item.item.clone();
 
-                        item_editor_state.add_item(item);
+                        match item_editor_state.item_list_is_reverse_order {
+                            true => {
+                                item_editor_state.insert_item(0, item);
 
-                        item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+                                item_editor_state.selected_item_index = 0;
+
+                                item_editor_state.item_list_scrollable_state.snap_to(0.0);
+                            }
+                            false => {
+                                item_editor_state.add_item(item);
+
+                                item_editor_state.selected_item_index =
+                                    item_editor_state.items().len() - 1;
+
+                                item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                            }
+                        }
 
                         item_editor_state.map_current_item_if_exists_to_editor_state();
 
-                        item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                        item_editor_state.search_items_input_state.focus();
 
                         item_editor_state.item_list_tab_type = ItemListTabType::Items;
                     }
