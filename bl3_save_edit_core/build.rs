@@ -53,13 +53,7 @@ fn main() {
         "game_data/VEHICLE_SKINS_JETBEAST.csv",
     ];
 
-    let lootlemon_items = vec![
-        "resources/Lootlemon Artifacts (BL3).csv",
-        "resources/Lootlemon Class Mods (BL3).csv",
-        "resources/Lootlemon Grenades (BL3).csv",
-        "resources/Lootlemon Shields (BL3).csv",
-        "resources/Lootlemon Weapons (BL3).csv",
-    ];
+    let lootlemon_items = "resources/Lootlemon_BL3_Items.csv";
 
     for input in proto_inputs {
         println!("cargo:rerun-if-changed={}", input);
@@ -73,9 +67,7 @@ fn main() {
         println!("cargo:rerun-if-changed={}", input);
     }
 
-    for input in &lootlemon_items {
-        println!("cargo:rerun-if-changed={}", input);
-    }
+    println!("cargo:rerun-if-changed={}", lootlemon_items);
 
     let mut all_game_data_inputs = Vec::new();
 
@@ -172,15 +164,7 @@ fn main() {
     let inventory_manufacturer_parts_ron = ron::to_string(&inventory_manufacturer_parts).unwrap();
 
     //Lootlemon Items
-    let all_lootlemon_items = lootlemon_items
-        .into_iter()
-        .map(|items_path| {
-            let items_data = std::fs::read(items_path).unwrap();
-
-            gen_lootlemon_items(&items_data)
-        })
-        .flatten()
-        .collect::<Vec<_>>();
+    let all_lootlemon_items = gen_lootlemon_items(lootlemon_items);
 
     let all_lootlemon_items_ron = ron::to_string(&all_lootlemon_items).unwrap();
 
@@ -787,16 +771,17 @@ pub struct LootlemonItem {
 impl LootlemonItem {
     pub fn from_record(record: StringRecord) -> Self {
         Self {
-            serial: record.get(3).unwrap().trim().to_owned(),
-            link: record.get(4).unwrap().trim().to_owned(),
+            serial: record.get(1).unwrap().trim().to_owned(),
+            link: record.get(2).unwrap().trim().to_owned(),
         }
     }
 }
 
-pub fn gen_lootlemon_items(input_data: &[u8]) -> Vec<LootlemonItem> {
+pub fn gen_lootlemon_items(input_name: &str) -> Vec<LootlemonItem> {
     let mut rdr = csv::ReaderBuilder::new()
         .has_headers(true)
-        .from_reader(input_data);
+        .from_path(input_name)
+        .unwrap();
 
     rdr.records()
         .into_iter()

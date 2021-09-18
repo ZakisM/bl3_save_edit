@@ -3,8 +3,8 @@ use std::convert::TryInto;
 use anyhow::Result;
 use derivative::Derivative;
 use iced::{
-    button, scrollable, text_input, tooltip, Align, Button, Color, Column, Command, Container,
-    Length, Row, Scrollable, Text, Tooltip,
+    button, scrollable, svg, text_input, tooltip, Align, Button, Color, Column, Command, Container,
+    Length, Row, Scrollable, Svg, Text, Tooltip,
 };
 use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
 use strum::Display;
@@ -23,6 +23,7 @@ use crate::bl3_ui::{Bl3Message, InteractionMessage, MessageResult};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::commands::interaction;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::resources::svgs::{ARROW_DOWN, ARROW_UP};
 use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
 use crate::views::item_editor::current_parts::CurrentPartTypeIndex;
 use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
@@ -62,9 +63,11 @@ pub struct ItemEditorState {
     pub search_items_input_state: text_input::State,
     pub search_items_input: String,
     pub item_list_scrollable_state: scrollable::State,
-    pub item_list_items_tab_button_state: button::State,
-    pub item_list_lootlemon_tab_button_state: button::State,
     pub item_list_tab_type: ItemListTabType,
+    pub item_list_items_tab_button_state: button::State,
+    pub item_list_reverse_order_button_state: button::State,
+    pub item_list_is_reverse_order: bool,
+    pub item_list_lootlemon_tab_button_state: button::State,
 }
 
 #[derive(Debug)]
@@ -97,20 +100,12 @@ impl ItemEditorState {
     }
 
     pub fn add_item(&mut self, item: Bl3Item) {
-        self.items
-            .push(ItemEditorListItem::new(self.items.len(), item));
+        self.items.push(ItemEditorListItem::new(item));
     }
 
     pub fn remove_item(&mut self, remove_id: usize) {
         if remove_id <= self.items.len() {
             self.items.remove(remove_id);
-
-            // Shift id of all existing items past remove_id to id - 1
-            self.items.iter_mut().for_each(|i| {
-                if i.id > remove_id {
-                    i.id -= 1;
-                }
-            })
         }
     }
 }
@@ -136,6 +131,8 @@ impl ItemEditorStateExt for ItemEditorState {
             f(item);
 
             self.map_current_item_if_exists_to_editor_state();
+        } else {
+            println!("Couldn't get item for index: {}", self.selected_item_index)
         }
     }
 
@@ -163,6 +160,8 @@ impl ItemEditorStateExt for ItemEditorState {
             curr_item.editor.inv_data_input_selected = curr_item.item.inv_data_part().clone();
             curr_item.editor.manufacturer_input_selected =
                 curr_item.item.manufacturer_part().clone();
+        } else {
+            println!("Couldn't get item for index: {}", self.selected_item_index);
         }
     }
 }
@@ -192,6 +191,7 @@ pub enum ItemEditorFileType<'a> {
 pub enum ItemEditorInteractionMessage {
     ItemPressed(usize),
     ItemsSearchInputChanged(String),
+    ItemListReverseOrderPressed,
     ItemListItemTabPressed,
     ItemListLootlemonTabPressed,
     ItemListLootlemonImportPressed(usize),
@@ -252,6 +252,18 @@ impl ItemEditorInteractionMessage {
             }
             ItemEditorInteractionMessage::ItemsSearchInputChanged(search_items_query) => {
                 item_editor_state.search_items_input = search_items_query.to_lowercase();
+            }
+            ItemEditorInteractionMessage::ItemListReverseOrderPressed => {
+                item_editor_state.item_list_is_reverse_order =
+                    !item_editor_state.item_list_is_reverse_order;
+
+                item_editor_state.items.reverse();
+
+                // Maintain the selected item
+                item_editor_state.selected_item_index =
+                    item_editor_state.items.len() - item_editor_state.selected_item_index - 1;
+
+                item_editor_state.map_current_item_if_exists_to_editor_state();
             }
             ItemEditorInteractionMessage::ItemListItemTabPressed => {
                 item_editor_state.search_items_input = "".to_owned();
@@ -865,26 +877,58 @@ where
         ItemListTabType::Lootlemon => format!("Search {} items...", number_of_lootlemon_items),
     };
 
-    let item_list_search_input = TextInputLimited::new(
-        &mut item_editor_state.search_items_input_state,
-        &item_list_search_input_placeholder,
-        &item_editor_state.search_items_input,
-        500,
-        move |s| interaction_message(ItemEditorInteractionMessage::ItemsSearchInputChanged(s)),
-    )
-    .0
-    .font(JETBRAINS_MONO)
-    .padding(10)
-    .size(18)
-    .style(Bl3UiStyle)
-    .into_element();
+    let mut item_list_search_row = Row::new()
+        .push(
+            TextInputLimited::new(
+                &mut item_editor_state.search_items_input_state,
+                &item_list_search_input_placeholder,
+                &item_editor_state.search_items_input,
+                500,
+                move |s| {
+                    interaction_message(ItemEditorInteractionMessage::ItemsSearchInputChanged(s))
+                },
+            )
+            .0
+            .font(JETBRAINS_MONO)
+            .padding(10)
+            .size(18)
+            .style(Bl3UiStyle)
+            .into_element(),
+        )
+        .align_items(Align::Center);
 
+    let item_list_reverse_order_icon = match item_editor_state.item_list_is_reverse_order {
+        true => svg::Handle::from_memory(ARROW_UP),
+        false => svg::Handle::from_memory(ARROW_DOWN),
+    };
+
+    let item_list_reverse_order_button = Tooltip::new(
+        Button::new(
+            &mut item_editor_state.item_list_reverse_order_button_state,
+            Svg::new(item_list_reverse_order_icon)
+                .height(Length::Units(18))
+                .width(Length::Units(18)),
+        )
+            .on_press(interaction_message(ItemEditorInteractionMessage::ItemListReverseOrderPressed))
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into_element(),
+        "Reverse the order of your items as they appear in this list (this does not modify the order in-game)",
+        tooltip::Position::Top,
+    )
+        .gap(10)
+        .padding(10)
+        .font(JETBRAINS_MONO)
+        .size(17)
+        .style(Bl3UiTooltipStyle);
+
+    // Keeping this here as we want the "editor" to show in both ItemListTabType views
     let inventory_items = item_editor_state.items.iter_mut().enumerate().fold(
         Column::new().align_items(Align::Start),
         |mut inventory_items, (i, item)| {
             let is_active = i == selected_item_index;
 
-            let (list_item_button, curr_item_editor) = item.view(is_active, interaction_message);
+            let (list_item_button, curr_item_editor) = item.view(i, is_active, interaction_message);
 
             // Check if the curr item index is in our filtered_items to decide whether to show the
             // list item button or not.
@@ -905,7 +949,8 @@ where
     match item_editor_state.item_list_tab_type {
         ItemListTabType::Items => {
             if number_of_items > 0 {
-                item_list_contents = item_list_contents.push(item_list_search_input);
+                item_list_search_row = item_list_search_row.push(item_list_reverse_order_button);
+                item_list_contents = item_list_contents.push(item_list_search_row);
 
                 if !filtered_items.is_empty() {
                     item_list_contents = item_list_contents.push(
@@ -946,7 +991,7 @@ where
             }
         }
         ItemListTabType::Lootlemon => {
-            item_list_contents = item_list_contents.push(item_list_search_input);
+            item_list_contents = item_list_contents.push(item_list_search_row);
 
             let mut view_index = 0;
 

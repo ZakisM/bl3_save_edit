@@ -25,8 +25,7 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
         .inventory_items()
         .iter()
         .cloned()
-        .enumerate()
-        .map(|(i, item)| ItemEditorListItem::new(i, item))
+        .map(ItemEditorListItem::new)
         .collect();
 
     manage_save_state

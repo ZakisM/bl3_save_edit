@@ -2,6 +2,8 @@
 pub const GENERAL: &[u8] = include_bytes!("../../resources/svg/general.svg");
 pub const REFRESH: &[u8] = include_bytes!("../../resources/svg/refresh.svg");
 pub const SETTINGS: &[u8] = include_bytes!("../../resources/svg/settings.svg");
+pub const ARROW_UP: &[u8] = include_bytes!("../../resources/svg/arrow_up.svg");
+pub const ARROW_DOWN: &[u8] = include_bytes!("../../resources/svg/arrow_down.svg");
 
 //Save Editor
 pub const CHARACTER: &[u8] = include_bytes!("../../resources/svg/character.svg");

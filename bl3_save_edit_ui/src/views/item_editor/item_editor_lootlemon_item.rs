@@ -44,13 +44,13 @@ impl ItemEditorLootlemonItem {
                     ItemEditorInteractionMessage::ItemListLootlemonImportPressed(self.id),
                 ))
                 .padding(5)
-                .width(Length::Units(150))
+                .width(Length::Units(160))
                 .style(Bl3UiStyle),
             )
             .push(
                 Button::new(
                     &mut self.open_lootlemon_button_state,
-                    Text::new("Open on Lootlemon")
+                    Text::new("Open on Lootlemon ➜")
                         .font(JETBRAINS_MONO_BOLD)
                         .size(17)
                         .horizontal_alignment(HorizontalAlignment::Center),
@@ -59,7 +59,7 @@ impl ItemEditorLootlemonItem {
                     ItemEditorInteractionMessage::ItemListLootlemonOpenWebsitePressed(self.id),
                 ))
                 .padding(5)
-                .width(Length::Units(150))
+                .width(Length::Units(160))
                 .style(Bl3UiStyle),
             )
             .width(Length::Fill)

@@ -661,7 +661,7 @@ impl Application for Bl3Application {
                                     Ok((output, save_file)) => {
                                         return Command::perform(
                                             interaction::save::save_file(
-                                                self.config.config_dir().to_path_buf(),
+                                                self.config.backup_dir().to_path_buf(),
                                                 output_file,
                                                 output,
                                                 self.manage_save_state.current_file.clone(),
@@ -943,7 +943,7 @@ impl Application for Bl3Application {
                                     Ok((output, profile)) => {
                                         return Command::perform(
                                             interaction::save::save_profile(
-                                                self.config.config_dir().to_path_buf(),
+                                                self.config.backup_dir().to_path_buf(),
                                                 output_file,
                                                 output,
                                                 self.manage_profile_state.current_file.clone(),

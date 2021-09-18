@@ -3,6 +3,48 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="$USER_HOME$/Downloads/BL3_Items.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Downloads/Lootlemon Artifacts (BL3).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Downloads/Lootlemon Class Mods (BL3).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Downloads/Lootlemon Grenades (BL3).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Downloads/Lootlemon Shields (BL3).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Downloads/Lootlemon Weapons (BL3).csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/bl3_save_edit_core/game_data/BALANCE_NAME_MAPPING.csv">
           <value>
             <Attribute>
@@ -200,6 +242,13 @@
           </value>
         </entry>
         <entry key="/bl3_save_edit_core/resources/INVENTORY_PARTS_INFO_ALL.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/bl3_save_edit_core/resources/Lootlemon_BL3_Items.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

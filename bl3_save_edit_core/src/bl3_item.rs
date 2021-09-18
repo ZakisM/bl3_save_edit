@@ -174,7 +174,7 @@ pub enum ItemRarity {
     VeryRare,
     #[strum(serialize = "05/Legendary", to_string = "Legendary")]
     Legendary,
-    #[strum(serialize = "Named Weapon")]
+    #[strum(serialize = "Named Weapon", to_string = "Unique Weapon")]
     NamedWeapon,
     Unknown,
 }

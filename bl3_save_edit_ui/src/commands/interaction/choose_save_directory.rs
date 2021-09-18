@@ -28,7 +28,7 @@ pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
 
 #[cfg(target_os = "macos")]
 pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
-    let home_dir = if existing_dir.exists() {
+    let default_dir = if existing_dir.exists() {
         existing_dir
     } else {
         dirs::home_dir()

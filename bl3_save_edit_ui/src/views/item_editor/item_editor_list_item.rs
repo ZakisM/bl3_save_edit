@@ -10,16 +10,14 @@ use crate::views::InteractionExt;
 
 #[derive(Debug, Default)]
 pub struct ItemEditorListItem {
-    pub id: usize,
     pub item: Bl3Item,
     button_state: button::State,
     pub editor: Editor,
 }
 
 impl ItemEditorListItem {
-    pub fn new(id: usize, item: Bl3Item) -> Self {
+    pub fn new(item: Bl3Item) -> Self {
         ItemEditorListItem {
-            id,
             item,
             ..Default::default()
         }
@@ -27,6 +25,7 @@ impl ItemEditorListItem {
 
     pub fn view<F>(
         &mut self,
+        id: usize,
         is_active: bool,
         interaction_message: F,
     ) -> (Element<Bl3Message>, Option<Container<Bl3Message>>)
@@ -36,7 +35,7 @@ impl ItemEditorListItem {
         let item_content = list_item_contents::view(&self.item);
 
         let item_editor = if is_active {
-            Some(self.editor.view(self.id, &self.item, interaction_message))
+            Some(self.editor.view(id, &self.item, interaction_message))
         } else {
             None
         };
@@ -44,7 +43,7 @@ impl ItemEditorListItem {
         (
             Button::new(&mut self.button_state, Container::new(item_content))
                 .on_press(interaction_message(
-                    ItemEditorInteractionMessage::ItemPressed(self.id),
+                    ItemEditorInteractionMessage::ItemPressed(id),
                 ))
                 .padding(10)
                 .width(Length::Fill)
