@@ -1,4 +1,5 @@
 use anyhow::Result;
+use either::Either;
 use tracing::info;
 
 use bl3_save_edit_core::bl3_save::Bl3Save;
@@ -16,14 +17,22 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
         .item_editor_state
         .selected_item_index = 0;
 
+    let save_inventory_items = if manage_save_state
+        .save_view_state
+        .inventory_state
+        .item_editor_state
+        .item_list_is_reverse_order
+    {
+        Either::Left(save.character_data.inventory_items().iter().rev())
+    } else {
+        Either::Right(save.character_data.inventory_items().iter())
+    };
+
     *manage_save_state
         .save_view_state
         .inventory_state
         .item_editor_state
-        .items_mut() = save
-        .character_data
-        .inventory_items()
-        .iter()
+        .items_mut() = save_inventory_items
         .cloned()
         .map(ItemEditorListItem::new)
         .collect();
@@ -56,6 +65,21 @@ pub fn map_inventory_state_to_save(
     manage_save_state: &mut ManageSaveState,
     save: &mut Bl3Save,
 ) -> Result<()> {
+    // Don't reverse items in our save
+    if manage_save_state
+        .save_view_state
+        .inventory_state
+        .item_editor_state
+        .item_list_is_reverse_order
+    {
+        manage_save_state
+            .save_view_state
+            .inventory_state
+            .item_editor_state
+            .items_mut()
+            .reverse();
+    }
+
     for (i, edited_item) in manage_save_state
         .save_view_state
         .inventory_state

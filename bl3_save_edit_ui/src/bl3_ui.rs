@@ -91,7 +91,6 @@ pub enum Bl3Message {
     SaveFileCompleted(MessageResult<Bl3Save>),
     SaveProfileCompleted(MessageResult<Bl3Profile>),
     FilesLoadedAfterSave(MessageResult<(Bl3FileType, Vec<Bl3FileType>)>),
-    OpenBackupDirCompleted(MessageResult<()>),
     ClearNotification,
 }
 
@@ -151,8 +150,9 @@ impl Application for Bl3Application {
             }),
         ];
 
+        let config_dir_input = config.config_dir().to_string_lossy().to_string();
         let saves_dir_input = config.saves_dir().to_string_lossy().to_string();
-        let backup_dir_input = config.config_dir().to_string_lossy().to_string();
+        let backup_dir_input = config.backup_dir().to_string_lossy().to_string();
         let ui_scale_factor = config.ui_scale_factor();
 
         (
@@ -160,6 +160,7 @@ impl Application for Bl3Application {
                 config,
                 view_state: ViewState::Initializing,
                 settings_state: SettingsState {
+                    config_dir_input,
                     backup_dir_input,
                     saves_dir_input,
                     ui_scale_factor,
@@ -971,17 +972,57 @@ impl Application for Bl3Application {
                         }
                     }
                     InteractionMessage::SettingsInteraction(settings_msg) => match settings_msg {
+                        SettingsInteractionMessage::OpenConfigDir => {
+                            return Command::perform(
+                                interaction::settings::open_dir(
+                                    self.config.config_dir().to_path_buf(),
+                                ),
+                                |r| {
+                                    Bl3Message::Interaction(
+                                        InteractionMessage::SettingsInteraction(
+                                            SettingsInteractionMessage::OpenConfigDirCompleted(
+                                                MessageResult::handle_result(r),
+                                            ),
+                                        ),
+                                    )
+                                },
+                            );
+                        }
+                        SettingsInteractionMessage::OpenConfigDirCompleted(res) => {
+                            if let MessageResult::Error(e) = res {
+                                let msg = format!("Failed to open config folder: {}", e);
+
+                                error!("{}", msg);
+
+                                self.notification =
+                                    Some(Notification::new(msg, NotificationSentiment::Negative));
+                            }
+                        }
                         SettingsInteractionMessage::OpenBackupDir => {
                             return Command::perform(
                                 interaction::settings::open_dir(
                                     self.config.backup_dir().to_path_buf(),
                                 ),
                                 |r| {
-                                    Bl3Message::OpenBackupDirCompleted(
-                                        MessageResult::handle_result(r),
+                                    Bl3Message::Interaction(
+                                        InteractionMessage::SettingsInteraction(
+                                            SettingsInteractionMessage::OpenBackupDirCompleted(
+                                                MessageResult::handle_result(r),
+                                            ),
+                                        ),
                                     )
                                 },
                             );
+                        }
+                        SettingsInteractionMessage::OpenBackupDirCompleted(res) => {
+                            if let MessageResult::Error(e) = res {
+                                let msg = format!("Failed to open backups folder: {}", e);
+
+                                error!("{}", msg);
+
+                                self.notification =
+                                    Some(Notification::new(msg, NotificationSentiment::Negative));
+                            }
                         }
                         SettingsInteractionMessage::ChangeBackupDir => {
                             self.settings_state.choose_backup_dir_window_open = true;
@@ -1032,11 +1073,25 @@ impl Application for Bl3Application {
                                     self.config.saves_dir().to_path_buf(),
                                 ),
                                 |r| {
-                                    Bl3Message::OpenBackupDirCompleted(
-                                        MessageResult::handle_result(r),
+                                    Bl3Message::Interaction(
+                                        InteractionMessage::SettingsInteraction(
+                                            SettingsInteractionMessage::OpenSavesDirCompleted(
+                                                MessageResult::handle_result(r),
+                                            ),
+                                        ),
                                     )
                                 },
                             );
+                        }
+                        SettingsInteractionMessage::OpenSavesDirCompleted(res) => {
+                            if let MessageResult::Error(e) = res {
+                                let msg = format!("Failed to open saves folder: {}", e);
+
+                                error!("{}", msg);
+
+                                self.notification =
+                                    Some(Notification::new(msg, NotificationSentiment::Negative));
+                            }
                         }
                         SettingsInteractionMessage::ChangeSavesDir => {
                             self.settings_state.choose_saves_dir_window_open = true;
@@ -1316,16 +1371,6 @@ impl Application for Bl3Application {
                 }
 
                 self.is_reloading_saves = false;
-            }
-            Bl3Message::OpenBackupDirCompleted(res) => {
-                if let MessageResult::Error(e) = res {
-                    let msg = format!("Failed to open backups folder: {}", e);
-
-                    error!("{}", msg);
-
-                    self.notification =
-                        Some(Notification::new(msg, NotificationSentiment::Negative));
-                }
             }
             Bl3Message::ClearNotification => {
                 self.notification = None;

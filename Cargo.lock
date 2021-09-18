@@ -193,6 +193,7 @@ dependencies = [
  "chrono",
  "derivative",
  "dirs",
+ "either",
  "embed-resource",
  "flate2",
  "futures",

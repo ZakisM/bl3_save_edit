@@ -12,6 +12,9 @@ use crate::widgets::labelled_element::LabelledElement;
 
 #[derive(Debug, Default)]
 pub struct SettingsState {
+    pub config_dir_input: String,
+    pub config_dir_input_state: text_input::State,
+    pub open_config_dir_button_state: button::State,
     pub backup_dir_input: String,
     pub backup_dir_input_state: text_input::State,
     pub open_backup_dir_button_state: button::State,
@@ -29,10 +32,14 @@ pub struct SettingsState {
 
 #[derive(Debug, Clone)]
 pub enum SettingsInteractionMessage {
+    OpenConfigDir,
+    OpenConfigDirCompleted(MessageResult<()>),
     OpenBackupDir,
+    OpenBackupDirCompleted(MessageResult<()>),
     ChangeBackupDir,
     ChangeBackupDirCompleted(MessageResult<PathBuf>),
     OpenSavesDir,
+    OpenSavesDirCompleted(MessageResult<()>),
     ChangeSavesDir,
     ChangeSavesDirCompleted(MessageResult<PathBuf>),
     DecreaseUIScale,
@@ -54,6 +61,46 @@ pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
             InteractionMessage::SettingsInteraction(SettingsInteractionMessage::ChangeBackupDir),
         );
     }
+
+    let config_dir = Container::new(
+        Row::new()
+            .push(
+                LabelledElement::create(
+                    "Config folder",
+                    Length::Units(140),
+                    TextInput::new(
+                        &mut settings_state.config_dir_input_state,
+                        "Loading config...",
+                        &settings_state.config_dir_input,
+                        |_| InteractionMessage::Ignore,
+                    )
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                )
+                .spacing(15)
+                .width(Length::FillPortion(9))
+                .align_items(Align::Center),
+            )
+            .push(
+                Button::new(
+                    &mut settings_state.open_config_dir_button_state,
+                    Text::new("Open Folder").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(InteractionMessage::SettingsInteraction(
+                    SettingsInteractionMessage::OpenConfigDir,
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
+            .align_items(Align::Center),
+    )
+    .width(Length::Fill)
+    .height(Length::Units(36))
+    .style(Bl3UiStyle);
 
     let backup_dir = Container::new(
         Row::new()
@@ -197,6 +244,7 @@ pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
     .style(Bl3UiStyle);
 
     let all_contents = Column::new()
+        .push(config_dir)
         .push(backup_dir)
         .push(saves_dir)
         .push(ui_scale)
