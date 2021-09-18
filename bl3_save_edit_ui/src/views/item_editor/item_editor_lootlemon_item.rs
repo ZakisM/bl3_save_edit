@@ -44,7 +44,7 @@ impl ItemEditorLootlemonItem {
                     ItemEditorInteractionMessage::ItemListLootlemonImportPressed(self.id),
                 ))
                 .padding(5)
-                .width(Length::Units(160))
+                .width(Length::Units(180))
                 .style(Bl3UiStyle),
             )
             .push(
@@ -59,7 +59,7 @@ impl ItemEditorLootlemonItem {
                     ItemEditorInteractionMessage::ItemListLootlemonOpenWebsitePressed(self.id),
                 ))
                 .padding(5)
-                .width(Length::Units(160))
+                .width(Length::Units(180))
                 .style(Bl3UiStyle),
             )
             .width(Length::Fill)
@@ -72,7 +72,7 @@ impl ItemEditorLootlemonItem {
         if view_index % 2 == 0 {
             view = view.style(Bl3UiStyleCustomNoBorder(Color::from_rgb8(25, 25, 25)));
         } else {
-            view = view.style(Bl3UiStyleCustomNoBorder(Color::from_rgb8(28, 28, 28)));
+            view = view.style(Bl3UiStyleCustomNoBorder(Color::from_rgb8(27, 27, 27)));
         }
 
         view.into_element()

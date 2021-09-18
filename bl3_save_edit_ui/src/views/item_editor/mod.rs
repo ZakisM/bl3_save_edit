@@ -61,8 +61,11 @@ pub struct ItemEditorState {
     items: Vec<ItemEditorListItem>,
     lootlemon_items: ItemEditorLootlemonItems,
     pub search_items_input_state: text_input::State,
+    pub search_lootlemon_items_input_state: text_input::State,
     pub search_items_input: String,
+    pub search_lootlemon_items_input: String,
     pub item_list_scrollable_state: scrollable::State,
+    pub item_list_lootlemon_scrollable_state: scrollable::State,
     pub item_list_tab_type: ItemListTabType,
     pub item_list_items_tab_button_state: button::State,
     pub item_list_reverse_order_button_state: button::State,
@@ -132,7 +135,7 @@ impl ItemEditorStateExt for ItemEditorState {
 
             self.map_current_item_if_exists_to_editor_state();
         } else {
-            println!("Couldn't get item for index: {}", self.selected_item_index)
+            error!("Couldn't get item for index: {}", self.selected_item_index)
         }
     }
 
@@ -161,7 +164,7 @@ impl ItemEditorStateExt for ItemEditorState {
             curr_item.editor.manufacturer_input_selected =
                 curr_item.item.manufacturer_part().clone();
         } else {
-            println!("Couldn't get item for index: {}", self.selected_item_index);
+            error!("Couldn't get item for index: {}", self.selected_item_index);
         }
     }
 }
@@ -191,6 +194,7 @@ pub enum ItemEditorFileType<'a> {
 pub enum ItemEditorInteractionMessage {
     ItemPressed(usize),
     ItemsSearchInputChanged(String),
+    ItemsLootLemonSearchInputChanged(String),
     ItemListReverseOrderPressed,
     ItemListItemTabPressed,
     ItemListLootlemonTabPressed,
@@ -253,6 +257,12 @@ impl ItemEditorInteractionMessage {
             ItemEditorInteractionMessage::ItemsSearchInputChanged(search_items_query) => {
                 item_editor_state.search_items_input = search_items_query.to_lowercase();
             }
+            ItemEditorInteractionMessage::ItemsLootLemonSearchInputChanged(
+                search_lootlemon_items_query,
+            ) => {
+                item_editor_state.search_lootlemon_items_input =
+                    search_lootlemon_items_query.to_lowercase();
+            }
             ItemEditorInteractionMessage::ItemListReverseOrderPressed => {
                 item_editor_state.item_list_is_reverse_order =
                     !item_editor_state.item_list_is_reverse_order;
@@ -266,15 +276,11 @@ impl ItemEditorInteractionMessage {
                 item_editor_state.map_current_item_if_exists_to_editor_state();
             }
             ItemEditorInteractionMessage::ItemListItemTabPressed => {
-                item_editor_state.search_items_input = "".to_owned();
                 item_editor_state.search_items_input_state.focus();
-                item_editor_state.item_list_scrollable_state.snap_to(0.0);
                 item_editor_state.item_list_tab_type = ItemListTabType::Items;
             }
             ItemEditorInteractionMessage::ItemListLootlemonTabPressed => {
-                item_editor_state.search_items_input = "".to_owned();
-                item_editor_state.search_items_input_state.focus();
-                item_editor_state.item_list_scrollable_state.snap_to(0.0);
+                item_editor_state.search_lootlemon_items_input_state.focus();
                 item_editor_state.item_list_tab_type = ItemListTabType::Lootlemon;
             }
             ItemEditorInteractionMessage::ItemListLootlemonImportPressed(id) => {
@@ -292,8 +298,6 @@ impl ItemEditorInteractionMessage {
                     item_editor_state.search_items_input_state.focus();
 
                     item_editor_state.item_list_scrollable_state.snap_to(1.0);
-
-                    item_editor_state.item_list_tab_type = ItemListTabType::Items;
                 } else {
                     let msg = format!("Failed to import item from Lootlemon: couldn't find an item with index {}.", id);
 
@@ -517,7 +521,9 @@ impl ItemEditorInteractionMessage {
 
                 item_editor_state.search_items_input_state.focus();
 
-                item_editor_state.item_list_scrollable_state.snap_to(1.0)
+                item_editor_state.item_list_scrollable_state.snap_to(1.0);
+
+                item_editor_state.item_list_tab_type = ItemListTabType::Items;
             }
             ItemEditorInteractionMessage::ImportItemFromSerialPressed => {
                 let item_serial = item_editor_state.import_serial_input.trim();
@@ -610,6 +616,8 @@ impl ItemEditorInteractionMessage {
                         item_editor_state.map_current_item_if_exists_to_editor_state();
 
                         item_editor_state.item_list_scrollable_state.snap_to(1.0);
+
+                        item_editor_state.item_list_tab_type = ItemListTabType::Items;
                     }
                     None => {
                         let msg = format!("Failed to duplicate item number {}: could not find this item to duplicate.", id);
@@ -834,7 +842,10 @@ where
 
     let mut item_editor = None;
 
-    let search_items_query = &item_editor_state.search_items_input;
+    let search_items_query = match item_list_tab_type {
+        ItemListTabType::Items => &item_editor_state.search_items_input,
+        ItemListTabType::Lootlemon => &item_editor_state.search_lootlemon_items_input,
+    };
 
     let filtered_items = get_filtered_items(
         search_items_query,
@@ -850,7 +861,7 @@ where
                 ItemListTabType::Items,
                 &item_editor_state.item_list_tab_type,
                 interaction_message(ItemEditorInteractionMessage::ItemListItemTabPressed),
-                None,
+                Some(format!("({})", number_of_items)),
             ))
             .padding(1)
             .width(Length::FillPortion(2)),
@@ -877,23 +888,36 @@ where
         ItemListTabType::Lootlemon => format!("Search {} items...", number_of_lootlemon_items),
     };
 
+    let item_list_search_input = match item_list_tab_type {
+        ItemListTabType::Items => TextInputLimited::new(
+            &mut item_editor_state.search_items_input_state,
+            &item_list_search_input_placeholder,
+            &item_editor_state.search_items_input,
+            500,
+            move |s| interaction_message(ItemEditorInteractionMessage::ItemsSearchInputChanged(s)),
+        ),
+        ItemListTabType::Lootlemon => TextInputLimited::new(
+            &mut item_editor_state.search_lootlemon_items_input_state,
+            &item_list_search_input_placeholder,
+            &item_editor_state.search_lootlemon_items_input,
+            500,
+            move |s| {
+                interaction_message(
+                    ItemEditorInteractionMessage::ItemsLootLemonSearchInputChanged(s),
+                )
+            },
+        ),
+    };
+
     let mut item_list_search_row = Row::new()
         .push(
-            TextInputLimited::new(
-                &mut item_editor_state.search_items_input_state,
-                &item_list_search_input_placeholder,
-                &item_editor_state.search_items_input,
-                500,
-                move |s| {
-                    interaction_message(ItemEditorInteractionMessage::ItemsSearchInputChanged(s))
-                },
-            )
-            .0
-            .font(JETBRAINS_MONO)
-            .padding(10)
-            .size(18)
-            .style(Bl3UiStyle)
-            .into_element(),
+            item_list_search_input
+                .0
+                .font(JETBRAINS_MONO)
+                .padding(10)
+                .size(18)
+                .style(Bl3UiStyle)
+                .into_element(),
         )
         .align_items(Align::Center);
 
@@ -902,6 +926,8 @@ where
         false => svg::Handle::from_memory(ARROW_DOWN),
     };
 
+    let reverse_order_button_tooltip_message = "Reverse the order of your items as they appear in this list (this does not modify the order in-game)";
+
     let item_list_reverse_order_button = Tooltip::new(
         Button::new(
             &mut item_editor_state.item_list_reverse_order_button_state,
@@ -909,18 +935,20 @@ where
                 .height(Length::Units(18))
                 .width(Length::Units(18)),
         )
-            .on_press(interaction_message(ItemEditorInteractionMessage::ItemListReverseOrderPressed))
-            .padding(10)
-            .style(Bl3UiStyle)
-            .into_element(),
-        "Reverse the order of your items as they appear in this list (this does not modify the order in-game)",
+        .on_press(interaction_message(
+            ItemEditorInteractionMessage::ItemListReverseOrderPressed,
+        ))
+        .padding(10)
+        .style(Bl3UiStyle)
+        .into_element(),
+        reverse_order_button_tooltip_message,
         tooltip::Position::Top,
     )
-        .gap(10)
-        .padding(10)
-        .font(JETBRAINS_MONO)
-        .size(17)
-        .style(Bl3UiTooltipStyle);
+    .gap(10)
+    .padding(10)
+    .font(JETBRAINS_MONO)
+    .size(17)
+    .style(Bl3UiTooltipStyle);
 
     // Keeping this here as we want the "editor" to show in both ItemListTabType views
     let inventory_items = item_editor_state.items.iter_mut().enumerate().fold(
@@ -1019,9 +1047,11 @@ where
             if !filtered_items.is_empty() {
                 item_list_contents = item_list_contents.push(
                     Container::new(
-                        Scrollable::new(&mut item_editor_state.item_list_scrollable_state)
-                            .push(lootlemon_items)
-                            .height(Length::Fill),
+                        Scrollable::new(
+                            &mut item_editor_state.item_list_lootlemon_scrollable_state,
+                        )
+                        .push(lootlemon_items)
+                        .height(Length::Fill),
                     )
                     .padding(1),
                 );
