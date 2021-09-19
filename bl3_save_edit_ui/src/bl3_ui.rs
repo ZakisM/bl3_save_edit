@@ -50,6 +50,7 @@ use crate::views::manage_save::currency::SaveCurrencyInteractionMessage;
 use crate::views::manage_save::general::{GeneralMessage, SaveGeneralInteractionMessage};
 use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::main::{SaveTabBarInteractionMessage, SaveTabBarView};
+use crate::views::manage_save::vehicle::{SaveVehicleInteractionMessage, VehicleUnlockedMessage};
 use crate::views::manage_save::{
     ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
 };
@@ -306,6 +307,11 @@ impl Application for Bl3Application {
                                     SaveTabBarInteractionMessage::Currency => {
                                         self.view_state = ViewState::ManageSave(
                                             ManageSaveView::TabBar(SaveTabBarView::Currency),
+                                        )
+                                    }
+                                    SaveTabBarInteractionMessage::Vehicle => {
+                                        self.view_state = ViewState::ManageSave(
+                                            ManageSaveView::TabBar(SaveTabBarView::Vehicle),
                                         )
                                     }
                                     SaveTabBarInteractionMessage::Settings => {
@@ -571,34 +577,6 @@ impl Application for Bl3Application {
                                     }
                                 }
                             }
-                            ManageSaveInteractionMessage::Currency(currency_msg) => {
-                                match currency_msg {
-                                    SaveCurrencyInteractionMessage::Money(money) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .currency_state
-                                            .money_input = money;
-                                    }
-                                    SaveCurrencyInteractionMessage::Eridium(eridium) => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .currency_state
-                                            .eridium_input = eridium;
-                                    }
-                                    SaveCurrencyInteractionMessage::MaxMoneyPressed => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .currency_state
-                                            .money_input = i32::MAX;
-                                    }
-                                    SaveCurrencyInteractionMessage::MaxEridiumPressed => {
-                                        self.manage_save_state
-                                            .save_view_state
-                                            .currency_state
-                                            .eridium_input = i32::MAX;
-                                    }
-                                }
-                            }
                             ManageSaveInteractionMessage::Inventory(inventory_msg) => {
                                 match inventory_msg {
                                     SaveInventoryInteractionMessage::Editor(
@@ -633,6 +611,86 @@ impl Application for Bl3Application {
                                     }
                                 }
                             }
+                            ManageSaveInteractionMessage::Currency(currency_msg) => {
+                                match currency_msg {
+                                    SaveCurrencyInteractionMessage::Money(money) => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .currency_state
+                                            .money_input = money;
+                                    }
+                                    SaveCurrencyInteractionMessage::Eridium(eridium) => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .currency_state
+                                            .eridium_input = eridium;
+                                    }
+                                    SaveCurrencyInteractionMessage::MaxMoneyPressed => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .currency_state
+                                            .money_input = i32::MAX;
+                                    }
+                                    SaveCurrencyInteractionMessage::MaxEridiumPressed => {
+                                        self.manage_save_state
+                                            .save_view_state
+                                            .currency_state
+                                            .eridium_input = i32::MAX;
+                                    }
+                                }
+                            }
+                            ManageSaveInteractionMessage::Vehicle(vehicle_msg) => match vehicle_msg
+                            {
+                                SaveVehicleInteractionMessage::UnlockMessage(unlock_msg) => {
+                                    let vehicle_unlocker = &mut self
+                                        .manage_save_state
+                                        .save_view_state
+                                        .vehicle_state
+                                        .unlocker;
+
+                                    match unlock_msg {
+                                        VehicleUnlockedMessage::OutrunnerChassis(selected) => {
+                                            vehicle_unlocker.outrunner_chassis.is_unlocked =
+                                                selected;
+                                        }
+                                        VehicleUnlockedMessage::OutrunnerParts(selected) => {
+                                            vehicle_unlocker.outrunner_parts.is_unlocked = selected;
+                                        }
+                                        VehicleUnlockedMessage::OutrunnerSkins(selected) => {
+                                            vehicle_unlocker.outrunner_skins.is_unlocked = selected;
+                                        }
+                                        VehicleUnlockedMessage::JetbeastChassis(selected) => {
+                                            vehicle_unlocker.jetbeast_chassis.is_unlocked =
+                                                selected;
+                                        }
+                                        VehicleUnlockedMessage::JetbeastParts(selected) => {
+                                            vehicle_unlocker.jetbeast_parts.is_unlocked = selected;
+                                        }
+                                        VehicleUnlockedMessage::JetbeastSkins(selected) => {
+                                            vehicle_unlocker.jetbeast_skins.is_unlocked = selected;
+                                        }
+                                        VehicleUnlockedMessage::TechnicalChassis(selected) => {
+                                            vehicle_unlocker.technical_chassis.is_unlocked =
+                                                selected;
+                                        }
+                                        VehicleUnlockedMessage::TechnicalParts(selected) => {
+                                            vehicle_unlocker.technical_parts.is_unlocked = selected;
+                                        }
+                                        VehicleUnlockedMessage::TechnicalSkins(selected) => {
+                                            vehicle_unlocker.technical_skins.is_unlocked = selected;
+                                        }
+                                        VehicleUnlockedMessage::CycloneChassis(selected) => {
+                                            vehicle_unlocker.cyclone_chassis.is_unlocked = selected;
+                                        }
+                                        VehicleUnlockedMessage::CycloneParts(selected) => {
+                                            vehicle_unlocker.cyclone_parts.is_unlocked = selected;
+                                        }
+                                        VehicleUnlockedMessage::CycloneSkins(selected) => {
+                                            vehicle_unlocker.cyclone_skins.is_unlocked = selected;
+                                        }
+                                    }
+                                }
+                            },
                             ManageSaveInteractionMessage::SaveFilePressed => {
                                 //Lets not make any modifications to the current file just in case we have any errors
                                 let mut current_file = self.manage_save_state.current_file.clone();

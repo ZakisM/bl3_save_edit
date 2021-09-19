@@ -257,18 +257,15 @@ impl std::fmt::Display for Bl3Save {
 
         writeln!(f, "Unlocked Vehicle Parts:")?;
 
-        for v_stat in self.character_data.vehicle_stats() {
+        for v_data in self.character_data.vehicle_data() {
             writeln!(
                 f,
-                "{:>1}- {} - Chassis (wheels): {}/{}, Parts: {}/{}, Skins: {}/{}",
+                "{:>1}- {} {}: {}/{}",
                 " ",
-                v_stat.name,
-                v_stat.chassis_count,
-                v_stat.total_chassis_count,
-                v_stat.parts_count,
-                v_stat.total_parts_count,
-                v_stat.skins_count,
-                v_stat.total_skins_count,
+                v_data.vehicle_type,
+                v_data.vehicle_type.subtype_name(),
+                v_data.current,
+                v_data.vehicle_type.maximum(),
             )?;
         }
 
@@ -285,13 +282,7 @@ mod tests {
     use crate::bl3_save::inventory_slot::InventorySlotData;
     use crate::bl3_save::player_class::PlayerClass;
     use crate::bl3_save::sdu::{SaveSduSlot, SaveSduSlotData};
-    use crate::game_data::{
-        VEHICLE_CHASSIS_CYCLONE, VEHICLE_CHASSIS_JETBEAST, VEHICLE_CHASSIS_OUTRUNNER,
-        VEHICLE_CHASSIS_TECHNICAL, VEHICLE_PARTS_CYCLONE, VEHICLE_PARTS_JETBEAST,
-        VEHICLE_PARTS_OUTRUNNER, VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE,
-        VEHICLE_SKINS_JETBEAST, VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
-    };
-    use crate::vehicle_data::{VehicleName, VehicleStats};
+    use crate::vehicle_data::{VehicleData, VehicleSubType, VehicleType};
 
     use super::*;
 
@@ -537,43 +528,55 @@ mod tests {
         );
 
         assert_eq!(
-            *bl3_save.character_data.vehicle_stats(),
-            vec![
-                VehicleStats {
-                    name: VehicleName::Outrunner,
-                    chassis_count: 4,
-                    total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                    parts_count: 12,
-                    total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                    skins_count: 20,
-                    total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
+            *bl3_save.character_data.vehicle_data(),
+            [
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Chassis),
+                    current: 4,
                 },
-                VehicleStats {
-                    name: VehicleName::Jetbeast,
-                    chassis_count: 4,
-                    total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                    skins_count: 3,
-                    total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Parts),
+                    current: 12,
                 },
-                VehicleStats {
-                    name: VehicleName::Technical,
-                    chassis_count: 4,
-                    total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                    parts_count: 12,
-                    total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                    skins_count: 20,
-                    total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Skins),
+                    current: 20,
                 },
-                VehicleStats {
-                    name: VehicleName::Cyclone,
-                    chassis_count: 4,
-                    total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                    parts_count: 9,
-                    total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                    skins_count: 18,
-                    total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Chassis),
+                    current: 4,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Parts),
+                    current: 4,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Skins),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Chassis),
+                    current: 4,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Parts),
+                    current: 12,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Skins),
+                    current: 20,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Chassis),
+                    current: 4,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Parts),
+                    current: 9,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Skins),
+                    current: 18,
                 },
             ]
         );
@@ -772,43 +775,55 @@ mod tests {
         );
 
         assert_eq!(
-            *bl3_save.character_data.vehicle_stats(),
-            vec![
-                VehicleStats {
-                    name: VehicleName::Outrunner,
-                    chassis_count: 1,
-                    total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                    skins_count: 8,
-                    total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
+            *bl3_save.character_data.vehicle_data(),
+            [
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Chassis),
+                    current: 1,
                 },
-                VehicleStats {
-                    name: VehicleName::Jetbeast,
-                    chassis_count: 2,
-                    total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                    parts_count: 3,
-                    total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                    skins_count: 1,
-                    total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Parts),
+                    current: 4,
                 },
-                VehicleStats {
-                    name: VehicleName::Technical,
-                    chassis_count: 3,
-                    total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                    parts_count: 6,
-                    total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                    skins_count: 12,
-                    total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Skins),
+                    current: 8,
                 },
-                VehicleStats {
-                    name: VehicleName::Cyclone,
-                    chassis_count: 2,
-                    total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                    skins_count: 10,
-                    total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Chassis),
+                    current: 2,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Parts),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Skins),
+                    current: 1,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Chassis),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Parts),
+                    current: 6,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Skins),
+                    current: 12,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Chassis),
+                    current: 2,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Parts),
+                    current: 4,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Skins),
+                    current: 10,
                 },
             ]
         );
@@ -1010,43 +1025,55 @@ mod tests {
         );
 
         assert_eq!(
-            *bl3_save.character_data.vehicle_stats(),
-            vec![
-                VehicleStats {
-                    name: VehicleName::Outrunner,
-                    chassis_count: 1,
-                    total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                    skins_count: 7,
-                    total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
+            *bl3_save.character_data.vehicle_data(),
+            [
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Chassis),
+                    current: 1,
                 },
-                VehicleStats {
-                    name: VehicleName::Jetbeast,
-                    chassis_count: 2,
-                    total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                    parts_count: 3,
-                    total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                    skins_count: 1,
-                    total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Parts),
+                    current: 4,
                 },
-                VehicleStats {
-                    name: VehicleName::Technical,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                    skins_count: 6,
-                    total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Skins),
+                    current: 7,
                 },
-                VehicleStats {
-                    name: VehicleName::Cyclone,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                    parts_count: 3,
-                    total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                    skins_count: 8,
-                    total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Chassis),
+                    current: 2,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Parts),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Skins),
+                    current: 1,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Parts),
+                    current: 4,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Skins),
+                    current: 6,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Parts),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Skins),
+                    current: 8,
                 },
             ]
         );
@@ -1248,43 +1275,55 @@ mod tests {
         );
 
         assert_eq!(
-            *bl3_save.character_data.vehicle_stats(),
-            vec![
-                VehicleStats {
-                    name: VehicleName::Outrunner,
-                    chassis_count: 1,
-                    total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                    skins_count: 7,
-                    total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
+            *bl3_save.character_data.vehicle_data(),
+            [
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Chassis),
+                    current: 1,
                 },
-                VehicleStats {
-                    name: VehicleName::Jetbeast,
-                    chassis_count: 2,
-                    total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                    parts_count: 3,
-                    total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                    skins_count: 1,
-                    total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Parts),
+                    current: 4,
                 },
-                VehicleStats {
-                    name: VehicleName::Technical,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                    parts_count: 5,
-                    total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                    skins_count: 7,
-                    total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Skins),
+                    current: 7,
                 },
-                VehicleStats {
-                    name: VehicleName::Cyclone,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                    parts_count: 3,
-                    total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                    skins_count: 8,
-                    total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Chassis),
+                    current: 2,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Parts),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Skins),
+                    current: 1,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Parts),
+                    current: 5,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Skins),
+                    current: 7,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Parts),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Skins),
+                    current: 8,
                 },
             ]
         );
@@ -1486,43 +1525,55 @@ mod tests {
         );
 
         assert_eq!(
-            *bl3_save.character_data.vehicle_stats(),
-            vec![
-                VehicleStats {
-                    name: VehicleName::Outrunner,
-                    chassis_count: 1,
-                    total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                    skins_count: 8,
-                    total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
+            *bl3_save.character_data.vehicle_data(),
+            [
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Chassis),
+                    current: 1,
                 },
-                VehicleStats {
-                    name: VehicleName::Jetbeast,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                    parts_count: 0,
-                    total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                    skins_count: 0,
-                    total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Parts),
+                    current: 4,
                 },
-                VehicleStats {
-                    name: VehicleName::Technical,
-                    chassis_count: 2,
-                    total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                    parts_count: 5,
-                    total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                    skins_count: 12,
-                    total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Skins),
+                    current: 8,
                 },
-                VehicleStats {
-                    name: VehicleName::Cyclone,
-                    chassis_count: 1,
-                    total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                    parts_count: 3,
-                    total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                    skins_count: 9,
-                    total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Parts),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Skins),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Chassis),
+                    current: 2,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Parts),
+                    current: 5,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Skins),
+                    current: 12,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Chassis),
+                    current: 1,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Parts),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Skins),
+                    current: 9,
                 },
             ]
         );
@@ -1718,43 +1769,55 @@ mod tests {
         );
 
         assert_eq!(
-            *bl3_save.character_data.vehicle_stats(),
-            vec![
-                VehicleStats {
-                    name: VehicleName::Outrunner,
-                    chassis_count: 1,
-                    total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                    skins_count: 7,
-                    total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
+            *bl3_save.character_data.vehicle_data(),
+            [
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Chassis),
+                    current: 1,
                 },
-                VehicleStats {
-                    name: VehicleName::Jetbeast,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                    parts_count: 0,
-                    total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                    skins_count: 0,
-                    total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Parts),
+                    current: 4,
                 },
-                VehicleStats {
-                    name: VehicleName::Technical,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                    skins_count: 6,
-                    total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Skins),
+                    current: 7,
                 },
-                VehicleStats {
-                    name: VehicleName::Cyclone,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                    parts_count: 3,
-                    total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                    skins_count: 8,
-                    total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Parts),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Skins),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Parts),
+                    current: 4,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Skins),
+                    current: 6,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Parts),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Skins),
+                    current: 8,
                 },
             ]
         );
@@ -1950,43 +2013,55 @@ mod tests {
         );
 
         assert_eq!(
-            *bl3_save.character_data.vehicle_stats(),
-            vec![
-                VehicleStats {
-                    name: VehicleName::Outrunner,
-                    chassis_count: 3,
-                    total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                    parts_count: 8,
-                    total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                    skins_count: 13,
-                    total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
+            *bl3_save.character_data.vehicle_data(),
+            [
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Chassis),
+                    current: 3,
                 },
-                VehicleStats {
-                    name: VehicleName::Jetbeast,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                    parts_count: 0,
-                    total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                    skins_count: 0,
-                    total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Parts),
+                    current: 8,
                 },
-                VehicleStats {
-                    name: VehicleName::Technical,
-                    chassis_count: 3,
-                    total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                    parts_count: 7,
-                    total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                    skins_count: 16,
-                    total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Skins),
+                    current: 13,
                 },
-                VehicleStats {
-                    name: VehicleName::Cyclone,
-                    chassis_count: 3,
-                    total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                    parts_count: 5,
-                    total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                    skins_count: 12,
-                    total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Parts),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Skins),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Chassis),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Parts),
+                    current: 7,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Skins),
+                    current: 16,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Chassis),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Parts),
+                    current: 5,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Skins),
+                    current: 12,
                 },
             ]
         );
@@ -2188,43 +2263,55 @@ mod tests {
         );
 
         assert_eq!(
-            *bl3_save.character_data.vehicle_stats(),
-            vec![
-                VehicleStats {
-                    name: VehicleName::Outrunner,
-                    chassis_count: 1,
-                    total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                    parts_count: 4,
-                    total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                    skins_count: 7,
-                    total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
+            *bl3_save.character_data.vehicle_data(),
+            [
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Chassis),
+                    current: 1,
                 },
-                VehicleStats {
-                    name: VehicleName::Jetbeast,
-                    chassis_count: 2,
-                    total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                    parts_count: 3,
-                    total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                    skins_count: 1,
-                    total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Parts),
+                    current: 4,
                 },
-                VehicleStats {
-                    name: VehicleName::Technical,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                    parts_count: 5,
-                    total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                    skins_count: 7,
-                    total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Outrunner(VehicleSubType::Skins),
+                    current: 7,
                 },
-                VehicleStats {
-                    name: VehicleName::Cyclone,
-                    chassis_count: 0,
-                    total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                    parts_count: 3,
-                    total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                    skins_count: 8,
-                    total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Chassis),
+                    current: 2,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Parts),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Jetbeast(VehicleSubType::Skins),
+                    current: 1,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Parts),
+                    current: 5,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Technical(VehicleSubType::Skins),
+                    current: 7,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Chassis),
+                    current: 0,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Parts),
+                    current: 3,
+                },
+                VehicleData {
+                    vehicle_type: VehicleType::Cyclone(VehicleSubType::Skins),
+                    current: 8,
                 },
             ]
         );

@@ -9,6 +9,7 @@ pub const ARROW_DOWN: &[u8] = include_bytes!("../../resources/svg/arrow_down.svg
 pub const CHARACTER: &[u8] = include_bytes!("../../resources/svg/character.svg");
 pub const INVENTORY: &[u8] = include_bytes!("../../resources/svg/inventory.svg");
 pub const CURRENCY: &[u8] = include_bytes!("../../resources/svg/currency.svg");
+pub const VEHICLE: &[u8] = include_bytes!("../../resources/svg/vehicle.svg");
 
 //Profile editor
 pub const PROFILE: &[u8] = include_bytes!("../../resources/svg/profile.svg");

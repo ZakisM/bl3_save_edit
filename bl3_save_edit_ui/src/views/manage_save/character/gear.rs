@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use derivative::Derivative;
-use iced::{Align, Checkbox, Color, Column, Container, Element, Length};
+use iced::{Align, Checkbox, Color, Column, Container, Element, Length, Text};
 
 use bl3_save_edit_core::bl3_save::inventory_slot::InventorySlot;
 
@@ -13,7 +13,6 @@ use crate::views::manage_save::character::{
 };
 use crate::views::manage_save::ManageSaveInteractionMessage;
 use crate::views::InteractionExt;
-use crate::widgets::text_margin::TextMargin;
 
 #[derive(Derivative)]
 #[derivative(Debug, Default)]
@@ -104,8 +103,7 @@ impl GearUnlocker {
             Column::new()
                 .push(
                     Container::new(
-                        TextMargin::new("Gear Management", 2)
-                            .0
+                        Text::new("Gear Management")
                             .font(JETBRAINS_MONO_BOLD)
                             .size(17)
                             .color(Color::from_rgb8(242, 203, 5)),

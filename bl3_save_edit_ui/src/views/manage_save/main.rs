@@ -2,14 +2,15 @@ use iced::{button, svg, Column, Container, Length, Row};
 use strum::Display;
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
-use crate::resources::svgs::{CHARACTER, CURRENCY, GENERAL, INVENTORY, SETTINGS};
+use crate::resources::svgs::{CHARACTER, CURRENCY, GENERAL, INVENTORY, SETTINGS, VEHICLE};
 use crate::views;
 use crate::views::manage_save::character::CharacterState;
 use crate::views::manage_save::currency::CurrencyState;
 use crate::views::manage_save::general::GeneralState;
 use crate::views::manage_save::inventory::InventoryState;
+use crate::views::manage_save::vehicle::VehicleState;
 use crate::views::manage_save::{
-    character, currency, general, inventory, ManageSaveInteractionMessage, ManageSaveState,
+    character, currency, general, inventory, vehicle, ManageSaveInteractionMessage, ManageSaveState,
 };
 use crate::views::settings::SettingsState;
 use crate::views::{tab_bar_button, ManageTabBarStyle};
@@ -19,8 +20,9 @@ pub struct SaveViewState {
     tab_bar_state: SaveTabBarState,
     pub general_state: GeneralState,
     pub character_state: CharacterState,
-    pub currency_state: CurrencyState,
     pub inventory_state: InventoryState,
+    pub currency_state: CurrencyState,
+    pub vehicle_state: VehicleState,
 }
 
 #[derive(Debug, Default)]
@@ -29,6 +31,7 @@ pub struct SaveTabBarState {
     character_button_state: button::State,
     inventory_button_state: button::State,
     currency_button_state: button::State,
+    vehicle_button_state: button::State,
     settings_button_state: button::State,
 }
 
@@ -38,6 +41,7 @@ pub enum SaveTabBarInteractionMessage {
     Character,
     Inventory,
     Currency,
+    Vehicle,
     Settings,
 }
 
@@ -48,6 +52,7 @@ pub enum SaveTabBarView {
     Character,
     Inventory,
     Currency,
+    Vehicle,
     Settings,
 }
 
@@ -112,6 +117,20 @@ pub fn view<'a>(
         105,
     );
 
+    let vehicle_button = tab_bar_button(
+        &mut manage_save_state
+            .save_view_state
+            .tab_bar_state
+            .vehicle_button_state,
+        SaveTabBarView::Vehicle,
+        tab_bar_view,
+        InteractionMessage::ManageSaveInteraction(ManageSaveInteractionMessage::TabBar(
+            SaveTabBarInteractionMessage::Vehicle,
+        )),
+        svg::Handle::from_memory(VEHICLE),
+        100,
+    );
+
     let settings_button = tab_bar_button(
         &mut manage_save_state
             .save_view_state
@@ -132,6 +151,7 @@ pub fn view<'a>(
             .push(character_button)
             .push(inventory_button)
             .push(currency_button)
+            .push(vehicle_button)
             .push(settings_button),
     )
     .width(Length::Fill)
@@ -144,11 +164,14 @@ pub fn view<'a>(
         SaveTabBarView::Character => {
             character::view(&mut manage_save_state.save_view_state.character_state)
         }
+        SaveTabBarView::Inventory => {
+            inventory::view(&mut manage_save_state.save_view_state.inventory_state)
+        }
         SaveTabBarView::Currency => {
             currency::view(&mut manage_save_state.save_view_state.currency_state)
         }
-        SaveTabBarView::Inventory => {
-            inventory::view(&mut manage_save_state.save_view_state.inventory_state)
+        SaveTabBarView::Vehicle => {
+            vehicle::view(&mut manage_save_state.save_view_state.vehicle_state)
         }
         SaveTabBarView::Settings => views::settings::view(settings_state),
     };

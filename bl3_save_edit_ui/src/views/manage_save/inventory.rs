@@ -15,8 +15,8 @@ pub enum SaveInventoryInteractionMessage {
     Editor(ItemEditorInteractionMessage),
 }
 
-pub fn view(bank_state: &mut InventoryState) -> Container<Bl3Message> {
-    item_editor::view(&mut bank_state.item_editor_state, |i| {
+pub fn view(inventory_state: &mut InventoryState) -> Container<Bl3Message> {
+    item_editor::view(&mut inventory_state.item_editor_state, |i| {
         InteractionMessage::ManageSaveInteraction(ManageSaveInteractionMessage::Inventory(
             SaveInventoryInteractionMessage::Editor(i),
         ))

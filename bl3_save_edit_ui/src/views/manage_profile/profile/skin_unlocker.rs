@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use derivative::Derivative;
-use iced::{Align, Checkbox, Color, Column, Container, Element, Length};
+use iced::{Align, Checkbox, Color, Column, Container, Element, Length, Text};
 
 use bl3_save_edit_core::bl3_profile::skins::{
     ProfileSkinData, ProfileSkinType, SkinSet, WeaponSkinSet,
@@ -15,7 +15,6 @@ use crate::views::manage_profile::profile::{
 };
 use crate::views::manage_profile::ManageProfileInteractionMessage;
 use crate::views::InteractionExt;
-use crate::widgets::text_margin::TextMargin;
 
 #[derive(Derivative)]
 #[derivative(Debug, Default)]
@@ -50,7 +49,7 @@ impl SkinUnlockCheckbox {
         Checkbox::new(
             self.is_unlocked,
             format!(
-                "{} ({}/{})",
+                "{} [{}/{}]",
                 &self.name,
                 self.skin_data.current,
                 self.skin_data.skin_type.maximum()
@@ -131,8 +130,7 @@ impl SkinUnlocker {
             Column::new()
                 .push(
                     Container::new(
-                        TextMargin::new("Skin Unlocker", 2)
-                            .0
+                        Text::new("Skin Unlocker")
                             .font(JETBRAINS_MONO_BOLD)
                             .size(17)
                             .color(Color::from_rgb8(242, 203, 5)),

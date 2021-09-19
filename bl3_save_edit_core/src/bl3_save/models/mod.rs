@@ -1,5 +1,3 @@
-use crate::game_data::GameDataKv;
-
 #[derive(Debug, Clone)]
 pub enum Currency {
     Money,
@@ -13,10 +11,4 @@ impl Currency {
             Currency::Eridium => 3679636065,
         }
     }
-}
-
-#[derive(Debug, Default)]
-pub struct VisitedTeleporter {
-    pub game_data: GameDataKv,
-    pub visited: bool,
 }

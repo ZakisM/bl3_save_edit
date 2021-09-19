@@ -26,6 +26,8 @@ pub fn map_loaded_file_to_state(main_state: &mut Bl3Application) {
 
             manage_save::currency::map_save_to_currency_state(&mut main_state.manage_save_state);
 
+            manage_save::vehicle::map_save_to_vehicle_state(&mut main_state.manage_save_state);
+
             if mem::discriminant(&main_state.view_state)
                 != mem::discriminant(&ViewState::ManageSave(ManageSaveView::TabBar(
                     SaveTabBarView::General,
