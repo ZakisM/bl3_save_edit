@@ -34,6 +34,8 @@ pub async fn save_file(
         current_time
     );
 
+    let backup_name = sanitize_filename::sanitize(backup_name);
+
     let (existing_save_output, _) = existing_save.as_bytes()?;
 
     tokio::fs::write(backup_dir.join(backup_name), existing_save_output).await?;
@@ -64,6 +66,8 @@ pub async fn save_profile(
         existing_profile.file_name.replace(".sav", ""),
         current_time
     );
+
+    let backup_name = sanitize_filename::sanitize(backup_name);
 
     let (existing_profile_output, _) = existing_profile.as_bytes()?;
 

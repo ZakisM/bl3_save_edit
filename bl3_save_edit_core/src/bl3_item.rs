@@ -823,4 +823,10 @@ mod tests {
 
         assert_eq!(decrypted, encrypted_from_base64);
     }
+
+    #[test]
+    fn test_decrypt_base64() {
+        Bl3Item::from_serial_base64("bl3(BMo1YGLGQ0MGYsI1/FbX0bJzzEAlJV/zmj/7qVR3P7k=)").unwrap();
+        Bl3Item::from_serial_base64("bl3(BDcRFWih0RoFBasjJ57Z1Zlf1975cgf2ns3n+pGwL9wo0iSoqfEvpNLcQBqq+kyitN3iuNu36Njp0sLClYQHFp550i9NgKN5J6xn8H2YeH1Ugoqv)").unwrap();
+    }
 }

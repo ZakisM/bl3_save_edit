@@ -381,6 +381,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\bl3_save_edit_core\resources\Lootlemon_BL3_Items.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
