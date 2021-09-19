@@ -1,13 +1,13 @@
 use bl3_save_edit_core::bl3_save::Bl3Save;
 use bl3_save_edit_core::vehicle_data::{VehicleSubType, VehicleType};
 
+use crate::views::manage_save::vehicle::vehicle_unlocker::VehicleUnlocker;
 use crate::views::manage_save::ManageSaveState;
 
 pub fn map_save_to_vehicle_state(manage_save_state: &mut ManageSaveState) {
     let save = &manage_save_state.current_file;
 
-    let mut unlocker =
-        std::mem::take(&mut manage_save_state.save_view_state.vehicle_state.unlocker);
+    let mut unlocker = VehicleUnlocker::default();
 
     for vd in save.character_data.vehicle_data() {
         match &vd.vehicle_type {

@@ -785,22 +785,46 @@ impl CharacterData {
     pub fn unlock_vehicle_data(&mut self, vehicle_type: &VehicleType) {
         let data_set = vehicle_type.data_set();
 
-        for d in data_set {
-            if !self
-                .character
-                .vehicles_unlocked_data
-                .iter()
-                .any(|vd| vd.asset_path == d)
-            {
-                self.character
-                    .vehicles_unlocked_data
-                    .push(VehicleUnlockedSaveGameData {
-                        asset_path: d.to_owned(),
-                        just_unlocked: true,
-                        unknown_fields: Default::default(),
-                        cached_size: Default::default(),
-                    });
+        match vehicle_type.subtype() {
+            VehicleSubType::Chassis => {
+                for d in data_set {
+                    if !self
+                        .character
+                        .vehicles_unlocked_data
+                        .iter()
+                        .any(|vd| vd.asset_path == d)
+                    {
+                        self.character
+                            .vehicles_unlocked_data
+                            .push(VehicleUnlockedSaveGameData {
+                                asset_path: d.to_owned(),
+                                just_unlocked: true,
+                                unknown_fields: Default::default(),
+                                cached_size: Default::default(),
+                            });
+                    }
+                }
             }
+            VehicleSubType::Skins | VehicleSubType::Parts => {
+                for d in data_set {
+                    if !self
+                        .character
+                        .vehicle_parts_unlocked
+                        .contains(&d.to_owned())
+                    {
+                        self.character.vehicle_parts_unlocked.push(d.to_owned());
+                    }
+                }
+            }
+        }
+
+        let existing_vd = self
+            .vehicle_data
+            .iter_mut()
+            .find(|vd| vd.vehicle_type == *vehicle_type);
+
+        if let Some(existing) = existing_vd {
+            existing.current = vehicle_type.maximum();
         }
     }
 

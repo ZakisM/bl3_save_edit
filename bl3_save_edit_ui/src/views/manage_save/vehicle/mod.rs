@@ -3,7 +3,7 @@ use iced::{Column, Container, Length};
 use crate::bl3_ui::Bl3Message;
 use crate::views::manage_save::vehicle::vehicle_unlocker::VehicleUnlocker;
 
-mod vehicle_unlocker;
+pub mod vehicle_unlocker;
 
 #[derive(Debug, Default)]
 pub struct VehicleState {

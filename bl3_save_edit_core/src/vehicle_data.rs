@@ -44,13 +44,16 @@ impl std::default::Default for VehicleType {
 }
 
 impl VehicleType {
-    pub fn subtype_name(&self) -> String {
+    pub fn subtype(&self) -> &VehicleSubType {
         match self {
-            VehicleType::Outrunner(sub_type) => sub_type.to_string(),
-            VehicleType::Jetbeast(sub_type) => sub_type.to_string(),
-            VehicleType::Technical(sub_type) => sub_type.to_string(),
-            VehicleType::Cyclone(sub_type) => sub_type.to_string(),
+            VehicleType::Outrunner(sub_type) => sub_type,
+            VehicleType::Jetbeast(sub_type) => sub_type,
+            VehicleType::Technical(sub_type) => sub_type,
+            VehicleType::Cyclone(sub_type) => sub_type,
         }
+    }
+    pub fn subtype_name(&self) -> String {
+        self.subtype().to_string()
     }
 
     pub fn maximum(&self) -> usize {
