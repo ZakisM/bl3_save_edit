@@ -237,7 +237,7 @@ impl Bl3Item {
             .write_u16::<BigEndian>((((computed_crc >> 16) ^ computed_crc) & 0xFFFF) as u16)?;
 
         if orig_checksum != computed_checksum {
-            bail!("The expected checksum when deserializing this weapon does not match the original checksum");
+            bail!("The expected checksum when deserializing this item does not match the original checksum");
         }
 
         // What we will actually store
@@ -348,7 +348,7 @@ impl Bl3Item {
             let rerolled = if serial_version >= 4 { bits.eat(8)? } else { 0 };
 
             if bits.len() > 7 || bits.bitslice().count_ones() > 0 {
-                bail!("Could not fully parse the weapon data, there was unexpected data left.")
+                bail!("Could not fully parse the item data, there was unexpected data left.")
             }
 
             let item_type = ItemType::from_str(&part_inv_key).unwrap_or_default();
