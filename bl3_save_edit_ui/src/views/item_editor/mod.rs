@@ -312,6 +312,8 @@ impl ItemEditorInteractionMessage {
                     }
 
                     item_editor_state.map_current_item_if_exists_to_editor_state();
+
+                    item_editor_state.search_lootlemon_items_input_state.focus();
                 } else {
                     let msg = format!("Failed to import item from Lootlemon: couldn't find an item with index {}.", id);
 
