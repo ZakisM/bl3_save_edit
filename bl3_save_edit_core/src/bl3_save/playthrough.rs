@@ -1,4 +1,4 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
 use rayon::slice::ParallelSliceMut;
 
@@ -40,9 +40,7 @@ impl Playthrough {
                 let mission_playthrough_data = character
                     .mission_playthroughs_data
                     .get(i)
-                    .with_context(|| {
-                        format!("failed to read active missions for playthrough: {}", i)
-                    })?;
+                    .unwrap_or_default();
 
                 let mut active_missions = get_filtered_mission_list(
                     MISSION,
@@ -74,12 +72,7 @@ impl Playthrough {
                             .map(|ats| ats.active_travel_station_name.clone())
                             .collect::<Vec<_>>()
                     })
-                    .with_context(|| {
-                        format!(
-                            "failed to read active fast travel stations for playthrough: {}",
-                            i
-                        )
-                    })?;
+                    .unwrap_or_default();
 
                 Ok(Playthrough {
                     mayhem_level,

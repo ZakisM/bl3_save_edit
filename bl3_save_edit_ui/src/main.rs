@@ -57,7 +57,7 @@ fn main() -> Result<()> {
     let settings = Settings {
         flags: config,
         window: window::Settings {
-            min_size: Some((1650, 800)),
+            min_size: Some((1320, 750)),
             size: (1650, 800),
             ..window::Settings::default()
         },
