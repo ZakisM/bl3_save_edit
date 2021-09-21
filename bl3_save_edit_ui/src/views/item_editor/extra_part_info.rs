@@ -22,16 +22,21 @@ pub fn add_extra_part_info<'a>(
         );
     }
 
-    let mut positives_negatives = String::new();
+    let mut positives_negatives = Vec::new();
 
     if let Some(positives) = &part_info.positives {
-        positives_negatives.push_str(positives);
+        positives
+            .split(", ")
+            .for_each(|p| positives_negatives.push(p.to_string()));
     }
 
     if let Some(negatives) = &part_info.negatives {
-        positives_negatives.push_str(", ");
-        positives_negatives.push_str(negatives);
+        negatives
+            .split(", ")
+            .for_each(|n| positives_negatives.push(n.to_string()));
     }
+
+    let positives_negatives = positives_negatives.join(", ");
 
     if !positives_negatives.is_empty() {
         part_contents_col = part_contents_col.push(
