@@ -321,13 +321,13 @@ mod tests {
 
         assert_eq!(bl3_profile.profile_data.bank_items().len(), 399);
         assert_eq!(bl3_profile.profile_data.lost_loot_items().len(), 13);
-        assert_eq!(bl3_profile.profile_data.character_skins_unlocked(), 212);
-        assert_eq!(bl3_profile.profile_data.character_heads_unlocked(), 144);
-        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked(), 57);
+        assert_eq!(bl3_profile.profile_data.character_skins_unlocked(), 204);
+        assert_eq!(bl3_profile.profile_data.character_heads_unlocked(), 136);
+        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked(), 55);
         assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked(), 72);
         assert_eq!(bl3_profile.profile_data.room_decorations_unlocked(), 93);
-        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 27);
-        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked(), 68);
+        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 23);
+        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked(), 63);
     }
 
     #[test]
@@ -437,12 +437,12 @@ mod tests {
 
         assert_eq!(bl3_profile.profile_data.bank_items().len(), 2000);
         assert_eq!(bl3_profile.profile_data.lost_loot_items().len(), 0);
-        assert_eq!(bl3_profile.profile_data.character_skins_unlocked(), 212);
-        assert_eq!(bl3_profile.profile_data.character_heads_unlocked(), 144);
-        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked(), 57);
+        assert_eq!(bl3_profile.profile_data.character_skins_unlocked(), 204);
+        assert_eq!(bl3_profile.profile_data.character_heads_unlocked(), 136);
+        assert_eq!(bl3_profile.profile_data.echo_themes_unlocked(), 55);
         assert_eq!(bl3_profile.profile_data.profile_emotes_unlocked(), 64);
         assert_eq!(bl3_profile.profile_data.room_decorations_unlocked(), 94);
-        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 28);
-        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked(), 68);
+        assert_eq!(bl3_profile.profile_data.weapon_skins_unlocked(), 24);
+        assert_eq!(bl3_profile.profile_data.weapon_trinkets_unlocked(), 63);
     }
 }

@@ -347,7 +347,11 @@ impl Bl3Item {
 
             let rerolled = if serial_version >= 4 { bits.eat(8)? } else { 0 };
 
-            if bits.len() > 7 || bits.bitslice().count_ones() > 0 {
+            if bits.len() > 7 {
+                warn!("Remaining data length for item was more than expected. Expected length of 7 or less but found length of: {}.", bits.len());
+            }
+
+            if bits.bitslice().count_ones() > 0 {
                 bail!("Could not fully parse the item data, there was unexpected data left.")
             }
 
