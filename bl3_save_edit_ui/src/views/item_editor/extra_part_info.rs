@@ -27,13 +27,13 @@ pub fn add_extra_part_info<'a>(
     if let Some(positives) = &part_info.positives {
         positives
             .split(", ")
-            .for_each(|p| positives_negatives.push(p.to_string()));
+            .for_each(|p| positives_negatives.push(p));
     }
 
     if let Some(negatives) = &part_info.negatives {
         negatives
             .split(", ")
-            .for_each(|n| positives_negatives.push(n.to_string()));
+            .for_each(|n| positives_negatives.push(n));
     }
 
     let positives_negatives = positives_negatives.join(", ");
