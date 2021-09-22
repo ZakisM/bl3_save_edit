@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use anyhow::{bail, Context, Result};
+use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use tokio::io::AsyncWriteExt;
 use tracing::info;
@@ -18,6 +18,8 @@ pub enum ConfigMessage {
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Bl3Config {
     config_dir: PathBuf,
+    #[serde(default = "default_backup_dir")]
+    backup_dir: PathBuf,
     saves_dir: PathBuf,
     #[serde(default = "default_scale_factor")]
     ui_scale_factor: f64,
@@ -27,17 +29,17 @@ fn default_scale_factor() -> f64 {
     1.0
 }
 
-impl Bl3Config {
-    pub async fn open_dir() -> Result<()> {
-        let config_dir = dirs::config_dir().context("Failed to read folder.")?;
+fn default_backup_dir() -> PathBuf {
+    let config_dir = dirs::config_dir().unwrap_or_default().join(CONFIG_DIR);
 
-        if config_dir.exists() {
-            open::that(config_dir.join(CONFIG_DIR)).map_err(anyhow::Error::new)
-        } else {
-            bail!("Folder does not exist.")
-        }
+    if config_dir.exists() {
+        config_dir
+    } else {
+        PathBuf::default()
     }
+}
 
+impl Bl3Config {
     pub fn load() -> Self {
         let config_dir = dirs::config_dir().unwrap_or_default().join(CONFIG_DIR);
 
@@ -55,7 +57,8 @@ impl Bl3Config {
             info!("Creating default config");
 
             Self {
-                config_dir,
+                config_dir: config_dir.clone(),
+                backup_dir: config_dir,
                 saves_dir: Default::default(),
                 ui_scale_factor: default_scale_factor(),
             }
@@ -87,6 +90,14 @@ impl Bl3Config {
 
     pub fn config_dir(&self) -> &PathBuf {
         &self.config_dir
+    }
+
+    pub fn backup_dir(&self) -> &PathBuf {
+        &self.backup_dir
+    }
+
+    pub fn set_backup_dir(&mut self, dir: PathBuf) {
+        self.backup_dir = dir;
     }
 
     pub fn saves_dir(&self) -> &PathBuf {

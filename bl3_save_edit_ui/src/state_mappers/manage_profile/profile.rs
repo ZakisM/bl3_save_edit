@@ -1,6 +1,7 @@
 use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
 
+use crate::views::manage_profile::profile::skin_unlocker::SkinUnlocker;
 use crate::views::manage_profile::ManageProfileState;
 
 pub fn map_profile_to_profile_state(manage_profile_state: &mut ManageProfileState) {
@@ -24,12 +25,7 @@ pub fn map_profile_to_profile_state(manage_profile_state: &mut ManageProfileStat
         .profile_state
         .science_tokens_input = profile.profile_data.borderlands_science_info().tokens;
 
-    let mut skin_unlocker = std::mem::take(
-        &mut manage_profile_state
-            .profile_view_state
-            .profile_state
-            .skin_unlocker,
-    );
+    let mut skin_unlocker = SkinUnlocker::default();
 
     skin_unlocker.character_heads.skin_data.current =
         profile.profile_data.character_heads_unlocked();

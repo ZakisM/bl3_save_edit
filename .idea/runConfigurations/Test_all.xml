@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test bl3_save::tests" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-    <option name="command" value="test --package bl3_save_edit_core --lib" />
+  <configuration default="false" name="Test all" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="command" value="test" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$" />
     <option name="channel" value="DEFAULT" />
     <option name="requiredFeatures" value="true" />
@@ -8,7 +8,9 @@
     <option name="emulateTerminal" value="false" />
     <option name="withSudo" value="false" />
     <option name="backtrace" value="SHORT" />
-    <envs />
+    <envs>
+      <env name="RUST_TEST_THREADS" value="1" />
+    </envs>
     <option name="isRedirectInput" value="false" />
     <option name="redirectInputPath" value="" />
     <method v="2">

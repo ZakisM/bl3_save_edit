@@ -12,6 +12,17 @@ impl container::StyleSheet for Bl3UiStyleNoBorder {
     }
 }
 
+pub struct Bl3UiStyleCustomNoBorder(pub Color);
+
+impl container::StyleSheet for Bl3UiStyleCustomNoBorder {
+    fn style(&self) -> container::Style {
+        container::Style {
+            background: self.0.into(),
+            ..container::Style::default()
+        }
+    }
+}
+
 pub struct Bl3UiStyle;
 
 impl container::StyleSheet for Bl3UiStyle {

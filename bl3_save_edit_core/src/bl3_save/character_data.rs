@@ -12,7 +12,7 @@ use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
 use crate::bl3_save::inventory_slot::{InventorySlot, InventorySlotData};
 use crate::bl3_save::level_data::{LEVEL_CHALLENGES, LEVEL_STAT};
-use crate::bl3_save::models::{Currency, VisitedTeleporter};
+use crate::bl3_save::models::Currency;
 use crate::bl3_save::player_class::PlayerClass;
 use crate::bl3_save::playthrough::Playthrough;
 use crate::bl3_save::sdu::{SaveSduSlot, SaveSduSlotData};
@@ -25,11 +25,13 @@ use crate::game_data::{
     VEHICLE_PARTS_TECHNICAL, VEHICLE_SKINS_CYCLONE, VEHICLE_SKINS_JETBEAST,
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
-use crate::protos::oak_save::{Character, OakInventoryItemSaveGameData};
+use crate::protos::oak_save::{
+    Character, OakInventoryItemSaveGameData, VehicleUnlockedSaveGameData,
+};
 use crate::protos::oak_shared::{
     GameStatSaveGameData, InventoryCategorySaveData, OakSDUSaveGameData,
 };
-use crate::vehicle_data::{VehicleName, VehicleStats};
+use crate::vehicle_data::{VehicleData, VehicleSubType, VehicleType};
 
 pub const MAX_CHARACTER_LEVEL: usize = 72;
 
@@ -52,7 +54,7 @@ pub struct CharacterData {
     sdu_slots: Vec<SaveSduSlotData>,
     ammo_pools: Vec<AmmoPoolData>,
     challenge_milestones: Vec<ChallengeData>,
-    vehicle_stats: Vec<VehicleStats>,
+    vehicle_data: [VehicleData; 12],
     inventory_items: Vec<Bl3Item>,
 }
 
@@ -308,42 +310,54 @@ impl CharacterData {
             };
         });
 
-        let vehicle_stats = vec![
-            VehicleStats {
-                name: VehicleName::Outrunner,
-                chassis_count: outrunner_chassis,
-                total_chassis_count: VEHICLE_CHASSIS_OUTRUNNER.len(),
-                parts_count: outrunner_parts,
-                total_parts_count: VEHICLE_PARTS_OUTRUNNER.len(),
-                skins_count: outrunner_skins,
-                total_skins_count: VEHICLE_SKINS_OUTRUNNER.len(),
+        let vehicle_data = [
+            VehicleData {
+                vehicle_type: VehicleType::Outrunner(VehicleSubType::Chassis),
+                current: outrunner_chassis,
             },
-            VehicleStats {
-                name: VehicleName::Jetbeast,
-                chassis_count: jetbeast_chassis,
-                total_chassis_count: VEHICLE_CHASSIS_JETBEAST.len(),
-                parts_count: jetbeast_parts,
-                total_parts_count: VEHICLE_PARTS_JETBEAST.len(),
-                skins_count: jetbeast_skins,
-                total_skins_count: VEHICLE_SKINS_JETBEAST.len(),
+            VehicleData {
+                vehicle_type: VehicleType::Outrunner(VehicleSubType::Parts),
+                current: outrunner_parts,
             },
-            VehicleStats {
-                name: VehicleName::Technical,
-                chassis_count: technical_chassis,
-                total_chassis_count: VEHICLE_CHASSIS_TECHNICAL.len(),
-                parts_count: technical_parts,
-                total_parts_count: VEHICLE_PARTS_TECHNICAL.len(),
-                skins_count: technical_skins,
-                total_skins_count: VEHICLE_SKINS_TECHNICAL.len(),
+            VehicleData {
+                vehicle_type: VehicleType::Outrunner(VehicleSubType::Skins),
+                current: outrunner_skins,
             },
-            VehicleStats {
-                name: VehicleName::Cyclone,
-                chassis_count: cyclone_chassis,
-                total_chassis_count: VEHICLE_CHASSIS_CYCLONE.len(),
-                parts_count: cyclone_parts,
-                total_parts_count: VEHICLE_PARTS_CYCLONE.len(),
-                skins_count: cyclone_skins,
-                total_skins_count: VEHICLE_SKINS_CYCLONE.len(),
+            VehicleData {
+                vehicle_type: VehicleType::Jetbeast(VehicleSubType::Chassis),
+                current: jetbeast_chassis,
+            },
+            VehicleData {
+                vehicle_type: VehicleType::Jetbeast(VehicleSubType::Parts),
+                current: jetbeast_parts,
+            },
+            VehicleData {
+                vehicle_type: VehicleType::Jetbeast(VehicleSubType::Skins),
+                current: jetbeast_skins,
+            },
+            VehicleData {
+                vehicle_type: VehicleType::Technical(VehicleSubType::Chassis),
+                current: technical_chassis,
+            },
+            VehicleData {
+                vehicle_type: VehicleType::Technical(VehicleSubType::Parts),
+                current: technical_parts,
+            },
+            VehicleData {
+                vehicle_type: VehicleType::Technical(VehicleSubType::Skins),
+                current: technical_skins,
+            },
+            VehicleData {
+                vehicle_type: VehicleType::Cyclone(VehicleSubType::Chassis),
+                current: cyclone_chassis,
+            },
+            VehicleData {
+                vehicle_type: VehicleType::Cyclone(VehicleSubType::Parts),
+                current: cyclone_parts,
+            },
+            VehicleData {
+                vehicle_type: VehicleType::Cyclone(VehicleSubType::Skins),
+                current: cyclone_skins,
             },
         ];
 
@@ -369,7 +383,7 @@ impl CharacterData {
             sdu_slots,
             ammo_pools,
             challenge_milestones,
-            vehicle_stats,
+            vehicle_data,
             inventory_items,
         })
     }
@@ -764,8 +778,54 @@ impl CharacterData {
         &self.challenge_milestones
     }
 
-    pub fn vehicle_stats(&self) -> &Vec<VehicleStats> {
-        &self.vehicle_stats
+    pub fn vehicle_data(&self) -> &[VehicleData; 12] {
+        &self.vehicle_data
+    }
+
+    pub fn unlock_vehicle_data(&mut self, vehicle_type: &VehicleType) {
+        let data_set = vehicle_type.data_set();
+
+        match vehicle_type.subtype() {
+            VehicleSubType::Chassis => {
+                for d in data_set {
+                    if !self
+                        .character
+                        .vehicles_unlocked_data
+                        .iter()
+                        .any(|vd| vd.asset_path == d)
+                    {
+                        self.character
+                            .vehicles_unlocked_data
+                            .push(VehicleUnlockedSaveGameData {
+                                asset_path: d.to_owned(),
+                                just_unlocked: true,
+                                unknown_fields: Default::default(),
+                                cached_size: Default::default(),
+                            });
+                    }
+                }
+            }
+            VehicleSubType::Skins | VehicleSubType::Parts => {
+                for d in data_set {
+                    if !self
+                        .character
+                        .vehicle_parts_unlocked
+                        .contains(&d.to_owned())
+                    {
+                        self.character.vehicle_parts_unlocked.push(d.to_owned());
+                    }
+                }
+            }
+        }
+
+        let existing_vd = self
+            .vehicle_data
+            .iter_mut()
+            .find(|vd| vd.vehicle_type == *vehicle_type);
+
+        if let Some(existing) = existing_vd {
+            existing.current = vehicle_type.maximum();
+        }
     }
 
     pub fn inventory_items(&self) -> &Vec<Bl3Item> {
@@ -912,120 +972,5 @@ impl CharacterData {
                 cached_size: Default::default(),
             });
         }
-    }
-
-    pub fn set_active_travel_stations(
-        &mut self,
-        _playthrough_index: usize,
-        _visited_teleporters_list: &[VisitedTeleporter],
-    ) {
-        //TODO: Find a save with every location and map everything below...
-
-        // let mission_list = self.character.mission_playthroughs_data.get_mut(0);
-        //
-        // if let Some(mission_list) = mission_list {
-        //     mission_list.mission_list.push(MissionStatusPlayerSaveGameData {
-        //         status: MissionStatusPlayerSaveGameData_MissionState::MS_Complete,
-        //         has_been_viewed_in_log: false,
-        //         objectives_progress: vec![1, 1, 1, 0, 1, 1],
-        //         mission_class_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Mission_TechSlaughterDiscovery_C".to_string(),
-        //         active_objective_set_path: "/Game/Missions/Side/Slaughters/TechSlaughter/Mission_TechSlaughterDiscovery.Set_TalkToNPC_ObjectiveSet".to_string(),
-        //         dlc_package_id: 0,
-        //         kickoff_played: true,
-        //         league_instance: 0,
-        //         unknown_fields: Default::default(),
-        //         cached_size: Default::default(),
-        //     });
-        //
-        //     dbg!(&mission_list.mission_list);
-        // }
-        //
-        // let curr_active_travel_stations = &mut self
-        //     .character
-        //     .active_travel_stations_for_playthrough
-        //     .get_mut(playthrough_index)
-        //     .expect("failed to read current active travel stations for playthrough: ")
-        //     .active_travel_stations;
-        //
-        // curr_active_travel_stations.push(ActiveFastTravelSaveData {
-        //     active_travel_station_name:
-        //         "/Game/GameData/FastTravel/FTS_TechSlaughterDropPod.FTS_TechSlaughterDropPod"
-        //             .to_owned(),
-        //     blacklisted: false,
-        //     unknown_fields: Default::default(),
-        //     cached_size: Default::default(),
-        // });
-        //
-        // let discovery_data = &mut self.character.discovery_data;
-        //
-        // if let Some(discovery_data) = discovery_data.as_mut() {
-        //     discovery_data
-        //         .discovered_level_info
-        //         .push(DiscoveredLevelInfo {
-        //             discovered_level_name: "/Game/Maps/Slaughters/TechSlaughter/TechSlaughter_P"
-        //                 .to_string(),
-        //             //the index of playthrough + 1 i think
-        //             discovered_playthroughs: 1,
-        //             discovered_area_info: RepeatedField::from_vec(vec![DiscoveredAreaInfo {
-        //                 discovered_area_name: "TECHSLAUGHTER_PWDA_2".to_string(),
-        //                 //the index of playthrough + 1 i think
-        //                 discovered_playthroughs: 1,
-        //                 unknown_fields: Default::default(),
-        //                 cached_size: Default::default(),
-        //             }]),
-        //             unknown_fields: Default::default(),
-        //             cached_size: Default::default(),
-        //         });
-        // }
-        //
-        // let challenge_data = &mut self.character.challenge_data;
-        //
-        // let challenge_we_want = challenge_data
-        //     .iter_mut()
-        //     .find(|cd| cd.challenge_class_path == "/Game/GameData/Challenges/Discovery/Slaughter_Tech/Challenge_Discovery_TechSlaughter1.Challenge_Discovery_TechSlaughter1_C");
-        //
-        // if let Some(challenge_we_want) = challenge_we_want {
-        //     challenge_we_want.completed_count = 1;
-        //     challenge_we_want.currently_completed = true;
-        // }
-        //
-        // let challenge_we_want = challenge_data
-        //     .iter_mut()
-        //     .find(|cd| cd.challenge_class_path == "/Game/GameData/Challenges/FastTravel/Challenge_FastTravel_TechSlaughter1.Challenge_FastTravel_TechSlaughter1_C");
-        //
-        // if let Some(challenge_we_want) = challenge_we_want {
-        //     challenge_we_want.completed_count = 1;
-        //     challenge_we_want.currently_completed = true;
-        // }
-
-        let save_name = format!("{}-out.txt", self.character.save_game_id);
-        let data = format!("{:#?}", self.character);
-
-        std::fs::write(save_name, data).unwrap();
-
-        // visited_teleporters_list.iter().for_each(|vt| {
-        //     if vt.visited
-        //         && !curr_active_travel_stations
-        //             .iter()
-        //             .any(|ats| ats.active_travel_station_name.to_lowercase() == vt.game_data.ident)
-        //     {
-        //         // println!("Adding: {}", vt.game_data.ident);
-        //
-        //         // curr_active_travel_stations.push(ActiveFastTravelSaveData {
-        //         //     active_travel_station_name: vt.game_data.ident.to_owned(),
-        //         //     blacklisted: false,
-        //         //     unknown_fields: Default::default(),
-        //         //     cached_size: Default::default(),
-        //         // });
-        //     } else if !vt.visited {
-        //         if let Some(curr_station) = curr_active_travel_stations.iter().position(|ats| {
-        //             ats.active_travel_station_name.to_lowercase() == vt.game_data.ident
-        //         }) {
-        //             // println!("Removing: {}", vt.game_data.ident);
-        //
-        //             // curr_active_travel_stations.remove(curr_station);
-        //         }
-        //     }
-        // })
     }
 }

@@ -193,6 +193,7 @@ dependencies = [
  "chrono",
  "derivative",
  "dirs",
+ "either",
  "embed-resource",
  "flate2",
  "futures",
@@ -206,6 +207,7 @@ dependencies = [
  "reqwest",
  "retry",
  "rusttype",
+ "sanitize-filename",
  "serde",
  "serde_json",
  "strum",
@@ -247,9 +249,9 @@ checksum = "ad807f2fc2bf185eeb98ff3a901bd46dc5ad58163d0fa4577ba0d25674d71708"
 
 [[package]]
 name = "bumpalo"
-version = "3.7.0"
+version = "3.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9c59e7af012c713f529e7a3ee57ce9b31ddd858d4b512923602f74608b009631"
+checksum = "d9df67f7bf9ef8498769f994239c45613ef0c5899415fb58e9add412d2c1a538"
 
 [[package]]
 name = "bytemuck"
@@ -1341,9 +1343,9 @@ checksum = "6456b8a6c8f33fee7d958fcd1b60d55b11940a79e63ae87013e6d22e26034440"
 
 [[package]]
 name = "hyper"
-version = "0.14.12"
+version = "0.14.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13f67199e765030fa08fe0bd581af683f0d5bc04ea09c2b1102012c5fb90e7fd"
+checksum = "15d1cfb9e4f68655fa04c01f59edb405b6074a0f7118ea881e5026e4a1cd8593"
 dependencies = [
  "bytes",
  "futures-channel",
@@ -1379,7 +1381,7 @@ dependencies = [
 [[package]]
 name = "iced"
 version = "0.3.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#dfe378be42071a39fb2af75e8c2e807a35251940"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#c547b6cb55831126139f2bf46554bf5604f5925e"
 dependencies = [
  "iced_core",
  "iced_futures",
@@ -1392,7 +1394,7 @@ dependencies = [
 [[package]]
 name = "iced_core"
 version = "0.4.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#dfe378be42071a39fb2af75e8c2e807a35251940"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#c547b6cb55831126139f2bf46554bf5604f5925e"
 dependencies = [
  "bitflags",
 ]
@@ -1400,7 +1402,7 @@ dependencies = [
 [[package]]
 name = "iced_futures"
 version = "0.3.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#dfe378be42071a39fb2af75e8c2e807a35251940"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#c547b6cb55831126139f2bf46554bf5604f5925e"
 dependencies = [
  "futures",
  "log",
@@ -1411,7 +1413,7 @@ dependencies = [
 [[package]]
 name = "iced_graphics"
 version = "0.2.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#dfe378be42071a39fb2af75e8c2e807a35251940"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#c547b6cb55831126139f2bf46554bf5604f5925e"
 dependencies = [
  "bytemuck",
  "font-kit",
@@ -1425,7 +1427,7 @@ dependencies = [
 [[package]]
 name = "iced_native"
 version = "0.4.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#dfe378be42071a39fb2af75e8c2e807a35251940"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#c547b6cb55831126139f2bf46554bf5604f5925e"
 dependencies = [
  "iced_core",
  "iced_futures",
@@ -1437,7 +1439,7 @@ dependencies = [
 [[package]]
 name = "iced_style"
 version = "0.3.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#dfe378be42071a39fb2af75e8c2e807a35251940"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#c547b6cb55831126139f2bf46554bf5604f5925e"
 dependencies = [
  "iced_core",
 ]
@@ -1445,7 +1447,7 @@ dependencies = [
 [[package]]
 name = "iced_web"
 version = "0.4.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#dfe378be42071a39fb2af75e8c2e807a35251940"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#c547b6cb55831126139f2bf46554bf5604f5925e"
 dependencies = [
  "base64",
  "dodrio",
@@ -1462,7 +1464,7 @@ dependencies = [
 [[package]]
 name = "iced_wgpu"
 version = "0.4.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#dfe378be42071a39fb2af75e8c2e807a35251940"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#c547b6cb55831126139f2bf46554bf5604f5925e"
 dependencies = [
  "bytemuck",
  "futures",
@@ -1481,7 +1483,7 @@ dependencies = [
 [[package]]
 name = "iced_winit"
 version = "0.3.0"
-source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#dfe378be42071a39fb2af75e8c2e807a35251940"
+source = "git+https://github.com/ZakisM/iced?branch=bl3_save_edit#c547b6cb55831126139f2bf46554bf5604f5925e"
 dependencies = [
  "iced_futures",
  "iced_graphics",
@@ -1564,9 +1566,9 @@ checksum = "229d53d58899083193af11e15917b5640cd40b29ff475a1fe4ef725deb02d0f2"
 
 [[package]]
 name = "js-sys"
-version = "0.3.54"
+version = "0.3.55"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1866b355d9c878e5e607473cbe3f63282c0b7aad2db1dbebf55076c686918254"
+checksum = "7cc9ffccd38c451a86bf13657df244e9c3f37493cce8e5e21e940963777acc84"
 dependencies = [
  "wasm-bindgen",
 ]
@@ -1617,9 +1619,9 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.101"
+version = "0.2.102"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3cb00336871be5ed2c8ed44b60ae9959dc5b9f08539422ed43f09e34ecaeba21"
+checksum = "a2a5ac8f984bfcf3a823267e5fde638acc3325f6496633a5da6bb6eb2171e103"
 
 [[package]]
 name = "libloading"
@@ -2029,7 +2031,7 @@ version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "486ea01961c4a818096de679a8b740b26d9033146ac5291b1c98557658f8cdd9"
 dependencies = [
- "proc-macro-crate 1.0.0",
+ "proc-macro-crate 1.1.0",
  "proc-macro2",
  "quote",
  "syn",
@@ -2295,9 +2297,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro-crate"
-version = "1.0.0"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41fdbd1df62156fbc5945f4762632564d7d038153091c3fcf1067f6aef7cff92"
+checksum = "1ebace6889caf889b4d3f76becee12e90353f2b8c7d875534a71e5742f8f6f83"
 dependencies = [
  "thiserror",
  "toml",
@@ -2715,6 +2717,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "sanitize-filename"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bf18934a12018228c5b55a6dae9df5d0641e3566b3630cb46cc55564068e7c2f"
+dependencies = [
+ "lazy_static",
+ "regex",
+]
+
+[[package]]
 name = "schannel"
 version = "0.1.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2799,9 +2811,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.67"
+version = "1.0.68"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a7f9e390c27c3c0ce8bc5d725f6e4d30a29d26659494aa4b17535f7522c5c950"
+checksum = "0f690853975602e1bfe1ccbf50504d67174e3bcf340f23b5ea9992e0587a52d8"
 dependencies = [
  "itoa",
  "ryu",
@@ -2940,9 +2952,9 @@ checksum = "45456094d1983e2ee2a18fdfebce3189fa451699d0502cb8e3b49dba5ba41451"
 
 [[package]]
 name = "socket2"
-version = "0.4.1"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "765f090f0e423d2b55843402a07915add955e7d60657db13707a159727326cad"
+checksum = "5dc90fe6c7be1a323296982db1836d1ea9e47b6839496dde9a541bc496df3516"
 dependencies = [
  "libc",
  "winapi",
@@ -3208,9 +3220,9 @@ checksum = "360dfd1d6d30e05fda32ace2c8c70e9c0a9da713275777f5a4dbb8a1893930c6"
 
 [[package]]
 name = "tracing"
-version = "0.1.27"
+version = "0.1.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2ba9ab62b7d6497a8638dfda5e5c4fb3b2d5a7fca4118f2b96151c8ef1a437e"
+checksum = "84f96e095c0c82419687c20ddf5cb3eadb61f4e1405923c9dc8e53a1adacbda8"
 dependencies = [
  "cfg-if 1.0.0",
  "pin-project-lite",
@@ -3272,9 +3284,9 @@ dependencies = [
 
 [[package]]
 name = "tracing-subscriber"
-version = "0.2.22"
+version = "0.2.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62af966210b88ad5776ee3ba12d5f35b8d6a2b2a12168f3080cf02b814d7376b"
+checksum = "fdd0568dbfe3baf7048b7908d2b32bca0d81cd56bec6d2a8f894b01d74f86be3"
 dependencies = [
  "ansi_term",
  "chrono",
@@ -3386,9 +3398,9 @@ checksum = "b1d386ff53b415b7fe27b50bb44679e2cc4660272694b7b6f3326d8480823a94"
 
 [[package]]
 name = "unicode-width"
-version = "0.1.8"
+version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9337591893a19b88d8d87f2cec1e73fad5cdfd10e5a6f349f498ad6ea2ffb1e3"
+checksum = "3ed742d4ea2bd1176e236172c8429aaf54486e7ac098db29ffe6529e0ce50973"
 
 [[package]]
 name = "unicode-xid"
@@ -3517,9 +3529,9 @@ checksum = "fd6fbd9a79829dd1ad0cc20627bf1ed606756a7f77edff7b66b7064f9cb327c6"
 
 [[package]]
 name = "wasm-bindgen"
-version = "0.2.77"
+version = "0.2.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e68338db6becec24d3c7977b5bf8a48be992c934b5d07177e3931f5dc9b076c"
+checksum = "632f73e236b219150ea279196e54e610f5dbafa5d61786303d4da54f84e47fce"
 dependencies = [
  "cfg-if 1.0.0",
  "serde",
@@ -3529,11 +3541,11 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-backend"
-version = "0.2.77"
+version = "0.2.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f34c405b4f0658583dba0c1c7c9b694f3cac32655db463b56c254a1c75269523"
+checksum = "a317bf8f9fba2476b4b2c85ef4c4af8ff39c3c7f0cdfeed4f82c34a880aa837b"
 dependencies = [
- "bumpalo 3.7.0",
+ "bumpalo 3.7.1",
  "lazy_static",
  "log",
  "proc-macro2",
@@ -3544,9 +3556,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-futures"
-version = "0.4.27"
+version = "0.4.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a87d738d4abc4cf22f6eb142f5b9a81301331ee3c767f2fef2fda4e325492060"
+checksum = "8e8d7523cb1f2a4c96c1317ca690031b714a51cc14e05f712446691f413f5d39"
 dependencies = [
  "cfg-if 1.0.0",
  "js-sys",
@@ -3556,9 +3568,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro"
-version = "0.2.77"
+version = "0.2.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9d5a6580be83b19dc570a8f9c324251687ab2184e57086f71625feb57ec77c8"
+checksum = "d56146e7c495528bf6587663bea13a8eb588d39b36b679d83972e1a2dbbdacf9"
 dependencies = [
  "quote",
  "wasm-bindgen-macro-support",
@@ -3566,9 +3578,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro-support"
-version = "0.2.77"
+version = "0.2.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e3775a030dc6f5a0afd8a84981a21cc92a781eb429acef9ecce476d0c9113e92"
+checksum = "7803e0eea25835f8abdc585cd3021b3deb11543c6fe226dcd30b228857c5c5ab"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3579,9 +3591,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-shared"
-version = "0.2.77"
+version = "0.2.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c279e376c7a8e8752a8f1eaa35b7b0bee6bb9fb0cdacfa97cc3f1f289c87e2b4"
+checksum = "0237232789cf037d5480773fe568aac745bfe2afbc11a863e97901780a6b47cc"
 
 [[package]]
 name = "wayland-client"
@@ -3698,9 +3710,9 @@ dependencies = [
 
 [[package]]
 name = "wgpu-core"
-version = "0.10.2"
+version = "0.10.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "425b975c319d311e051bf3afb54120a34b187f9d889edc68e347567e512774c8"
+checksum = "5f1b4d918c970526cbc83b72ccb72dbefd38aec45f07b2310de4ffcd7f4bd8c5"
 dependencies = [
  "arrayvec 0.7.1",
  "bitflags",
@@ -3720,9 +3732,9 @@ dependencies = [
 
 [[package]]
 name = "wgpu-hal"
-version = "0.10.6"
+version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85f0808ef9d54456793f0d7beb0fded6d68425fc12c0f30c6e6670ae9ca38f76"
+checksum = "27cd894b17bff1958ee93da1cc991fd64bf99667746d4bd2a7403855f4d37fe2"
 dependencies = [
  "arrayvec 0.7.1",
  "ash",
@@ -3850,7 +3862,7 @@ dependencies = [
 [[package]]
 name = "winit"
 version = "0.25.0"
-source = "git+https://github.com/iced-rs/winit?rev=24a75a7bdc10d2dc2f520c36284618e9ae6c2568#24a75a7bdc10d2dc2f520c36284618e9ae6c2568"
+source = "git+https://github.com/iced-rs/winit?rev=44a9a6fc442fcfa3fa0dfc2d5a2f86fdf4aba10c#44a9a6fc442fcfa3fa0dfc2d5a2f86fdf4aba10c"
 dependencies = [
  "bitflags",
  "cocoa",
@@ -3914,9 +3926,9 @@ checksum = "85e60b0d1b5f99db2556934e21937020776a5d31520bf169e851ac44e6420214"
 
 [[package]]
 name = "x11-dl"
-version = "2.18.5"
+version = "2.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2bf981e3a5b3301209754218f962052d4d9ee97e478f4d26d4a6eced34c1fef8"
+checksum = "7eab1e810da9042813865ebe3477261aa77d1f2241f6be747ef8c0e442bc1fa3"
 dependencies = [
  "lazy_static",
  "libc",

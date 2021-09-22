@@ -11,7 +11,7 @@ use bl3_save_edit_core::file_helper::Bl3FileType;
 use crate::commands::interaction::choose_save_directory;
 
 pub async fn save_file(
-    config_dir: PathBuf,
+    backup_dir: PathBuf,
     output_file: PathBuf,
     output: Vec<u8>,
     existing_save: Bl3Save,
@@ -34,9 +34,11 @@ pub async fn save_file(
         current_time
     );
 
+    let backup_name = sanitize_filename::sanitize(backup_name);
+
     let (existing_save_output, _) = existing_save.as_bytes()?;
 
-    tokio::fs::write(config_dir.join(backup_name), existing_save_output).await?;
+    tokio::fs::write(backup_dir.join(backup_name), existing_save_output).await?;
 
     info!("Saving file: {}", new_save.file_name);
 
@@ -46,7 +48,7 @@ pub async fn save_file(
 }
 
 pub async fn save_profile(
-    config_dir: PathBuf,
+    backup_dir: PathBuf,
     output_file: PathBuf,
     output: Vec<u8>,
     existing_profile: Bl3Profile,
@@ -65,9 +67,11 @@ pub async fn save_profile(
         current_time
     );
 
+    let backup_name = sanitize_filename::sanitize(backup_name);
+
     let (existing_profile_output, _) = existing_profile.as_bytes()?;
 
-    tokio::fs::write(config_dir.join(backup_name), existing_profile_output).await?;
+    tokio::fs::write(backup_dir.join(backup_name), existing_profile_output).await?;
 
     info!("Saving profile: {}", new_profile.file_name);
 

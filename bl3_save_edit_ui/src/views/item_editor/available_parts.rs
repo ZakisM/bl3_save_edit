@@ -13,8 +13,9 @@ use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::extra_part_info::add_extra_part_info;
 use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
-use crate::views::item_editor::parts_tab_bar::{parts_tab_bar_button, AvailablePartType};
+use crate::views::item_editor::parts_tab_bar::AvailablePartType;
 use crate::views::item_editor::ItemEditorInteractionMessage;
+use crate::views::tab_bar_button::tab_bar_button;
 use crate::views::{InteractionExt, NO_SEARCH_RESULTS_FOUND_MESSAGE};
 use crate::widgets::text_input_limited::TextInputLimited;
 
@@ -133,7 +134,7 @@ pub struct AvailableParts {
     pub part_type_index: AvailablePartTypeIndex,
     pub parts: Vec<AvailableCategorizedPart>,
     pub show_all_available_parts: bool,
-    pub parts_tab_view: AvailablePartType,
+    pub parts_tab_type: AvailablePartType,
     pub available_parts_tab_button_state: button::State,
     pub available_anointments_tab_button_state: button::State,
     pub search_input: String,
@@ -154,36 +155,37 @@ impl AvailableParts {
     {
         let selected_available_part_type_index = &self.part_type_index;
 
-        let mut title_row = Row::new().align_items(Align::Center);
-
-        title_row = title_row.push(
-            Container::new(parts_tab_bar_button(
-                &mut self.available_parts_tab_button_state,
-                AvailablePartType::Parts,
-                &self.parts_tab_view,
-                interaction_message(ItemEditorInteractionMessage::AvailablePartsTabPressed),
-                None,
-            ))
-            .padding(1)
-            .width(Length::FillPortion(2)),
-        );
-
-        title_row = title_row.push(
-            Container::new(parts_tab_bar_button(
-                &mut self.available_anointments_tab_button_state,
-                AvailablePartType::Anointments,
-                &self.parts_tab_view,
-                interaction_message(ItemEditorInteractionMessage::AvailableAnointmentsTabPressed),
-                None,
-            ))
-            .padding(1)
-            .width(Length::FillPortion(2)),
-        );
+        let title_row = Row::new()
+            .push(
+                Container::new(tab_bar_button(
+                    &mut self.available_parts_tab_button_state,
+                    AvailablePartType::Parts,
+                    &self.parts_tab_type,
+                    interaction_message(ItemEditorInteractionMessage::AvailablePartsTabPressed),
+                    None,
+                ))
+                .padding(1)
+                .width(Length::FillPortion(2)),
+            )
+            .push(
+                Container::new(tab_bar_button(
+                    &mut self.available_anointments_tab_button_state,
+                    AvailablePartType::Anointments,
+                    &self.parts_tab_type,
+                    interaction_message(
+                        ItemEditorInteractionMessage::AvailableAnointmentsTabPressed,
+                    ),
+                    None,
+                ))
+                .padding(1)
+                .width(Length::FillPortion(2)),
+            )
+            .align_items(Align::Center);
 
         let mut available_parts_column = Column::new().push(Container::new(title_row));
 
         let available_parts = if item.item_parts.is_some() {
-            match self.parts_tab_view {
+            match self.parts_tab_type {
                 AvailablePartType::Parts => {
                     let specific_parts = specific_parts_list.map(|i| {
                         AvailableCategorizedPart::from_resource_categorized_parts(
@@ -244,7 +246,7 @@ impl AvailableParts {
         if let Some(available_parts) = &available_parts {
             let amount: usize = available_parts.iter().map(|cat_p| cat_p.parts.len()).sum();
 
-            let placeholder = match self.parts_tab_view {
+            let placeholder = match self.parts_tab_type {
                 AvailablePartType::Parts => format!("Search {} Available Parts...", amount),
                 AvailablePartType::Anointments => {
                     format!("Search {} Available Anointments...", amount)

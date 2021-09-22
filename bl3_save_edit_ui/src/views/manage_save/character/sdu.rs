@@ -162,8 +162,7 @@ impl SduUnlocker {
             Column::new()
                 .push(
                     Container::new(
-                        TextMargin::new("SDU Management", 2)
-                            .0
+                        Text::new("SDU Management")
                             .font(JETBRAINS_MONO_BOLD)
                             .size(17)
                             .color(Color::from_rgb8(242, 203, 5)),

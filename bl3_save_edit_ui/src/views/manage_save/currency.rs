@@ -26,7 +26,7 @@ pub enum SaveCurrencyInteractionMessage {
     MaxEridiumPressed,
 }
 
-pub fn view(general_state: &mut CurrencyState) -> Container<Bl3Message> {
+pub fn view(currency_state: &mut CurrencyState) -> Container<Bl3Message> {
     let money = Container::new(
         Row::new()
             .push(
@@ -34,8 +34,8 @@ pub fn view(general_state: &mut CurrencyState) -> Container<Bl3Message> {
                     "Money",
                     Length::Units(75),
                     NumberInput::new(
-                        &mut general_state.money_input_state,
-                        general_state.money_input,
+                        &mut currency_state.money_input_state,
+                        currency_state.money_input,
                         0,
                         None,
                         |v| {
@@ -59,7 +59,7 @@ pub fn view(general_state: &mut CurrencyState) -> Container<Bl3Message> {
             )
             .push(
                 Button::new(
-                    &mut general_state.max_money_button_state,
+                    &mut currency_state.max_money_button_state,
                     Text::new("Max").font(JETBRAINS_MONO_BOLD).size(17),
                 )
                 .on_press(InteractionMessage::ManageSaveInteraction(
@@ -84,8 +84,8 @@ pub fn view(general_state: &mut CurrencyState) -> Container<Bl3Message> {
                     "Eridium",
                     Length::Units(75),
                     NumberInput::new(
-                        &mut general_state.eridium_input_state,
-                        general_state.eridium_input,
+                        &mut currency_state.eridium_input_state,
+                        currency_state.eridium_input,
                         0,
                         None,
                         |v| {
@@ -109,7 +109,7 @@ pub fn view(general_state: &mut CurrencyState) -> Container<Bl3Message> {
             )
             .push(
                 Button::new(
-                    &mut general_state.max_eridium_button_state,
+                    &mut currency_state.max_eridium_button_state,
                     Text::new("Max").font(JETBRAINS_MONO_BOLD).size(17),
                 )
                 .on_press(InteractionMessage::ManageSaveInteraction(

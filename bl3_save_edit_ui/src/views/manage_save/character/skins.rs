@@ -2,6 +2,7 @@ use std::rc::Rc;
 
 use derivative::Derivative;
 use iced::{pick_list, Align, Column, Container, Length, PickList, Row};
+use rayon::prelude::ParallelSliceMut;
 
 use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
 use bl3_save_edit_core::game_data::{
@@ -52,7 +53,7 @@ impl SkinPickList {
             .cloned()
             .collect::<Vec<_>>();
 
-        available_skins.sort();
+        available_skins.par_sort();
 
         let pre_selected_skin = available_skins[0];
 

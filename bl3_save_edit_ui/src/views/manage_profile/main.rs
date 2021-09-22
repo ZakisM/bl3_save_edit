@@ -53,7 +53,6 @@ pub enum ProfileTabBarView {
 
 pub fn view<'a>(
     settings_state: &'a mut SettingsState,
-    choose_dir_window_open: bool,
     manage_profile_state: &'a mut ManageProfileState,
     tab_bar_view: &ProfileTabBarView,
 ) -> Container<'a, Bl3Message> {
@@ -151,9 +150,7 @@ pub fn view<'a>(
         ProfileTabBarView::Bank => {
             bank::view(&mut manage_profile_state.profile_view_state.bank_state)
         }
-        ProfileTabBarView::Settings => {
-            views::settings::view(settings_state, choose_dir_window_open)
-        }
+        ProfileTabBarView::Settings => views::settings::view(settings_state),
     };
 
     let all_contents = Column::new().push(tab_bar).push(tab_content);

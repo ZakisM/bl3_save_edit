@@ -155,8 +155,7 @@ impl AmmoSetter {
             Column::new()
                 .push(
                     Container::new(
-                        TextMargin::new("Ammo Amounts", 2)
-                            .0
+                        Text::new("Ammo Amounts")
                             .font(JETBRAINS_MONO_BOLD)
                             .size(17)
                             .color(Color::from_rgb8(242, 203, 5)),

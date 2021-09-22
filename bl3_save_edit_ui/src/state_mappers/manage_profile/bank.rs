@@ -25,8 +25,7 @@ pub fn map_profile_to_bank_state(manage_profile_state: &mut ManageProfileState) 
         .bank_items()
         .iter()
         .cloned()
-        .enumerate()
-        .map(|(i, item)| ItemEditorListItem::new(i, item))
+        .map(ItemEditorListItem::new)
         .collect();
 
     manage_profile_state

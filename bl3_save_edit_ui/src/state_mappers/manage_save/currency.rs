@@ -15,12 +15,13 @@ pub fn map_save_to_currency_state(manage_save_state: &mut ManageSaveState) {
         .eridium_input = save.character_data.eridium();
 }
 
-pub fn map_inventory_state_to_save(
+pub fn map_currrency_state_to_save(
     manage_save_state: &mut ManageSaveState,
     save: &mut Bl3Save,
 ) -> Result<()> {
     save.character_data
         .set_money(manage_save_state.save_view_state.currency_state.money_input)?;
+
     save.character_data.set_eridium(
         manage_save_state
             .save_view_state

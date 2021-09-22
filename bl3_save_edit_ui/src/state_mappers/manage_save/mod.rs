@@ -9,6 +9,7 @@ pub mod character;
 pub mod currency;
 pub mod general;
 pub mod inventory;
+pub mod vehicle;
 
 pub fn map_all_states_to_save(
     manage_save_state: &mut ManageSaveState,
@@ -20,7 +21,9 @@ pub fn map_all_states_to_save(
 
     manage_save::inventory::map_inventory_state_to_save(manage_save_state, current_file)?;
 
-    manage_save::currency::map_inventory_state_to_save(manage_save_state, current_file)?;
+    manage_save::currency::map_currrency_state_to_save(manage_save_state, current_file)?;
+
+    manage_save::vehicle::map_vehicle_state_to_save(manage_save_state, current_file);
 
     Ok(())
 }

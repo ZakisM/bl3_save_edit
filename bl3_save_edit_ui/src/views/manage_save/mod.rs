@@ -7,12 +7,14 @@ use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::main::{
     SaveTabBarInteractionMessage, SaveTabBarView, SaveViewState,
 };
+use crate::views::manage_save::vehicle::SaveVehicleInteractionMessage;
 
 pub mod character;
 pub mod currency;
 pub mod general;
 pub mod inventory;
 pub mod main;
+pub mod vehicle;
 
 #[derive(Debug, Default)]
 pub struct ManageSaveState {
@@ -33,6 +35,7 @@ pub enum ManageSaveInteractionMessage {
     Character(SaveCharacterInteractionMessage),
     Inventory(SaveInventoryInteractionMessage),
     Currency(SaveCurrencyInteractionMessage),
+    Vehicle(SaveVehicleInteractionMessage),
     SaveFilePressed,
 }
 

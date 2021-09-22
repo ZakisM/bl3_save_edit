@@ -23,7 +23,7 @@ folder the next time you open the program.
 
 # Notices
 
-The editor will make backups for you before saving your files but I recommend you make your own backups just in case.
+The editor will make backups for you before saving your files, but I recommend you make your own backups just in case.
 
 # Building from scratch
 

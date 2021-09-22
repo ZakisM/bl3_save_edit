@@ -78,12 +78,17 @@ impl InventorySerialDb {
     }
 
     pub fn get_part_by_short_name(&self, category: &str, name: &str) -> Result<Bl3Part> {
+        // Make sure that when we are searching for the part we are looking for the name up to the full stop
+        // Otherwise our 'contains' method could return the wrong part
+        // Could use a regex here but maybe it's overkill - All parts have the same 'ident' format.
+        let name_with_stop = format!("{}.", name.to_lowercase());
+
         let part_info = self.data[category]["assets"]
             .members()
             .into_iter()
             .enumerate()
             .map(|(i, p)| (i, p.to_string()))
-            .find(|(_, p)| p.to_lowercase().contains(&name.to_lowercase()))
+            .find(|(_, p)| p.to_lowercase().contains(&name_with_stop))
             .map(|(i, p)| (i, p));
 
         if let Some((idx, ident)) = part_info {

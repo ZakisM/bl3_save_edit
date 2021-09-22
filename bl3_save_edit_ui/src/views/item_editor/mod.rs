@@ -1,12 +1,14 @@
 use std::convert::TryInto;
-use std::time::Duration;
 
 use anyhow::Result;
+use derivative::Derivative;
 use iced::{
-    button, scrollable, text_input, tooltip, Align, Button, Color, Column, Command, Container,
-    Length, Row, Scrollable, Text, Tooltip,
+    button, scrollable, svg, text_input, tooltip, Align, Button, Color, Column, Command, Container,
+    Length, Row, Scrollable, Svg, Text, Tooltip,
 };
 use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
+use strum::Display;
+use tracing::error;
 
 use bl3_save_edit_core::bl3_item::{
     BalancePart, Bl3Item, InvDataPart, ManufacturerPart, MAX_BL3_ITEM_ANOINTMENTS,
@@ -15,15 +17,19 @@ use bl3_save_edit_core::bl3_item::{
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
 use bl3_save_edit_core::bl3_save::character_data::MAX_CHARACTER_LEVEL;
 use bl3_save_edit_core::bl3_save::Bl3Save;
-use bl3_save_edit_core::resources::INVENTORY_SERIAL_DB;
+use bl3_save_edit_core::resources::{INVENTORY_SERIAL_DB, LOOTLEMON_ITEMS};
 
-use crate::bl3_ui::{Bl3Message, InteractionMessage};
+use crate::bl3_ui::{Bl3Message, InteractionMessage, MessageResult};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
+use crate::commands::interaction;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::resources::svgs::{ARROW_DOWN, ARROW_UP};
 use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
 use crate::views::item_editor::current_parts::CurrentPartTypeIndex;
 use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
+use crate::views::item_editor::item_editor_lootlemon_item::ItemEditorLootlemonItem;
 use crate::views::item_editor::parts_tab_bar::{AvailablePartType, CurrentPartType};
+use crate::views::tab_bar_button::tab_bar_button;
 use crate::views::{InteractionExt, NO_SEARCH_RESULTS_FOUND_MESSAGE};
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::notification::{Notification, NotificationSentiment};
@@ -36,22 +42,55 @@ pub mod editor;
 pub mod extra_part_info;
 pub mod item_button_style;
 pub mod item_editor_list_item;
+pub mod item_editor_lootlemon_item;
+pub mod list_item_contents;
 pub mod parts_tab_bar;
 
-#[derive(Debug, Default)]
+#[derive(Derivative)]
+#[derivative(Debug, Default)]
 pub struct ItemEditorState {
     pub selected_item_index: usize,
     pub create_item_button_state: button::State,
     pub import_serial_input: String,
     pub import_serial_input_state: text_input::State,
+    #[derivative(Default(value = "1"))]
     pub all_item_levels_input: i32,
     pub all_item_levels_input_state: text_input::State,
     pub all_item_levels_button_state: button::State,
     pub import_serial_button_state: button::State,
     items: Vec<ItemEditorListItem>,
+    lootlemon_items: ItemEditorLootlemonItems,
     pub search_items_input_state: text_input::State,
+    pub search_lootlemon_items_input_state: text_input::State,
     pub search_items_input: String,
+    pub search_lootlemon_items_input: String,
     pub item_list_scrollable_state: scrollable::State,
+    pub item_list_lootlemon_scrollable_state: scrollable::State,
+    pub item_list_tab_type: ItemListTabType,
+    pub item_list_items_tab_button_state: button::State,
+    pub item_list_reverse_order_button_state: button::State,
+    pub item_list_is_reverse_order: bool,
+    pub item_list_lootlemon_tab_button_state: button::State,
+}
+
+#[derive(Debug)]
+pub struct ItemEditorLootlemonItems {
+    pub items: Vec<ItemEditorLootlemonItem>,
+}
+
+impl std::default::Default for ItemEditorLootlemonItems {
+    fn default() -> Self {
+        let items = LOOTLEMON_ITEMS
+            .iter()
+            .cloned()
+            .enumerate()
+            .map(|(i, lootlemon_item)| {
+                ItemEditorLootlemonItem::new(i, lootlemon_item.link, lootlemon_item.item)
+            })
+            .collect::<Vec<_>>();
+
+        Self { items }
+    }
 }
 
 impl ItemEditorState {
@@ -64,20 +103,18 @@ impl ItemEditorState {
     }
 
     pub fn add_item(&mut self, item: Bl3Item) {
-        self.items
-            .push(ItemEditorListItem::new(self.items.len(), item));
+        self.items.push(ItemEditorListItem::new(item));
+    }
+
+    pub fn insert_item(&mut self, index: usize, item: Bl3Item) {
+        if index < self.items.len() {
+            self.items.insert(index, ItemEditorListItem::new(item));
+        }
     }
 
     pub fn remove_item(&mut self, remove_id: usize) {
         if remove_id <= self.items.len() {
             self.items.remove(remove_id);
-
-            // Shift id of all existing items past remove_id to id - 1
-            self.items.iter_mut().for_each(|i| {
-                if i.id > remove_id {
-                    i.id -= 1;
-                }
-            })
         }
     }
 }
@@ -103,6 +140,8 @@ impl ItemEditorStateExt for ItemEditorState {
             f(item);
 
             self.map_current_item_if_exists_to_editor_state();
+        } else {
+            error!("Couldn't get item for index: {}", self.selected_item_index)
         }
     }
 
@@ -130,7 +169,23 @@ impl ItemEditorStateExt for ItemEditorState {
             curr_item.editor.inv_data_input_selected = curr_item.item.inv_data_part().clone();
             curr_item.editor.manufacturer_input_selected =
                 curr_item.item.manufacturer_part().clone();
+        } else {
+            error!("Couldn't get item for index: {}", self.selected_item_index);
         }
+    }
+}
+
+#[derive(Debug, Display, Clone, Eq, PartialEq)]
+pub enum ItemListTabType {
+    #[strum(to_string = "Items")]
+    Items,
+    #[strum(to_string = "Lootlemon Items")]
+    Lootlemon,
+}
+
+impl std::default::Default for ItemListTabType {
+    fn default() -> Self {
+        Self::Items
     }
 }
 
@@ -145,6 +200,13 @@ pub enum ItemEditorFileType<'a> {
 pub enum ItemEditorInteractionMessage {
     ItemPressed(usize),
     ItemsSearchInputChanged(String),
+    ItemsLootLemonSearchInputChanged(String),
+    ItemListReverseOrderPressed,
+    ItemListItemTabPressed,
+    ItemListLootlemonTabPressed,
+    ItemListLootlemonImportPressed(usize),
+    ItemListLootlemonOpenWebsitePressed(usize),
+    ItemListLootlemonOpenWebsiteCompleted(MessageResult<()>),
     ShowAllAvailablePartsSelected(bool),
     AvailablePartsSearchInputChanged(String),
     AvailablePartsTabPressed,
@@ -155,11 +217,11 @@ pub enum ItemEditorInteractionMessage {
     AvailableAnointmentPressed(AvailablePartTypeIndex),
     CurrentPartPressed(CurrentPartTypeIndex),
     CurrentAnointmentPressed(CurrentPartTypeIndex),
-    ImportItem(String),
+    ImportSerialInputChanged(String),
     CreateItemPressed,
     ImportItemFromSerialPressed,
     AllItemLevel(i32),
-    AllItemLevelDebounced,
+    SetAllItemLevelsPressed,
     ItemLevel(i32),
     DeleteItem(usize),
     DuplicateItem(usize),
@@ -201,6 +263,97 @@ impl ItemEditorInteractionMessage {
             ItemEditorInteractionMessage::ItemsSearchInputChanged(search_items_query) => {
                 item_editor_state.search_items_input = search_items_query.to_lowercase();
             }
+            ItemEditorInteractionMessage::ItemsLootLemonSearchInputChanged(
+                search_lootlemon_items_query,
+            ) => {
+                item_editor_state.search_lootlemon_items_input =
+                    search_lootlemon_items_query.to_lowercase();
+            }
+            ItemEditorInteractionMessage::ItemListReverseOrderPressed => {
+                item_editor_state.item_list_is_reverse_order =
+                    !item_editor_state.item_list_is_reverse_order;
+
+                item_editor_state.items.reverse();
+
+                // Maintain the selected item
+                item_editor_state.selected_item_index =
+                    item_editor_state.items.len() - item_editor_state.selected_item_index - 1;
+
+                item_editor_state.map_current_item_if_exists_to_editor_state();
+            }
+            ItemEditorInteractionMessage::ItemListItemTabPressed => {
+                item_editor_state.search_items_input_state.focus();
+                item_editor_state.item_list_tab_type = ItemListTabType::Items;
+            }
+            ItemEditorInteractionMessage::ItemListLootlemonTabPressed => {
+                item_editor_state.search_lootlemon_items_input_state.focus();
+                item_editor_state.item_list_tab_type = ItemListTabType::Lootlemon;
+            }
+            ItemEditorInteractionMessage::ItemListLootlemonImportPressed(id) => {
+                if let Some(lootlemon_item) = item_editor_state.lootlemon_items.items.get(id) {
+                    let item = lootlemon_item.item.clone();
+
+                    match item_editor_state.item_list_is_reverse_order {
+                        true => {
+                            item_editor_state.insert_item(0, item);
+
+                            item_editor_state.selected_item_index = 0;
+
+                            item_editor_state.item_list_scrollable_state.snap_to(0.0);
+                        }
+                        false => {
+                            item_editor_state.add_item(item);
+
+                            item_editor_state.selected_item_index =
+                                item_editor_state.items().len() - 1;
+
+                            item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                        }
+                    }
+
+                    item_editor_state.map_current_item_if_exists_to_editor_state();
+
+                    item_editor_state.search_lootlemon_items_input_state.focus();
+                } else {
+                    let msg = format!("Failed to import item from Lootlemon: couldn't find an item with index {}.", id);
+
+                    error!("{}", msg);
+
+                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                }
+            }
+            ItemEditorInteractionMessage::ItemListLootlemonOpenWebsitePressed(id) => {
+                if let Some(lootlemon_item) = item_editor_state.lootlemon_items.items.get(id) {
+                    command = Some(Command::perform(
+                        interaction::manage_save::item_editor::open_website(
+                            lootlemon_item.link.clone(),
+                        ),
+                        |r| {
+                            ItemEditorInteractionMessage::ItemListLootlemonOpenWebsiteCompleted(
+                                MessageResult::handle_result(r),
+                            )
+                        },
+                    ));
+                } else {
+                    let msg = format!(
+                        "Failed to open Lootlemon Website: couldn't find an item with index {}.",
+                        id
+                    );
+
+                    error!("{}", msg);
+
+                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                }
+            }
+            ItemEditorInteractionMessage::ItemListLootlemonOpenWebsiteCompleted(res) => {
+                if let MessageResult::Error(e) = res {
+                    let msg = format!("Failed to open Lootlemon Website: {}.", e);
+
+                    error!("{}", msg);
+
+                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                }
+            }
             ItemEditorInteractionMessage::ShowAllAvailablePartsSelected(selected) => {
                 item_editor_state.map_current_item_if_exists(|i| {
                     i.editor.available_parts.show_all_available_parts = selected;
@@ -215,13 +368,15 @@ impl ItemEditorInteractionMessage {
                 .map_current_item_if_exists(|i| {
                     i.editor.available_parts.scrollable_state.snap_to(0.0);
                     i.editor.available_parts.search_input = "".to_owned();
-                    i.editor.available_parts.parts_tab_view = AvailablePartType::Parts;
+                    i.editor.available_parts.search_input_state.focus();
+                    i.editor.available_parts.parts_tab_type = AvailablePartType::Parts;
                 }),
             ItemEditorInteractionMessage::AvailableAnointmentsTabPressed => item_editor_state
                 .map_current_item_if_exists(|i| {
                     i.editor.available_parts.scrollable_state.snap_to(0.0);
                     i.editor.available_parts.search_input = "".to_owned();
-                    i.editor.available_parts.parts_tab_view = AvailablePartType::Anointments;
+                    i.editor.available_parts.search_input_state.focus();
+                    i.editor.available_parts.parts_tab_type = AvailablePartType::Anointments;
                 }),
             ItemEditorInteractionMessage::AvailablePartPressed(available_part_type_index) => {
                 let selected_item_index = item_editor_state.selected_item_index;
@@ -246,6 +401,8 @@ impl ItemEditorInteractionMessage {
                                 {
                                     if let Err(e) = current_item.item.add_part(bl3_part) {
                                         let msg = format!("Failed to add part to item: {}", e);
+
+                                        error!("{}", msg);
 
                                         notification = Some(Notification::new(
                                             msg,
@@ -285,6 +442,8 @@ impl ItemEditorInteractionMessage {
                                 ) {
                                     if let Err(e) = current_item.item.add_generic_part(bl3_part) {
                                         let msg = format!("Failed to add part to item: {}", e);
+
+                                        error!("{}", msg);
 
                                         notification = Some(Notification::new(
                                             msg,
@@ -365,34 +524,68 @@ impl ItemEditorInteractionMessage {
                     }
                 }
             }
-            ItemEditorInteractionMessage::ImportItem(s) => {
+            ItemEditorInteractionMessage::ImportSerialInputChanged(s) => {
                 item_editor_state.import_serial_input = s;
             }
             ItemEditorInteractionMessage::CreateItemPressed => {
-                item_editor_state
-                    .add_item(Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap());
+                let item = Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap();
 
-                item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+                match item_editor_state.item_list_is_reverse_order {
+                    true => {
+                        item_editor_state.insert_item(0, item);
+
+                        item_editor_state.selected_item_index = 0;
+
+                        item_editor_state.item_list_scrollable_state.snap_to(0.0);
+                    }
+                    false => {
+                        item_editor_state.add_item(item);
+
+                        item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+
+                        item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                    }
+                }
 
                 item_editor_state.map_current_item_if_exists_to_editor_state();
 
-                item_editor_state.item_list_scrollable_state.snap_to(1.0)
+                item_editor_state.search_items_input_state.focus();
+
+                item_editor_state.item_list_tab_type = ItemListTabType::Items;
             }
             ItemEditorInteractionMessage::ImportItemFromSerialPressed => {
                 let item_serial = item_editor_state.import_serial_input.trim();
 
                 match Bl3Item::from_serial_base64(item_serial) {
-                    Ok(bl3_item) => {
-                        item_editor_state.add_item(bl3_item);
+                    Ok(item) => {
+                        match item_editor_state.item_list_is_reverse_order {
+                            true => {
+                                item_editor_state.insert_item(0, item);
 
-                        item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+                                item_editor_state.selected_item_index = 0;
+
+                                item_editor_state.item_list_scrollable_state.snap_to(0.0);
+                            }
+                            false => {
+                                item_editor_state.add_item(item);
+
+                                item_editor_state.selected_item_index =
+                                    item_editor_state.items().len() - 1;
+
+                                item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                            }
+                        }
 
                         item_editor_state.map_current_item_if_exists_to_editor_state();
 
-                        item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                        item_editor_state.search_items_input_state.focus();
+
+                        item_editor_state.item_list_tab_type = ItemListTabType::Items;
                     }
                     Err(e) => {
                         let msg = format!("Failed to import serial: {}", e);
+
+                        error!("{}", msg);
 
                         notification =
                             Some(Notification::new(msg, NotificationSentiment::Negative));
@@ -401,16 +594,8 @@ impl ItemEditorInteractionMessage {
             }
             ItemEditorInteractionMessage::AllItemLevel(item_level_input) => {
                 item_editor_state.all_item_levels_input = item_level_input;
-
-                command = Some(Command::perform(
-                    async {
-                        //Debounce
-                        tokio::time::sleep(Duration::from_millis(500)).await;
-                    },
-                    |_| ItemEditorInteractionMessage::AllItemLevelDebounced,
-                ));
             }
-            ItemEditorInteractionMessage::AllItemLevelDebounced => {
+            ItemEditorInteractionMessage::SetAllItemLevelsPressed => {
                 let item_level = item_editor_state.all_item_levels_input as usize;
 
                 let mut error_notification = None;
@@ -418,6 +603,8 @@ impl ItemEditorInteractionMessage {
                 for (i, item) in item_editor_state.items_mut().iter_mut().enumerate() {
                     if let Err(e) = item.item.set_level(item_level) {
                         let msg = format!("Failed to set level for item number: {} - {}", i, e);
+
+                        error!("{}", msg);
 
                         error_notification =
                             Some(Notification::new(msg, NotificationSentiment::Negative));
@@ -437,6 +624,8 @@ impl ItemEditorInteractionMessage {
                     i.item.set_level(item_level_input as usize)
                 }) {
                     let msg = format!("Failed to set level for item: {}", e);
+
+                    error!("{}", msg);
 
                     notification = Some(Notification::new(msg, NotificationSentiment::Negative));
                 }
@@ -460,13 +649,29 @@ impl ItemEditorInteractionMessage {
                     Some(item) => {
                         let item = item.item.clone();
 
-                        item_editor_state.add_item(item);
+                        match item_editor_state.item_list_is_reverse_order {
+                            true => {
+                                item_editor_state.insert_item(0, item);
 
-                        item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
+                                item_editor_state.selected_item_index = 0;
+
+                                item_editor_state.item_list_scrollable_state.snap_to(0.0);
+                            }
+                            false => {
+                                item_editor_state.add_item(item);
+
+                                item_editor_state.selected_item_index =
+                                    item_editor_state.items().len() - 1;
+
+                                item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                            }
+                        }
 
                         item_editor_state.map_current_item_if_exists_to_editor_state();
 
-                        item_editor_state.item_list_scrollable_state.snap_to(1.0);
+                        item_editor_state.search_items_input_state.focus();
+
+                        item_editor_state.item_list_tab_type = ItemListTabType::Items;
                     }
                     None => {
                         let msg = format!("Failed to duplicate item number {}: could not find this item to duplicate.", id);
@@ -564,6 +769,8 @@ where
 {
     let selected_item_index = item_editor_state.selected_item_index;
     let number_of_items = item_editor_state.items.len();
+    let number_of_lootlemon_items = item_editor_state.lootlemon_items.items.len();
+    let item_list_tab_type = &item_editor_state.item_list_tab_type;
 
     let serial_importer = Row::new()
         .push(
@@ -575,7 +782,11 @@ where
                     "BL3(AwAAAABmboC7I9xAEzwShMJVX8nPYwsAAA==)",
                     &item_editor_state.import_serial_input,
                     500,
-                    move |s| interaction_message(ItemEditorInteractionMessage::ImportItem(s)),
+                    move |s| {
+                        interaction_message(ItemEditorInteractionMessage::ImportSerialInputChanged(
+                            s,
+                        ))
+                    },
                 )
                 .0
                 .font(JETBRAINS_MONO)
@@ -615,39 +826,57 @@ where
         .into_element(),
     );
 
-    let edit_all_item_levels_input = Row::new()
-        .push(
-            LabelledElement::create(
-                "All Levels",
-                Length::Units(95),
-                Tooltip::new(
-                    NumberInput::new(
-                        &mut item_editor_state.all_item_levels_input_state,
-                        item_editor_state.all_item_levels_input,
-                        1,
-                        Some(MAX_CHARACTER_LEVEL as i32),
-                        move |v| interaction_message(ItemEditorInteractionMessage::AllItemLevel(v)),
+    let edit_all_item_levels_input = Container::new(
+        Row::new()
+            .push(
+                LabelledElement::create(
+                    "All Levels",
+                    Length::Units(95),
+                    Tooltip::new(
+                        NumberInput::new(
+                            &mut item_editor_state.all_item_levels_input_state,
+                            item_editor_state.all_item_levels_input,
+                            1,
+                            Some(MAX_CHARACTER_LEVEL as i32),
+                            move |v| {
+                                interaction_message(ItemEditorInteractionMessage::AllItemLevel(v))
+                            },
+                        )
+                        .0
+                        .font(JETBRAINS_MONO)
+                        .padding(10)
+                        .size(17)
+                        .style(Bl3UiStyle)
+                        .into_element(),
+                        format!("Level must be between 1 and {}", MAX_CHARACTER_LEVEL),
+                        tooltip::Position::Top,
                     )
-                    .0
-                    .font(JETBRAINS_MONO)
+                    .gap(10)
                     .padding(10)
+                    .font(JETBRAINS_MONO)
                     .size(17)
-                    .style(Bl3UiStyle)
-                    .into_element(),
-                    format!("Level must be between 1 and {}", MAX_CHARACTER_LEVEL),
-                    tooltip::Position::Top,
+                    .style(Bl3UiTooltipStyle),
                 )
-                .gap(10)
-                .padding(10)
-                .font(JETBRAINS_MONO)
-                .size(17)
-                .style(Bl3UiTooltipStyle),
+                .spacing(15)
+                .width(Length::FillPortion(9))
+                .align_items(Align::Center),
             )
-            .spacing(15)
-            .width(Length::FillPortion(9))
+            .push(
+                Button::new(
+                    &mut item_editor_state.all_item_levels_button_state,
+                    Text::new("Set").font(JETBRAINS_MONO_BOLD).size(17),
+                )
+                .on_press(interaction_message(
+                    ItemEditorInteractionMessage::SetAllItemLevelsPressed,
+                ))
+                .padding(10)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
             .align_items(Align::Center),
-        )
-        .align_items(Align::Center);
+    )
+    .width(Length::Fill)
+    .style(Bl3UiStyle);
 
     let general_options_row = Row::new()
         .push(create_item_button)
@@ -667,74 +896,125 @@ where
 
     let mut item_editor = None;
 
-    let search_items_query = &item_editor_state.search_items_input;
+    let search_items_query = match item_list_tab_type {
+        ItemListTabType::Items => &item_editor_state.search_items_input,
+        ItemListTabType::Lootlemon => &item_editor_state.search_lootlemon_items_input,
+    };
 
-    let filtered_items = item_editor_state
-        .items
-        .par_iter()
-        .enumerate()
-        .map(|(i, item)| (i, &item.item))
-        .filter(|(_, item)| {
-            if search_items_query.is_empty() {
-                return true;
-            }
+    let filtered_items = get_filtered_items(
+        search_items_query,
+        &item_editor_state.item_list_tab_type,
+        &item_editor_state.items,
+        &item_editor_state.lootlemon_items.items,
+    );
 
-            // Handle this scenario explicitly as we want to search one if the other doesn't exist
-            let balance_part_to_search = if let Some(name) = &item.balance_part().name {
-                Some(name.to_lowercase())
-            } else {
-                item.balance_part()
-                    .short_ident
-                    .as_ref()
-                    .map(|short_ident| short_ident.to_lowercase())
-            };
+    let item_list_title_row = Row::new()
+        .push(
+            Container::new(tab_bar_button(
+                &mut item_editor_state.item_list_items_tab_button_state,
+                ItemListTabType::Items,
+                &item_editor_state.item_list_tab_type,
+                interaction_message(ItemEditorInteractionMessage::ItemListItemTabPressed),
+                Some(format!("({})", number_of_items)),
+            ))
+            .padding(1)
+            .width(Length::FillPortion(2)),
+        )
+        .push(
+            Container::new(tab_bar_button(
+                &mut item_editor_state.item_list_lootlemon_tab_button_state,
+                ItemListTabType::Lootlemon,
+                &item_editor_state.item_list_tab_type,
+                interaction_message(ItemEditorInteractionMessage::ItemListLootlemonTabPressed),
+                None,
+            ))
+            .padding(1)
+            .width(Length::FillPortion(2)),
+        )
+        .align_items(Align::Center);
 
-            balance_part_to_search
-                .map(|n| n.contains(search_items_query))
-                .unwrap_or(false)
-                || item
-                    .manufacturer_part()
-                    .short_ident
-                    .as_ref()
-                    .map(|mp| mp.to_lowercase().contains(search_items_query))
-                    .unwrap_or(false)
-                || item.level().to_string().contains(search_items_query)
-                || item
-                    .item_parts
-                    .as_ref()
-                    .map(|ip| {
-                        ip.item_type
-                            .to_string()
-                            .to_lowercase()
-                            .contains(search_items_query)
-                            || ip
-                                .rarity
-                                .to_string()
-                                .to_lowercase()
-                                .contains(search_items_query)
-                            || ip
-                                .weapon_type
-                                .as_ref()
-                                .map(|wt| {
-                                    wt.to_string().to_lowercase().contains(search_items_query)
-                                })
-                                .unwrap_or(false)
-                    })
-                    .unwrap_or(false)
-        })
-        .map(|(i, item)| (i, item.clone()))
-        .collect::<Vec<_>>();
+    let mut item_list_contents = Column::new()
+        .push(Container::new(item_list_title_row))
+        .width(Length::Fill);
 
+    let item_list_search_input_placeholder = match item_editor_state.item_list_tab_type {
+        ItemListTabType::Items => format!("Search {} items...", number_of_items),
+        ItemListTabType::Lootlemon => format!("Search {} items...", number_of_lootlemon_items),
+    };
+
+    let item_list_search_input = match item_list_tab_type {
+        ItemListTabType::Items => TextInputLimited::new(
+            &mut item_editor_state.search_items_input_state,
+            &item_list_search_input_placeholder,
+            &item_editor_state.search_items_input,
+            500,
+            move |s| interaction_message(ItemEditorInteractionMessage::ItemsSearchInputChanged(s)),
+        ),
+        ItemListTabType::Lootlemon => TextInputLimited::new(
+            &mut item_editor_state.search_lootlemon_items_input_state,
+            &item_list_search_input_placeholder,
+            &item_editor_state.search_lootlemon_items_input,
+            500,
+            move |s| {
+                interaction_message(
+                    ItemEditorInteractionMessage::ItemsLootLemonSearchInputChanged(s),
+                )
+            },
+        ),
+    };
+
+    let mut item_list_search_row = Row::new()
+        .push(
+            item_list_search_input
+                .0
+                .font(JETBRAINS_MONO)
+                .padding(10)
+                .size(18)
+                .style(Bl3UiStyle)
+                .into_element(),
+        )
+        .align_items(Align::Center);
+
+    let item_list_reverse_order_icon = match item_editor_state.item_list_is_reverse_order {
+        true => svg::Handle::from_memory(ARROW_UP),
+        false => svg::Handle::from_memory(ARROW_DOWN),
+    };
+
+    let reverse_order_button_tooltip_message = "Reverse the order of your items as they appear in this list (this does not modify the order in-game)";
+
+    let item_list_reverse_order_button = Tooltip::new(
+        Button::new(
+            &mut item_editor_state.item_list_reverse_order_button_state,
+            Svg::new(item_list_reverse_order_icon)
+                .height(Length::Units(18))
+                .width(Length::Units(18)),
+        )
+        .on_press(interaction_message(
+            ItemEditorInteractionMessage::ItemListReverseOrderPressed,
+        ))
+        .padding(10)
+        .style(Bl3UiStyle)
+        .into_element(),
+        reverse_order_button_tooltip_message,
+        tooltip::Position::Top,
+    )
+    .gap(10)
+    .padding(10)
+    .font(JETBRAINS_MONO)
+    .size(17)
+    .style(Bl3UiTooltipStyle);
+
+    // Keeping this here as we want the "editor" to show in both ItemListTabType views
     let inventory_items = item_editor_state.items.iter_mut().enumerate().fold(
         Column::new().align_items(Align::Start),
         |mut inventory_items, (i, item)| {
             let is_active = i == selected_item_index;
 
-            let (list_item_button, curr_item_editor) = item.view(is_active, interaction_message);
+            let (list_item_button, curr_item_editor) = item.view(i, is_active, interaction_message);
 
             // Check if the curr item index is in our filtered_items to decide whether to show the
             // list item button or not.
-            if !filtered_items.is_empty()
+            if item_list_tab_type == &ItemListTabType::Items
                 && filtered_items.iter().any(|(fi_index, _)| *fi_index == i)
             {
                 inventory_items = inventory_items.push(list_item_button);
@@ -748,75 +1028,103 @@ where
         },
     );
 
-    let mut item_list_contents = Column::new().push(
-        Container::new(
-            Text::new("Items")
-                .font(JETBRAINS_MONO_BOLD)
-                .size(17)
-                .color(Color::from_rgb8(242, 203, 5)),
-        )
-        .padding(10)
-        .align_x(Align::Center)
-        .width(Length::Fill)
-        .style(Bl3UiStyle),
-    );
+    match item_editor_state.item_list_tab_type {
+        ItemListTabType::Items => {
+            if number_of_items > 0 {
+                item_list_search_row = item_list_search_row.push(item_list_reverse_order_button);
+                item_list_contents = item_list_contents.push(item_list_search_row);
 
-    if number_of_items > 0 {
-        item_list_contents = item_list_contents.push(
-            TextInputLimited::new(
-                &mut item_editor_state.search_items_input_state,
-                &format!("Search {} items...", number_of_items),
-                &item_editor_state.search_items_input,
-                500,
-                move |s| {
-                    interaction_message(ItemEditorInteractionMessage::ItemsSearchInputChanged(s))
-                },
-            )
-            .0
-            .font(JETBRAINS_MONO)
-            .padding(10)
-            .size(18)
-            .style(Bl3UiStyle)
-            .into_element(),
-        );
-
-        if !filtered_items.is_empty() {
-            item_list_contents = item_list_contents.push(
-                Container::new(
-                    Scrollable::new(&mut item_editor_state.item_list_scrollable_state)
-                        .push(inventory_items)
-                        .height(Length::Fill),
-                )
-                .padding(1),
-            );
-        } else {
-            item_list_contents = item_list_contents.push(
-                Container::new(
-                    Text::new(NO_SEARCH_RESULTS_FOUND_MESSAGE)
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
-                        .color(Color::from_rgb8(220, 220, 220)),
-                )
-                .width(Length::Fill)
-                .height(Length::Fill)
-                .align_x(Align::Center)
-                .align_y(Align::Center),
-            );
+                if !filtered_items.is_empty() {
+                    item_list_contents = item_list_contents.push(
+                        Container::new(
+                            Scrollable::new(&mut item_editor_state.item_list_scrollable_state)
+                                .push(inventory_items)
+                                .height(Length::Fill),
+                        )
+                        .padding(1),
+                    );
+                } else {
+                    item_list_contents = item_list_contents.push(
+                        Container::new(
+                            Text::new(NO_SEARCH_RESULTS_FOUND_MESSAGE)
+                                .font(JETBRAINS_MONO_BOLD)
+                                .size(17)
+                                .color(Color::from_rgb8(220, 220, 220)),
+                        )
+                        .width(Length::Fill)
+                        .height(Length::Fill)
+                        .align_x(Align::Center)
+                        .align_y(Align::Center),
+                    );
+                }
+            } else {
+                item_list_contents = item_list_contents.push(
+                    Container::new(
+                        Text::new("Please Import/Create an item to get started.")
+                            .font(JETBRAINS_MONO_BOLD)
+                            .size(17)
+                            .color(Color::from_rgb8(220, 220, 220)),
+                    )
+                    .width(Length::Fill)
+                    .height(Length::Fill)
+                    .align_x(Align::Center)
+                    .align_y(Align::Center),
+                );
+            }
         }
-    } else {
-        item_list_contents = item_list_contents.push(
-            Container::new(
-                Text::new("Please Import/Create an item to get started.")
-                    .font(JETBRAINS_MONO_BOLD)
-                    .size(17)
-                    .color(Color::from_rgb8(220, 220, 220)),
-            )
-            .width(Length::Fill)
-            .height(Length::Fill)
-            .align_x(Align::Center)
-            .align_y(Align::Center),
-        );
-    }
+        ItemListTabType::Lootlemon => {
+            item_list_contents = item_list_contents.push(item_list_search_row);
+
+            let mut view_index = 0;
+
+            let lootlemon_items = item_editor_state
+                .lootlemon_items
+                .items
+                .iter_mut()
+                .enumerate()
+                .fold(
+                    Column::new().align_items(Align::Start),
+                    |mut lootlemon_items, (i, item)| {
+                        let lootlemon_item_view = item.view(view_index, interaction_message);
+
+                        // Check if the curr item index is in our filtered_items to decide whether to show the
+                        // list item button or not.
+                        if filtered_items.iter().any(|(fi_index, _)| *fi_index == i) {
+                            lootlemon_items = lootlemon_items.push(lootlemon_item_view);
+                            view_index += 1;
+                        }
+
+                        lootlemon_items
+                    },
+                );
+
+            if !filtered_items.is_empty() {
+                item_list_contents = item_list_contents.push(
+                    Container::new(
+                        Scrollable::new(
+                            &mut item_editor_state.item_list_lootlemon_scrollable_state,
+                        )
+                        .push(lootlemon_items)
+                        .height(Length::Fill),
+                    )
+                    .padding(1),
+                );
+            } else {
+                item_list_contents = item_list_contents.push(
+                    Container::new(
+                        Text::new(NO_SEARCH_RESULTS_FOUND_MESSAGE)
+                            .font(JETBRAINS_MONO_BOLD)
+                            .size(17)
+                            .color(Color::from_rgb8(220, 220, 220)),
+                    )
+                    .width(Length::Fill)
+                    .height(Length::Fill)
+                    .align_x(Align::Center)
+                    .align_y(Align::Center),
+                );
+            }
+        }
+    };
 
     let item_list = Container::new(item_list_contents)
         .width(Length::FillPortion(3))
@@ -839,4 +1147,75 @@ where
         .spacing(20);
 
     Container::new(all_contents).padding(30)
+}
+
+pub fn get_filtered_items(
+    search_items_query: &str,
+    item_list_tab_type: &ItemListTabType,
+    items: &[ItemEditorListItem],
+    lootlemon_items: &[ItemEditorLootlemonItem],
+) -> Vec<(usize, Bl3Item)> {
+    let filter_items = |item: &Bl3Item| -> bool {
+        if search_items_query.is_empty() {
+            return true;
+        }
+
+        // Handle this scenario explicitly as we want to search one if the other doesn't exist
+        let balance_part_to_search = if let Some(name) = &item.balance_part().name {
+            Some(name.to_lowercase())
+        } else {
+            item.balance_part()
+                .short_ident
+                .as_ref()
+                .map(|short_ident| short_ident.to_lowercase())
+        };
+
+        balance_part_to_search
+            .map(|n| n.contains(search_items_query))
+            .unwrap_or(false)
+            || item
+                .manufacturer_part()
+                .short_ident
+                .as_ref()
+                .map(|mp| mp.to_lowercase().contains(search_items_query))
+                .unwrap_or(false)
+            || item.level().to_string().contains(search_items_query)
+            || item
+                .item_parts
+                .as_ref()
+                .map(|ip| {
+                    ip.item_type
+                        .to_string()
+                        .to_lowercase()
+                        .contains(search_items_query)
+                        || ip
+                            .rarity
+                            .to_string()
+                            .to_lowercase()
+                            .contains(search_items_query)
+                        || ip
+                            .weapon_type
+                            .as_ref()
+                            .map(|wt| wt.to_string().to_lowercase().contains(search_items_query))
+                            .unwrap_or(false)
+                })
+                .unwrap_or(false)
+    };
+
+    match item_list_tab_type {
+        ItemListTabType::Items => items
+            .par_iter()
+            .enumerate()
+            .map(|(i, item)| (i, &item.item))
+            .filter(|(_, item)| filter_items(item))
+            .map(|(i, item)| (i, item.clone()))
+            .collect::<Vec<_>>(),
+        ItemListTabType::Lootlemon => lootlemon_items
+            .par_iter()
+            .enumerate()
+            .map(|(i, item)| (i, &item.item))
+            .filter(|(_, item)| filter_items(item))
+            .map(|(i, item)| (i, item.clone()))
+            .collect::<Vec<_>>(),
+    }
 }

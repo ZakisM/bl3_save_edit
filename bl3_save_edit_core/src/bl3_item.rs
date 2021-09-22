@@ -152,16 +152,37 @@ impl std::default::Default for ItemType {
 
 #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display, EnumString)]
 pub enum ItemRarity {
-    #[strum(serialize = "01/Common", to_string = "Common")]
+    #[strum(
+        serialize = "01/Common",
+        serialize = "01/Common (Starting Gear)",
+        to_string = "Common"
+    )]
     Common,
     #[strum(serialize = "02/Uncommon", to_string = "Uncommon")]
     Uncommon,
-    #[strum(serialize = "03/Rare", to_string = "Rare")]
+    #[strum(
+        serialize = "03/Rare",
+        serialize = "03/Rare E-Tech",
+        to_string = "Rare"
+    )]
     Rare,
-    #[strum(serialize = "04/Very Rare", to_string = "Very Rare")]
+    #[strum(
+        serialize = "04/Very Rare",
+        serialize = "04/Very Rare E-Tech",
+        to_string = "Very Rare"
+    )]
     VeryRare,
-    #[strum(to_string = "Legendary")]
+    #[strum(serialize = "05/Legendary", to_string = "Legendary")]
     Legendary,
+    #[strum(serialize = "Named Weapon", to_string = "Unique Weapon")]
+    NamedWeapon,
+    Unknown,
+}
+
+impl std::default::Default for ItemRarity {
+    fn default() -> Self {
+        Self::Unknown
+    }
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display)]
@@ -178,12 +199,6 @@ pub enum WeaponType {
     Sniper,
     #[strum(to_string = "Heavy")]
     Heavy,
-}
-
-impl std::default::Default for ItemRarity {
-    fn default() -> Self {
-        Self::Legendary
-    }
 }
 
 impl Bl3Item {
@@ -222,7 +237,7 @@ impl Bl3Item {
             .write_u16::<BigEndian>((((computed_crc >> 16) ^ computed_crc) & 0xFFFF) as u16)?;
 
         if orig_checksum != computed_checksum {
-            bail!("The expected checksum when deserializing this weapon does not match the original checksum");
+            bail!("The expected checksum when deserializing this item does not match the original checksum");
         }
 
         // What we will actually store
@@ -269,7 +284,13 @@ impl Bl3Item {
 
         let balance_eng_name = BALANCE_NAME_MAPPING
             .par_iter()
-            .find_first(|gd| balance.to_lowercase().contains(gd.ident))
+            .find_first(|gd| {
+                balance_short_name
+                    .as_ref()
+                    .unwrap_or(&balance)
+                    .to_lowercase()
+                    == gd.ident.rsplit('/').next().unwrap_or(gd.ident)
+            })
             .map(|gd| gd.name.to_owned());
 
         let balance_part = BalancePart {
@@ -326,8 +347,12 @@ impl Bl3Item {
 
             let rerolled = if serial_version >= 4 { bits.eat(8)? } else { 0 };
 
-            if bits.len() > 7 || bits.bitslice().count_ones() > 0 {
-                bail!("Could not fully parse the weapon data, there was unexpected data left.")
+            if bits.len() > 7 {
+                warn!("Remaining data length for item was more than expected. Expected length of 7 or less but found length of: {}.", bits.len());
+            }
+
+            if bits.bitslice().count_ones() > 0 {
+                bail!("Could not fully parse the item data, there was unexpected data left.")
             }
 
             let item_type = ItemType::from_str(&part_inv_key).unwrap_or_default();
@@ -801,5 +826,11 @@ mod tests {
         let encrypted_from_base64 = Bl3Item::from_serial_base64(&encrypted_serial_base64).unwrap();
 
         assert_eq!(decrypted, encrypted_from_base64);
+    }
+
+    #[test]
+    fn test_decrypt_base64() {
+        Bl3Item::from_serial_base64("bl3(BMo1YGLGQ0MGYsI1/FbX0bJzzEAlJV/zmj/7qVR3P7k=)").unwrap();
+        Bl3Item::from_serial_base64("bl3(BDcRFWih0RoFBasjJ57Z1Zlf1975cgf2ns3n+pGwL9wo0iSoqfEvpNLcQBqq+kyitN3iuNu36Njp0sLClYQHFp550i9NgKN5J6xn8H2YeH1Ugoqv)").unwrap();
     }
 }
