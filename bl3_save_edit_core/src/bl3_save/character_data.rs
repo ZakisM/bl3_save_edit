@@ -85,11 +85,7 @@ impl CharacterData {
         let available_head_skins = PROFILE_HEADS_DEFAULTS
             .par_iter()
             .chain(PROFILE_HEADS.par_iter())
-            .filter(|h| {
-                h.ident
-                    .to_lowercase()
-                    .contains(&player_class.to_string().to_lowercase())
-            })
+            .filter(|h| h.ident.contains(&player_class.to_string()))
             .cloned()
             .collect::<Vec<_>>();
 
@@ -107,11 +103,7 @@ impl CharacterData {
         let available_character_skins = PROFILE_SKINS_DEFAULTS
             .par_iter()
             .chain(PROFILE_SKINS.par_iter())
-            .filter(|h| {
-                h.ident
-                    .to_lowercase()
-                    .contains(&player_class.to_string().to_lowercase())
-            })
+            .filter(|h| h.ident.contains(&player_class.to_string()))
             .cloned()
             .collect::<Vec<_>>();
 
@@ -214,10 +206,10 @@ impl CharacterData {
         let mut challenge_milestones = Challenge::iter()
             .par_bridge()
             .filter(|challenge| {
-                let challenge_path = challenge.get_serializations()[0].to_lowercase();
+                let challenge_path = challenge.get_serializations()[0];
 
-                if challenge_path.contains("character") {
-                    challenge_path.contains(&player_class.to_string().to_lowercase())
+                if challenge_path.contains("Character") {
+                    challenge_path.contains(&player_class.to_string())
                 } else {
                     true
                 }

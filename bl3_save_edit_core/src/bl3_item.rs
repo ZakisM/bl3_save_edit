@@ -282,14 +282,16 @@ impl Bl3Item {
             .as_ref()
             .and_then(|bs| item_part_data.get(bs));
 
+        let balance_lower = balance.to_lowercase();
+        let balance_short_name_lower = balance_short_name
+            .as_ref()
+            .map(|b| b.to_lowercase())
+            .unwrap_or_else(|| balance_lower.clone());
+
         let balance_eng_name = BALANCE_NAME_MAPPING
             .par_iter()
             .find_first(|gd| {
-                balance_short_name
-                    .as_ref()
-                    .unwrap_or(&balance)
-                    .to_lowercase()
-                    == gd.ident.rsplit('/').next().unwrap_or(gd.ident)
+                balance_short_name_lower == gd.ident.rsplit('/').next().unwrap_or(gd.ident)
             })
             .map(|gd| gd.name.to_owned());
 
@@ -313,7 +315,7 @@ impl Bl3Item {
 
         let item_parts = if let Some(part_inv_key) = BALANCE_TO_INV_KEY
             .par_iter()
-            .find_first(|gd| balance.to_lowercase() == gd.ident)
+            .find_first(|gd| balance_lower == gd.ident)
             .map(|gd| gd.name.to_owned())
         {
             let mut should_not_allow_parts_parsing = false;
@@ -413,9 +415,13 @@ impl Bl3Item {
     }
 
     pub fn from_serial_base64(serial: &str) -> Result<Self> {
-        let serial_lower = serial.to_lowercase();
+        if serial.len() < 5 {
+            bail!("Serial length must be longer than 4 characters.");
+        }
 
-        if !serial_lower.starts_with("bl3(") || !serial_lower.ends_with(')') {
+        let serial_start = serial[0..4].to_lowercase();
+
+        if serial_start != "bl3(" || !serial.ends_with(')') {
             bail!("Serial must start with 'BL3(' and end with ')'.")
         }
 
@@ -482,9 +488,11 @@ impl Bl3Item {
     }
 
     pub fn set_balance(&mut self, balance_part: BalancePart) -> Result<()> {
+        let balance_ident_lower = balance_part.ident.to_lowercase();
+
         match BALANCE_TO_INV_KEY
             .iter()
-            .find(|gd| balance_part.ident.to_lowercase() == gd.ident)
+            .find(|gd| balance_ident_lower == gd.ident)
             .map(|gd| gd.name.to_owned())
         {
             None => {
