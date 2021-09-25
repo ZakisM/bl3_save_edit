@@ -187,17 +187,11 @@ impl Editor {
                 .cloned()
                 .collect::<Vec<_>>();
 
-            self.balance_parts_list = if !filtered_results.is_empty() {
-                filtered_results
+            if !filtered_results.is_empty() {
+                self.balance_parts_list = filtered_results;
             } else {
-                // Probably not the best way to handle this but doing it anyway...
-                vec![BalancePart {
-                    ident: NO_SEARCH_RESULTS_FOUND_MESSAGE.to_owned(),
-                    short_ident: None,
-                    name: None,
-                    idx: 0,
-                }]
-            };
+                self.balance_parts_list.clear();
+            }
         } else {
             self.balance_parts_list = INVENTORY_BALANCE_PARTS.to_vec();
         }
@@ -212,15 +206,11 @@ impl Editor {
                 .cloned()
                 .collect::<Vec<_>>();
 
-            self.inv_data_parts_list = if !filtered_results.is_empty() {
-                filtered_results
+            if !filtered_results.is_empty() {
+                self.inv_data_parts_list = filtered_results;
             } else {
-                // Probably not the best way to handle this but doing it anyway...
-                vec![InvDataPart {
-                    ident: NO_SEARCH_RESULTS_FOUND_MESSAGE.to_owned(),
-                    idx: 0,
-                }]
-            };
+                self.inv_data_parts_list.clear();
+            }
         } else {
             self.inv_data_parts_list = INVENTORY_INV_DATA_PARTS.to_vec();
         }
@@ -235,16 +225,11 @@ impl Editor {
                 .cloned()
                 .collect::<Vec<_>>();
 
-            self.manufacturer_parts_list = if !filtered_results.is_empty() {
-                filtered_results
+            if !filtered_results.is_empty() {
+                self.manufacturer_parts_list = filtered_results;
             } else {
-                // Probably not the best way to handle this but doing it anyway...
-                vec![ManufacturerPart {
-                    ident: NO_SEARCH_RESULTS_FOUND_MESSAGE.to_owned(),
-                    short_ident: None,
-                    idx: 0,
-                }]
-            };
+                self.manufacturer_parts_list.clear();
+            }
         } else {
             self.manufacturer_parts_list = INVENTORY_MANUFACTURER_PARTS.to_vec();
         }
@@ -273,6 +258,7 @@ impl Editor {
                                 )
                             },
                         )
+                        .options_empty_message(NO_SEARCH_RESULTS_FOUND_MESSAGE.to_owned())
                         .font(JETBRAINS_MONO)
                         .size(16)
                         .padding(10)
@@ -311,6 +297,7 @@ impl Editor {
                                 )
                             },
                         )
+                        .options_empty_message(NO_SEARCH_RESULTS_FOUND_MESSAGE.to_owned())
                         .font(JETBRAINS_MONO)
                         .size(16)
                         .padding(10)
@@ -349,6 +336,7 @@ impl Editor {
                                 )
                             },
                         )
+                        .options_empty_message(NO_SEARCH_RESULTS_FOUND_MESSAGE.to_owned())
                         .font(JETBRAINS_MONO)
                         .size(16)
                         .padding(10)
