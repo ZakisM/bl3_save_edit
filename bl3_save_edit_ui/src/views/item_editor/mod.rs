@@ -682,18 +682,15 @@ impl ItemEditorInteractionMessage {
                 }
             }
             ItemEditorInteractionMessage::BalanceInputSelected(balance_selected) => {
-                if balance_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
-                    if let Err(e) = item_editor_state
-                        .map_current_item_if_exists_result(|i| i.item.set_balance(balance_selected))
-                    {
-                        let msg = format!("Failed to set balance for item: {}", e);
+                if let Err(e) = item_editor_state
+                    .map_current_item_if_exists_result(|i| i.item.set_balance(balance_selected))
+                {
+                    let msg = format!("Failed to set balance for item: {}", e);
 
-                        notification =
-                            Some(Notification::new(msg, NotificationSentiment::Negative));
-                    } else {
-                        item_editor_state
-                            .map_current_item_if_exists(|i| i.editor.balance_search_input.clear())
-                    }
+                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                } else {
+                    item_editor_state
+                        .map_current_item_if_exists(|i| i.editor.balance_search_input.clear())
                 }
             }
             ItemEditorInteractionMessage::BalanceSearchInputChanged(balance_search_query) => {
@@ -704,18 +701,15 @@ impl ItemEditorInteractionMessage {
                 }
             }
             ItemEditorInteractionMessage::InvDataInputSelected(inv_data_selected) => {
-                if inv_data_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
-                    if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
-                        i.item.set_inv_data(inv_data_selected)
-                    }) {
-                        let msg = format!("Failed to set inventory data for item: {}", e);
+                if let Err(e) = item_editor_state
+                    .map_current_item_if_exists_result(|i| i.item.set_inv_data(inv_data_selected))
+                {
+                    let msg = format!("Failed to set inventory data for item: {}", e);
 
-                        notification =
-                            Some(Notification::new(msg, NotificationSentiment::Negative));
-                    } else {
-                        item_editor_state
-                            .map_current_item_if_exists(|i| i.editor.inv_data_search_input.clear())
-                    }
+                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                } else {
+                    item_editor_state
+                        .map_current_item_if_exists(|i| i.editor.inv_data_search_input.clear())
                 }
             }
             ItemEditorInteractionMessage::InvDataSearchInputChanged(inv_data_search_query) => {
@@ -726,19 +720,15 @@ impl ItemEditorInteractionMessage {
                 }
             }
             ItemEditorInteractionMessage::ManufacturerInputSelected(manufacturer_selected) => {
-                if manufacturer_selected.ident != NO_SEARCH_RESULTS_FOUND_MESSAGE {
-                    if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
-                        i.item.set_manufacturer(manufacturer_selected)
-                    }) {
-                        let msg = format!("Failed to set manufacturer for item: {}", e);
+                if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
+                    i.item.set_manufacturer(manufacturer_selected)
+                }) {
+                    let msg = format!("Failed to set manufacturer for item: {}", e);
 
-                        notification =
-                            Some(Notification::new(msg, NotificationSentiment::Negative));
-                    } else {
-                        item_editor_state.map_current_item_if_exists(|i| {
-                            i.editor.manufacturer_search_input.clear()
-                        })
-                    }
+                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                } else {
+                    item_editor_state
+                        .map_current_item_if_exists(|i| i.editor.manufacturer_search_input.clear())
                 }
             }
             ItemEditorInteractionMessage::ManufacturerSearchInputChanged(

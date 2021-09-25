@@ -45,6 +45,9 @@ code was based off of their work.
 Thanks to HackerSmacker for their PS4
 bitmasks: https://github.com/HackerSmacker/CSave/blob/022c4e78ac7fa68e2338804bc0148ac9be3296f7/FileTranslator.c.
 
+Huge thanks to Levin from [Lootlemon](https://www.lootlemon.com/) for providing items that are available to import
+inside the editor!
+
 Thanks to those who created these docs:
 
 - https://docs.google.com/spreadsheets/d/1XYG30B6CulmcmmVDuq-PkLEJVtjAFacx7cuSkqbv5N4
@@ -52,6 +55,8 @@ Thanks to those who created these docs:
 - https://docs.google.com/spreadsheets/d/1v-F_3C2ceaFKJae1b6wmbelw_jLjmPPriBLzGTZMqRc
 
 Tool to download data from these docs can be found [here](https://github.com/ZakisM/bl3_save_edit_resource_downloader).
+
+Thanks to the [iced](https://github.com/iced-rs/iced) project for allowing me to create a user interface like this!
 
 Thanks to the [Ajour](https://github.com/ajour/ajour) project for their methods of bundling Rust Apps as well as
 updating them.
