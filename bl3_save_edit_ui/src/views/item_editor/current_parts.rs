@@ -227,7 +227,7 @@ impl CurrentParts {
                     let mut reorder_parts_row = Row::new().spacing(15).align_items(Align::Center);
 
                     let reorder_parts_tooltip =
-                        "Reorder the parts of this item where the parts at the top get loaded first.\nThe order that is shown when this checkbox is active will be the order that they get loaded in game.\nEven if this checkbox is not active and you are viewing the categorized parts, they will still be loaded in the order that is show when this checkbox is active.";
+                        "Reorder the parts of this item. The order that is shown when this checkbox is active will be the order that they get loaded in game. They will be loaded from top to bottom.\nEven if this checkbox is not active and you are viewing the categorized parts, they will still be loaded in the order that is show when this checkbox is active.";
 
                     let reorder_parts_checkbox = Tooltip::new(
                         Checkbox::new(self.reorder_parts, "Reorder Parts", move |c| {
