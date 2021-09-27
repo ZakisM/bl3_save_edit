@@ -20,7 +20,7 @@ use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
 use crate::views::item_editor::parts_tab_bar::CurrentPartType;
 use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::tab_bar_button::tab_bar_button;
-use crate::views::InteractionExt;
+use crate::views::{InteractionExt, NO_SEARCH_RESULTS_FOUND_MESSAGE};
 use crate::widgets::text_input_limited::TextInputLimited;
 
 #[derive(Debug, Copy, Clone, Default)]
@@ -372,42 +372,6 @@ impl CurrentParts {
                 .flatten()
                 .collect::<Vec<_>>();
 
-            let current_parts_list =
-                self.parts
-                    .iter_mut()
-                    .fold(Column::new(), |mut curr, cat_parts| {
-                        if !reorder_parts
-                            && cat_parts
-                                .parts
-                                .par_iter()
-                                .any(|cat_p| filtered_parts.contains(&cat_p))
-                        {
-                            curr = curr.push(
-                                Container::new(
-                                    Text::new(&cat_parts.category)
-                                        .font(JETBRAINS_MONO_BOLD)
-                                        .size(17)
-                                        .color(Color::from_rgb8(242, 203, 5)),
-                                )
-                                .width(Length::Fill)
-                                .style(Bl3UiStyleNoBorder)
-                                .padding(10),
-                            );
-                        }
-
-                        for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
-                            if filtered_parts.contains(&&*p) {
-                                let is_active =
-                                    selected_current_part_index.part_index == part_index;
-
-                                curr =
-                                    curr.push(p.view(reorder_parts, is_active, interaction_message))
-                            }
-                        }
-
-                        curr
-                    });
-
             let amount: usize = parts.iter().map(|cat_p| cat_p.parts.len()).sum();
 
             let search_placeholder = match self.parts_tab_type {
@@ -437,15 +401,59 @@ impl CurrentParts {
 
             current_parts_content = current_parts_content.push(search_input);
 
-            current_parts_content = current_parts_content.push(
-                Container::new(
-                    Scrollable::new(&mut self.scrollable_state)
-                        .push(current_parts_list)
-                        .height(Length::Fill)
-                        .width(Length::Fill),
-                )
-                .padding(1),
-            );
+            if !filtered_parts.is_empty() {
+                let current_parts_list =
+                    self.parts
+                        .iter_mut()
+                        .fold(Column::new(), |mut curr, cat_parts| {
+                            if !reorder_parts
+                                && cat_parts
+                                    .parts
+                                    .par_iter()
+                                    .any(|cat_p| filtered_parts.contains(&cat_p))
+                            {
+                                curr = curr.push(
+                                    Container::new(
+                                        Text::new(&cat_parts.category)
+                                            .font(JETBRAINS_MONO_BOLD)
+                                            .size(17)
+                                            .color(Color::from_rgb8(242, 203, 5)),
+                                    )
+                                    .width(Length::Fill)
+                                    .style(Bl3UiStyleNoBorder)
+                                    .padding(10),
+                                );
+                            }
+
+                            for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
+                                if filtered_parts.contains(&&*p) {
+                                    let is_active =
+                                        selected_current_part_index.part_index == part_index;
+
+                                    curr = curr.push(p.view(
+                                        reorder_parts,
+                                        is_active,
+                                        interaction_message,
+                                    ))
+                                }
+                            }
+
+                            curr
+                        });
+
+                current_parts_content = current_parts_content.push(
+                    Container::new(
+                        Scrollable::new(&mut self.scrollable_state)
+                            .push(current_parts_list)
+                            .height(Length::Fill)
+                            .width(Length::Fill),
+                    )
+                    .padding(1),
+                );
+            } else {
+                current_parts_content =
+                    current_parts_content.push(no_parts_message(NO_SEARCH_RESULTS_FOUND_MESSAGE));
+            }
         } else {
             let msg = match self.parts_tab_type {
                 CurrentPartType::Parts => "This item has no parts.",
@@ -492,6 +500,7 @@ impl CurrentParts {
             }
         }
 
+        //Here we are just returning a single category with all of our parts above
         vec![CurrentCategorizedPart::new(
             0,
             "".to_owned(),
