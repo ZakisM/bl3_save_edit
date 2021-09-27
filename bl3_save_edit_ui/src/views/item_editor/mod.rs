@@ -1,6 +1,4 @@
-use std::convert::TryInto;
-
-use anyhow::Result;
+use anyhow::{bail, Result};
 use derivative::Derivative;
 use iced::{
     button, scrollable, svg, text_input, tooltip, Align, Button, Color, Column, Command, Container,
@@ -24,6 +22,7 @@ use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::commands::interaction;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::resources::svgs::{ARROW_DOWN, ARROW_UP};
+use crate::util::ErrorExt;
 use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
 use crate::views::item_editor::current_parts::CurrentPartTypeIndex;
 use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
@@ -113,64 +112,68 @@ impl ItemEditorState {
     }
 
     pub fn remove_item(&mut self, remove_id: usize) {
-        if remove_id <= self.items.len() {
+        if remove_id < self.items.len() {
             self.items.remove(remove_id);
         }
     }
 }
 
 pub trait ItemEditorStateExt {
-    fn map_current_item_if_exists<F>(&mut self, f: F)
+    fn map_current_item_if_exists<F>(&mut self, f: F) -> Result<()>
     where
         F: FnOnce(&mut ItemEditorListItem);
 
-    fn map_current_item_if_exists_result<F>(&mut self, f: F) -> Result<()>
+    fn map_current_item_if_exists_result<F>(&mut self, f: F) -> Result<&mut ItemEditorListItem>
     where
         F: FnOnce(&mut ItemEditorListItem) -> Result<()>;
 
-    fn map_current_item_if_exists_to_editor_state(&mut self);
+    fn map_current_item_if_exists_to_editor_state(&mut self) -> Result<()>;
 }
 
 impl ItemEditorStateExt for ItemEditorState {
-    fn map_current_item_if_exists<F>(&mut self, f: F)
+    fn map_current_item_if_exists<F>(&mut self, f: F) -> Result<()>
     where
         F: FnOnce(&mut ItemEditorListItem),
     {
         if let Some(item) = self.items.get_mut(self.selected_item_index) {
             f(item);
 
-            self.map_current_item_if_exists_to_editor_state();
+            self.map_current_item_if_exists_to_editor_state()?;
+
+            Ok(())
         } else {
-            error!("Couldn't get item for index: {}", self.selected_item_index)
+            let msg = format!("couldn't get item for index: {}", self.selected_item_index);
+
+            bail!("{}", msg);
         }
     }
 
-    fn map_current_item_if_exists_result<F>(&mut self, f: F) -> Result<()>
+    fn map_current_item_if_exists_result<F>(&mut self, f: F) -> Result<&mut ItemEditorListItem>
     where
         F: FnOnce(&mut ItemEditorListItem) -> Result<()>,
     {
         if let Some(item) = self.items.get_mut(self.selected_item_index) {
             f(item)?;
 
-            self.map_current_item_if_exists_to_editor_state();
-        }
+            item.map_item_to_editor()?;
 
-        Ok(())
+            Ok(item)
+        } else {
+            let msg = format!("couldn't get item for index: {}", self.selected_item_index);
+
+            bail!("{}", msg);
+        }
     }
 
-    fn map_current_item_if_exists_to_editor_state(&mut self) {
+    fn map_current_item_if_exists_to_editor_state(&mut self) -> Result<()> {
         if let Some(curr_item) = self.items.get_mut(self.selected_item_index) {
-            curr_item.editor.item_level_input = curr_item.item.level().try_into().unwrap_or(1);
-            curr_item.editor.serial_input = curr_item
-                .item
-                .get_serial_number_base64(false)
-                .unwrap_or_else(|_| "Unable to read serial, this item is invalid.".to_owned());
-            curr_item.editor.balance_input_selected = curr_item.item.balance_part().clone();
-            curr_item.editor.inv_data_input_selected = curr_item.item.inv_data_part().clone();
-            curr_item.editor.manufacturer_input_selected =
-                curr_item.item.manufacturer_part().clone();
+            curr_item.map_item_to_editor()?;
+
+            Ok(())
         } else {
-            error!("Couldn't get item for index: {}", self.selected_item_index);
+            let msg = format!("couldn't get item for index: {}", self.selected_item_index);
+
+            bail!("{}", msg);
         }
     }
 }
@@ -213,9 +216,14 @@ pub enum ItemEditorInteractionMessage {
     AvailableAnointmentsTabPressed,
     CurrentPartsTabPressed,
     CurrentAnointmentsTabPressed,
+    ReorderCurrentPartsSelected(bool),
+    ReorderCurrentPartsMoveUpPressed,
+    ReorderCurrentPartsMoveDownPressed,
+    ReorderCurrentPartsMoveTopPressed,
+    ReorderCurrentPartsMoveBottomPressed,
     AvailablePartPressed(AvailablePartTypeIndex),
     AvailableAnointmentPressed(AvailablePartTypeIndex),
-    CurrentPartPressed(CurrentPartTypeIndex),
+    CurrentPartPressed(bool, CurrentPartTypeIndex),
     CurrentAnointmentPressed(CurrentPartTypeIndex),
     ImportSerialInputChanged(String),
     CreateItemPressed,
@@ -252,13 +260,15 @@ impl ItemEditorInteractionMessage {
             ItemEditorInteractionMessage::ItemPressed(item_index) => {
                 item_editor_state.selected_item_index = item_index;
 
-                item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.available_parts.part_type_index =
-                        available_parts::AvailablePartTypeIndex {
-                            category_index: 0,
-                            part_index: 0,
-                        }
-                });
+                item_editor_state
+                    .map_current_item_if_exists(|i| {
+                        i.editor.available_parts.part_type_index =
+                            available_parts::AvailablePartTypeIndex {
+                                category_index: 0,
+                                part_index: 0,
+                            }
+                    })
+                    .handle_ui_error("Failed to map selected item to editor", &mut notification);
             }
             ItemEditorInteractionMessage::ItemsSearchInputChanged(search_items_query) => {
                 item_editor_state.search_items_input = search_items_query.to_lowercase();
@@ -279,7 +289,12 @@ impl ItemEditorInteractionMessage {
                 item_editor_state.selected_item_index =
                     item_editor_state.items.len() - item_editor_state.selected_item_index - 1;
 
-                item_editor_state.map_current_item_if_exists_to_editor_state();
+                item_editor_state
+                    .map_current_item_if_exists_to_editor_state()
+                    .handle_ui_error(
+                        "Failed to map previously selected item to editor when reversing order",
+                        &mut notification,
+                    );
             }
             ItemEditorInteractionMessage::ItemListItemTabPressed => {
                 item_editor_state.search_items_input_state.focus();
@@ -311,7 +326,12 @@ impl ItemEditorInteractionMessage {
                         }
                     }
 
-                    item_editor_state.map_current_item_if_exists_to_editor_state();
+                    item_editor_state
+                        .map_current_item_if_exists_to_editor_state()
+                        .handle_ui_error(
+                            "Failed to map Lootlemon item to editor",
+                            &mut notification,
+                        );
 
                     item_editor_state.search_lootlemon_items_input_state.focus();
                 } else {
@@ -355,29 +375,51 @@ impl ItemEditorInteractionMessage {
                 }
             }
             ItemEditorInteractionMessage::ShowAllAvailablePartsSelected(selected) => {
-                item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.available_parts.show_all_available_parts = selected;
-                })
+                item_editor_state
+                    .map_current_item_if_exists(|i| {
+                        i.editor.available_parts.show_all_available_parts = selected;
+                    })
+                    .handle_ui_error(
+                        "Failed to map item to editor when showing all available parts",
+                        &mut notification,
+                    );
             }
             ItemEditorInteractionMessage::AvailablePartsSearchInputChanged(search_input) => {
-                item_editor_state.map_current_item_if_exists(|i| {
-                    i.editor.available_parts.search_input = search_input.to_lowercase();
-                });
+                item_editor_state
+                    .map_current_item_if_exists(|i| {
+                        i.editor.available_parts.search_input = search_input.to_lowercase();
+                    })
+                    .handle_ui_error(
+                        "Failed to map item to editor when showing filtered available parts",
+                        &mut notification,
+                    );
             }
-            ItemEditorInteractionMessage::AvailablePartsTabPressed => item_editor_state
-                .map_current_item_if_exists(|i| {
-                    i.editor.available_parts.scrollable_state.snap_to(0.0);
-                    i.editor.available_parts.search_input = "".to_owned();
-                    i.editor.available_parts.search_input_state.focus();
-                    i.editor.available_parts.parts_tab_type = AvailablePartType::Parts;
-                }),
-            ItemEditorInteractionMessage::AvailableAnointmentsTabPressed => item_editor_state
-                .map_current_item_if_exists(|i| {
-                    i.editor.available_parts.scrollable_state.snap_to(0.0);
-                    i.editor.available_parts.search_input = "".to_owned();
-                    i.editor.available_parts.search_input_state.focus();
-                    i.editor.available_parts.parts_tab_type = AvailablePartType::Anointments;
-                }),
+            ItemEditorInteractionMessage::AvailablePartsTabPressed => {
+                item_editor_state
+                    .map_current_item_if_exists(|i| {
+                        i.editor.available_parts.scrollable_state.snap_to(0.0);
+                        i.editor.available_parts.search_input = "".to_owned();
+                        i.editor.available_parts.search_input_state.focus();
+                        i.editor.available_parts.parts_tab_type = AvailablePartType::Parts;
+                    })
+                    .handle_ui_error(
+                        "Failed to map item to editor when showing available parts",
+                        &mut notification,
+                    );
+            }
+            ItemEditorInteractionMessage::AvailableAnointmentsTabPressed => {
+                item_editor_state
+                    .map_current_item_if_exists(|i| {
+                        i.editor.available_parts.scrollable_state.snap_to(0.0);
+                        i.editor.available_parts.search_input = "".to_owned();
+                        i.editor.available_parts.search_input_state.focus();
+                        i.editor.available_parts.parts_tab_type = AvailablePartType::Anointments;
+                    })
+                    .handle_ui_error(
+                        "Failed to map item to editor when showing available anointments",
+                        &mut notification,
+                    );
+            }
             ItemEditorInteractionMessage::AvailablePartPressed(available_part_type_index) => {
                 let selected_item_index = item_editor_state.selected_item_index;
 
@@ -400,20 +442,28 @@ impl ItemEditorInteractionMessage {
                                     .get_part_by_short_name(part_inv_key, &part_selected.part.name)
                                 {
                                     if let Err(e) = current_item.item.add_part(bl3_part) {
-                                        let msg = format!("Failed to add part to item: {}", e);
+                                        e.handle_ui_error(
+                                            "Failed to add part to item",
+                                            &mut notification,
+                                        );
+                                    } else {
+                                        item_editor_state
+                                            .map_current_item_if_exists(|i| {
+                                                if i.editor.current_parts.reorder_parts {
+                                                    i.editor
+                                                        .current_parts
+                                                        .scrollable_state
+                                                        .snap_to(1.0);
+                                                }
 
-                                        error!("{}", msg);
-
-                                        notification = Some(Notification::new(
-                                            msg,
-                                            NotificationSentiment::Negative,
-                                        ));
+                                                i.editor.available_parts.part_type_index =
+                                                    available_part_type_index
+                                            })
+                                            .handle_ui_error(
+                                                "Failed to map item to editor after adding part to item",
+                                                &mut notification,
+                                            );
                                     }
-
-                                    item_editor_state.map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.part_type_index =
-                                            available_part_type_index
-                                    });
                                 }
                             }
                         }
@@ -441,59 +491,134 @@ impl ItemEditorInteractionMessage {
                                     &anointment_selected.part.name,
                                 ) {
                                     if let Err(e) = current_item.item.add_generic_part(bl3_part) {
-                                        let msg = format!("Failed to add part to item: {}", e);
-
-                                        error!("{}", msg);
-
-                                        notification = Some(Notification::new(
-                                            msg,
-                                            NotificationSentiment::Negative,
-                                        ));
+                                        e.handle_ui_error(
+                                            "Failed to add anointment to item",
+                                            &mut notification,
+                                        );
+                                    } else {
+                                        item_editor_state
+                                            .map_current_item_if_exists(|i| {
+                                                i.editor.available_parts.part_type_index =
+                                                    available_part_type_index
+                                            })
+                                            .handle_ui_error(
+                                                "Failed to map item to editor after adding anointment to item",
+                                                &mut notification,
+                                            );
                                     }
-
-                                    item_editor_state.map_current_item_if_exists(|i| {
-                                        i.editor.available_parts.part_type_index =
-                                            available_part_type_index
-                                    });
                                 }
                             }
                         }
                     }
                 }
             }
-            ItemEditorInteractionMessage::CurrentPartsTabPressed => item_editor_state
-                .map_current_item_if_exists(|i| {
-                    i.editor.current_parts.scrollable_state.snap_to(0.0);
-                    i.editor.current_parts.parts_tab_view = CurrentPartType::Parts
-                }),
-            ItemEditorInteractionMessage::CurrentAnointmentsTabPressed => item_editor_state
-                .map_current_item_if_exists(|i| {
-                    i.editor.current_parts.scrollable_state.snap_to(0.0);
-                    i.editor.current_parts.parts_tab_view = CurrentPartType::Anointments
-                }),
-            ItemEditorInteractionMessage::CurrentPartPressed(current_part_type_index) => {
+            ItemEditorInteractionMessage::CurrentPartsTabPressed => {
+                item_editor_state
+                    .map_current_item_if_exists(|i| {
+                        i.editor.current_parts.scrollable_state.snap_to(0.0);
+                        i.editor.current_parts.parts_tab_view = CurrentPartType::Parts
+                    })
+                    .handle_ui_error("Failed to view current parts", &mut notification);
+            }
+            ItemEditorInteractionMessage::CurrentAnointmentsTabPressed => {
+                item_editor_state
+                    .map_current_item_if_exists(|i| {
+                        i.editor.current_parts.scrollable_state.snap_to(0.0);
+                        i.editor.current_parts.parts_tab_view = CurrentPartType::Anointments
+                    })
+                    .handle_ui_error("Failed to view current anointments", &mut notification);
+            }
+            ItemEditorInteractionMessage::ReorderCurrentPartsSelected(selected) => {
+                item_editor_state
+                    .map_current_item_if_exists(|i| {
+                        i.editor.current_parts.part_type_index = CurrentPartTypeIndex::default();
+                        i.editor.current_parts.reorder_parts = selected;
+
+                        if selected {
+                            i.editor.current_parts.scrollable_state.snap_to(0.0);
+                        }
+                    })
+                    .handle_ui_error("Failed to re-order current parts", &mut notification);
+            }
+            ItemEditorInteractionMessage::ReorderCurrentPartsMoveUpPressed => {
+                item_editor_state
+                    .map_current_item_if_exists_result(|i| {
+                        i.item
+                            .move_part_up(&mut i.editor.current_parts.part_type_index.part_index)
+                    })
+                    .handle_ui_error("Failed to move selected part up", &mut notification);
+            }
+            ItemEditorInteractionMessage::ReorderCurrentPartsMoveDownPressed => {
+                item_editor_state
+                    .map_current_item_if_exists_result(|i| {
+                        i.item
+                            .move_part_down(&mut i.editor.current_parts.part_type_index.part_index)
+                    })
+                    .handle_ui_error("Failed to move selected part down", &mut notification);
+            }
+            ItemEditorInteractionMessage::ReorderCurrentPartsMoveTopPressed => {
+                match item_editor_state.map_current_item_if_exists_result(|i| {
+                    i.item
+                        .move_part_top(&mut i.editor.current_parts.part_type_index.part_index)
+                }) {
+                    Ok(item) => item.editor.current_parts.scrollable_state.snap_to(0.0),
+                    Err(e) => {
+                        e.handle_ui_error("Failed to move selected part to top", &mut notification)
+                    }
+                }
+            }
+            ItemEditorInteractionMessage::ReorderCurrentPartsMoveBottomPressed => {
+                match item_editor_state.map_current_item_if_exists_result(|i| {
+                    i.item
+                        .move_part_bottom(&mut i.editor.current_parts.part_type_index.part_index)
+                }) {
+                    Ok(item) => item.editor.current_parts.scrollable_state.snap_to(1.0),
+                    Err(e) => e.handle_ui_error(
+                        "Failed to move selected part to bottom",
+                        &mut notification,
+                    ),
+                }
+            }
+            ItemEditorInteractionMessage::CurrentPartPressed(
+                reorder_parts,
+                current_part_type_index,
+            ) => {
                 let selected_item_index = item_editor_state.selected_item_index;
 
-                if let Some(current_item) =
-                    item_editor_state.items_mut().get_mut(selected_item_index)
-                {
-                    let part_selected = current_item
-                        .editor
-                        .current_parts
-                        .parts
-                        .get(current_part_type_index.category_index)
-                        .and_then(|p| p.parts.get(current_part_type_index.part_index));
+                if !reorder_parts {
+                    if let Some(current_item) =
+                        item_editor_state.items_mut().get_mut(selected_item_index)
+                    {
+                        let part_selected = current_item
+                            .editor
+                            .current_parts
+                            .parts
+                            .get(current_part_type_index.category_index)
+                            .and_then(|p| p.parts.get(current_part_type_index.part_index));
 
-                    if let Some(part_selected) = part_selected {
-                        if let Err(e) = current_item.item.remove_part(&part_selected.part.part) {
-                            let msg = format!("Failed to remove part from item: {}", e);
-
-                            notification =
-                                Some(Notification::new(msg, NotificationSentiment::Negative));
+                        if let Some(part_selected) = part_selected {
+                            if let Err(e) = current_item.item.remove_part(&part_selected.part.part)
+                            {
+                                e.handle_ui_error(
+                                    "Failed to remove part from item",
+                                    &mut notification,
+                                );
+                            } else {
+                                item_editor_state
+                                    .map_current_item_if_exists_to_editor_state()
+                                    .handle_ui_error(
+                                        "Failed to map item with removed part to editor",
+                                        &mut notification,
+                                    );
+                            }
                         }
-
-                        item_editor_state.map_current_item_if_exists_to_editor_state();
                     }
+                } else {
+                    item_editor_state
+                        .map_current_item_if_exists(|i| {
+                            i.editor.current_parts.part_type_index = current_part_type_index;
+                        })
+                        .handle_ui_error("Failed to select part to re-order", &mut notification);
                 }
             }
             ItemEditorInteractionMessage::CurrentAnointmentPressed(current_part_type_index) => {
@@ -514,13 +639,18 @@ impl ItemEditorInteractionMessage {
                             .item
                             .remove_generic_part(&part_selected.part.part)
                         {
-                            let msg = format!("Failed to remove part from item: {}", e);
-
-                            notification =
-                                Some(Notification::new(msg, NotificationSentiment::Negative));
+                            e.handle_ui_error(
+                                "Failed to remove anointment from item",
+                                &mut notification,
+                            );
+                        } else {
+                            item_editor_state
+                                .map_current_item_if_exists_to_editor_state()
+                                .handle_ui_error(
+                                    "Failed to map item to editor after removing anointment from item",
+                                    &mut notification,
+                                );
                         }
-
-                        item_editor_state.map_current_item_if_exists_to_editor_state();
                     }
                 }
             }
@@ -547,11 +677,13 @@ impl ItemEditorInteractionMessage {
                     }
                 }
 
-                item_editor_state.map_current_item_if_exists_to_editor_state();
-
                 item_editor_state.search_items_input_state.focus();
 
                 item_editor_state.item_list_tab_type = ItemListTabType::Items;
+
+                item_editor_state
+                    .map_current_item_if_exists_to_editor_state()
+                    .handle_ui_error("Failed map created item to editor", &mut notification);
             }
             ItemEditorInteractionMessage::ImportItemFromSerialPressed => {
                 let item_serial = item_editor_state.import_serial_input.trim();
@@ -576,19 +708,19 @@ impl ItemEditorInteractionMessage {
                             }
                         }
 
-                        item_editor_state.map_current_item_if_exists_to_editor_state();
-
                         item_editor_state.search_items_input_state.focus();
 
                         item_editor_state.item_list_tab_type = ItemListTabType::Items;
+
+                        item_editor_state
+                            .map_current_item_if_exists_to_editor_state()
+                            .handle_ui_error(
+                                "Failed to map imported item to editor",
+                                &mut notification,
+                            );
                     }
                     Err(e) => {
-                        let msg = format!("Failed to import serial: {}", e);
-
-                        error!("{}", msg);
-
-                        notification =
-                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                        e.handle_ui_error("Failed to import serial", &mut notification);
                     }
                 }
             }
@@ -598,37 +730,35 @@ impl ItemEditorInteractionMessage {
             ItemEditorInteractionMessage::SetAllItemLevelsPressed => {
                 let item_level = item_editor_state.all_item_levels_input as usize;
 
-                let mut error_notification = None;
+                let mut failed = false;
 
                 for (i, item) in item_editor_state.items_mut().iter_mut().enumerate() {
                     if let Err(e) = item.item.set_level(item_level) {
                         let msg = format!("Failed to set level for item number: {} - {}", i, e);
 
-                        error!("{}", msg);
+                        e.handle_ui_error(&msg, &mut notification);
 
-                        error_notification =
-                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                        failed = true;
 
                         break;
                     }
                 }
 
-                if let Some(error_notification) = error_notification {
-                    notification = Some(error_notification)
+                if !failed {
+                    item_editor_state
+                        .map_current_item_if_exists_to_editor_state()
+                        .handle_ui_error(
+                            "Failed to map previously selected item to editor after updating all item levels",
+                            &mut notification,
+                        );
                 }
-
-                item_editor_state.map_current_item_if_exists_to_editor_state();
             }
             ItemEditorInteractionMessage::ItemLevel(item_level_input) => {
-                if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
-                    i.item.set_level(item_level_input as usize)
-                }) {
-                    let msg = format!("Failed to set level for item: {}", e);
-
-                    error!("{}", msg);
-
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                }
+                item_editor_state
+                    .map_current_item_if_exists_result(|i| {
+                        i.item.set_level(item_level_input as usize)
+                    })
+                    .handle_ui_error("Failed to set level for item", &mut notification);
             }
             ItemEditorInteractionMessage::DeleteItem(id) => {
                 item_editor_state.remove_item(id);
@@ -642,7 +772,12 @@ impl ItemEditorInteractionMessage {
                     item_editor_state.selected_item_index -= 1;
                 }
 
-                item_editor_state.map_current_item_if_exists_to_editor_state();
+                item_editor_state
+                    .map_current_item_if_exists_to_editor_state()
+                    .handle_ui_error(
+                        "Failed to select an item to show in editor after deleting item",
+                        &mut notification,
+                    );
             }
             ItemEditorInteractionMessage::DuplicateItem(id) => {
                 match item_editor_state.items.get(id) {
@@ -667,11 +802,16 @@ impl ItemEditorInteractionMessage {
                             }
                         }
 
-                        item_editor_state.map_current_item_if_exists_to_editor_state();
-
                         item_editor_state.search_items_input_state.focus();
 
                         item_editor_state.item_list_tab_type = ItemListTabType::Items;
+
+                        item_editor_state
+                            .map_current_item_if_exists_to_editor_state()
+                            .handle_ui_error(
+                                "Failed to map duplicated item to editor",
+                                &mut notification,
+                            );
                     }
                     None => {
                         let msg = format!("Failed to duplicate item number {}: could not find this item to duplicate.", id);
@@ -682,63 +822,59 @@ impl ItemEditorInteractionMessage {
                 }
             }
             ItemEditorInteractionMessage::BalanceInputSelected(balance_selected) => {
-                if let Err(e) = item_editor_state
+                item_editor_state
                     .map_current_item_if_exists_result(|i| i.item.set_balance(balance_selected))
-                {
-                    let msg = format!("Failed to set balance for item: {}", e);
-
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                } else {
-                    item_editor_state
-                        .map_current_item_if_exists(|i| i.editor.balance_search_input.clear())
-                }
+                    .handle_ui_error("Failed to set balance for item", &mut notification);
             }
             ItemEditorInteractionMessage::BalanceSearchInputChanged(balance_search_query) => {
                 if balance_search_query.len() <= 500 {
-                    item_editor_state.map_current_item_if_exists(|i| {
-                        i.editor.balance_search_input = balance_search_query.to_lowercase()
-                    });
+                    item_editor_state
+                        .map_current_item_if_exists(|i| {
+                            i.editor.balance_search_input = balance_search_query.to_lowercase()
+                        })
+                        .handle_ui_error(
+                            "Failed to set balance search field value for current item",
+                            &mut notification,
+                        );
                 }
             }
             ItemEditorInteractionMessage::InvDataInputSelected(inv_data_selected) => {
-                if let Err(e) = item_editor_state
+                item_editor_state
                     .map_current_item_if_exists_result(|i| i.item.set_inv_data(inv_data_selected))
-                {
-                    let msg = format!("Failed to set inventory data for item: {}", e);
-
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                } else {
-                    item_editor_state
-                        .map_current_item_if_exists(|i| i.editor.inv_data_search_input.clear())
-                }
+                    .handle_ui_error("Failed to set inventory data for item", &mut notification);
             }
             ItemEditorInteractionMessage::InvDataSearchInputChanged(inv_data_search_query) => {
                 if inv_data_search_query.len() <= 500 {
-                    item_editor_state.map_current_item_if_exists(|i| {
-                        i.editor.inv_data_search_input = inv_data_search_query.to_lowercase()
-                    });
+                    item_editor_state
+                        .map_current_item_if_exists(|i| {
+                            i.editor.inv_data_search_input = inv_data_search_query.to_lowercase()
+                        })
+                        .handle_ui_error(
+                            "Failed to set inventory data search field value for current item",
+                            &mut notification,
+                        );
                 }
             }
             ItemEditorInteractionMessage::ManufacturerInputSelected(manufacturer_selected) => {
-                if let Err(e) = item_editor_state.map_current_item_if_exists_result(|i| {
-                    i.item.set_manufacturer(manufacturer_selected)
-                }) {
-                    let msg = format!("Failed to set manufacturer for item: {}", e);
-
-                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
-                } else {
-                    item_editor_state
-                        .map_current_item_if_exists(|i| i.editor.manufacturer_search_input.clear())
-                }
+                item_editor_state
+                    .map_current_item_if_exists_result(|i| {
+                        i.item.set_manufacturer(manufacturer_selected)
+                    })
+                    .handle_ui_error("Failed to set manufacturer for item", &mut notification);
             }
             ItemEditorInteractionMessage::ManufacturerSearchInputChanged(
                 manufacturer_search_query,
             ) => {
                 if manufacturer_search_query.len() <= 500 {
-                    item_editor_state.map_current_item_if_exists(|i| {
-                        i.editor.manufacturer_search_input =
-                            manufacturer_search_query.to_lowercase()
-                    });
+                    item_editor_state
+                        .map_current_item_if_exists(|i| {
+                            i.editor.manufacturer_search_input =
+                                manufacturer_search_query.to_lowercase()
+                        })
+                        .handle_ui_error(
+                            "Failed to set manufacturer search field value for current item",
+                            &mut notification,
+                        );
                 }
             }
         }

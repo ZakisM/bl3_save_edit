@@ -8,7 +8,7 @@ use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
 use crate::views::item_editor::ItemEditorStateExt;
 use crate::views::manage_save::ManageSaveState;
 
-pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
+pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) -> Result<()> {
     let save = &manage_save_state.current_file;
 
     manage_save_state
@@ -51,7 +51,7 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
         .map_current_item_if_exists(|i| {
             i.editor.available_parts.scrollable_state.snap_to(0.0);
             i.editor.current_parts.scrollable_state.snap_to(0.0);
-        });
+        })?;
 
     manage_save_state
         .save_view_state
@@ -59,6 +59,8 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) {
         .item_editor_state
         .search_items_input
         .clear();
+
+    Ok(())
 }
 
 pub fn map_inventory_state_to_save(

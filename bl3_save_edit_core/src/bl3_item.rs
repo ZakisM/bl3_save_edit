@@ -1,7 +1,7 @@
 use std::fmt::Formatter;
 use std::str::FromStr;
 
-use anyhow::{bail, Result};
+use anyhow::{bail, Context, Result};
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
 use encoding_rs::mem::decode_latin1;
@@ -612,6 +612,104 @@ impl Bl3Item {
 
             self.update_weapon_serial()?;
         }
+
+        Ok(())
+    }
+
+    pub fn move_part_up(&mut self, index: &mut usize) -> Result<()> {
+        let curr_index = *index;
+
+        if let Some(item_parts) = &mut self.item_parts {
+            if curr_index != 0 {
+                let parts = &mut item_parts.parts;
+
+                let current = parts
+                    .get(curr_index)
+                    .context("failed to find this part on the item")?
+                    .to_owned();
+
+                parts.remove(curr_index);
+                parts.insert(curr_index - 1, current);
+
+                *index -= 1;
+            }
+        }
+
+        self.update_weapon_serial()?;
+
+        Ok(())
+    }
+
+    pub fn move_part_down(&mut self, index: &mut usize) -> Result<()> {
+        let curr_index = *index;
+
+        if let Some(item_parts) = &mut self.item_parts {
+            if curr_index != item_parts.parts.len() - 1 {
+                let parts = &mut item_parts.parts;
+
+                let current = parts
+                    .get(curr_index)
+                    .context("failed to find this part on the item")?
+                    .to_owned();
+
+                parts.remove(curr_index);
+                parts.insert(curr_index + 1, current);
+
+                *index += 1;
+            }
+        }
+
+        self.update_weapon_serial()?;
+
+        Ok(())
+    }
+
+    pub fn move_part_top(&mut self, index: &mut usize) -> Result<()> {
+        let curr_index = *index;
+
+        if let Some(item_parts) = &mut self.item_parts {
+            if curr_index != 0 {
+                let parts = &mut item_parts.parts;
+
+                let current = parts
+                    .get(curr_index)
+                    .context("failed to find this part on the item")?
+                    .to_owned();
+
+                parts.remove(curr_index);
+                parts.insert(0, current);
+
+                *index = 0;
+            }
+        }
+
+        self.update_weapon_serial()?;
+
+        Ok(())
+    }
+
+    pub fn move_part_bottom(&mut self, index: &mut usize) -> Result<()> {
+        let curr_index = *index;
+
+        if let Some(item_parts) = &mut self.item_parts {
+            let len = item_parts.parts.len() - 1;
+
+            if curr_index != len {
+                let parts = &mut item_parts.parts;
+
+                let current = parts
+                    .get(curr_index)
+                    .context("failed to find this part on the item")?
+                    .to_owned();
+
+                parts.remove(curr_index);
+                parts.insert(len, current);
+
+                *index = len;
+            }
+        }
+
+        self.update_weapon_serial()?;
 
         Ok(())
     }

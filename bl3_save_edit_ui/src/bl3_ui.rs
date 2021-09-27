@@ -27,6 +27,7 @@ use crate::resources::fonts::{
 use crate::resources::svgs::REFRESH;
 use crate::state_mappers::{manage_profile, manage_save};
 use crate::update::Release;
+use crate::util::ErrorExt;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -106,6 +107,18 @@ impl<T> MessageResult<T> {
         match result {
             Ok(v) => MessageResult::Success(v),
             Err(e) => MessageResult::Error(e.to_string()),
+        }
+    }
+}
+
+impl ErrorExt for MessageResult<()> {
+    fn handle_ui_error(&self, message: &str, notification: &mut Option<Notification>) {
+        if let MessageResult::Error(e) = self {
+            let message = format!("{}: {}.", message, e.to_string());
+
+            error!("{}", message);
+
+            *notification = Some(Notification::new(message, NotificationSentiment::Negative));
         }
     }
 }
@@ -1047,14 +1060,10 @@ impl Application for Bl3Application {
                             );
                         }
                         SettingsInteractionMessage::OpenConfigDirCompleted(res) => {
-                            if let MessageResult::Error(e) = res {
-                                let msg = format!("Failed to open config folder: {}", e);
-
-                                error!("{}", msg);
-
-                                self.notification =
-                                    Some(Notification::new(msg, NotificationSentiment::Negative));
-                            }
+                            res.handle_ui_error(
+                                "Failed to open config folder",
+                                &mut self.notification,
+                            );
                         }
                         SettingsInteractionMessage::OpenBackupDir => {
                             return Command::perform(
@@ -1073,14 +1082,10 @@ impl Application for Bl3Application {
                             );
                         }
                         SettingsInteractionMessage::OpenBackupDirCompleted(res) => {
-                            if let MessageResult::Error(e) = res {
-                                let msg = format!("Failed to open backups folder: {}", e);
-
-                                error!("{}", msg);
-
-                                self.notification =
-                                    Some(Notification::new(msg, NotificationSentiment::Negative));
-                            }
+                            res.handle_ui_error(
+                                "Failed to open backups folder",
+                                &mut self.notification,
+                            );
                         }
                         SettingsInteractionMessage::ChangeBackupDir => {
                             self.settings_state.choose_backup_dir_window_open = true;
@@ -1142,14 +1147,10 @@ impl Application for Bl3Application {
                             );
                         }
                         SettingsInteractionMessage::OpenSavesDirCompleted(res) => {
-                            if let MessageResult::Error(e) = res {
-                                let msg = format!("Failed to open saves folder: {}", e);
-
-                                error!("{}", msg);
-
-                                self.notification =
-                                    Some(Notification::new(msg, NotificationSentiment::Negative));
-                            }
+                            res.handle_ui_error(
+                                "Failed to open saves folder",
+                                &mut self.notification,
+                            );
                         }
                         SettingsInteractionMessage::ChangeSavesDir => {
                             self.settings_state.choose_saves_dir_window_open = true;
@@ -1229,7 +1230,10 @@ impl Application for Bl3Application {
                     InteractionMessage::LoadedFileSelected(loaded_file) => {
                         self.loaded_files_selected = loaded_file;
 
-                        state_mappers::map_loaded_file_to_state(self);
+                        state_mappers::map_loaded_file_to_state(self).handle_ui_error(
+                            "Failed to map loaded file to editor",
+                            &mut self.notification,
+                        );
                     }
                     InteractionMessage::RefreshSavesDirectory => {
                         self.view_state = ViewState::Loading;
@@ -1287,7 +1291,10 @@ impl Application for Bl3Application {
                                 .clone(),
                         );
 
-                        state_mappers::map_loaded_file_to_state(self);
+                        state_mappers::map_loaded_file_to_state(self).handle_ui_error(
+                            "Failed to map loaded file to editor",
+                            &mut self.notification,
+                        );
 
                         self.config.set_saves_dir(dir);
                         self.settings_state.saves_dir_input =
@@ -1414,7 +1421,10 @@ impl Application for Bl3Application {
                                     .clone()
                             });
 
-                        state_mappers::map_loaded_file_to_state(self);
+                        state_mappers::map_loaded_file_to_state(self).handle_ui_error(
+                            "Failed to load map previously selected file to editor",
+                            &mut self.notification,
+                        );
                     }
                     MessageResult::Error(e) => {
                         let msg = format!("Failed to load save folder: {}", e);

@@ -7,7 +7,7 @@ use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
 use crate::views::item_editor::ItemEditorStateExt;
 use crate::views::manage_profile::ManageProfileState;
 
-pub fn map_profile_to_bank_state(manage_profile_state: &mut ManageProfileState) {
+pub fn map_profile_to_bank_state(manage_profile_state: &mut ManageProfileState) -> Result<()> {
     let profile = &manage_profile_state.current_file;
 
     manage_profile_state
@@ -42,7 +42,7 @@ pub fn map_profile_to_bank_state(manage_profile_state: &mut ManageProfileState) 
         .map_current_item_if_exists(|i| {
             i.editor.available_parts.scrollable_state.snap_to(0.0);
             i.editor.current_parts.scrollable_state.snap_to(0.0);
-        });
+        })?;
 
     manage_profile_state
         .profile_view_state
@@ -50,6 +50,8 @@ pub fn map_profile_to_bank_state(manage_profile_state: &mut ManageProfileState) 
         .item_editor_state
         .search_items_input
         .clear();
+
+    Ok(())
 }
 
 pub fn map_bank_state_to_profile(

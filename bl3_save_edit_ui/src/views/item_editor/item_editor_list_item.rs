@@ -1,3 +1,6 @@
+use std::convert::TryInto;
+
+use anyhow::{bail, Result};
 use iced::{button, Button, Container, Element, Length};
 
 use bl3_save_edit_core::bl3_item::Bl3Item;
@@ -21,6 +24,21 @@ impl ItemEditorListItem {
             item,
             ..Default::default()
         }
+    }
+
+    pub fn map_item_to_editor(&mut self) -> Result<()> {
+        if let Ok(serial) = self.item.get_serial_number_base64(false) {
+            self.editor.item_level_input = self.item.level().try_into().unwrap_or(1);
+            self.editor.serial_input = serial;
+            self.editor.balance_input_selected = self.item.balance_part().clone();
+            self.editor.inv_data_input_selected = self.item.inv_data_part().clone();
+            self.editor.manufacturer_input_selected = self.item.manufacturer_part().clone();
+        } else {
+            self.editor = Editor::default();
+            bail!("failed to create a valid serial - this means that somehow this item is invalid.")
+        }
+
+        Ok(())
     }
 
     pub fn view<F>(

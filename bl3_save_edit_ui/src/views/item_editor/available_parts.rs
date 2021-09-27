@@ -104,21 +104,18 @@ impl AvailableResourcePart {
 
         let part_contents = Container::new(part_contents_col).align_x(Align::Start);
 
+        let index = AvailablePartTypeIndex {
+            category_index: self.category_index,
+            part_index: self.part_index,
+        };
+
         Button::new(&mut self.button_state, part_contents)
             .on_press(interaction_message(match self.part_type {
                 AvailablePartType::Parts => {
-                    ItemEditorInteractionMessage::AvailablePartPressed(AvailablePartTypeIndex {
-                        category_index: self.category_index,
-                        part_index: self.part_index,
-                    })
+                    ItemEditorInteractionMessage::AvailablePartPressed(index)
                 }
                 AvailablePartType::Anointments => {
-                    ItemEditorInteractionMessage::AvailableAnointmentPressed(
-                        AvailablePartTypeIndex {
-                            category_index: self.category_index,
-                            part_index: self.part_index,
-                        },
-                    )
+                    ItemEditorInteractionMessage::AvailableAnointmentPressed(index)
                 }
             }))
             .padding(10)
@@ -201,7 +198,7 @@ impl AvailableParts {
                         )
                     });
 
-                    let checkbox =
+                    let show_all_parts_checkbox =
                         Checkbox::new(self.show_all_available_parts, "Show All Parts", move |c| {
                             interaction_message(
                                 ItemEditorInteractionMessage::ShowAllAvailablePartsSelected(c),
@@ -217,7 +214,7 @@ impl AvailableParts {
                     if specific_parts.is_some() {
                         available_parts_column = available_parts_column.push(
                             Container::new(
-                                Container::new(checkbox)
+                                Container::new(show_all_parts_checkbox)
                                     .padding(15)
                                     .width(Length::Fill)
                                     .style(Bl3UiStyleNoBorder),
@@ -308,6 +305,12 @@ impl AvailableParts {
                 .flatten()
                 .collect::<Vec<_>>();
 
+            let category_name = if self.parts_tab_type == AvailablePartType::Anointments {
+                Some("Anointment")
+            } else {
+                None
+            };
+
             if !filtered_parts.is_empty() {
                 let available_parts_list = self.parts.iter_mut().enumerate().fold(
                     Column::new(),
@@ -319,7 +322,7 @@ impl AvailableParts {
                         {
                             curr = curr.push(
                                 Container::new(
-                                    Text::new(&cat_parts.category)
+                                    Text::new(category_name.unwrap_or(&cat_parts.category))
                                         .font(JETBRAINS_MONO_BOLD)
                                         .size(17)
                                         .color(Color::from_rgb8(242, 203, 5)),
@@ -335,6 +338,7 @@ impl AvailableParts {
                                 let is_active = selected_available_part_type_index.category_index
                                     == cat_index
                                     && selected_available_part_type_index.part_index == part_index;
+
                                 curr = curr.push(p.view(is_active, interaction_message));
                             }
                         }
