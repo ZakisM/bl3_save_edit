@@ -172,7 +172,7 @@ impl Editor {
             .spacing(20);
 
         // Balance search
-        let balance_search_query = &self.balance_search_input;
+        let balance_search_query = self.balance_search_input.trim();
 
         if !balance_search_query.is_empty() {
             let filtered_results = INVENTORY_BALANCE_PARTS
@@ -197,7 +197,7 @@ impl Editor {
         }
 
         // Inventory Data search
-        let inv_data_search_query = &self.inv_data_search_input;
+        let inv_data_search_query = &self.inv_data_search_input.trim();
 
         if !inv_data_search_query.is_empty() {
             let filtered_results = INVENTORY_INV_DATA_PARTS
@@ -216,7 +216,7 @@ impl Editor {
         }
 
         // Manufacturer search
-        let manufacturer_search_query = &self.manufacturer_search_input;
+        let manufacturer_search_query = &self.manufacturer_search_input.trim();
 
         if !manufacturer_search_query.is_empty() {
             let filtered_results = INVENTORY_MANUFACTURER_PARTS

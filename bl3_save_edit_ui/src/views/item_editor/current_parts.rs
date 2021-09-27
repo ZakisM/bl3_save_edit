@@ -1,8 +1,8 @@
 use std::collections::BTreeMap;
 
 use iced::{
-    button, scrollable, Align, Button, Checkbox, Color, Column, Container, Element,
-    HorizontalAlignment, Length, Row, Scrollable, Text,
+    button, scrollable, text_input, tooltip, Align, Button, Checkbox, Color, Column, Container,
+    Element, HorizontalAlignment, Length, Row, Scrollable, Text, Tooltip,
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
@@ -13,7 +13,7 @@ use bl3_save_edit_core::bl3_item::{
 use bl3_save_edit_core::resources::{ResourceCategorizedParts, ResourcePart, ResourcePartInfo};
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
-use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
+use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::extra_part_info::add_extra_part_info;
 use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
@@ -21,6 +21,7 @@ use crate::views::item_editor::parts_tab_bar::CurrentPartType;
 use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::tab_bar_button::tab_bar_button;
 use crate::views::InteractionExt;
+use crate::widgets::text_input_limited::TextInputLimited;
 
 #[derive(Debug, Copy, Clone, Default)]
 pub struct CurrentPartTypeIndex {
@@ -28,7 +29,7 @@ pub struct CurrentPartTypeIndex {
     pub part_index: usize,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct CurrentCategorizedPart {
     pub category: String,
     pub parts: Vec<CurrentItemEditorPart>,
@@ -51,7 +52,7 @@ impl CurrentCategorizedPart {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct CurrentItemEditorPart {
     category_index: usize,
     part_index: usize,
@@ -143,9 +144,11 @@ pub struct CurrentParts {
     pub scrollable_state: scrollable::State,
     pub part_type_index: CurrentPartTypeIndex,
     pub parts: Vec<CurrentCategorizedPart>,
-    pub parts_tab_view: CurrentPartType,
+    pub parts_tab_type: CurrentPartType,
     pub current_parts_tab_button_state: button::State,
     pub current_anointments_tab_button_state: button::State,
+    pub search_input: String,
+    pub search_input_state: text_input::State,
     pub reorder_parts: bool,
     pub reorder_parts_move_up_button_state: button::State,
     pub reorder_parts_move_down_button_state: button::State,
@@ -172,7 +175,7 @@ impl CurrentParts {
                 Container::new(tab_bar_button(
                     &mut self.current_parts_tab_button_state,
                     CurrentPartType::Parts,
-                    &self.parts_tab_view,
+                    &self.parts_tab_type,
                     interaction_message(ItemEditorInteractionMessage::CurrentPartsTabPressed),
                     Some(format!(
                         "({}/{})",
@@ -190,7 +193,7 @@ impl CurrentParts {
                 Container::new(tab_bar_button(
                     &mut self.current_anointments_tab_button_state,
                     CurrentPartType::Anointments,
-                    &self.parts_tab_view,
+                    &self.parts_tab_type,
                     interaction_message(ItemEditorInteractionMessage::CurrentAnointmentsTabPressed),
                     Some(format!(
                         "({}/{})",
@@ -208,18 +211,25 @@ impl CurrentParts {
 
         let mut current_parts_content = Column::new().push(Container::new(title_row));
 
-        match self.parts_tab_view {
+        let parts;
+
+        match self.parts_tab_type {
             CurrentPartType::Parts => {
                 if reorder_parts {
-                    self.parts = Self::regular_parts(item, all_parts_list);
+                    parts = Self::regular_parts(item, all_parts_list);
                 } else {
-                    self.parts = Self::categorized_parts(item, all_parts_list);
+                    parts = Self::categorized_parts(item, all_parts_list);
                 }
+
+                self.parts = parts.clone();
 
                 if !self.parts.is_empty() {
                     let mut reorder_parts_row = Row::new().spacing(15).align_items(Align::Center);
 
-                    let reorder_parts_checkbox =
+                    let reorder_parts_tooltip =
+                        "Reorder the parts of this item where the parts at the top get loaded first.\nThe order that is shown when this checkbox is active will be the order that they get loaded in game.\nEven if this checkbox is not active and you are viewing the categorized parts, they will still be loaded in the order that is show when this checkbox is active.";
+
+                    let reorder_parts_checkbox = Tooltip::new(
                         Checkbox::new(self.reorder_parts, "Reorder Parts", move |c| {
                             interaction_message(
                                 ItemEditorInteractionMessage::ReorderCurrentPartsSelected(c),
@@ -231,7 +241,15 @@ impl CurrentParts {
                         .text_size(17)
                         .width(Length::Fill)
                         .style(Bl3UiStyle)
-                        .into_element();
+                        .into_element(),
+                        reorder_parts_tooltip,
+                        tooltip::Position::Top,
+                    )
+                    .gap(10)
+                    .padding(10)
+                    .font(JETBRAINS_MONO)
+                    .size(17)
+                    .style(Bl3UiTooltipStyle);
 
                     reorder_parts_row = reorder_parts_row.push(reorder_parts_checkbox);
 
@@ -316,16 +334,54 @@ impl CurrentParts {
                 }
             }
             CurrentPartType::Anointments => {
-                self.parts = Self::regular_anointments(item, anointments_list);
+                parts = Self::regular_anointments(item, anointments_list);
+
+                self.parts = parts.clone();
             }
         }
 
         if !self.parts.is_empty() {
+            let search_query = self.search_input.trim();
+
+            let filtered_parts = parts
+                .par_iter()
+                .map(|cat_p| {
+                    cat_p
+                        .parts
+                        .par_iter()
+                        .filter(|p| {
+                            p.part.part.ident.to_lowercase().contains(search_query)
+                                || p.part
+                                    .info
+                                    .positives
+                                    .par_iter()
+                                    .any(|p| p.to_lowercase().contains(search_query))
+                                || p.part
+                                    .info
+                                    .negatives
+                                    .par_iter()
+                                    .any(|n| n.to_lowercase().contains(search_query))
+                                || p.part
+                                    .info
+                                    .effects
+                                    .par_iter()
+                                    .any(|e| e.to_lowercase().contains(search_query))
+                        })
+                        .collect::<Vec<&CurrentItemEditorPart>>()
+                })
+                .flatten()
+                .collect::<Vec<_>>();
+
             let current_parts_list =
                 self.parts
                     .iter_mut()
                     .fold(Column::new(), |mut curr, cat_parts| {
-                        if !reorder_parts {
+                        if !reorder_parts
+                            && cat_parts
+                                .parts
+                                .par_iter()
+                                .any(|cat_p| filtered_parts.contains(&cat_p))
+                        {
                             curr = curr.push(
                                 Container::new(
                                     Text::new(&cat_parts.category)
@@ -340,13 +396,46 @@ impl CurrentParts {
                         }
 
                         for (part_index, p) in cat_parts.parts.iter_mut().enumerate() {
-                            let is_active = selected_current_part_index.part_index == part_index;
+                            if filtered_parts.contains(&&*p) {
+                                let is_active =
+                                    selected_current_part_index.part_index == part_index;
 
-                            curr = curr.push(p.view(reorder_parts, is_active, interaction_message))
+                                curr =
+                                    curr.push(p.view(reorder_parts, is_active, interaction_message))
+                            }
                         }
 
                         curr
                     });
+
+            let amount: usize = parts.iter().map(|cat_p| cat_p.parts.len()).sum();
+
+            let search_placeholder = match self.parts_tab_type {
+                CurrentPartType::Parts => format!("Search {} Current Parts...", amount),
+                CurrentPartType::Anointments => {
+                    format!("Search {} Current Anointments...", amount)
+                }
+            };
+
+            let search_input = TextInputLimited::new(
+                &mut self.search_input_state,
+                &search_placeholder,
+                &self.search_input,
+                500,
+                move |s| {
+                    interaction_message(
+                        ItemEditorInteractionMessage::CurrentPartsSearchInputChanged(s),
+                    )
+                },
+            )
+            .0
+            .font(JETBRAINS_MONO)
+            .padding(10)
+            .size(17)
+            .style(Bl3UiStyle)
+            .into_element();
+
+            current_parts_content = current_parts_content.push(search_input);
 
             current_parts_content = current_parts_content.push(
                 Container::new(
@@ -358,7 +447,7 @@ impl CurrentParts {
                 .padding(1),
             );
         } else {
-            let msg = match self.parts_tab_view {
+            let msg = match self.parts_tab_type {
                 CurrentPartType::Parts => "This item has no parts.",
                 CurrentPartType::Anointments => "This item has no anointments.",
             };

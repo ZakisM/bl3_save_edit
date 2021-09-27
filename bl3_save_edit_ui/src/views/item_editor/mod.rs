@@ -1,5 +1,6 @@
 use anyhow::{bail, Result};
 use derivative::Derivative;
+use heck::TitleCase;
 use iced::{
     button, scrollable, svg, text_input, tooltip, Align, Button, Color, Column, Command, Container,
     Length, Row, Scrollable, Svg, Text, Tooltip,
@@ -214,6 +215,7 @@ pub enum ItemEditorInteractionMessage {
     AvailablePartsSearchInputChanged(String),
     AvailablePartsTabPressed,
     AvailableAnointmentsTabPressed,
+    CurrentPartsSearchInputChanged(String),
     CurrentPartsTabPressed,
     CurrentAnointmentsTabPressed,
     ReorderCurrentPartsSelected(bool),
@@ -390,7 +392,7 @@ impl ItemEditorInteractionMessage {
                         i.editor.available_parts.search_input = search_input.to_lowercase();
                     })
                     .handle_ui_error(
-                        "Failed to map item to editor when showing filtered available parts",
+                        "Failed to map item to editor when showing filtered available parts/anointments",
                         &mut notification,
                     );
             }
@@ -512,11 +514,24 @@ impl ItemEditorInteractionMessage {
                     }
                 }
             }
+            ItemEditorInteractionMessage::CurrentPartsSearchInputChanged(search_input) => {
+                item_editor_state
+                    .map_current_item_if_exists(|i| {
+                        i.editor.current_parts.search_input = search_input.to_lowercase();
+                    })
+                    .handle_ui_error(
+                        "Failed to map item to editor when showing filtered current parts/anointments",
+                        &mut notification,
+                    );
+            }
             ItemEditorInteractionMessage::CurrentPartsTabPressed => {
                 item_editor_state
                     .map_current_item_if_exists(|i| {
                         i.editor.current_parts.scrollable_state.snap_to(0.0);
-                        i.editor.current_parts.parts_tab_view = CurrentPartType::Parts
+                        i.editor.current_parts.search_input = "".to_owned();
+                        i.editor.current_parts.search_input_state.focus();
+                        i.editor.current_parts.reorder_parts = false;
+                        i.editor.current_parts.parts_tab_type = CurrentPartType::Parts
                     })
                     .handle_ui_error("Failed to view current parts", &mut notification);
             }
@@ -524,7 +539,10 @@ impl ItemEditorInteractionMessage {
                 item_editor_state
                     .map_current_item_if_exists(|i| {
                         i.editor.current_parts.scrollable_state.snap_to(0.0);
-                        i.editor.current_parts.parts_tab_view = CurrentPartType::Anointments
+                        i.editor.current_parts.search_input = "".to_owned();
+                        i.editor.current_parts.search_input_state.focus();
+                        i.editor.current_parts.reorder_parts = false;
+                        i.editor.current_parts.parts_tab_type = CurrentPartType::Anointments
                     })
                     .handle_ui_error("Failed to view current anointments", &mut notification);
             }
@@ -538,30 +556,39 @@ impl ItemEditorInteractionMessage {
                             i.editor.current_parts.scrollable_state.snap_to(0.0);
                         }
                     })
-                    .handle_ui_error("Failed to re-order current parts", &mut notification);
+                    .handle_ui_error("Failed to reorder current parts", &mut notification);
             }
             ItemEditorInteractionMessage::ReorderCurrentPartsMoveUpPressed => {
-                item_editor_state
-                    .map_current_item_if_exists_result(|i| {
-                        i.item
-                            .move_part_up(&mut i.editor.current_parts.part_type_index.part_index)
-                    })
-                    .handle_ui_error("Failed to move selected part up", &mut notification);
+                match item_editor_state.map_current_item_if_exists_result(|i| {
+                    i.item
+                        .move_part_up(&mut i.editor.current_parts.part_type_index.part_index)
+                }) {
+                    Ok(item) => item.editor.current_parts.search_input.clear(),
+                    Err(e) => {
+                        e.handle_ui_error("Failed to move selected part up", &mut notification)
+                    }
+                }
             }
             ItemEditorInteractionMessage::ReorderCurrentPartsMoveDownPressed => {
-                item_editor_state
-                    .map_current_item_if_exists_result(|i| {
-                        i.item
-                            .move_part_down(&mut i.editor.current_parts.part_type_index.part_index)
-                    })
-                    .handle_ui_error("Failed to move selected part down", &mut notification);
+                match item_editor_state.map_current_item_if_exists_result(|i| {
+                    i.item
+                        .move_part_down(&mut i.editor.current_parts.part_type_index.part_index)
+                }) {
+                    Ok(item) => item.editor.current_parts.search_input.clear(),
+                    Err(e) => {
+                        e.handle_ui_error("Failed to move selected part down", &mut notification)
+                    }
+                }
             }
             ItemEditorInteractionMessage::ReorderCurrentPartsMoveTopPressed => {
                 match item_editor_state.map_current_item_if_exists_result(|i| {
                     i.item
                         .move_part_top(&mut i.editor.current_parts.part_type_index.part_index)
                 }) {
-                    Ok(item) => item.editor.current_parts.scrollable_state.snap_to(0.0),
+                    Ok(item) => {
+                        item.editor.current_parts.search_input.clear();
+                        item.editor.current_parts.scrollable_state.snap_to(0.0);
+                    }
                     Err(e) => {
                         e.handle_ui_error("Failed to move selected part to top", &mut notification)
                     }
@@ -572,7 +599,10 @@ impl ItemEditorInteractionMessage {
                     i.item
                         .move_part_bottom(&mut i.editor.current_parts.part_type_index.part_index)
                 }) {
-                    Ok(item) => item.editor.current_parts.scrollable_state.snap_to(1.0),
+                    Ok(item) => {
+                        item.editor.current_parts.search_input.clear();
+                        item.editor.current_parts.scrollable_state.snap_to(1.0);
+                    }
                     Err(e) => e.handle_ui_error(
                         "Failed to move selected part to bottom",
                         &mut notification,
@@ -618,7 +648,7 @@ impl ItemEditorInteractionMessage {
                         .map_current_item_if_exists(|i| {
                             i.editor.current_parts.part_type_index = current_part_type_index;
                         })
-                        .handle_ui_error("Failed to select part to re-order", &mut notification);
+                        .handle_ui_error("Failed to select part to reorder", &mut notification);
                 }
             }
             ItemEditorInteractionMessage::CurrentAnointmentPressed(current_part_type_index) => {
@@ -1282,6 +1312,8 @@ pub fn get_filtered_items(
     lootlemon_items: &[ItemEditorLootlemonItem],
 ) -> Vec<(usize, Bl3Item)> {
     let filter_items = |item: &Bl3Item| -> bool {
+        let search_items_query = search_items_query.trim();
+
         if search_items_query.is_empty() {
             return true;
         }
@@ -1297,15 +1329,19 @@ pub fn get_filtered_items(
         };
 
         balance_part_to_search
-            .map(|n| n.contains(search_items_query))
+            .map(|n| n.contains(&search_items_query))
             .unwrap_or(false)
             || item
                 .manufacturer_part()
                 .short_ident
                 .as_ref()
-                .map(|mp| mp.to_lowercase().contains(search_items_query))
+                .map(|mp| {
+                    mp.to_title_case()
+                        .to_lowercase()
+                        .contains(&search_items_query)
+                })
                 .unwrap_or(false)
-            || item.level().to_string().contains(search_items_query)
+            || format!("level {}", item.level().to_string()).contains(&search_items_query)
             || item
                 .item_parts
                 .as_ref()
@@ -1313,16 +1349,16 @@ pub fn get_filtered_items(
                     ip.item_type
                         .to_string()
                         .to_lowercase()
-                        .contains(search_items_query)
+                        .contains(&search_items_query)
                         || ip
                             .rarity
                             .to_string()
                             .to_lowercase()
-                            .contains(search_items_query)
+                            .contains(&search_items_query)
                         || ip
                             .weapon_type
                             .as_ref()
-                            .map(|wt| wt.to_string().to_lowercase().contains(search_items_query))
+                            .map(|wt| wt.to_string().to_lowercase().contains(&search_items_query))
                             .unwrap_or(false)
                 })
                 .unwrap_or(false)

@@ -243,7 +243,7 @@ impl AvailableParts {
         if let Some(available_parts) = &available_parts {
             let amount: usize = available_parts.iter().map(|cat_p| cat_p.parts.len()).sum();
 
-            let placeholder = match self.parts_tab_type {
+            let search_placeholder = match self.parts_tab_type {
                 AvailablePartType::Parts => format!("Search {} Available Parts...", amount),
                 AvailablePartType::Anointments => {
                     format!("Search {} Available Anointments...", amount)
@@ -252,7 +252,7 @@ impl AvailableParts {
 
             let search_input = TextInputLimited::new(
                 &mut self.search_input_state,
-                &placeholder,
+                &search_placeholder,
                 &self.search_input,
                 500,
                 move |s| {
@@ -271,8 +271,8 @@ impl AvailableParts {
             available_parts_column = available_parts_column.push(search_input);
         }
 
-        if let Some(available_parts) = available_parts {
-            let search_query = &self.search_input;
+        if let Some(available_parts) = &available_parts {
+            let search_query = self.search_input.trim();
 
             self.parts = available_parts.clone();
 
@@ -317,7 +317,7 @@ impl AvailableParts {
                     |mut curr, (cat_index, cat_parts)| {
                         if cat_parts
                             .parts
-                            .iter()
+                            .par_iter()
                             .any(|cat_p| filtered_parts.contains(&cat_p))
                         {
                             curr = curr.push(

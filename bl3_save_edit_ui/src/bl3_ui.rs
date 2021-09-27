@@ -1411,20 +1411,21 @@ impl Application for Bl3Application {
 
                         let selected_file = self.loaded_files.iter().find(|f| **f == saved_file);
 
-                        self.loaded_files_selected =
-                            Box::new(if let Some(selected_file) = selected_file {
-                                selected_file.to_owned()
-                            } else {
+                        if let Some(selected_file) = selected_file {
+                            self.loaded_files_selected = Box::new(selected_file.to_owned());
+                        } else {
+                            self.loaded_files_selected = Box::new(
                                 self.loaded_files
                                     .get(0)
                                     .expect("loaded_files was empty")
-                                    .clone()
-                            });
+                                    .clone(),
+                            );
 
-                        state_mappers::map_loaded_file_to_state(self).handle_ui_error(
-                            "Failed to load map previously selected file to editor",
-                            &mut self.notification,
-                        );
+                            state_mappers::map_loaded_file_to_state(self).handle_ui_error(
+                                "Failed to map loaded file to editor",
+                                &mut self.notification,
+                            );
+                        }
                     }
                     MessageResult::Error(e) => {
                         let msg = format!("Failed to load save folder: {}", e);
