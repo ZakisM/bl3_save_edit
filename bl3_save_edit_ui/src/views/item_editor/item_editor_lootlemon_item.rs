@@ -67,7 +67,7 @@ impl ItemEditorLootlemonItem {
 
         let item_content = list_item_contents::view(&self.item).push(options_rows);
 
-        let mut view = Container::new(item_content).padding(10).width(Length::Fill);
+        let mut view = Container::new(item_content).padding(9).width(Length::Fill);
 
         if view_index % 2 == 0 {
             view = view.style(Bl3UiStyleCustomNoBorder(Color::from_rgb8(25, 25, 25)));

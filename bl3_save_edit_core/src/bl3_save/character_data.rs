@@ -6,7 +6,7 @@ use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
 use strum::{EnumMessage, IntoEnumIterator};
 
-use crate::bl3_item::Bl3Item;
+use crate::bl3_item::{Bl3Item, ItemFlags};
 use crate::bl3_save::ammo::{AmmoPool, AmmoPoolData};
 use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
@@ -356,7 +356,10 @@ impl CharacterData {
         let inventory_items = character
             .inventory_items
             .par_iter()
-            .filter_map(|i| Bl3Item::from_serial_bytes(&i.item_serial_number).ok())
+            .filter_map(|i| {
+                Bl3Item::from_serial_bytes(&i.item_serial_number, ItemFlags::from_bits(i.flags))
+                    .ok()
+            })
             .collect::<Vec<_>>();
 
         Ok(Self {
@@ -824,24 +827,26 @@ impl CharacterData {
         &self.inventory_items
     }
 
+    pub fn inventory_items_mut(&mut self) -> &mut Vec<Bl3Item> {
+        &mut self.inventory_items
+    }
+
     pub fn create_inventory_item(
-        item: &Bl3Item,
         pickup_order_index: i32,
+        item: &Bl3Item,
         is_seen: bool,
-        is_favourite: bool,
-        is_trash: bool,
     ) -> Result<OakInventoryItemSaveGameData> {
-        let mut flags = 0;
+        let flags: i32 = if let Some(flags) = item.flags {
+            flags.bits()
+        } else {
+            let mut default_flags = ItemFlags::empty();
 
-        if is_seen {
-            flags |= 0x1;
-        }
+            if is_seen {
+                default_flags |= ItemFlags::SEEN;
+            }
 
-        if is_favourite {
-            flags |= 0x2
-        } else if is_trash {
-            flags |= 0x4
-        }
+            default_flags.bits()
+        };
 
         let item_serial_number = item.get_serial_number(true)?;
 
@@ -869,8 +874,7 @@ impl CharacterData {
     }
 
     pub fn add_inventory_item(&mut self, pickup_order_index: i32, item: &Bl3Item) -> Result<()> {
-        let new_oak_item =
-            Self::create_inventory_item(item, pickup_order_index, true, true, false)?;
+        let new_oak_item = Self::create_inventory_item(pickup_order_index, item, true)?;
 
         self.character.inventory_items.push(new_oak_item);
 
@@ -885,8 +889,7 @@ impl CharacterData {
         item_index: usize,
         item: &Bl3Item,
     ) -> Result<()> {
-        let new_oak_item =
-            Self::create_inventory_item(item, pickup_order_index, true, true, false)?;
+        let new_oak_item = Self::create_inventory_item(pickup_order_index, item, true)?;
 
         self.character
             .inventory_items

@@ -151,13 +151,13 @@ impl ProfileData {
         let bank_items = profile
             .bank_inventory_list
             .par_iter()
-            .filter_map(|i| Bl3Item::from_serial_bytes(i).ok())
+            .filter_map(|i| Bl3Item::from_serial_bytes(i, None).ok())
             .collect::<Vec<_>>();
 
         let lost_loot_items = profile
             .lost_loot_inventory_list
             .par_iter()
-            .filter_map(|i| Bl3Item::from_serial_bytes(i).ok())
+            .filter_map(|i| Bl3Item::from_serial_bytes(i, None).ok())
             .collect::<Vec<_>>();
 
         let mut character_skins_unlocked = PROFILE_SKINS_DEFAULTS.len();
@@ -448,6 +448,10 @@ impl ProfileData {
 
     pub fn bank_items(&self) -> &Vec<Bl3Item> {
         &self.bank_items
+    }
+
+    pub fn bank_items_mut(&mut self) -> &mut Vec<Bl3Item> {
+        &mut self.bank_items
     }
 
     pub fn remove_bank_item(&mut self, index: usize) {

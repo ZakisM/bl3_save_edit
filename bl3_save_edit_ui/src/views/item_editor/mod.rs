@@ -1,11 +1,15 @@
+use std::cmp::Ordering;
+use std::collections::HashSet;
+
 use anyhow::{bail, Result};
 use derivative::Derivative;
 use heck::TitleCase;
 use iced::{
-    button, scrollable, svg, text_input, tooltip, Align, Button, Color, Column, Command, Container,
-    Length, Row, Scrollable, Svg, Text, Tooltip,
+    button, scrollable, text_input, tooltip, Align, Button, Color, Column, Command, Container,
+    Length, Row, Scrollable, Text, Tooltip,
 };
 use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
+use rayon::slice::ParallelSliceMut;
 use strum::Display;
 use tracing::error;
 
@@ -19,10 +23,9 @@ use bl3_save_edit_core::bl3_save::Bl3Save;
 use bl3_save_edit_core::resources::{INVENTORY_SERIAL_DB, LOOTLEMON_ITEMS};
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage, MessageResult};
-use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
+use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder, Bl3UiTooltipStyle};
 use crate::commands::interaction;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::resources::svgs::{ARROW_DOWN, ARROW_UP};
 use crate::util::ErrorExt;
 use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
 use crate::views::item_editor::current_parts::CurrentPartTypeIndex;
@@ -68,8 +71,6 @@ pub struct ItemEditorState {
     pub item_list_lootlemon_scrollable_state: scrollable::State,
     pub item_list_tab_type: ItemListTabType,
     pub item_list_items_tab_button_state: button::State,
-    pub item_list_reverse_order_button_state: button::State,
-    pub item_list_is_reverse_order: bool,
     pub item_list_lootlemon_tab_button_state: button::State,
 }
 
@@ -80,9 +81,17 @@ pub struct ItemEditorLootlemonItems {
 
 impl std::default::Default for ItemEditorLootlemonItems {
     fn default() -> Self {
-        let items = LOOTLEMON_ITEMS
-            .iter()
-            .cloned()
+        let mut items = LOOTLEMON_ITEMS.clone();
+
+        items.par_sort_by(|a, b| {
+            let a_item = &a.item;
+            let b_item = &b.item;
+
+            sort_items(a_item, b_item)
+        });
+
+        let items = items
+            .into_iter()
             .enumerate()
             .map(|(i, lootlemon_item)| {
                 ItemEditorLootlemonItem::new(i, lootlemon_item.link, lootlemon_item.item)
@@ -94,6 +103,15 @@ impl std::default::Default for ItemEditorLootlemonItems {
 }
 
 impl ItemEditorState {
+    pub fn sort_items(&mut self) {
+        self.items.par_sort_by(|a, b| {
+            let a_item = &a.item;
+            let b_item = &b.item;
+
+            sort_items(a_item, b_item)
+        });
+    }
+
     pub fn items(&mut self) -> &Vec<ItemEditorListItem> {
         &self.items
     }
@@ -102,20 +120,42 @@ impl ItemEditorState {
         &mut self.items
     }
 
-    pub fn add_item(&mut self, item: Bl3Item) {
-        self.items.push(ItemEditorListItem::new(item));
-    }
+    pub fn add_item(&mut self, item: Bl3Item) -> usize {
+        self.items.push(ItemEditorListItem::new(item.clone()));
 
-    pub fn insert_item(&mut self, index: usize, item: Bl3Item) {
-        if index < self.items.len() {
-            self.items.insert(index, ItemEditorListItem::new(item));
-        }
+        self.sort_items();
+
+        let pos = self
+            .items
+            .iter()
+            .rev()
+            .position(|i| i.item == item)
+            .unwrap_or(0);
+
+        self.items.len() - 1 - pos
     }
 
     pub fn remove_item(&mut self, remove_id: usize) {
         if remove_id < self.items.len() {
             self.items.remove(remove_id);
         }
+
+        self.sort_items();
+    }
+
+    pub fn previously_selected_index(&mut self) -> usize {
+        let previous_item = self
+            .items
+            .get(self.selected_item_index)
+            .map(|i| i.item.clone())
+            .unwrap();
+
+        self.sort_items();
+
+        self.items
+            .iter()
+            .position(|i| i.item == previous_item)
+            .unwrap_or(0)
     }
 }
 
@@ -136,17 +176,21 @@ impl ItemEditorStateExt for ItemEditorState {
     where
         F: FnOnce(&mut ItemEditorListItem),
     {
-        if let Some(item) = self.items.get_mut(self.selected_item_index) {
-            f(item);
+        if !self.items.is_empty() {
+            if let Some(item) = self.items.get_mut(self.selected_item_index) {
+                f(item);
 
-            self.map_current_item_if_exists_to_editor_state()?;
+                self.map_current_item_if_exists_to_editor_state()?;
 
-            Ok(())
-        } else {
-            let msg = format!("couldn't get item for index: {}", self.selected_item_index);
+                return Ok(());
+            } else {
+                let msg = format!("couldn't get item for index: {}", self.selected_item_index);
 
-            bail!("{}", msg);
+                bail!("{}", msg);
+            }
         }
+
+        Ok(())
     }
 
     fn map_current_item_if_exists_result<F>(&mut self, f: F) -> Result<&mut ItemEditorListItem>
@@ -167,15 +211,19 @@ impl ItemEditorStateExt for ItemEditorState {
     }
 
     fn map_current_item_if_exists_to_editor_state(&mut self) -> Result<()> {
-        if let Some(curr_item) = self.items.get_mut(self.selected_item_index) {
-            curr_item.map_item_to_editor()?;
+        if !self.items.is_empty() {
+            if let Some(curr_item) = self.items.get_mut(self.selected_item_index) {
+                curr_item.map_item_to_editor()?;
 
-            Ok(())
-        } else {
-            let msg = format!("couldn't get item for index: {}", self.selected_item_index);
+                return Ok(());
+            } else {
+                let msg = format!("couldn't get item for index: {}", self.selected_item_index);
 
-            bail!("{}", msg);
+                bail!("{}", msg);
+            }
         }
+
+        Ok(())
     }
 }
 
@@ -205,7 +253,6 @@ pub enum ItemEditorInteractionMessage {
     ItemPressed(usize),
     ItemsSearchInputChanged(String),
     ItemsLootLemonSearchInputChanged(String),
-    ItemListReverseOrderPressed,
     ItemListItemTabPressed,
     ItemListLootlemonTabPressed,
     ItemListLootlemonImportPressed(usize),
@@ -281,23 +328,6 @@ impl ItemEditorInteractionMessage {
                 item_editor_state.search_lootlemon_items_input =
                     search_lootlemon_items_query.to_lowercase();
             }
-            ItemEditorInteractionMessage::ItemListReverseOrderPressed => {
-                item_editor_state.item_list_is_reverse_order =
-                    !item_editor_state.item_list_is_reverse_order;
-
-                item_editor_state.items.reverse();
-
-                // Maintain the selected item
-                item_editor_state.selected_item_index =
-                    item_editor_state.items.len() - item_editor_state.selected_item_index - 1;
-
-                item_editor_state
-                    .map_current_item_if_exists_to_editor_state()
-                    .handle_ui_error(
-                        "Failed to map previously selected item to editor when reversing order",
-                        &mut notification,
-                    );
-            }
             ItemEditorInteractionMessage::ItemListItemTabPressed => {
                 item_editor_state.search_items_input_state.focus();
                 item_editor_state.item_list_tab_type = ItemListTabType::Items;
@@ -310,23 +340,9 @@ impl ItemEditorInteractionMessage {
                 if let Some(lootlemon_item) = item_editor_state.lootlemon_items.items.get(id) {
                     let item = lootlemon_item.item.clone();
 
-                    match item_editor_state.item_list_is_reverse_order {
-                        true => {
-                            item_editor_state.insert_item(0, item);
+                    let item_pos = item_editor_state.add_item(item);
 
-                            item_editor_state.selected_item_index = 0;
-
-                            item_editor_state.item_list_scrollable_state.snap_to(0.0);
-                        }
-                        false => {
-                            item_editor_state.add_item(item);
-
-                            item_editor_state.selected_item_index =
-                                item_editor_state.items().len() - 1;
-
-                            item_editor_state.item_list_scrollable_state.snap_to(1.0);
-                        }
-                    }
+                    item_editor_state.selected_item_index = item_pos;
 
                     item_editor_state
                         .map_current_item_if_exists_to_editor_state()
@@ -690,22 +706,11 @@ impl ItemEditorInteractionMessage {
             ItemEditorInteractionMessage::CreateItemPressed => {
                 let item = Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap();
 
-                match item_editor_state.item_list_is_reverse_order {
-                    true => {
-                        item_editor_state.insert_item(0, item);
+                let item_pos = item_editor_state.add_item(item);
 
-                        item_editor_state.selected_item_index = 0;
+                item_editor_state.selected_item_index = item_pos;
 
-                        item_editor_state.item_list_scrollable_state.snap_to(0.0);
-                    }
-                    false => {
-                        item_editor_state.add_item(item);
-
-                        item_editor_state.selected_item_index = item_editor_state.items().len() - 1;
-
-                        item_editor_state.item_list_scrollable_state.snap_to(1.0);
-                    }
-                }
+                item_editor_state.item_list_scrollable_state.snap_to(1.0);
 
                 item_editor_state.search_items_input_state.focus();
 
@@ -720,23 +725,9 @@ impl ItemEditorInteractionMessage {
 
                 match Bl3Item::from_serial_base64(item_serial) {
                     Ok(item) => {
-                        match item_editor_state.item_list_is_reverse_order {
-                            true => {
-                                item_editor_state.insert_item(0, item);
+                        let item_pos = item_editor_state.add_item(item);
 
-                                item_editor_state.selected_item_index = 0;
-
-                                item_editor_state.item_list_scrollable_state.snap_to(0.0);
-                            }
-                            false => {
-                                item_editor_state.add_item(item);
-
-                                item_editor_state.selected_item_index =
-                                    item_editor_state.items().len() - 1;
-
-                                item_editor_state.item_list_scrollable_state.snap_to(1.0);
-                            }
-                        }
+                        item_editor_state.selected_item_index = item_pos;
 
                         item_editor_state.search_items_input_state.focus();
 
@@ -802,6 +793,8 @@ impl ItemEditorInteractionMessage {
                     item_editor_state.selected_item_index -= 1;
                 }
 
+                item_editor_state.search_items_input_state.focus();
+
                 item_editor_state
                     .map_current_item_if_exists_to_editor_state()
                     .handle_ui_error(
@@ -814,23 +807,9 @@ impl ItemEditorInteractionMessage {
                     Some(item) => {
                         let item = item.item.clone();
 
-                        match item_editor_state.item_list_is_reverse_order {
-                            true => {
-                                item_editor_state.insert_item(0, item);
+                        item_editor_state.add_item(item);
 
-                                item_editor_state.selected_item_index = 0;
-
-                                item_editor_state.item_list_scrollable_state.snap_to(0.0);
-                            }
-                            false => {
-                                item_editor_state.add_item(item);
-
-                                item_editor_state.selected_item_index =
-                                    item_editor_state.items().len() - 1;
-
-                                item_editor_state.item_list_scrollable_state.snap_to(1.0);
-                            }
-                        }
+                        item_editor_state.selected_item_index += 1;
 
                         item_editor_state.search_items_input_state.focus();
 
@@ -855,6 +834,9 @@ impl ItemEditorInteractionMessage {
                 item_editor_state
                     .map_current_item_if_exists_result(|i| i.item.set_balance(balance_selected))
                     .handle_ui_error("Failed to set balance for item", &mut notification);
+
+                let index = item_editor_state.previously_selected_index();
+                item_editor_state.selected_item_index = index;
             }
             ItemEditorInteractionMessage::BalanceSearchInputChanged(balance_search_query) => {
                 if balance_search_query.len() <= 500 {
@@ -872,6 +854,9 @@ impl ItemEditorInteractionMessage {
                 item_editor_state
                     .map_current_item_if_exists_result(|i| i.item.set_inv_data(inv_data_selected))
                     .handle_ui_error("Failed to set inventory data for item", &mut notification);
+
+                let index = item_editor_state.previously_selected_index();
+                item_editor_state.selected_item_index = index;
             }
             ItemEditorInteractionMessage::InvDataSearchInputChanged(inv_data_search_query) => {
                 if inv_data_search_query.len() <= 500 {
@@ -891,6 +876,9 @@ impl ItemEditorInteractionMessage {
                         i.item.set_manufacturer(manufacturer_selected)
                     })
                     .handle_ui_error("Failed to set manufacturer for item", &mut notification);
+
+                let index = item_editor_state.previously_selected_index();
+                item_editor_state.selected_item_index = index;
             }
             ItemEditorInteractionMessage::ManufacturerSearchInputChanged(
                 manufacturer_search_query,
@@ -1050,8 +1038,6 @@ where
         )
         .spacing(20);
 
-    let mut item_editor = None;
-
     let search_items_query = match item_list_tab_type {
         ItemListTabType::Items => &item_editor_state.search_items_input,
         ItemListTabType::Lootlemon => &item_editor_state.search_lootlemon_items_input,
@@ -1119,7 +1105,7 @@ where
         ),
     };
 
-    let mut item_list_search_row = Row::new()
+    let item_list_search_row = Row::new()
         .push(
             item_list_search_input
                 .0
@@ -1131,39 +1117,37 @@ where
         )
         .align_items(Align::Center);
 
-    let item_list_reverse_order_icon = match item_editor_state.item_list_is_reverse_order {
-        true => svg::Handle::from_memory(ARROW_UP),
-        false => svg::Handle::from_memory(ARROW_DOWN),
-    };
+    let mut item_editor = None;
 
-    let reverse_order_button_tooltip_message = "Reverse the order of your items as they appear in this list (this does not modify the order in-game)";
-
-    let item_list_reverse_order_button = Tooltip::new(
-        Button::new(
-            &mut item_editor_state.item_list_reverse_order_button_state,
-            Svg::new(item_list_reverse_order_icon)
-                .height(Length::Units(18))
-                .width(Length::Units(18)),
-        )
-        .on_press(interaction_message(
-            ItemEditorInteractionMessage::ItemListReverseOrderPressed,
-        ))
-        .padding(10)
-        .style(Bl3UiStyle)
-        .into_element(),
-        reverse_order_button_tooltip_message,
-        tooltip::Position::Top,
-    )
-    .gap(10)
-    .padding(10)
-    .font(JETBRAINS_MONO)
-    .size(17)
-    .style(Bl3UiTooltipStyle);
+    let mut inventory_item_categories = HashSet::new();
 
     // Keeping this here as we want the "editor" to show in both ItemListTabType views
     let inventory_items = item_editor_state.items.iter_mut().enumerate().fold(
         Column::new().align_items(Align::Start),
-        |mut inventory_items, (i, item)| {
+        |mut curr, (i, item)| {
+            let item_type = item.item.item_type;
+
+            if item_list_tab_type == &ItemListTabType::Items
+                && !inventory_item_categories.contains(&item_type)
+                && filtered_items
+                    .par_iter()
+                    .any(|(_, i)| i.item_type == item_type)
+            {
+                curr = curr.push(
+                    Container::new(
+                        Text::new(format!("{}s", item_type.to_string()))
+                            .font(JETBRAINS_MONO_BOLD)
+                            .size(17)
+                            .color(Color::from_rgb8(242, 203, 5)),
+                    )
+                    .width(Length::Fill)
+                    .style(Bl3UiStyleNoBorder)
+                    .padding(8),
+                );
+
+                inventory_item_categories.insert(item_type);
+            }
+
             let is_active = i == selected_item_index;
 
             let (list_item_button, curr_item_editor) = item.view(i, is_active, interaction_message);
@@ -1171,23 +1155,24 @@ where
             // Check if the curr item index is in our filtered_items to decide whether to show the
             // list item button or not.
             if item_list_tab_type == &ItemListTabType::Items
-                && filtered_items.iter().any(|(fi_index, _)| *fi_index == i)
+                && filtered_items
+                    .par_iter()
+                    .any(|(fi_index, _)| *fi_index == i)
             {
-                inventory_items = inventory_items.push(list_item_button);
+                curr = curr.push(list_item_button);
             }
 
             if is_active {
                 item_editor = curr_item_editor;
             }
 
-            inventory_items
+            curr
         },
     );
 
     match item_editor_state.item_list_tab_type {
         ItemListTabType::Items => {
             if number_of_items > 0 {
-                item_list_search_row = item_list_search_row.push(item_list_reverse_order_button);
                 item_list_contents = item_list_contents.push(item_list_search_row);
 
                 if !filtered_items.is_empty() {
@@ -1231,7 +1216,7 @@ where
         ItemListTabType::Lootlemon => {
             item_list_contents = item_list_contents.push(item_list_search_row);
 
-            let mut view_index = 0;
+            let mut lootlemon_item_categories = HashSet::new();
 
             let lootlemon_items = item_editor_state
                 .lootlemon_items
@@ -1240,17 +1225,41 @@ where
                 .enumerate()
                 .fold(
                     Column::new().align_items(Align::Start),
-                    |mut lootlemon_items, (i, item)| {
-                        let lootlemon_item_view = item.view(view_index, interaction_message);
+                    |mut curr, (i, item)| {
+                        let item_type = item.item.item_type;
+
+                        if !lootlemon_item_categories.contains(&item_type)
+                            && filtered_items
+                                .par_iter()
+                                .any(|(_, i)| i.item_type == item_type)
+                        {
+                            curr = curr.push(
+                                Container::new(
+                                    Text::new(format!("{}s", item_type.to_string()))
+                                        .font(JETBRAINS_MONO_BOLD)
+                                        .size(17)
+                                        .color(Color::from_rgb8(242, 203, 5)),
+                                )
+                                .width(Length::Fill)
+                                .style(Bl3UiStyleNoBorder)
+                                .padding(8),
+                            );
+
+                            lootlemon_item_categories.insert(item_type);
+                        }
+
+                        let lootlemon_item_view = item.view(i, interaction_message);
 
                         // Check if the curr item index is in our filtered_items to decide whether to show the
                         // list item button or not.
-                        if filtered_items.iter().any(|(fi_index, _)| *fi_index == i) {
-                            lootlemon_items = lootlemon_items.push(lootlemon_item_view);
-                            view_index += 1;
+                        if filtered_items
+                            .par_iter()
+                            .any(|(fi_index, _)| *fi_index == i)
+                        {
+                            curr = curr.push(lootlemon_item_view);
                         }
 
-                        lootlemon_items
+                        curr
                     },
                 );
 
@@ -1343,18 +1352,18 @@ pub fn get_filtered_items(
                 .unwrap_or(false)
             || format!("level {}", item.level().to_string()).contains(&search_items_query)
             || item
+                .item_type
+                .to_string()
+                .to_lowercase()
+                .contains(&search_items_query)
+            || item
                 .item_parts
                 .as_ref()
                 .map(|ip| {
-                    ip.item_type
+                    ip.rarity
                         .to_string()
                         .to_lowercase()
                         .contains(&search_items_query)
-                        || ip
-                            .rarity
-                            .to_string()
-                            .to_lowercase()
-                            .contains(&search_items_query)
                         || ip
                             .weapon_type
                             .as_ref()
@@ -1380,4 +1389,11 @@ pub fn get_filtered_items(
             .map(|(i, item)| (i, item.clone()))
             .collect::<Vec<_>>(),
     }
+}
+
+pub fn sort_items(a: &Bl3Item, b: &Bl3Item) -> Ordering {
+    a.item_type
+        .cmp(&b.item_type)
+        .then(a.balance_part().ident.cmp(&b.balance_part().ident))
+        .then(a.level().cmp(&b.level()))
 }

@@ -63,7 +63,7 @@ impl ItemEditorListItem {
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::ItemPressed(id),
                 ))
-                .padding(10)
+                .padding(9)
                 .width(Length::Fill)
                 .style(ItemEditorButtonStyle { is_active })
                 .into_element(),
