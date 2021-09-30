@@ -794,7 +794,11 @@ impl ItemEditorInteractionMessage {
                     ItemEditorFileType::ProfileBank(p) => p.profile_data.remove_bank_item(id),
                 }
 
-                if item_editor_state.selected_item_index != 0 {
+                let selected_item_index = item_editor_state.selected_item_index;
+
+                if item_editor_state.items().get(selected_item_index).is_none()
+                    && selected_item_index != 0
+                {
                     item_editor_state.selected_item_index -= 1;
                 }
 
