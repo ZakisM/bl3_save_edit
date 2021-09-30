@@ -1,20 +1,27 @@
 use std::convert::TryInto;
 
 use anyhow::{bail, Result};
-use iced::{button, Button, Container, Element, Length};
+use iced::{button, Button, Container, Element, HorizontalAlignment, Length, Row, Text};
 
 use bl3_save_edit_core::bl3_item::Bl3Item;
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
+use crate::bl3_ui_style::Bl3UiNegativeButtonStyle;
+use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 use crate::views::item_editor::editor::Editor;
-use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
+use crate::views::item_editor::item_button_style::{
+    ItemEditorButtonStyle, ItemEditorListButtonStyle,
+};
 use crate::views::item_editor::{list_item_contents, ItemEditorInteractionMessage};
 use crate::views::InteractionExt;
 
 #[derive(Debug, Default)]
 pub struct ItemEditorListItem {
     pub item: Bl3Item,
-    button_state: button::State,
+    list_button_state: button::State,
+    duplicate_button_state: button::State,
+    share_button_state: button::State,
+    delete_button_state: button::State,
     pub editor: Editor,
 }
 
@@ -50,16 +57,65 @@ impl ItemEditorListItem {
     where
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {
-        let item_content = list_item_contents::view(&self.item);
+        let action_row = Row::new()
+            .push(
+                Button::new(
+                    &mut self.duplicate_button_state,
+                    Text::new("Duplicate")
+                        .font(JETBRAINS_MONO_BOLD)
+                        .size(17)
+                        .horizontal_alignment(HorizontalAlignment::Center),
+                )
+                .on_press(interaction_message(
+                    ItemEditorInteractionMessage::DuplicateItem(id),
+                ))
+                .padding(5)
+                .width(Length::Units(100))
+                .style(ItemEditorListButtonStyle),
+            )
+            .push(
+                Button::new(
+                    &mut self.share_button_state,
+                    Text::new("Share")
+                        .font(JETBRAINS_MONO_BOLD)
+                        .size(17)
+                        .horizontal_alignment(HorizontalAlignment::Center),
+                )
+                .on_press(interaction_message(
+                    ItemEditorInteractionMessage::ShareItem(id),
+                ))
+                .padding(5)
+                .width(Length::Units(100))
+                .style(ItemEditorListButtonStyle),
+            )
+            .push(
+                Button::new(
+                    &mut self.delete_button_state,
+                    Text::new("Delete")
+                        .font(JETBRAINS_MONO_BOLD)
+                        .size(17)
+                        .horizontal_alignment(HorizontalAlignment::Center),
+                )
+                .on_press(interaction_message(
+                    ItemEditorInteractionMessage::DeleteItem(id),
+                ))
+                .padding(5)
+                .width(Length::Units(100))
+                .style(Bl3UiNegativeButtonStyle),
+            )
+            .width(Length::Fill)
+            .spacing(10);
+
+        let item_content = list_item_contents::view(&self.item).push(action_row);
 
         let item_editor = if is_active {
-            Some(self.editor.view(id, &self.item, interaction_message))
+            Some(self.editor.view(&self.item, interaction_message))
         } else {
             None
         };
 
         (
-            Button::new(&mut self.button_state, Container::new(item_content))
+            Button::new(&mut self.list_button_state, Container::new(item_content))
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::ItemPressed(id),
                 ))

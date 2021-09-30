@@ -2,7 +2,7 @@ use iced::{button, container, svg, Align, Button, Color, Container, Length, Row,
 
 use crate::bl3_ui::Bl3Message;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
-use crate::resources::svgs::{NEGATIVE_CLOSE, POSITIVE_CLOSE};
+use crate::resources::svgs::{INFO_CLOSE, NEGATIVE_CLOSE, POSITIVE_CLOSE};
 
 #[derive(Debug, Default)]
 pub struct Notification {
@@ -14,6 +14,7 @@ pub struct Notification {
 #[derive(Debug, Copy, Clone)]
 pub enum NotificationSentiment {
     Positive,
+    Info,
     Negative,
 }
 
@@ -35,6 +36,7 @@ impl Notification {
     pub fn view(&mut self) -> Container<Bl3Message> {
         let close_handle = match self.sentiment {
             NotificationSentiment::Positive => svg::Handle::from_memory(POSITIVE_CLOSE),
+            NotificationSentiment::Info => svg::Handle::from_memory(INFO_CLOSE),
             NotificationSentiment::Negative => svg::Handle::from_memory(NEGATIVE_CLOSE),
         };
 
@@ -79,6 +81,7 @@ impl container::StyleSheet for NotificationStyle {
     fn style(&self) -> container::Style {
         match self.sentiment {
             NotificationSentiment::Positive => PositiveNotificationStyle.style(),
+            NotificationSentiment::Info => InfoNotificationStyle.style(),
             NotificationSentiment::Negative => NegativeNotificationStyle.style(),
         }
     }
@@ -88,6 +91,7 @@ impl button::StyleSheet for NotificationStyle {
     fn active(&self) -> button::Style {
         match self.sentiment {
             NotificationSentiment::Positive => PositiveNotificationStyle.active(),
+            NotificationSentiment::Info => InfoNotificationStyle.active(),
             NotificationSentiment::Negative => NegativeNotificationStyle.active(),
         }
     }
@@ -108,6 +112,33 @@ impl container::StyleSheet for PositiveNotificationStyle {
 }
 
 impl button::StyleSheet for PositiveNotificationStyle {
+    fn active(&self) -> button::Style {
+        button::Style {
+            shadow_offset: Default::default(),
+            background: None,
+            border_radius: 0.0,
+            border_width: 0.0,
+            border_color: Color::from_rgb8(29, 54, 39),
+            ..button::Style::default()
+        }
+    }
+}
+
+struct InfoNotificationStyle;
+
+impl container::StyleSheet for InfoNotificationStyle {
+    fn style(&self) -> container::Style {
+        container::Style {
+            text_color: Some(Color::from_rgb8(149, 187, 240)),
+            background: Some(Color::from_rgb8(29, 39, 54).into()),
+            border_radius: 3.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(36, 47, 61),
+        }
+    }
+}
+
+impl button::StyleSheet for InfoNotificationStyle {
     fn active(&self) -> button::Style {
         button::Style {
             shadow_offset: Default::default(),

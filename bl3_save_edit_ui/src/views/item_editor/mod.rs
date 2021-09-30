@@ -14,7 +14,7 @@ use strum::Display;
 use tracing::error;
 
 use bl3_save_edit_core::bl3_item::{
-    BalancePart, Bl3Item, InvDataPart, ManufacturerPart, MAX_BL3_ITEM_ANOINTMENTS,
+    BalancePart, Bl3Item, InvDataPart, ItemFlags, ManufacturerPart, MAX_BL3_ITEM_ANOINTMENTS,
     MAX_BL3_ITEM_PARTS,
 };
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
@@ -26,6 +26,7 @@ use crate::bl3_ui::{Bl3Message, InteractionMessage, MessageResult};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder, Bl3UiTooltipStyle};
 use crate::commands::interaction;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::util;
 use crate::util::ErrorExt;
 use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
 use crate::views::item_editor::current_parts::CurrentPartTypeIndex;
@@ -282,6 +283,7 @@ pub enum ItemEditorInteractionMessage {
     ItemLevel(i32),
     DeleteItem(usize),
     DuplicateItem(usize),
+    ShareItem(usize),
     BalanceInputSelected(BalancePart),
     BalanceSearchInputChanged(String),
     InvDataInputSelected(InvDataPart),
@@ -780,6 +782,9 @@ impl ItemEditorInteractionMessage {
                         i.item.set_level(item_level_input as usize)
                     })
                     .handle_ui_error("Failed to set level for item", &mut notification);
+
+                let index = item_editor_state.previously_selected_index();
+                item_editor_state.selected_item_index = index;
             }
             ItemEditorInteractionMessage::DeleteItem(id) => {
                 item_editor_state.remove_item(id);
@@ -803,31 +808,53 @@ impl ItemEditorInteractionMessage {
                     );
             }
             ItemEditorInteractionMessage::DuplicateItem(id) => {
-                match item_editor_state.items.get(id) {
-                    Some(item) => {
-                        let item = item.item.clone();
+                if let Some(item) = item_editor_state.items.get(id) {
+                    let item = item.item.clone();
 
-                        item_editor_state.add_item(item);
+                    item_editor_state.add_item(item);
 
-                        item_editor_state.selected_item_index += 1;
+                    item_editor_state.selected_item_index += 1;
 
-                        item_editor_state.search_items_input_state.focus();
+                    item_editor_state.search_items_input_state.focus();
 
-                        item_editor_state.item_list_tab_type = ItemListTabType::Items;
+                    item_editor_state.item_list_tab_type = ItemListTabType::Items;
 
-                        item_editor_state
-                            .map_current_item_if_exists_to_editor_state()
-                            .handle_ui_error(
-                                "Failed to map duplicated item to editor",
-                                &mut notification,
-                            );
-                    }
-                    None => {
-                        let msg = format!("Failed to duplicate item number {}: could not find this item to duplicate.", id);
+                    item_editor_state
+                        .map_current_item_if_exists_to_editor_state()
+                        .handle_ui_error(
+                            "Failed to map duplicated item to editor",
+                            &mut notification,
+                        );
+                } else {
+                    let msg = format!("Failed to duplicate item number {}: could not find this item to duplicate.", id);
 
-                        notification =
-                            Some(Notification::new(msg, NotificationSentiment::Negative));
-                    }
+                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                }
+            }
+            ItemEditorInteractionMessage::ShareItem(id) => {
+                if let Some(item) = item_editor_state.items.get(id) {
+                    match item.item.get_serial_number_base64(false) {
+                        Ok(serial) => {
+                            if let Err(e) = util::set_clipboard_contents(serial) {
+                                e.handle_ui_error(
+                                    "Failed to copy item serial to clipboard",
+                                    &mut notification,
+                                );
+                            } else {
+                                let msg = "Item serial was copied to clipboard.";
+
+                                notification =
+                                    Some(Notification::new(msg, NotificationSentiment::Info));
+                            }
+                        }
+                        Err(e) => {
+                            e.handle_ui_error("Failed to read item serial", &mut notification)
+                        }
+                    };
+                } else {
+                    let msg = format!("Failed to duplicate item number {}: could not find this item to duplicate.", id);
+
+                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
                 }
             }
             ItemEditorInteractionMessage::BalanceInputSelected(balance_selected) => {
@@ -1350,6 +1377,16 @@ pub fn get_filtered_items(
                         .contains(&search_items_query)
                 })
                 .unwrap_or(false)
+            || "favourite".contains(search_items_query)
+                && item
+                    .flags
+                    .map(|f| f.contains(ItemFlags::FAVOURITE))
+                    .unwrap_or(false)
+            || "trash".contains(search_items_query)
+                && item
+                    .flags
+                    .map(|f| f.contains(ItemFlags::TRASH))
+                    .unwrap_or(false)
             || format!("level {}", item.level().to_string()).contains(&search_items_query)
             || item
                 .item_type

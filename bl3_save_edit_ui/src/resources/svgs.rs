@@ -22,4 +22,5 @@ pub const BANK: &[u8] = include_bytes!("../../resources/svg/bank.svg");
 
 // Notification
 pub const POSITIVE_CLOSE: &[u8] = include_bytes!("../../resources/svg/positive_close.svg");
+pub const INFO_CLOSE: &[u8] = include_bytes!("../../resources/svg/info_close.svg");
 pub const NEGATIVE_CLOSE: &[u8] = include_bytes!("../../resources/svg/negative_close.svg");

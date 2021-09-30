@@ -3,8 +3,9 @@ use iced::{button, Button, Color, Container, Element, HorizontalAlignment, Lengt
 use bl3_save_edit_core::bl3_item::Bl3Item;
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
-use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleCustomNoBorder};
+use crate::bl3_ui_style::Bl3UiStyleCustomNoBorder;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
+use crate::views::item_editor::item_button_style::ItemEditorListButtonStyle;
 use crate::views::item_editor::{list_item_contents, ItemEditorInteractionMessage};
 use crate::views::InteractionExt;
 
@@ -31,7 +32,7 @@ impl ItemEditorLootlemonItem {
     where
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {
-        let options_rows = Row::new()
+        let action_row = Row::new()
             .push(
                 Button::new(
                     &mut self.import_button_state,
@@ -45,7 +46,7 @@ impl ItemEditorLootlemonItem {
                 ))
                 .padding(5)
                 .width(Length::Units(180))
-                .style(Bl3UiStyle),
+                .style(ItemEditorListButtonStyle),
             )
             .push(
                 Button::new(
@@ -60,12 +61,12 @@ impl ItemEditorLootlemonItem {
                 ))
                 .padding(5)
                 .width(Length::Units(180))
-                .style(Bl3UiStyle),
+                .style(ItemEditorListButtonStyle),
             )
             .width(Length::Fill)
             .spacing(10);
 
-        let item_content = list_item_contents::view(&self.item).push(options_rows);
+        let item_content = list_item_contents::view(&self.item).push(action_row);
 
         let mut view = Container::new(item_content).padding(9).width(Length::Fill);
 

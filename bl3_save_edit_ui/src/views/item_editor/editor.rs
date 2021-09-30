@@ -1,6 +1,6 @@
 use iced::{
-    button, searchable_pick_list, text_input, tooltip, Align, Button, Column, Container, Length,
-    Row, SearchablePickList, Text, TextInput, Tooltip,
+    button, searchable_pick_list, text_input, tooltip, Align, Column, Container, Length, Row,
+    SearchablePickList, TextInput, Tooltip,
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
@@ -12,8 +12,8 @@ use bl3_save_edit_core::resources::{
 };
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
-use crate::bl3_ui_style::{Bl3UiNegativeButtonStyle, Bl3UiStyle, Bl3UiTooltipStyle};
-use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
+use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
+use crate::resources::fonts::JETBRAINS_MONO;
 use crate::views::item_editor::available_parts::AvailableParts;
 use crate::views::item_editor::current_parts::CurrentParts;
 use crate::views::item_editor::ItemEditorInteractionMessage;
@@ -47,12 +47,7 @@ pub struct Editor {
 }
 
 impl Editor {
-    pub fn view<F>(
-        &mut self,
-        item_id: usize,
-        item: &Bl3Item,
-        interaction_message: F,
-    ) -> Container<Bl3Message>
+    pub fn view<F>(&mut self, item: &Bl3Item, interaction_message: F) -> Container<Bl3Message>
     where
         F: Fn(ItemEditorInteractionMessage) -> InteractionMessage + 'static + Copy,
     {
@@ -142,32 +137,6 @@ impl Editor {
                 .width(Length::Fill)
                 .height(Length::Units(36))
                 .style(Bl3UiStyle),
-            )
-            .push(
-                Button::new(
-                    &mut self.duplicate_item_button_state,
-                    Text::new("Duplicate Item")
-                        .font(JETBRAINS_MONO_BOLD)
-                        .size(17),
-                )
-                .on_press(interaction_message(
-                    ItemEditorInteractionMessage::DuplicateItem(item_id),
-                ))
-                .padding(10)
-                .style(Bl3UiStyle)
-                .into_element(),
-            )
-            .push(
-                Button::new(
-                    &mut self.delete_item_button_state,
-                    Text::new("Delete Item").font(JETBRAINS_MONO_BOLD).size(17),
-                )
-                .on_press(interaction_message(
-                    ItemEditorInteractionMessage::DeleteItem(item_id),
-                ))
-                .padding(10)
-                .style(Bl3UiNegativeButtonStyle)
-                .into_element(),
             )
             .spacing(20);
 

@@ -44,3 +44,40 @@ impl button::StyleSheet for ItemEditorButtonStyle {
         }
     }
 }
+
+pub struct ItemEditorListButtonStyle;
+
+impl button::StyleSheet for ItemEditorListButtonStyle {
+    fn active(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(26, 26, 26).into()),
+            text_color: Color::from_rgb8(224, 224, 224),
+            border_radius: 1.0,
+            border_width: 1.0,
+            border_color: Color::from_rgb8(46, 46, 46),
+            ..button::Style::default()
+        }
+    }
+
+    fn hovered(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(29, 29, 29).into()),
+            text_color: Color::from_rgb8(210, 210, 210),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(45, 45, 45),
+            ..button::Style::default()
+        }
+    }
+
+    fn pressed(&self) -> button::Style {
+        button::Style {
+            background: Some(Color::from_rgb8(23, 23, 23).into()),
+            text_color: Color::from_rgb8(210, 210, 210),
+            border_width: 1.0,
+            border_radius: 1.0,
+            border_color: Color::from_rgb8(45, 45, 45),
+            ..button::Style::default()
+        }
+    }
+}
