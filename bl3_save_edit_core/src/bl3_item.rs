@@ -25,8 +25,8 @@ pub const MAX_BL3_ITEM_ANOINTMENTS: usize = 15;
 bitflags! {
     pub struct ItemFlags: i32 {
         const SEEN = 0x1;
-        const FAVOURITE = 0x2;
-        const TRASH = 0x4;
+        const FAVORITE = 0x2;
+        const JUNK = 0x4;
     }
 }
 

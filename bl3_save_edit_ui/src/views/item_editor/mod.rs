@@ -1382,15 +1382,15 @@ pub fn get_filtered_items(
                         .contains(&search_items_query)
                 })
                 .unwrap_or(false)
-            || "favourite".contains(search_items_query)
+            || "favorite".contains(search_items_query)
                 && item
                     .flags
-                    .map(|f| f.contains(ItemFlags::FAVOURITE))
+                    .map(|f| f.contains(ItemFlags::FAVORITE))
                     .unwrap_or(false)
-            || "trash".contains(search_items_query)
+            || "junk".contains(search_items_query)
                 && item
                     .flags
-                    .map(|f| f.contains(ItemFlags::TRASH))
+                    .map(|f| f.contains(ItemFlags::JUNK))
                     .unwrap_or(false)
             || format!("level {}", item.level().to_string()).contains(&search_items_query)
             || item

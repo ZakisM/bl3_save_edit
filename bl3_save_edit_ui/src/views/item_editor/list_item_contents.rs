@@ -5,7 +5,7 @@ use bl3_save_edit_core::bl3_item::{Bl3Item, ItemFlags, ItemRarity, ItemType};
 
 use crate::bl3_ui::InteractionMessage;
 use crate::resources::fonts::{JETBRAINS_MONO_BOLD, JETBRAINS_MONO_LIGHT_ITALIC};
-use crate::resources::svgs::{FAVOURITE, TRASH};
+use crate::resources::svgs::{FAVORITE, JUNK};
 
 pub fn view(item: &Bl3Item) -> Column<InteractionMessage> {
     let balance_part = item.balance_part();
@@ -77,25 +77,25 @@ pub fn view(item: &Bl3Item) -> Column<InteractionMessage> {
     }
 
     if let Some(flags) = item.flags {
-        let fav_or_trash = if flags.contains(ItemFlags::FAVOURITE) {
-            let favourite_icon_handle = svg::Handle::from_memory(FAVOURITE);
+        let fav_or_trash = if flags.contains(ItemFlags::FAVORITE) {
+            let favorite_icon_handle = svg::Handle::from_memory(FAVORITE);
 
-            let favourite_icon = Svg::new(favourite_icon_handle)
+            let favorite_icon = Svg::new(favorite_icon_handle)
                 .height(Length::Units(14))
                 .width(Length::Units(14));
 
             Some((
-                favourite_icon,
-                FavouriteTrashStyle::Favourite(ItemFavouriteStyle),
+                favorite_icon,
+                FavoriteJunkStyle::Favorite(ItemFavoriteStyle),
             ))
-        } else if flags.contains(ItemFlags::TRASH) {
-            let trash_icon_handle = svg::Handle::from_memory(TRASH);
+        } else if flags.contains(ItemFlags::JUNK) {
+            let junk_icon_handle = svg::Handle::from_memory(JUNK);
 
-            let trash_icon = Svg::new(trash_icon_handle)
+            let junk_icon = Svg::new(junk_icon_handle)
                 .height(Length::Units(15))
                 .width(Length::Units(15));
 
-            Some((trash_icon, FavouriteTrashStyle::Trash(ItemTrashStyle)))
+            Some((junk_icon, FavoriteJunkStyle::Junk(ItemJunkStyle)))
         } else {
             None
         };
@@ -104,8 +104,8 @@ pub fn view(item: &Bl3Item) -> Column<InteractionMessage> {
             let mut icon_content = Container::new(icon).height(Length::Units(25)).padding(5);
 
             match style {
-                FavouriteTrashStyle::Favourite(s) => icon_content = icon_content.style(s),
-                FavouriteTrashStyle::Trash(s) => icon_content = icon_content.style(s),
+                FavoriteJunkStyle::Favorite(s) => icon_content = icon_content.style(s),
+                FavoriteJunkStyle::Junk(s) => icon_content = icon_content.style(s),
             }
 
             tags_row = tags_row.push(icon_content)
@@ -137,14 +137,14 @@ impl container::StyleSheet for ItemInfoStyle {
     }
 }
 
-pub enum FavouriteTrashStyle {
-    Favourite(ItemFavouriteStyle),
-    Trash(ItemTrashStyle),
+pub enum FavoriteJunkStyle {
+    Favorite(ItemFavoriteStyle),
+    Junk(ItemJunkStyle),
 }
 
-pub struct ItemFavouriteStyle;
+pub struct ItemFavoriteStyle;
 
-impl container::StyleSheet for ItemFavouriteStyle {
+impl container::StyleSheet for ItemFavoriteStyle {
     fn style(&self) -> container::Style {
         container::Style {
             text_color: Some(Color::from_rgb8(19, 232, 240)),
@@ -156,9 +156,9 @@ impl container::StyleSheet for ItemFavouriteStyle {
     }
 }
 
-pub struct ItemTrashStyle;
+pub struct ItemJunkStyle;
 
-impl container::StyleSheet for ItemTrashStyle {
+impl container::StyleSheet for ItemJunkStyle {
     fn style(&self) -> container::Style {
         container::Style {
             text_color: Some(Color::from_rgb8(240, 149, 149)),

@@ -12,8 +12,8 @@ pub const CHARACTER: &[u8] = include_bytes!("../../resources/svg/character.svg")
 pub const INVENTORY: &[u8] = include_bytes!("../../resources/svg/inventory.svg");
 pub const CURRENCY: &[u8] = include_bytes!("../../resources/svg/currency.svg");
 pub const VEHICLE: &[u8] = include_bytes!("../../resources/svg/vehicle.svg");
-pub const FAVOURITE: &[u8] = include_bytes!("../../resources/svg/favourite.svg");
-pub const TRASH: &[u8] = include_bytes!("../../resources/svg/trash.svg");
+pub const FAVORITE: &[u8] = include_bytes!("../../resources/svg/favorite.svg");
+pub const JUNK: &[u8] = include_bytes!("../../resources/svg/junk.svg");
 
 //Profile editor
 pub const PROFILE: &[u8] = include_bytes!("../../resources/svg/profile.svg");
