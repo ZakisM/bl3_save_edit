@@ -1,4 +1,4 @@
-use iced::{pick_list, text_input, Align, Column, Container, Length, PickList, Row};
+use iced::{pick_list, text_input, Alignment, Column, Container, Length, PickList, Row};
 
 use bl3_save_edit_core::bl3_profile::science_levels::BorderlandsScienceLevel;
 
@@ -80,7 +80,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
             .into_element(),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -110,7 +110,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
             .into_element(),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::FillPortion(2))
     .height(Length::Units(36))
@@ -141,7 +141,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
             .into_element(),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::FillPortion(2))
     .height(Length::Units(36))

@@ -1,4 +1,5 @@
-use iced::{button, Button, Color, Container, Element, HorizontalAlignment, Length, Row, Text};
+use iced::alignment::Horizontal;
+use iced::{button, Button, Color, Container, Element, Length, Row, Text};
 
 use bl3_save_edit_core::bl3_item::Bl3Item;
 
@@ -39,7 +40,7 @@ impl ItemEditorLootlemonItem {
                     Text::new("Import Item")
                         .font(JETBRAINS_MONO_BOLD)
                         .size(17)
-                        .horizontal_alignment(HorizontalAlignment::Center),
+                        .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::ItemListLootlemonImportPressed(self.id),
@@ -54,7 +55,7 @@ impl ItemEditorLootlemonItem {
                     Text::new("Open on Lootlemon ➜")
                         .font(JETBRAINS_MONO_BOLD)
                         .size(17)
-                        .horizontal_alignment(HorizontalAlignment::Center),
+                        .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::ItemListLootlemonOpenWebsitePressed(self.id),

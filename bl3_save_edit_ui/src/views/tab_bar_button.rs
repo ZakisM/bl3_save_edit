@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
-use iced::{button, Button, Color, Element, HorizontalAlignment, Length, Text};
+use iced::alignment::Horizontal;
+use iced::{button, Button, Color, Element, Length, Text};
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
@@ -29,7 +30,7 @@ where
             .size(17)
             .color(Color::from_rgb8(242, 203, 5))
             .width(Length::Fill)
-            .horizontal_alignment(HorizontalAlignment::Center),
+            .horizontal_alignment(Horizontal::Center),
     )
     .on_press(on_press_message)
     .width(Length::Fill)

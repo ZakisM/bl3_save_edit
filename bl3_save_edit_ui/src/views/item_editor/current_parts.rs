@@ -1,8 +1,9 @@
 use std::collections::BTreeMap;
 
+use iced::alignment::{Horizontal, Vertical};
 use iced::{
-    button, scrollable, text_input, tooltip, Align, Button, Checkbox, Color, Column, Container,
-    Element, HorizontalAlignment, Length, Row, Scrollable, Text, Tooltip,
+    button, scrollable, text_input, tooltip, Alignment, Button, Checkbox, Color, Column, Container,
+    Element, Length, Row, Scrollable, Text, Tooltip,
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::prelude::ParallelSliceMut;
@@ -104,7 +105,7 @@ impl CurrentItemEditorPart {
 
         let part_contents_col = add_extra_part_info(part_contents_col, &self.part.info);
 
-        let part_contents = Container::new(part_contents_col).align_x(Align::Start);
+        let part_contents = Container::new(part_contents_col).align_x(Horizontal::Left);
 
         let index = CurrentPartTypeIndex {
             category_index: self.category_index,
@@ -207,7 +208,7 @@ impl CurrentParts {
                 .padding(1)
                 .width(Length::FillPortion(2)),
             )
-            .align_items(Align::Center);
+            .align_items(Alignment::Center);
 
         let mut current_parts_content = Column::new().push(Container::new(title_row));
 
@@ -224,7 +225,8 @@ impl CurrentParts {
                 self.parts = parts.clone();
 
                 if !self.parts.is_empty() {
-                    let mut reorder_parts_row = Row::new().spacing(15).align_items(Align::Center);
+                    let mut reorder_parts_row =
+                        Row::new().spacing(15).align_items(Alignment::Center);
 
                     let reorder_parts_tooltip =
                         "Reorder the parts of this item. The order that is shown when this checkbox is active will be the order that they get loaded in game. They will be loaded from top to bottom.\nEven if this checkbox is not active and you are viewing the categorized parts, they will still be loaded in the order that is show when this checkbox is active.";
@@ -260,7 +262,7 @@ impl CurrentParts {
                             Text::new("Up")
                                 .font(JETBRAINS_MONO_BOLD)
                                 .size(17)
-                                .horizontal_alignment(HorizontalAlignment::Center),
+                                .horizontal_alignment(Horizontal::Center),
                         )
                         .on_press(interaction_message(
                             ItemEditorInteractionMessage::ReorderCurrentPartsMoveUpPressed,
@@ -275,7 +277,7 @@ impl CurrentParts {
                             Text::new("Down")
                                 .font(JETBRAINS_MONO_BOLD)
                                 .size(17)
-                                .horizontal_alignment(HorizontalAlignment::Center),
+                                .horizontal_alignment(Horizontal::Center),
                         )
                         .on_press(interaction_message(
                             ItemEditorInteractionMessage::ReorderCurrentPartsMoveDownPressed,
@@ -290,7 +292,7 @@ impl CurrentParts {
                             Text::new("Top")
                                 .font(JETBRAINS_MONO_BOLD)
                                 .size(17)
-                                .horizontal_alignment(HorizontalAlignment::Center),
+                                .horizontal_alignment(Horizontal::Center),
                         )
                         .on_press(interaction_message(
                             ItemEditorInteractionMessage::ReorderCurrentPartsMoveTopPressed,
@@ -305,7 +307,7 @@ impl CurrentParts {
                             Text::new("Bottom")
                                 .font(JETBRAINS_MONO_BOLD)
                                 .size(17)
-                                .horizontal_alignment(HorizontalAlignment::Center),
+                                .horizontal_alignment(Horizontal::Center),
                         )
                         .on_press(interaction_message(
                             ItemEditorInteractionMessage::ReorderCurrentPartsMoveBottomPressed,
@@ -657,7 +659,7 @@ fn no_parts_message<'a>(message: &str) -> Container<'a, Bl3Message> {
     )
     .height(Length::Fill)
     .width(Length::Fill)
-    .align_x(Align::Center)
-    .align_y(Align::Center)
+    .align_x(Horizontal::Center)
+    .align_y(Vertical::Center)
     .padding(1)
 }

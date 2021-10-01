@@ -1,5 +1,5 @@
 use iced::{
-    button, searchable_pick_list, text_input, tooltip, Align, Column, Container, Length, Row,
+    button, searchable_pick_list, text_input, tooltip, Alignment, Column, Container, Length, Row,
     SearchablePickList, TextInput, Tooltip,
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
@@ -103,9 +103,9 @@ impl Editor {
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
             )
-            .align_items(Align::Center);
+            .align_items(Alignment::Center);
 
         let level_serial_delete_row = Row::new()
             .push(
@@ -132,7 +132,7 @@ impl Editor {
                         .select_all_on_click(true)
                         .into_element(),
                     )
-                    .align_items(Align::Center),
+                    .align_items(Alignment::Center),
                 )
                 .width(Length::Fill)
                 .height(Length::Units(36))
@@ -237,7 +237,7 @@ impl Editor {
                     )
                     .spacing(15)
                     .width(Length::Fill)
-                    .align_items(Align::Center),
+                    .align_items(Alignment::Center),
                 )
                 .style(Bl3UiStyle),
             )
@@ -276,7 +276,7 @@ impl Editor {
                     )
                     .spacing(15)
                     .width(Length::FillPortion(9))
-                    .align_items(Align::Center),
+                    .align_items(Alignment::Center),
                 )
                 .style(Bl3UiStyle),
             )
@@ -315,7 +315,7 @@ impl Editor {
                     )
                     .spacing(15)
                     .width(Length::FillPortion(9))
-                    .align_items(Align::Center),
+                    .align_items(Alignment::Center),
                 )
                 .style(Bl3UiStyle),
             )

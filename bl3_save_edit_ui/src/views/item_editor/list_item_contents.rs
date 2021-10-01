@@ -81,8 +81,8 @@ pub fn view(item: &Bl3Item) -> Column<InteractionMessage> {
             let favourite_icon_handle = svg::Handle::from_memory(FAVOURITE);
 
             let favourite_icon = Svg::new(favourite_icon_handle)
-                .height(Length::Units(15))
-                .width(Length::Units(15));
+                .height(Length::Units(14))
+                .width(Length::Units(14));
 
             Some((
                 favourite_icon,
@@ -101,7 +101,7 @@ pub fn view(item: &Bl3Item) -> Column<InteractionMessage> {
         };
 
         if let Some((icon, style)) = fav_or_trash {
-            let mut icon_content = Container::new(icon).padding(5);
+            let mut icon_content = Container::new(icon).height(Length::Units(25)).padding(5);
 
             match style {
                 FavouriteTrashStyle::Favourite(s) => icon_content = icon_content.style(s),
@@ -116,7 +116,7 @@ pub fn view(item: &Bl3Item) -> Column<InteractionMessage> {
         .push(
             Text::new(&label)
                 .font(JETBRAINS_MONO_BOLD)
-                .size(17)
+                .size(18)
                 .color(Color::from_rgb8(224, 224, 224)),
         )
         .push(tags_row)
@@ -203,9 +203,9 @@ impl container::StyleSheet for ItemRarityStyle {
                 Color::from_rgb8(61, 54, 36),
             ),
             ItemRarity::NamedWeapon => (
-                Color::from_rgb8(232, 240, 149),
-                Color::from_rgb8(51, 54, 29),
-                Color::from_rgb8(59, 61, 36),
+                Color::from_rgb8(149, 240, 223),
+                Color::from_rgb8(29, 54, 49),
+                Color::from_rgb8(36, 61, 57),
             ),
             ItemRarity::Unknown => Default::default(),
         };

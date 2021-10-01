@@ -1,7 +1,8 @@
 use std::rc::Rc;
 
 use derivative::Derivative;
-use iced::{Align, Checkbox, Color, Column, Container, Element, Length, Text};
+use iced::alignment::Horizontal;
+use iced::{Checkbox, Color, Column, Container, Element, Length, Text};
 
 use bl3_save_edit_core::bl3_profile::skins::{
     ProfileSkinData, ProfileSkinType, SkinSet, WeaponSkinSet,
@@ -136,7 +137,7 @@ impl SkinUnlocker {
                             .color(Color::from_rgb8(242, 203, 5)),
                     )
                     .padding(10)
-                    .align_x(Align::Center)
+                    .align_x(Horizontal::Center)
                     .width(Length::Fill)
                     .style(Bl3UiStyle),
                 )

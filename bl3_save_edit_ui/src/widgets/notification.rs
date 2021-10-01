@@ -1,4 +1,5 @@
-use iced::{button, container, svg, Align, Button, Color, Container, Length, Row, Svg, Text};
+use iced::alignment::{Horizontal, Vertical};
+use iced::{button, container, svg, Alignment, Button, Color, Container, Length, Row, Svg, Text};
 
 use crate::bl3_ui::Bl3Message;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
@@ -56,7 +57,7 @@ impl Notification {
                     .width(Length::Fill),
             )
             .push(close_button)
-            .align_items(Align::Center);
+            .align_items(Alignment::Center);
 
         Container::new(
             Container::new(contents_row)
@@ -66,8 +67,8 @@ impl Notification {
                     sentiment: self.sentiment,
                 }),
         )
-        .align_x(Align::Center)
-        .align_y(Align::Center)
+        .align_x(Horizontal::Center)
+        .align_y(Vertical::Center)
         .width(Length::Fill)
         .padding(1)
     }

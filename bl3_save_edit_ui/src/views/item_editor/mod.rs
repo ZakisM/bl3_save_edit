@@ -4,8 +4,9 @@ use std::collections::HashSet;
 use anyhow::{bail, Result};
 use derivative::Derivative;
 use heck::TitleCase;
+use iced::alignment::{Horizontal, Vertical};
 use iced::{
-    button, scrollable, text_input, tooltip, Align, Button, Color, Column, Command, Container,
+    button, scrollable, text_input, tooltip, Alignment, Button, Color, Column, Command, Container,
     Length, Row, Scrollable, Text, Tooltip,
 };
 use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
@@ -972,7 +973,7 @@ where
             )
             .spacing(15)
             .width(Length::FillPortion(9))
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
         )
         .push(
             Button::new(
@@ -986,7 +987,7 @@ where
             .style(Bl3UiStyle)
             .into_element(),
         )
-        .align_items(Align::Center);
+        .align_items(Alignment::Center);
 
     let create_item_button = Container::new(
         Button::new(
@@ -1034,7 +1035,7 @@ where
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
             )
             .push(
                 Button::new(
@@ -1048,7 +1049,7 @@ where
                 .style(Bl3UiStyle)
                 .into_element(),
             )
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .style(Bl3UiStyle);
@@ -1104,7 +1105,7 @@ where
             .padding(1)
             .width(Length::FillPortion(2)),
         )
-        .align_items(Align::Center);
+        .align_items(Alignment::Center);
 
     let mut item_list_contents = Column::new()
         .push(Container::new(item_list_title_row))
@@ -1146,7 +1147,7 @@ where
                 .style(Bl3UiStyle)
                 .into_element(),
         )
-        .align_items(Align::Center);
+        .align_items(Alignment::Center);
 
     let mut item_editor = None;
 
@@ -1154,7 +1155,7 @@ where
 
     // Keeping this here as we want the "editor" to show in both ItemListTabType views
     let inventory_items = item_editor_state.items.iter_mut().enumerate().fold(
-        Column::new().align_items(Align::Start),
+        Column::new().align_items(Alignment::Start),
         |mut curr, (i, item)| {
             let item_type = item.item.item_type;
 
@@ -1168,7 +1169,7 @@ where
                     Container::new(
                         Text::new(format!("{}s", item_type.to_string()))
                             .font(JETBRAINS_MONO_BOLD)
-                            .size(17)
+                            .size(18)
                             .color(Color::from_rgb8(242, 203, 5)),
                     )
                     .width(Length::Fill)
@@ -1225,8 +1226,8 @@ where
                         )
                         .width(Length::Fill)
                         .height(Length::Fill)
-                        .align_x(Align::Center)
-                        .align_y(Align::Center),
+                        .align_x(Horizontal::Center)
+                        .align_y(Vertical::Center),
                     );
                 }
             } else {
@@ -1239,8 +1240,8 @@ where
                     )
                     .width(Length::Fill)
                     .height(Length::Fill)
-                    .align_x(Align::Center)
-                    .align_y(Align::Center),
+                    .align_x(Horizontal::Center)
+                    .align_y(Vertical::Center),
                 );
             }
         }
@@ -1255,7 +1256,7 @@ where
                 .iter_mut()
                 .enumerate()
                 .fold(
-                    Column::new().align_items(Align::Start),
+                    Column::new().align_items(Alignment::Start),
                     |mut curr, (i, item)| {
                         let item_type = item.item.item_type;
 
@@ -1268,7 +1269,7 @@ where
                                 Container::new(
                                     Text::new(format!("{}s", item_type.to_string()))
                                         .font(JETBRAINS_MONO_BOLD)
-                                        .size(17)
+                                        .size(18)
                                         .color(Color::from_rgb8(242, 203, 5)),
                                 )
                                 .width(Length::Fill)
@@ -1315,8 +1316,8 @@ where
                     )
                     .width(Length::Fill)
                     .height(Length::Fill)
-                    .align_x(Align::Center)
-                    .align_y(Align::Center),
+                    .align_x(Horizontal::Center)
+                    .align_y(Vertical::Center),
                 );
             }
         }

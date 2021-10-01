@@ -1,7 +1,8 @@
 use std::convert::TryInto;
 
 use anyhow::{bail, Result};
-use iced::{button, Button, Container, Element, HorizontalAlignment, Length, Row, Text};
+use iced::alignment::Horizontal;
+use iced::{button, Button, Container, Element, Length, Row, Text};
 
 use bl3_save_edit_core::bl3_item::Bl3Item;
 
@@ -64,7 +65,7 @@ impl ItemEditorListItem {
                     Text::new("Duplicate")
                         .font(JETBRAINS_MONO_BOLD)
                         .size(17)
-                        .horizontal_alignment(HorizontalAlignment::Center),
+                        .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::DuplicateItem(id),
@@ -79,7 +80,7 @@ impl ItemEditorListItem {
                     Text::new("Share")
                         .font(JETBRAINS_MONO_BOLD)
                         .size(17)
-                        .horizontal_alignment(HorizontalAlignment::Center),
+                        .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::ShareItem(id),
@@ -94,7 +95,7 @@ impl ItemEditorListItem {
                     Text::new("Delete")
                         .font(JETBRAINS_MONO_BOLD)
                         .size(17)
-                        .horizontal_alignment(HorizontalAlignment::Center),
+                        .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::DeleteItem(id),

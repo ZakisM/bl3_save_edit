@@ -1,5 +1,6 @@
+use iced::alignment::{Horizontal, Vertical};
 use iced::{
-    button, scrollable, text_input, Align, Button, Checkbox, Color, Column, Container, Element,
+    button, scrollable, text_input, Alignment, Button, Checkbox, Color, Column, Container, Element,
     Length, Row, Scrollable, Text,
 };
 use rayon::iter::IntoParallelRefIterator;
@@ -102,7 +103,7 @@ impl AvailableResourcePart {
 
         let part_contents_col = add_extra_part_info(part_contents_col, &self.part.info);
 
-        let part_contents = Container::new(part_contents_col).align_x(Align::Start);
+        let part_contents = Container::new(part_contents_col).align_x(Horizontal::Left);
 
         let index = AvailablePartTypeIndex {
             category_index: self.category_index,
@@ -177,7 +178,7 @@ impl AvailableParts {
                 .padding(1)
                 .width(Length::FillPortion(2)),
             )
-            .align_items(Align::Center);
+            .align_items(Alignment::Center);
 
         let mut available_parts_column = Column::new().push(Container::new(title_row));
 
@@ -366,8 +367,8 @@ impl AvailableParts {
                     )
                     .width(Length::Fill)
                     .height(Length::Fill)
-                    .align_x(Align::Center)
-                    .align_y(Align::Center),
+                    .align_x(Horizontal::Center)
+                    .align_y(Vertical::Center),
                 );
             }
         } else {
@@ -380,8 +381,8 @@ impl AvailableParts {
                 )
                 .width(Length::Fill)
                 .height(Length::Fill)
-                .align_x(Align::Center)
-                .align_y(Align::Center),
+                .align_x(Horizontal::Center)
+                .align_y(Vertical::Center),
             )
         }
 

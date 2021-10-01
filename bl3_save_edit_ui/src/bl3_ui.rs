@@ -1,9 +1,10 @@
 use std::mem;
 use std::path::PathBuf;
 
+use iced::alignment::Horizontal;
 use iced::{
-    button, pick_list, svg, tooltip, Align, Application, Button, Color, Column, Command, Container,
-    Element, HorizontalAlignment, Length, PickList, Row, Svg, Text, Tooltip,
+    button, pick_list, svg, tooltip, Alignment, Application, Button, Color, Column, Command,
+    Container, Element, Length, PickList, Row, Svg, Text, Tooltip,
 };
 use tracing::{error, info};
 
@@ -1455,7 +1456,7 @@ impl Application for Bl3Application {
             .size(40)
             .color(Color::from_rgb8(242, 203, 5))
             .width(Length::Fill)
-            .horizontal_alignment(HorizontalAlignment::Left);
+            .horizontal_alignment(Horizontal::Left);
 
         let refresh_icon_handle = svg::Handle::from_memory(REFRESH);
 
@@ -1532,7 +1533,7 @@ impl Application for Bl3Application {
         let mut menu_bar_editor_content = Row::new()
             .push(title)
             .spacing(15)
-            .align_items(Align::Center);
+            .align_items(Alignment::Center);
 
         if view_state_discrim == manage_save_discrim || view_state_discrim == manage_profile_discrim
         {
@@ -1567,10 +1568,10 @@ impl Application for Bl3Application {
                 Row::new()
                     .push(update_button)
                     .spacing(10)
-                    .align_items(Align::Center),
+                    .align_items(Alignment::Center),
             )
             .width(Length::Fill)
-            .align_x(Align::Start);
+            .align_x(Horizontal::Left);
 
             menu_bar_content = menu_bar_content.push(update_content);
         }

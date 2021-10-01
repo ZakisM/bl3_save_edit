@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use iced::{
-    button, text_input, Align, Button, Color, Column, Container, Length, Row, Text, TextInput,
+    button, text_input, Alignment, Button, Color, Column, Container, Length, Row, Text, TextInput,
 };
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage, MessageResult};
@@ -82,7 +82,7 @@ pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
             )
             .push(
                 Button::new(
@@ -96,7 +96,7 @@ pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
                 .style(Bl3UiStyle)
                 .into_element(),
             )
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -122,7 +122,7 @@ pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
             )
             .push(
                 Button::new(
@@ -137,7 +137,7 @@ pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
                 .into_element(),
             )
             .push(change_backup_dir_button.into_element())
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -178,7 +178,7 @@ pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
             )
             .push(
                 Button::new(
@@ -193,7 +193,7 @@ pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
                 .into_element(),
             )
             .push(change_saves_dir_button.into_element())
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -235,11 +235,11 @@ pub fn view(settings_state: &mut SettingsState) -> Container<Bl3Message> {
                     .into_element(),
                 )
                 .spacing(20)
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
         )
         .spacing(15)
         .width(Length::Fill)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .style(Bl3UiStyle);
 

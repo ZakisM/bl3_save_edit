@@ -1,8 +1,9 @@
 use std::rc::Rc;
 
 use derivative::Derivative;
+use iced::alignment::{Horizontal, Vertical};
 use iced::{
-    button, text_input, tooltip, Align, Button, Color, Column, Container, Length, Row, Text,
+    button, text_input, tooltip, Alignment, Button, Color, Column, Container, Length, Row, Text,
     Tooltip,
 };
 
@@ -95,7 +96,7 @@ impl SduUnlockField {
                 .style(Bl3UiTooltipStyle),
             )
             .width(Length::Fill)
-            .align_items(Align::Center)
+            .align_items(Alignment::Center)
     }
 }
 
@@ -133,7 +134,7 @@ impl SduUnlocker {
                             .color(Color::from_rgb8(242, 203, 5)),
                     )
                     .padding(10)
-                    .align_x(Align::Center)
+                    .align_x(Horizontal::Center)
                     .width(Length::Fill)
                     .style(Bl3UiStyle),
                 )
@@ -163,10 +164,10 @@ impl SduUnlocker {
                                     .into_element(),
                                 )
                                 .height(Length::Fill)
-                                .align_y(Align::End)
+                                .align_y(Vertical::Bottom)
                                 .padding(5),
                             )
-                            .align_items(Align::Center)
+                            .align_items(Alignment::Center)
                             .spacing(15),
                     )
                     .padding(20)
