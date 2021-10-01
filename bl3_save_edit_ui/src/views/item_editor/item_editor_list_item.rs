@@ -7,11 +7,10 @@ use iced::{button, Button, Container, Element, Length, Row, Text};
 use bl3_save_edit_core::bl3_item::Bl3Item;
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
-use crate::bl3_ui_style::Bl3UiNegativeButtonStyle;
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
 use crate::views::item_editor::editor::Editor;
 use crate::views::item_editor::item_button_style::{
-    ItemEditorButtonStyle, ItemEditorListButtonStyle,
+    ItemEditorButtonStyle, ItemEditorListButtonStyle, ItemEditorListNegativeButtonStyle,
 };
 use crate::views::item_editor::{list_item_contents, ItemEditorInteractionMessage};
 use crate::views::InteractionExt;
@@ -102,7 +101,7 @@ impl ItemEditorListItem {
                 ))
                 .padding(5)
                 .width(Length::Units(100))
-                .style(Bl3UiNegativeButtonStyle),
+                .style(ItemEditorListNegativeButtonStyle),
             )
             .width(Length::Fill)
             .spacing(10);

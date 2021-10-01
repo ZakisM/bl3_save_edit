@@ -921,7 +921,7 @@ mod tests {
         let orig_serial_number = serial_number.clone();
 
         let decrypted =
-            Bl3Item::from_serial_bytes(&serial_number).expect("failed to decrypt serial");
+            Bl3Item::from_serial_bytes(&serial_number, None).expect("failed to decrypt serial");
 
         assert_eq!(decrypted.balance_part.ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Balance/InvBalD_Shield_OldGod.InvBalD_Shield_OldGod");
         assert_eq!(
