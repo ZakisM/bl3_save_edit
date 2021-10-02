@@ -19,13 +19,45 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) -> R
         .item_editor_state
         .selected_item_index = 0;
 
+    let equipped_items = save
+        .character_data
+        .character
+        .equipped_inventory_list
+        .iter()
+        .flat_map(|e| {
+            let index = e.inventory_list_index as usize;
+            let item = save
+                .character_data
+                .inventory_items()
+                .get(index)
+                .map(|i| i.to_owned());
+
+            item.map(|item| (e.slot_data_path.to_owned(), item))
+        })
+        .collect::<Vec<_>>();
+
     let inventory_items = save.character_data.inventory_items_mut();
 
     inventory_items.par_sort_by(|a, b| sort_items(a, b));
 
     // This is important as we don't want to modify the original item list,
     // as we will use the original list to check which item's have been modified
-    let inventory_items_clone = inventory_items.clone();
+    let inventory_items_clone = save.character_data.inventory_items().clone();
+
+    for (equipped_slot_path, item) in equipped_items {
+        //Find the new index of the sorted item
+        if let Some(pos) = inventory_items_clone.iter().position(|i| i == &item) {
+            if let Some(existing) = save
+                .character_data
+                .character
+                .equipped_inventory_list
+                .iter_mut()
+                .find(|e| e.slot_data_path == equipped_slot_path)
+            {
+                existing.inventory_list_index = pos as i32;
+            }
+        }
+    }
 
     *manage_save_state
         .save_view_state
