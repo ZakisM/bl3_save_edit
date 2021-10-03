@@ -44,9 +44,18 @@ pub fn map_save_to_inventory_state(manage_save_state: &mut ManageSaveState) -> R
     // as we will use the original list to check which item's have been modified
     let inventory_items_clone = save.character_data.inventory_items().clone();
 
+    let mut active_item_set = false;
+
     for (equipped_slot_path, item) in equipped_items {
         //Find the new index of the sorted item
         if let Some(pos) = inventory_items_clone.iter().position(|i| i == &item) {
+            // Set our active weapon also
+            if !active_item_set && equipped_slot_path.contains("Weapon") {
+                save.character_data.character.active_weapon_list = vec![pos as i32];
+
+                active_item_set = true;
+            }
+
             if let Some(existing) = save
                 .character_data
                 .character
