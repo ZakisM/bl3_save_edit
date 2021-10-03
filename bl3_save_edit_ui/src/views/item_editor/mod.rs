@@ -816,9 +816,9 @@ impl ItemEditorInteractionMessage {
                 if let Some(item) = item_editor_state.items.get(id) {
                     let item = item.item.clone();
 
-                    item_editor_state.add_item(item);
+                    let item_pos = item_editor_state.add_item(item);
 
-                    item_editor_state.selected_item_index += 1;
+                    item_editor_state.selected_item_index = item_pos;
 
                     item_editor_state.search_items_input_state.focus();
 
