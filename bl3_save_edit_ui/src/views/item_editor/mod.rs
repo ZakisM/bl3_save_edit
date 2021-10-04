@@ -123,7 +123,9 @@ impl ItemEditorState {
     }
 
     pub fn add_item(&mut self, item: Bl3Item) -> usize {
-        self.items.push(ItemEditorListItem::new(item.clone()));
+        let index = self.items.len();
+        self.items
+            .push(ItemEditorListItem::new(index, item.clone()));
 
         self.sort_items();
 
@@ -138,7 +140,15 @@ impl ItemEditorState {
     }
 
     pub fn remove_item(&mut self, remove_id: usize) {
-        if remove_id < self.items.len() {
+        if let Some(item) = self.items.get(remove_id) {
+            let original_index = item.index;
+
+            // Update all the indexes that point to the original list
+            self.items
+                .iter_mut()
+                .filter(|i| i.index > original_index)
+                .for_each(|i| i.index -= 1);
+
             self.items.remove(remove_id);
         }
 
@@ -788,29 +798,44 @@ impl ItemEditorInteractionMessage {
                 item_editor_state.selected_item_index = index;
             }
             ItemEditorInteractionMessage::DeleteItem(id) => {
-                item_editor_state.remove_item(id);
+                if let Some(item) = item_editor_state.items.get(id) {
+                    let original_index = item.index;
 
-                match item_editor_file_type {
-                    ItemEditorFileType::Save(s) => s.character_data.remove_inventory_item(id),
-                    ItemEditorFileType::ProfileBank(p) => p.profile_data.remove_bank_item(id),
-                }
+                    match item_editor_file_type {
+                        ItemEditorFileType::Save(s) => {
+                            s.character_data.remove_inventory_item(original_index)
+                        }
+                        ItemEditorFileType::ProfileBank(p) => {
+                            p.profile_data.remove_bank_item(original_index)
+                        }
+                    }
 
-                let selected_item_index = item_editor_state.selected_item_index;
+                    item_editor_state.remove_item(id);
 
-                if item_editor_state.items().get(selected_item_index).is_none()
-                    && selected_item_index != 0
-                {
-                    item_editor_state.selected_item_index -= 1;
-                }
+                    let selected_item_index = item_editor_state.selected_item_index;
 
-                item_editor_state.search_items_input_state.focus();
+                    if item_editor_state.items().get(selected_item_index).is_none()
+                        && selected_item_index != 0
+                    {
+                        item_editor_state.selected_item_index -= 1;
+                    }
 
-                item_editor_state
-                    .map_current_item_if_exists_to_editor_state()
-                    .handle_ui_error(
-                        "Failed to select an item to show in editor after deleting item",
-                        &mut notification,
+                    item_editor_state.search_items_input_state.focus();
+
+                    item_editor_state
+                        .map_current_item_if_exists_to_editor_state()
+                        .handle_ui_error(
+                            "Failed to select an item to show in editor after deleting item",
+                            &mut notification,
+                        );
+                } else {
+                    let msg = format!(
+                        "Failed to delete item number {}: could not find this item to delete.",
+                        id
                     );
+
+                    notification = Some(Notification::new(msg, NotificationSentiment::Negative));
+                }
             }
             ItemEditorInteractionMessage::DuplicateItem(id) => {
                 if let Some(item) = item_editor_state.items.get(id) {

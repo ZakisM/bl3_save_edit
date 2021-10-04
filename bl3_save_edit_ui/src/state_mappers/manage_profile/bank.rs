@@ -1,5 +1,4 @@
 use anyhow::Result;
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rayon::slice::ParallelSliceMut;
 use tracing::info;
 
@@ -18,22 +17,27 @@ pub fn map_profile_to_bank_state(manage_profile_state: &mut ManageProfileState) 
         .item_editor_state
         .selected_item_index = 0;
 
-    let bank_items = profile.profile_data.bank_items_mut();
+    let mut bank_items = profile
+        .profile_data
+        .bank_items()
+        .iter()
+        .cloned()
+        .enumerate()
+        .map(|(i, item)| ItemEditorListItem::new(i, item))
+        .collect::<Vec<_>>();
 
-    bank_items.par_sort_by(|a, b| sort_items(a, b));
+    bank_items.par_sort_by(|a, b| {
+        let a_item = &a.item;
+        let b_item = &b.item;
 
-    // This is important as we don't want to modify the original item list,
-    // as we will use the original list to check which item's have been modified
-    let bank_items_clone = bank_items.clone();
+        sort_items(a_item, b_item)
+    });
 
     *manage_profile_state
         .profile_view_state
         .bank_state
         .item_editor_state
-        .items_mut() = bank_items_clone
-        .into_iter()
-        .map(ItemEditorListItem::new)
-        .collect();
+        .items_mut() = bank_items;
 
     manage_profile_state
         .profile_view_state
@@ -65,27 +69,31 @@ pub fn map_bank_state_to_profile(
     manage_bank_state: &mut ManageProfileState,
     profile: &mut Bl3Profile,
 ) -> Result<()> {
-    let bank_items = profile.profile_data.bank_items_mut();
-
-    // Here we don't modify the save items just yet, we first modify
-    // the mapped list and then set the save items equal to this mapped list
-    for (i, new_item) in manage_bank_state
+    let mut bank_items = manage_bank_state
         .profile_view_state
         .bank_state
         .item_editor_state
         .items()
         .iter()
-        .enumerate()
-    {
-        if let Some(original_item) = bank_items.get(i) {
+        .map(|i| (i.index, &i.item))
+        .collect::<Vec<_>>();
+
+    bank_items.par_sort_by_key(|(i, _)| *i);
+
+    // Here we don't modify the save items just yet, we first modify
+    // the mapped list and then set the save items equal to this mapped list
+    for (i, edited_item) in bank_items {
+        if let Some(original_serial_number) =
+            profile.profile_data.profile.bank_inventory_list.get(i)
+        {
+            let edited_serial_number = edited_item.get_serial_number(true)?;
+
             // If the item we have edited has different serial number
             // Then we replace it
-            if *original_item != new_item.item {
+            if *original_serial_number != edited_serial_number {
                 info!("Replacing bank item at index: {}", i);
 
-                bank_items.insert(i, new_item.item.to_owned());
-
-                bank_items.remove(i + 1);
+                profile.profile_data.replace_bank_item(i, edited_item)?;
             } else {
                 info!("Keeping existing bank item at index: {}", i);
             }
@@ -93,16 +101,9 @@ pub fn map_bank_state_to_profile(
             // Otherwise insert our new item in this slot
             info!("Inserting bank item at index: {}", i);
 
-            bank_items.insert(i, new_item.item.to_owned());
+            profile.profile_data.insert_bank_item(i, edited_item)?;
         }
     }
-
-    let new_bank_items = bank_items
-        .par_iter()
-        .map(|item| item.get_serial_number(true))
-        .collect::<Result<Vec<_>>>()?;
-
-    profile.profile_data.profile.bank_inventory_list = new_bank_items.into();
 
     Ok(())
 }

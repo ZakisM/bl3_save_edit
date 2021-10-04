@@ -17,6 +17,7 @@ use crate::views::InteractionExt;
 
 #[derive(Debug, Default)]
 pub struct ItemEditorListItem {
+    pub index: usize,
     pub item: Bl3Item,
     list_button_state: button::State,
     duplicate_button_state: button::State,
@@ -26,8 +27,9 @@ pub struct ItemEditorListItem {
 }
 
 impl ItemEditorListItem {
-    pub fn new(item: Bl3Item) -> Self {
+    pub fn new(index: usize, item: Bl3Item) -> Self {
         ItemEditorListItem {
+            index,
             item,
             ..Default::default()
         }
