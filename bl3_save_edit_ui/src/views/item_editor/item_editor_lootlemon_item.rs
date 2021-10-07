@@ -39,14 +39,14 @@ impl ItemEditorLootlemonItem {
                     &mut self.import_button_state,
                     Text::new("Import Item")
                         .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
+                        .size(16)
                         .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::ItemListLootlemonImportPressed(self.id),
                 ))
                 .padding(5)
-                .width(Length::Units(180))
+                .width(Length::Units(165))
                 .style(ItemEditorListButtonStyle),
             )
             .push(
@@ -54,14 +54,14 @@ impl ItemEditorLootlemonItem {
                     &mut self.open_lootlemon_button_state,
                     Text::new("Open on Lootlemon ➜")
                         .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
+                        .size(16)
                         .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::ItemListLootlemonOpenWebsitePressed(self.id),
                 ))
                 .padding(5)
-                .width(Length::Units(180))
+                .width(Length::Units(165))
                 .style(ItemEditorListButtonStyle),
             )
             .width(Length::Fill)

@@ -65,14 +65,14 @@ impl ItemEditorListItem {
                     &mut self.duplicate_button_state,
                     Text::new("Duplicate")
                         .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
+                        .size(16)
                         .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::DuplicateItem(id),
                 ))
                 .padding(5)
-                .width(Length::Units(100))
+                .width(Length::Units(85))
                 .style(ItemEditorListButtonStyle),
             )
             .push(
@@ -80,14 +80,14 @@ impl ItemEditorListItem {
                     &mut self.share_button_state,
                     Text::new("Share")
                         .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
+                        .size(16)
                         .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::ShareItem(id),
                 ))
                 .padding(5)
-                .width(Length::Units(100))
+                .width(Length::Units(85))
                 .style(ItemEditorListButtonStyle),
             )
             .push(
@@ -95,14 +95,14 @@ impl ItemEditorListItem {
                     &mut self.delete_button_state,
                     Text::new("Delete")
                         .font(JETBRAINS_MONO_BOLD)
-                        .size(17)
+                        .size(16)
                         .horizontal_alignment(Horizontal::Center),
                 )
                 .on_press(interaction_message(
                     ItemEditorInteractionMessage::DeleteItem(id),
                 ))
                 .padding(5)
-                .width(Length::Units(100))
+                .width(Length::Units(85))
                 .style(ItemEditorListNegativeButtonStyle),
             )
             .width(Length::Fill)
