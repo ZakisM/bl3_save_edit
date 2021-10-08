@@ -49,13 +49,11 @@ use crate::views::manage_save::character::{
     CharacterSkinSelectedMessage, SaveCharacterInteractionMessage,
 };
 use crate::views::manage_save::currency::SaveCurrencyInteractionMessage;
-use crate::views::manage_save::general::{GeneralMessage, SaveGeneralInteractionMessage};
+use crate::views::manage_save::general::SaveGeneralInteractionMessage;
 use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::main::{SaveTabBarInteractionMessage, SaveTabBarView};
 use crate::views::manage_save::vehicle::{SaveVehicleInteractionMessage, VehicleUnlockedMessage};
-use crate::views::manage_save::{
-    ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
-};
+use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveState, ManageSaveView};
 use crate::views::settings::{SettingsInteractionMessage, SettingsState};
 use crate::views::InteractionExt;
 use crate::widgets::notification::{Notification, NotificationSentiment};
@@ -90,7 +88,6 @@ pub enum Bl3Message {
     Config(ConfigMessage),
     Interaction(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
-    ManageSave(ManageSaveMessage),
     SaveFileCompleted(MessageResult<Bl3Save>),
     SaveProfileCompleted(MessageResult<Bl3Profile>),
     FilesLoadedAfterSave(MessageResult<(Bl3FileType, Vec<Bl3FileType>)>),
@@ -357,14 +354,13 @@ impl Application for Bl3Application {
                                     self.manage_save_state.current_file.file_name = filename;
                                 }
                                 SaveGeneralInteractionMessage::GenerateGuidPressed => {
-                                    return Command::perform(
-                                        interaction::manage_save::general::generate_random_guid(),
-                                        |r| {
-                                            Bl3Message::ManageSave(ManageSaveMessage::General(
-                                                GeneralMessage::GenerateRandomGuidCompleted(r),
-                                            ))
-                                        },
-                                    );
+                                    let guid =
+                                        interaction::manage_save::general::generate_random_guid();
+
+                                    self.manage_save_state
+                                        .save_view_state
+                                        .general_state
+                                        .guid_input = guid;
                                 }
                                 SaveGeneralInteractionMessage::SaveTypeSelected(save_type) => {
                                     self.manage_save_state
@@ -1316,16 +1312,6 @@ impl Application for Bl3Application {
 
                         self.notification =
                             Some(Notification::new(msg, NotificationSentiment::Negative));
-                    }
-                },
-            },
-            Bl3Message::ManageSave(manage_save_msg) => match manage_save_msg {
-                ManageSaveMessage::General(general_msg) => match general_msg {
-                    GeneralMessage::GenerateRandomGuidCompleted(guid) => {
-                        self.manage_save_state
-                            .save_view_state
-                            .general_state
-                            .guid_input = guid;
                     }
                 },
             },

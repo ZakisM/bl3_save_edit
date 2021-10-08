@@ -28,11 +28,6 @@ pub struct GeneralState {
 }
 
 #[derive(Debug, Clone)]
-pub enum GeneralMessage {
-    GenerateRandomGuidCompleted(String),
-}
-
-#[derive(Debug, Clone)]
 pub enum SaveGeneralInteractionMessage {
     Guid(String),
     Slot(u32),
