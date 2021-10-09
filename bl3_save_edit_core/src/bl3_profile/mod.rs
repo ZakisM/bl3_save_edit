@@ -18,6 +18,7 @@ use crate::parser::{decrypt, encrypt, HeaderType};
 use crate::protos::oak_profile::Profile;
 use crate::{file_helper, parser};
 
+pub mod guardian_reward;
 pub mod profile_currency;
 pub mod profile_data;
 pub mod science_levels;

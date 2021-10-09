@@ -1,3 +1,4 @@
+use bl3_save_edit_core::bl3_profile::guardian_reward::GuardianReward;
 use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
 
@@ -49,6 +50,65 @@ pub fn map_profile_to_profile_state(manage_profile_state: &mut ManageProfileStat
         .profile_view_state
         .profile_state
         .skin_unlocker = skin_unlocker;
+
+    let mut guardian_reward_unlocker = std::mem::take(
+        &mut manage_profile_state
+            .profile_view_state
+            .profile_state
+            .guardian_reward_unlocker,
+    );
+
+    profile
+        .profile_data
+        .guardian_rewards()
+        .iter()
+        .for_each(|g| match g.reward {
+            GuardianReward::Accuracy => guardian_reward_unlocker.accuracy.input = g.current,
+            GuardianReward::ActionSkillCooldown => {
+                guardian_reward_unlocker.action_skill_cooldown.input = g.current
+            }
+            GuardianReward::CriticalDamage => {
+                guardian_reward_unlocker.critical_damage.input = g.current
+            }
+            GuardianReward::ElementalDamage => {
+                guardian_reward_unlocker.elemental_damage.input = g.current
+            }
+            GuardianReward::FFYLDuration => {
+                guardian_reward_unlocker.ffyl_duration.input = g.current
+            }
+            GuardianReward::FFYLMovementSpeed => {
+                guardian_reward_unlocker.ffyl_movement_speed.input = g.current
+            }
+            GuardianReward::GrenadeDamage => {
+                guardian_reward_unlocker.grenade_damage.input = g.current
+            }
+            GuardianReward::GunDamage => guardian_reward_unlocker.gun_damage.input = g.current,
+            GuardianReward::GunFireRate => guardian_reward_unlocker.gun_fire_rate.input = g.current,
+            GuardianReward::MaxHealth => guardian_reward_unlocker.max_health.input = g.current,
+            GuardianReward::MeleeDamage => guardian_reward_unlocker.melee_damage.input = g.current,
+            GuardianReward::RarityRate => guardian_reward_unlocker.rarity_rate.input = g.current,
+            GuardianReward::RecoilReduction => {
+                guardian_reward_unlocker.recoil_reduction.input = g.current
+            }
+            GuardianReward::ReloadSpeed => guardian_reward_unlocker.reload_speed.input = g.current,
+            GuardianReward::ShieldCapacity => {
+                guardian_reward_unlocker.shield_capacity.input = g.current
+            }
+            GuardianReward::ShieldRechargeDelay => {
+                guardian_reward_unlocker.shield_recharge_delay.input = g.current
+            }
+            GuardianReward::ShieldRechargeRate => {
+                guardian_reward_unlocker.shield_recharge_rate.input = g.current
+            }
+            GuardianReward::VehicleDamage => {
+                guardian_reward_unlocker.vehicle_damage.input = g.current
+            }
+        });
+
+    manage_profile_state
+        .profile_view_state
+        .profile_state
+        .guardian_reward_unlocker = guardian_reward_unlocker;
 
     let mut sdu_unlocker = std::mem::take(
         &mut manage_profile_state

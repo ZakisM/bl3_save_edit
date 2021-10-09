@@ -39,7 +39,7 @@ use crate::views::manage_profile::general::ProfileGeneralInteractionMessage;
 use crate::views::manage_profile::keys::ProfileKeysInteractionMessage;
 use crate::views::manage_profile::main::{ProfileTabBarInteractionMessage, ProfileTabBarView};
 use crate::views::manage_profile::profile::{
-    ProfileProfileInteractionMessage, ProfileSduMessage, ProfileSkinUnlockedMessage,
+    GuardianRewardMessage, ProfileInteractionMessage, SduMessage, SkinUnlockedMessage,
 };
 use crate::views::manage_profile::{
     ManageProfileInteractionMessage, ManageProfileState, ManageProfileView,
@@ -802,7 +802,7 @@ impl Application for Bl3Application {
                             }
                             ManageProfileInteractionMessage::Profile(profile_msg) => {
                                 match profile_msg {
-                                    ProfileProfileInteractionMessage::GuardianRankTokens(
+                                    ProfileInteractionMessage::GuardianRankTokens(
                                         guardian_rank_tokens,
                                     ) => {
                                         self.manage_profile_state
@@ -810,7 +810,7 @@ impl Application for Bl3Application {
                                             .profile_state
                                             .guardian_rank_tokens_input = guardian_rank_tokens;
                                     }
-                                    ProfileProfileInteractionMessage::ScienceLevelSelected(
+                                    ProfileInteractionMessage::ScienceLevelSelected(
                                         science_level,
                                     ) => {
                                         self.manage_profile_state
@@ -818,7 +818,7 @@ impl Application for Bl3Application {
                                             .profile_state
                                             .science_level_selected = science_level;
                                     }
-                                    ProfileProfileInteractionMessage::ScienceTokens(
+                                    ProfileInteractionMessage::ScienceTokens(
                                         science_level_tokens,
                                     ) => {
                                         self.manage_profile_state
@@ -826,7 +826,7 @@ impl Application for Bl3Application {
                                             .profile_state
                                             .science_tokens_input = science_level_tokens;
                                     }
-                                    ProfileProfileInteractionMessage::SkinMessage(skin_message) => {
+                                    ProfileInteractionMessage::SkinMessage(skin_message) => {
                                         let skin_unlocker = &mut self
                                             .manage_profile_state
                                             .profile_view_state
@@ -834,42 +834,34 @@ impl Application for Bl3Application {
                                             .skin_unlocker;
 
                                         match skin_message {
-                                            ProfileSkinUnlockedMessage::CharacterSkins(
-                                                selected,
-                                            ) => {
+                                            SkinUnlockedMessage::CharacterSkins(selected) => {
                                                 skin_unlocker.character_skins.is_unlocked =
                                                     selected;
                                             }
-                                            ProfileSkinUnlockedMessage::CharacterHeads(
-                                                selected,
-                                            ) => {
+                                            SkinUnlockedMessage::CharacterHeads(selected) => {
                                                 skin_unlocker.character_heads.is_unlocked =
                                                     selected;
                                             }
-                                            ProfileSkinUnlockedMessage::EchoThemes(selected) => {
+                                            SkinUnlockedMessage::EchoThemes(selected) => {
                                                 skin_unlocker.echo_themes.is_unlocked = selected;
                                             }
-                                            ProfileSkinUnlockedMessage::Emotes(selected) => {
+                                            SkinUnlockedMessage::Emotes(selected) => {
                                                 skin_unlocker.emotes.is_unlocked = selected;
                                             }
-                                            ProfileSkinUnlockedMessage::RoomDecorations(
-                                                selected,
-                                            ) => {
+                                            SkinUnlockedMessage::RoomDecorations(selected) => {
                                                 skin_unlocker.room_decorations.is_unlocked =
                                                     selected;
                                             }
-                                            ProfileSkinUnlockedMessage::WeaponSkins(selected) => {
+                                            SkinUnlockedMessage::WeaponSkins(selected) => {
                                                 skin_unlocker.weapon_skins.is_unlocked = selected;
                                             }
-                                            ProfileSkinUnlockedMessage::WeaponTrinkets(
-                                                selected,
-                                            ) => {
+                                            SkinUnlockedMessage::WeaponTrinkets(selected) => {
                                                 skin_unlocker.weapon_trinkets.is_unlocked =
                                                     selected;
                                             }
                                         }
                                     }
-                                    ProfileProfileInteractionMessage::SduMessage(sdu_message) => {
+                                    ProfileInteractionMessage::SduMessage(sdu_message) => {
                                         let sdu_unlocker = &mut self
                                             .manage_profile_state
                                             .profile_view_state
@@ -877,15 +869,15 @@ impl Application for Bl3Application {
                                             .sdu_unlocker;
 
                                         match sdu_message {
-                                            ProfileSduMessage::Bank(level) => {
+                                            SduMessage::Bank(level) => {
                                                 sdu_unlocker.bank.input = level;
                                             }
-                                            ProfileSduMessage::LostLoot(level) => {
+                                            SduMessage::LostLoot(level) => {
                                                 sdu_unlocker.lost_loot.input = level;
                                             }
                                         }
                                     }
-                                    ProfileProfileInteractionMessage::MaxSduSlotsPressed => {
+                                    ProfileInteractionMessage::MaxSduSlotsPressed => {
                                         let sdu_unlocker = &mut self
                                             .manage_profile_state
                                             .profile_view_state
@@ -896,6 +888,80 @@ impl Application for Bl3Application {
 
                                         sdu_unlocker.lost_loot.input =
                                             ProfileSduSlot::LostLoot.maximum();
+                                    }
+                                    ProfileInteractionMessage::GuardianRewardMessage(
+                                        guardian_message,
+                                    ) => {
+                                        let guardian_reward_unlocker = &mut self
+                                            .manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .guardian_reward_unlocker;
+
+                                        match guardian_message {
+                                            GuardianRewardMessage::Accuracy(r) => {
+                                                guardian_reward_unlocker.accuracy.input = r;
+                                            }
+                                            GuardianRewardMessage::ActionSkillCooldown(r) => {
+                                                guardian_reward_unlocker
+                                                    .action_skill_cooldown
+                                                    .input = r;
+                                            }
+                                            GuardianRewardMessage::CriticalDamage(r) => {
+                                                guardian_reward_unlocker.critical_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::ElementalDamage(r) => {
+                                                guardian_reward_unlocker.elemental_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::FFYLDuration(r) => {
+                                                guardian_reward_unlocker.ffyl_duration.input = r;
+                                            }
+                                            GuardianRewardMessage::FFYLMovementSpeed(r) => {
+                                                guardian_reward_unlocker
+                                                    .ffyl_movement_speed
+                                                    .input = r;
+                                            }
+                                            GuardianRewardMessage::GrenadeDamage(r) => {
+                                                guardian_reward_unlocker.grenade_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::GunDamage(r) => {
+                                                guardian_reward_unlocker.gun_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::GunFireRate(r) => {
+                                                guardian_reward_unlocker.gun_fire_rate.input = r;
+                                            }
+                                            GuardianRewardMessage::MaxHealth(r) => {
+                                                guardian_reward_unlocker.max_health.input = r;
+                                            }
+                                            GuardianRewardMessage::MeleeDamage(r) => {
+                                                guardian_reward_unlocker.melee_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::RarityRate(r) => {
+                                                guardian_reward_unlocker.rarity_rate.input = r;
+                                            }
+                                            GuardianRewardMessage::RecoilReduction(r) => {
+                                                guardian_reward_unlocker.recoil_reduction.input = r;
+                                            }
+                                            GuardianRewardMessage::ReloadSpeed(r) => {
+                                                guardian_reward_unlocker.reload_speed.input = r;
+                                            }
+                                            GuardianRewardMessage::ShieldCapacity(r) => {
+                                                guardian_reward_unlocker.shield_capacity.input = r;
+                                            }
+                                            GuardianRewardMessage::ShieldRechargeDelay(r) => {
+                                                guardian_reward_unlocker
+                                                    .shield_recharge_delay
+                                                    .input = r;
+                                            }
+                                            GuardianRewardMessage::ShieldRechargeRate(r) => {
+                                                guardian_reward_unlocker
+                                                    .shield_recharge_rate
+                                                    .input = r;
+                                            }
+                                            GuardianRewardMessage::VehicleDamage(r) => {
+                                                guardian_reward_unlocker.vehicle_damage.input = r;
+                                            }
+                                        }
                                     }
                                 }
                             }

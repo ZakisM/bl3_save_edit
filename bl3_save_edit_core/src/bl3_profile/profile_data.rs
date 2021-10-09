@@ -8,6 +8,7 @@ use rayon::prelude::ParallelSliceMut;
 use strum::{EnumMessage, IntoEnumIterator};
 
 use crate::bl3_item::Bl3Item;
+use crate::bl3_profile::guardian_reward::{GuardianReward, GuardianRewardData};
 use crate::bl3_profile::profile_currency::ProfileCurrency;
 use crate::bl3_profile::science_levels::{BorderlandsScienceInfo, BorderlandsScienceLevel};
 use crate::bl3_profile::sdu::{ProfileSduSlot, ProfileSduSlotData};
@@ -38,6 +39,7 @@ pub struct ProfileData {
     vault_card_2_chests: i32,
     guardian_rank: i32,
     guardian_rank_tokens: i32,
+    guardian_rewards: Vec<GuardianRewardData>,
     borderlands_science_info: BorderlandsScienceInfo,
     sdu_slots: Vec<ProfileSduSlotData>,
     bank_items: Vec<Bl3Item>,
@@ -89,17 +91,47 @@ impl ProfileData {
             })
             .unwrap_or(0);
 
-        let guardian_rank = profile
+        let guardian_rank_profile_data = profile
             .guardian_rank
             .as_ref()
-            .map(|g| g.guardian_rank)
-            .unwrap_or(0);
+            .context("failed to read profile Guardian Rank profile data.")?;
 
-        let guardian_rank_tokens = profile
-            .guardian_rank
-            .as_ref()
-            .map(|g| g.available_tokens)
-            .unwrap_or(0);
+        let guardian_rank = guardian_rank_profile_data.guardian_rank;
+
+        let guardian_rank_tokens = guardian_rank_profile_data.available_tokens;
+
+        let mut guardian_rewards = guardian_rank_profile_data
+            .rank_rewards
+            .par_iter()
+            .map(|r| {
+                let reward = GuardianReward::from_str(&r.reward_data_path).with_context(|| {
+                    format!("could not find Guardian Reward for: {}", r.reward_data_path)
+                })?;
+
+                let max = reward.maximum(guardian_rank);
+
+                Ok(GuardianRewardData {
+                    reward,
+                    current: r.num_tokens,
+                    max,
+                })
+            })
+            .collect::<Result<Vec<_>>>()?;
+
+        // make sure that we include all guardian rewards that might not be in our save
+        GuardianReward::iter().for_each(|reward| {
+            let contains_guardian_reward = guardian_rewards.par_iter().any(|profile_reward| {
+                std::mem::discriminant(&reward) == std::mem::discriminant(&profile_reward.reward)
+            });
+
+            if !contains_guardian_reward {
+                guardian_rewards.push(GuardianRewardData {
+                    current: 0,
+                    max: reward.maximum(guardian_rank),
+                    reward,
+                })
+            }
+        });
 
         let borderlands_science_level_solves = &profile.CitizenScienceLevelProgression;
 
@@ -228,6 +260,7 @@ impl ProfileData {
             vault_card_2_chests,
             guardian_rank,
             guardian_rank_tokens,
+            guardian_rewards,
             borderlands_science_info,
             sdu_slots,
             bank_items,
@@ -269,7 +302,7 @@ impl ProfileData {
         let hash = currency
             .get_hash()
             .and_then(|h| h.try_into().map_err(anyhow::Error::new))
-            .with_context(|| format!("Failed to read hash for currency: {}", currency))?;
+            .with_context(|| format!("failed to read hash for currency: {}", currency))?;
 
         if let Some(inv_cat_save_data) = self
             .profile
@@ -392,6 +425,10 @@ impl ProfileData {
 
     pub fn guardian_rank_tokens(&self) -> i32 {
         self.guardian_rank_tokens
+    }
+
+    pub fn guardian_rewards(&self) -> &Vec<GuardianRewardData> {
+        &self.guardian_rewards
     }
 
     pub fn borderlands_science_info(&self) -> &BorderlandsScienceInfo {

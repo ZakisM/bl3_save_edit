@@ -6,7 +6,7 @@ use crate::views::manage_profile::keys::ProfileKeysInteractionMessage;
 use crate::views::manage_profile::main::{
     ProfileTabBarInteractionMessage, ProfileTabBarView, ProfileViewState,
 };
-use crate::views::manage_profile::profile::ProfileProfileInteractionMessage;
+use crate::views::manage_profile::profile::ProfileInteractionMessage;
 
 pub mod bank;
 pub mod general;
@@ -24,7 +24,7 @@ pub struct ManageProfileState {
 pub enum ManageProfileInteractionMessage {
     TabBar(ProfileTabBarInteractionMessage),
     General(ProfileGeneralInteractionMessage),
-    Profile(ProfileProfileInteractionMessage),
+    Profile(ProfileInteractionMessage),
     Keys(ProfileKeysInteractionMessage),
     Bank(ProfileBankInteractionMessage),
     SaveProfilePressed,
