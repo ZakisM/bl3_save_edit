@@ -1,6 +1,3 @@
 /target
 /bl3_save_edit_core/resources/*.ron.sz
 /bl3_save_edit_core/resources/*.json.sz
-/bl3_save_edit_core/src/protos/oak_profile.rs
-/bl3_save_edit_core/src/protos/oak_save.rs
-/bl3_save_edit_core/src/protos/oak_shared.rs
