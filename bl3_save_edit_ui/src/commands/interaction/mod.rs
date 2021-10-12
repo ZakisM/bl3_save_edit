@@ -3,8 +3,8 @@ use std::path::PathBuf;
 use anyhow::{Context, Result};
 
 pub mod choose_save_directory;
+pub mod file_save;
 pub mod manage_save;
-pub mod save;
 pub mod settings;
 
 #[cfg(not(target_os = "macos"))]

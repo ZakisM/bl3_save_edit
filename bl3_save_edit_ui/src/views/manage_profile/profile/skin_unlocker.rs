@@ -153,7 +153,7 @@ impl SkinUnlocker {
                     )
                     .width(Length::Fill)
                     .padding(15)
-                    .height(Length::Units(330))
+                    .height(Length::Units(265))
                     .style(Bl3UiStyle),
                 ),
         )

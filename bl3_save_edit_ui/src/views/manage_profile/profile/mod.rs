@@ -37,8 +37,9 @@ pub enum ProfileInteractionMessage {
     ScienceTokens(i32),
     SkinMessage(SkinUnlockedMessage),
     SduMessage(SduMessage),
-    GuardianRewardMessage(GuardianRewardMessage),
     MaxSduSlotsPressed,
+    GuardianRewardMessage(GuardianRewardMessage),
+    MaxGuardianRewardsPressed,
 }
 
 #[derive(Debug, Clone)]
@@ -180,23 +181,35 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
 
     let guardian_reward_unlocker = profile_state
         .guardian_reward_unlocker
-        .view(profile_state.guardian_rank_tokens_input)
+        .view()
         .width(Length::Fill);
 
-    let skin_unlocker = profile_state.skin_unlocker.view().width(Length::Units(350));
+    let main_column = Container::new(
+        Column::new()
+            .push(guardian_rank_tokens)
+            .push(borderlands_science_row)
+            .push(guardian_reward_unlocker)
+            .spacing(20),
+    )
+    .height(Length::Units(560))
+    .width(Length::Fill);
 
-    let sdu_unlocker = profile_state.sdu_unlocker.view().width(Length::Units(250));
+    let skin_unlocker = profile_state.skin_unlocker.view();
 
-    let guardian_reward_skin_sdu_row = Row::new()
-        .push(guardian_reward_unlocker)
-        .push(skin_unlocker)
-        .push(sdu_unlocker)
-        .spacing(20);
+    let sdu_unlocker = profile_state.sdu_unlocker.view();
 
-    let all_contents = Column::new()
-        .push(guardian_rank_tokens)
-        .push(borderlands_science_row)
-        .push(guardian_reward_skin_sdu_row)
+    let skin_unlocker_sdu_unlocker_column = Container::new(
+        Column::new()
+            .push(skin_unlocker)
+            .push(sdu_unlocker)
+            .spacing(20),
+    )
+    .height(Length::Units(560))
+    .width(Length::Units(350));
+
+    let all_contents = Row::new()
+        .push(main_column)
+        .push(skin_unlocker_sdu_unlocker_column)
         .spacing(20);
 
     Container::new(all_contents).padding(30)

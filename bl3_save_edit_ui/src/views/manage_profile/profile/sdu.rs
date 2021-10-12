@@ -157,7 +157,7 @@ impl SduUnlocker {
                             .spacing(15),
                     )
                     .padding(20)
-                    .height(Length::Units(330))
+                    .height(Length::Units(295))
                     .style(Bl3UiStyle),
                 ),
         )

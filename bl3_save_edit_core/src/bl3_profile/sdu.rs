@@ -2,7 +2,7 @@ use strum::{Display, EnumIter, EnumMessage, EnumString};
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Clone)]
 pub struct ProfileSduSlotData {
-    pub slot: ProfileSduSlot,
+    pub sdu: ProfileSduSlot,
     pub current: i32,
     pub max: i32,
 }

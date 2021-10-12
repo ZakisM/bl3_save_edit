@@ -232,11 +232,7 @@ impl std::fmt::Display for Bl3Save {
         writeln!(f, "SDUs:")?;
 
         for slot in self.character_data.sdu_slots() {
-            writeln!(
-                f,
-                "{:>1}- {}: {}/{}",
-                " ", slot.slot, slot.current, slot.max
-            )?;
+            writeln!(f, "{:>1}- {}: {}/{}", " ", slot.sdu, slot.current, slot.max)?;
         }
 
         writeln!(f, "Ammo Pools:")?;
@@ -418,42 +414,42 @@ mod tests {
             *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    sdu: SaveSduSlot::Backpack,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    sdu: SaveSduSlot::Sniper,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    sdu: SaveSduSlot::Shotgun,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    sdu: SaveSduSlot::Pistol,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    sdu: SaveSduSlot::Grenade,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    sdu: SaveSduSlot::Smg,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    sdu: SaveSduSlot::Ar,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    sdu: SaveSduSlot::Heavy,
                     current: 13,
                     max: 13,
                 },
@@ -665,42 +661,42 @@ mod tests {
             *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    sdu: SaveSduSlot::Backpack,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    sdu: SaveSduSlot::Sniper,
                     current: 3,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    sdu: SaveSduSlot::Shotgun,
                     current: 4,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    sdu: SaveSduSlot::Pistol,
                     current: 3,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    sdu: SaveSduSlot::Grenade,
                     current: 2,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    sdu: SaveSduSlot::Smg,
                     current: 4,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    sdu: SaveSduSlot::Ar,
                     current: 3,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    sdu: SaveSduSlot::Heavy,
                     current: 3,
                     max: 13,
                 },
@@ -915,42 +911,42 @@ mod tests {
             *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    sdu: SaveSduSlot::Backpack,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    sdu: SaveSduSlot::Sniper,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    sdu: SaveSduSlot::Shotgun,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    sdu: SaveSduSlot::Pistol,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    sdu: SaveSduSlot::Grenade,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    sdu: SaveSduSlot::Smg,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    sdu: SaveSduSlot::Ar,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    sdu: SaveSduSlot::Heavy,
                     current: 0,
                     max: 13,
                 },
@@ -1165,42 +1161,42 @@ mod tests {
             *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    sdu: SaveSduSlot::Backpack,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    sdu: SaveSduSlot::Sniper,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    sdu: SaveSduSlot::Shotgun,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    sdu: SaveSduSlot::Pistol,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    sdu: SaveSduSlot::Grenade,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    sdu: SaveSduSlot::Smg,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    sdu: SaveSduSlot::Ar,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    sdu: SaveSduSlot::Heavy,
                     current: 13,
                     max: 13,
                 },
@@ -1415,42 +1411,42 @@ mod tests {
             *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    sdu: SaveSduSlot::Backpack,
                     current: 8,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    sdu: SaveSduSlot::Sniper,
                     current: 8,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    sdu: SaveSduSlot::Shotgun,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    sdu: SaveSduSlot::Pistol,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    sdu: SaveSduSlot::Grenade,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    sdu: SaveSduSlot::Smg,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    sdu: SaveSduSlot::Ar,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    sdu: SaveSduSlot::Heavy,
                     current: 8,
                     max: 13,
                 },
@@ -1659,42 +1655,42 @@ mod tests {
             *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    sdu: SaveSduSlot::Backpack,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    sdu: SaveSduSlot::Sniper,
                     current: 0,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    sdu: SaveSduSlot::Shotgun,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    sdu: SaveSduSlot::Pistol,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    sdu: SaveSduSlot::Grenade,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    sdu: SaveSduSlot::Smg,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    sdu: SaveSduSlot::Ar,
                     current: 0,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    sdu: SaveSduSlot::Heavy,
                     current: 0,
                     max: 13,
                 },
@@ -1903,42 +1899,42 @@ mod tests {
             *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    sdu: SaveSduSlot::Backpack,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    sdu: SaveSduSlot::Sniper,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    sdu: SaveSduSlot::Shotgun,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    sdu: SaveSduSlot::Pistol,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    sdu: SaveSduSlot::Grenade,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    sdu: SaveSduSlot::Smg,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    sdu: SaveSduSlot::Ar,
                     current: 10,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    sdu: SaveSduSlot::Heavy,
                     current: 13,
                     max: 13,
                 },
@@ -2153,42 +2149,42 @@ mod tests {
             *bl3_save.character_data.sdu_slots(),
             vec![
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Backpack,
+                    sdu: SaveSduSlot::Backpack,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Sniper,
+                    sdu: SaveSduSlot::Sniper,
                     current: 13,
                     max: 13,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Shotgun,
+                    sdu: SaveSduSlot::Shotgun,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Pistol,
+                    sdu: SaveSduSlot::Pistol,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Grenade,
+                    sdu: SaveSduSlot::Grenade,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Smg,
+                    sdu: SaveSduSlot::Smg,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Ar,
+                    sdu: SaveSduSlot::Ar,
                     current: 8,
                     max: 10,
                 },
                 SaveSduSlotData {
-                    slot: SaveSduSlot::Heavy,
+                    sdu: SaveSduSlot::Heavy,
                     current: 13,
                     max: 13,
                 },

@@ -1,9 +1,10 @@
 use std::rc::Rc;
 
 use derivative::Derivative;
-use iced::alignment::Horizontal;
+use iced::alignment::{Horizontal, Vertical};
 use iced::{
-    button, text_input, tooltip, Alignment, Color, Column, Container, Length, Row, Text, Tooltip,
+    button, text_input, tooltip, Alignment, Button, Color, Column, Container, Length, Row, Text,
+    Tooltip,
 };
 
 use bl3_save_edit_core::bl3_profile::guardian_reward::GuardianReward;
@@ -46,10 +47,10 @@ impl GuardianRewardField {
         }
     }
 
-    pub fn view(&mut self, guardian_rank_tokens: i32) -> Row<Bl3Message> {
+    pub fn view(&mut self) -> Row<Bl3Message> {
         let on_changed = self.on_changed.clone();
         let minimum = 0;
-        let maximum = self.guardian_reward.maximum(guardian_rank_tokens);
+        let maximum = i32::MAX;
 
         Row::new()
             .push(
@@ -218,7 +219,7 @@ impl std::default::Default for GuardianRewardUnlocker {
 }
 
 impl GuardianRewardUnlocker {
-    pub fn view(&mut self, guardian_rank_tokens: i32) -> Container<Bl3Message> {
+    pub fn view(&mut self) -> Container<Bl3Message> {
         Container::new(
             Column::new()
                 .push(
@@ -238,47 +239,91 @@ impl GuardianRewardUnlocker {
                         Column::new()
                             .push(
                                 Row::new()
-                                    .push(self.critical_damage.view(guardian_rank_tokens))
-                                    .push(self.ffyl_duration.view(guardian_rank_tokens))
-                                    .push(self.accuracy.view(guardian_rank_tokens)),
+                                    .push(self.critical_damage.view())
+                                    .push(self.ffyl_duration.view())
+                                    .push(self.accuracy.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.grenade_damage.view(guardian_rank_tokens))
-                                    .push(self.ffyl_movement_speed.view(guardian_rank_tokens))
-                                    .push(self.action_skill_cooldown.view(guardian_rank_tokens)),
+                                    .push(self.grenade_damage.view())
+                                    .push(self.ffyl_movement_speed.view())
+                                    .push(self.action_skill_cooldown.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.gun_damage.view(guardian_rank_tokens))
-                                    .push(self.max_health.view(guardian_rank_tokens))
-                                    .push(self.rarity_rate.view(guardian_rank_tokens)),
+                                    .push(self.gun_damage.view())
+                                    .push(self.max_health.view())
+                                    .push(self.rarity_rate.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.gun_fire_rate.view(guardian_rank_tokens))
-                                    .push(self.shield_capacity.view(guardian_rank_tokens))
-                                    .push(self.recoil_reduction.view(guardian_rank_tokens)),
+                                    .push(self.gun_fire_rate.view())
+                                    .push(self.shield_capacity.view())
+                                    .push(self.recoil_reduction.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.melee_damage.view(guardian_rank_tokens))
-                                    .push(self.shield_recharge_delay.view(guardian_rank_tokens))
-                                    .push(self.reload_speed.view(guardian_rank_tokens)),
+                                    .push(self.melee_damage.view())
+                                    .push(self.shield_recharge_delay.view())
+                                    .push(self.reload_speed.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.vehicle_damage.view(guardian_rank_tokens))
-                                    .push(self.shield_recharge_rate.view(guardian_rank_tokens))
-                                    .push(self.elemental_damage.view(guardian_rank_tokens)),
+                                    .push(self.vehicle_damage.view())
+                                    .push(self.shield_recharge_rate.view())
+                                    .push(self.elemental_damage.view()),
+                            )
+                            .push(
+                                Container::new(
+                                    Button::new(
+                                        &mut self.unlock_all_button_state,
+                                        Text::new("Max All Guardian Rewards")
+                                            .font(JETBRAINS_MONO_BOLD)
+                                            .size(17),
+                                    )
+                                    .on_press(InteractionMessage::ManageProfileInteraction(
+                                        ManageProfileInteractionMessage::Profile(
+                                            ProfileInteractionMessage::MaxGuardianRewardsPressed,
+                                        ),
+                                    ))
+                                    .padding(10)
+                                    .style(Bl3UiStyle)
+                                    .into_element(),
+                                )
+                                .height(Length::Fill)
+                                .align_y(Vertical::Bottom)
+                                .padding(5),
                             )
                             .align_items(Alignment::Center)
                             .spacing(15),
                     )
                     .padding(15)
-                    .height(Length::Units(330))
+                    .height(Length::Units(524))
                     .style(Bl3UiStyle),
                 ),
         )
+    }
+
+    pub fn all_rewards(&self) -> [&GuardianRewardField; 18] {
+        [
+            &self.accuracy,
+            &self.action_skill_cooldown,
+            &self.critical_damage,
+            &self.elemental_damage,
+            &self.ffyl_duration,
+            &self.ffyl_movement_speed,
+            &self.grenade_damage,
+            &self.gun_damage,
+            &self.gun_fire_rate,
+            &self.max_health,
+            &self.melee_damage,
+            &self.rarity_rate,
+            &self.recoil_reduction,
+            &self.reload_speed,
+            &self.shield_capacity,
+            &self.shield_recharge_delay,
+            &self.shield_recharge_rate,
+            &self.vehicle_damage,
+        ]
     }
 }

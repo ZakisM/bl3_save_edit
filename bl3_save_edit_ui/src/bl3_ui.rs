@@ -729,7 +729,7 @@ impl Application for Bl3Application {
                                 match current_file.as_bytes() {
                                     Ok((output, save_file)) => {
                                         return Command::perform(
-                                            interaction::save::save_file(
+                                            interaction::file_save::save_file(
                                                 self.config.backup_dir().to_path_buf(),
                                                 output_file,
                                                 output,
@@ -963,6 +963,37 @@ impl Application for Bl3Application {
                                             }
                                         }
                                     }
+                                    ProfileInteractionMessage::MaxGuardianRewardsPressed => {
+                                        let guardian_reward_unlocker = &mut self
+                                            .manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .guardian_reward_unlocker;
+
+                                        let tokens = i32::MAX;
+
+                                        guardian_reward_unlocker.accuracy.input = tokens;
+                                        guardian_reward_unlocker.action_skill_cooldown.input =
+                                            tokens;
+                                        guardian_reward_unlocker.critical_damage.input = tokens;
+                                        guardian_reward_unlocker.elemental_damage.input = tokens;
+                                        guardian_reward_unlocker.ffyl_duration.input = tokens;
+                                        guardian_reward_unlocker.ffyl_movement_speed.input = tokens;
+                                        guardian_reward_unlocker.grenade_damage.input = tokens;
+                                        guardian_reward_unlocker.gun_damage.input = tokens;
+                                        guardian_reward_unlocker.gun_fire_rate.input = tokens;
+                                        guardian_reward_unlocker.max_health.input = tokens;
+                                        guardian_reward_unlocker.melee_damage.input = tokens;
+                                        guardian_reward_unlocker.rarity_rate.input = tokens;
+                                        guardian_reward_unlocker.recoil_reduction.input = tokens;
+                                        guardian_reward_unlocker.reload_speed.input = tokens;
+                                        guardian_reward_unlocker.shield_capacity.input = tokens;
+                                        guardian_reward_unlocker.shield_recharge_delay.input =
+                                            tokens;
+                                        guardian_reward_unlocker.shield_recharge_rate.input =
+                                            tokens;
+                                        guardian_reward_unlocker.vehicle_damage.input = tokens;
+                                    }
                                 }
                             }
                             ManageProfileInteractionMessage::Keys(keys_message) => {
@@ -1053,21 +1084,25 @@ impl Application for Bl3Application {
                                 let mut current_file =
                                     self.manage_profile_state.current_file.clone();
 
-                                if let Err(e) = manage_profile::map_all_states_to_profile(
-                                    &mut self.manage_profile_state,
-                                    &mut current_file,
-                                ) {
-                                    let msg = format!("Failed to save profile: {}", e);
+                                let guardian_data_injection_required =
+                                    match manage_profile::map_all_states_to_profile(
+                                        &mut self.manage_profile_state,
+                                        &mut current_file,
+                                    ) {
+                                        Ok(injection_required) => injection_required,
+                                        Err(e) => {
+                                            let msg = format!("Failed to save profile: {}", e);
 
-                                    error!("{}", msg);
+                                            error!("{}", msg);
 
-                                    self.notification = Some(Notification::new(
-                                        msg,
-                                        NotificationSentiment::Negative,
-                                    ));
+                                            self.notification = Some(Notification::new(
+                                                msg,
+                                                NotificationSentiment::Negative,
+                                            ));
 
-                                    return Command::none();
-                                }
+                                            return Command::none();
+                                        }
+                                    };
 
                                 let output_file = self
                                     .config
@@ -1077,12 +1112,14 @@ impl Application for Bl3Application {
                                 match current_file.as_bytes() {
                                     Ok((output, profile)) => {
                                         return Command::perform(
-                                            interaction::save::save_profile(
+                                            interaction::file_save::save_profile(
                                                 self.config.backup_dir().to_path_buf(),
+                                                self.config.saves_dir().to_path_buf(),
                                                 output_file,
                                                 output,
                                                 self.manage_profile_state.current_file.clone(),
                                                 profile,
+                                                guardian_data_injection_required,
                                             ),
                                             |r| {
                                                 Bl3Message::SaveProfileCompleted(
@@ -1402,7 +1439,7 @@ impl Application for Bl3Application {
                     };
 
                     return Command::perform(
-                        interaction::save::load_files_after_save(
+                        interaction::file_save::load_files_after_save(
                             self.config.saves_dir().to_path_buf(),
                             bl3_file_type,
                         ),
@@ -1439,7 +1476,7 @@ impl Application for Bl3Application {
                     };
 
                     return Command::perform(
-                        interaction::save::load_files_after_save(
+                        interaction::file_save::load_files_after_save(
                             self.config.saves_dir().to_path_buf(),
                             bl3_file_type,
                         ),

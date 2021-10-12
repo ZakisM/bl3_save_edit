@@ -108,9 +108,3 @@ impl std::default::Default for GuardianReward {
         Self::Accuracy
     }
 }
-
-impl GuardianReward {
-    pub fn maximum(&self, guardian_rank_tokens: i32) -> i32 {
-        i32::MAX - guardian_rank_tokens
-    }
-}

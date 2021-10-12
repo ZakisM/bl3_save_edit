@@ -142,7 +142,7 @@ pub fn map_save_to_character_state(manage_save_state: &mut ManageSaveState) {
     save.character_data
         .sdu_slots()
         .iter()
-        .for_each(|s| match s.slot {
+        .for_each(|s| match s.sdu {
             SaveSduSlot::Backpack => sdu_unlocker.backpack.input = s.current,
             SaveSduSlot::Sniper => sdu_unlocker.sniper.input = s.current,
             SaveSduSlot::Shotgun => sdu_unlocker.shotgun.input = s.current,

@@ -31,9 +31,14 @@ fn main() -> Result<()> {
     let config = Bl3Config::load();
 
     let logs_dir = config.config_dir().join("logs");
+    let backups_dir = config.config_dir().join("backups");
 
     if !logs_dir.exists() {
         std::fs::create_dir_all(&logs_dir)?;
+    }
+
+    if !backups_dir.exists() {
+        std::fs::create_dir_all(&backups_dir)?;
     }
 
     let file_appender = tracing_appender::rolling::daily(logs_dir, "bl3_save_editor.log");

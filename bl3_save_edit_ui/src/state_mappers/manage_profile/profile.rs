@@ -1,3 +1,6 @@
+use anyhow::Result;
+use tracing::info;
+
 use bl3_save_edit_core::bl3_profile::guardian_reward::GuardianReward;
 use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
 use bl3_save_edit_core::bl3_profile::Bl3Profile;
@@ -11,7 +14,7 @@ pub fn map_profile_to_profile_state(manage_profile_state: &mut ManageProfileStat
     manage_profile_state
         .profile_view_state
         .profile_state
-        .guardian_rank_tokens_input = profile.profile_data.guardian_rank_tokens();
+        .guardian_rank_tokens_input = profile.profile_data.guardian_tokens();
 
     manage_profile_state
         .profile_view_state
@@ -121,7 +124,7 @@ pub fn map_profile_to_profile_state(manage_profile_state: &mut ManageProfileStat
         .profile_data
         .sdu_slots()
         .iter()
-        .for_each(|s| match s.slot {
+        .for_each(|s| match s.sdu {
             ProfileSduSlot::Bank => sdu_unlocker.bank.input = s.current,
             ProfileSduSlot::LostLoot => sdu_unlocker.lost_loot.input = s.current,
         });
@@ -135,7 +138,9 @@ pub fn map_profile_to_profile_state(manage_profile_state: &mut ManageProfileStat
 pub fn map_profile_state_to_profile(
     manage_profile_state: &mut ManageProfileState,
     profile: &mut Bl3Profile,
-) {
+) -> Result<bool> {
+    let mut guardian_data_injection_required = false;
+
     let profile_state = &manage_profile_state.profile_view_state.profile_state;
 
     profile
@@ -164,6 +169,41 @@ pub fn map_profile_state_to_profile(
         }
     }
 
+    let guardian_reward_unlocker = &profile_state.guardian_reward_unlocker;
+
+    let total_guardian_rewards = guardian_reward_unlocker
+        .all_rewards()
+        .iter()
+        .map(|r| r.input as i64)
+        .sum::<i64>();
+
+    let mut guardian_rank =
+        total_guardian_rewards + profile_state.guardian_rank_tokens_input as i64;
+
+    let maximum_allowed_rank = i32::MAX as i64;
+
+    if guardian_rank > maximum_allowed_rank {
+        guardian_rank = maximum_allowed_rank;
+    }
+
+    // Only do this if guardian rank has changed as we need to inject the data into every save.
+    if guardian_rank != profile.profile_data.guardian_rank() as i64 {
+        info!("Setting guardian rank and injecting into all saves...");
+
+        for g in guardian_reward_unlocker.all_rewards() {
+            profile
+                .profile_data
+                .set_guardian_reward(&g.guardian_reward, g.input)?;
+        }
+
+        profile.profile_data.set_guardian_rank(
+            guardian_rank as i32,
+            Some(profile_state.guardian_rank_tokens_input),
+        );
+
+        guardian_data_injection_required = true;
+    }
+
     let sdu_unlocker = &profile_state.sdu_unlocker;
 
     let all_sdu_slots = [&sdu_unlocker.lost_loot, &sdu_unlocker.bank];
@@ -171,4 +211,6 @@ pub fn map_profile_state_to_profile(
     for s in all_sdu_slots {
         profile.profile_data.set_sdu_slot(&s.sdu_slot, s.input);
     }
+
+    Ok(guardian_data_injection_required)
 }
