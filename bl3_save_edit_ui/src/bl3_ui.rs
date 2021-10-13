@@ -1,9 +1,10 @@
 use std::mem;
 use std::path::PathBuf;
 
+use iced::alignment::Horizontal;
 use iced::{
-    button, pick_list, svg, tooltip, Align, Application, Button, Color, Column, Command, Container,
-    Element, HorizontalAlignment, Length, PickList, Row, Svg, Text, Tooltip,
+    button, pick_list, svg, tooltip, Alignment, Application, Button, Color, Column, Command,
+    Container, Element, Length, PickList, Row, Svg, Text, Tooltip,
 };
 use tracing::{error, info};
 
@@ -27,6 +28,7 @@ use crate::resources::fonts::{
 use crate::resources::svgs::REFRESH;
 use crate::state_mappers::{manage_profile, manage_save};
 use crate::update::Release;
+use crate::util::ErrorExt;
 use crate::views::choose_save_directory::{
     ChooseSaveDirectoryState, ChooseSaveInteractionMessage, ChooseSaveMessage,
 };
@@ -37,7 +39,7 @@ use crate::views::manage_profile::general::ProfileGeneralInteractionMessage;
 use crate::views::manage_profile::keys::ProfileKeysInteractionMessage;
 use crate::views::manage_profile::main::{ProfileTabBarInteractionMessage, ProfileTabBarView};
 use crate::views::manage_profile::profile::{
-    ProfileProfileInteractionMessage, ProfileSduMessage, ProfileSkinUnlockedMessage,
+    GuardianRewardMessage, ProfileInteractionMessage, SduMessage, SkinUnlockedMessage,
 };
 use crate::views::manage_profile::{
     ManageProfileInteractionMessage, ManageProfileState, ManageProfileView,
@@ -47,13 +49,11 @@ use crate::views::manage_save::character::{
     CharacterSkinSelectedMessage, SaveCharacterInteractionMessage,
 };
 use crate::views::manage_save::currency::SaveCurrencyInteractionMessage;
-use crate::views::manage_save::general::{GeneralMessage, SaveGeneralInteractionMessage};
+use crate::views::manage_save::general::SaveGeneralInteractionMessage;
 use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::main::{SaveTabBarInteractionMessage, SaveTabBarView};
 use crate::views::manage_save::vehicle::{SaveVehicleInteractionMessage, VehicleUnlockedMessage};
-use crate::views::manage_save::{
-    ManageSaveInteractionMessage, ManageSaveMessage, ManageSaveState, ManageSaveView,
-};
+use crate::views::manage_save::{ManageSaveInteractionMessage, ManageSaveState, ManageSaveView};
 use crate::views::settings::{SettingsInteractionMessage, SettingsState};
 use crate::views::InteractionExt;
 use crate::widgets::notification::{Notification, NotificationSentiment};
@@ -88,7 +88,6 @@ pub enum Bl3Message {
     Config(ConfigMessage),
     Interaction(InteractionMessage),
     ChooseSave(ChooseSaveMessage),
-    ManageSave(ManageSaveMessage),
     SaveFileCompleted(MessageResult<Bl3Save>),
     SaveProfileCompleted(MessageResult<Bl3Profile>),
     FilesLoadedAfterSave(MessageResult<(Bl3FileType, Vec<Bl3FileType>)>),
@@ -106,6 +105,18 @@ impl<T> MessageResult<T> {
         match result {
             Ok(v) => MessageResult::Success(v),
             Err(e) => MessageResult::Error(e.to_string()),
+        }
+    }
+}
+
+impl ErrorExt for MessageResult<()> {
+    fn handle_ui_error(&self, message: &str, notification: &mut Option<Notification>) {
+        if let MessageResult::Error(e) = self {
+            let message = format!("{}: {}.", message, e.to_string());
+
+            error!("{}", message);
+
+            *notification = Some(Notification::new(message, NotificationSentiment::Negative));
         }
     }
 }
@@ -330,27 +341,28 @@ impl Application for Bl3Application {
                                         .guid_input = guid;
                                 }
                                 SaveGeneralInteractionMessage::Slot(slot) => {
-                                    let filename = format!("{}.sav", slot);
+                                    let filename = format!("{:x}.sav", slot);
 
                                     self.manage_save_state
                                         .save_view_state
                                         .general_state
                                         .slot_input = slot;
+
                                     self.manage_save_state
                                         .save_view_state
                                         .general_state
                                         .filename_input = filename.clone();
+
                                     self.manage_save_state.current_file.file_name = filename;
                                 }
                                 SaveGeneralInteractionMessage::GenerateGuidPressed => {
-                                    return Command::perform(
-                                        interaction::manage_save::general::generate_random_guid(),
-                                        |r| {
-                                            Bl3Message::ManageSave(ManageSaveMessage::General(
-                                                GeneralMessage::GenerateRandomGuidCompleted(r),
-                                            ))
-                                        },
-                                    );
+                                    let guid =
+                                        interaction::manage_save::general::generate_random_guid();
+
+                                    self.manage_save_state
+                                        .save_view_state
+                                        .general_state
+                                        .guid_input = guid;
                                 }
                                 SaveGeneralInteractionMessage::SaveTypeSelected(save_type) => {
                                     self.manage_save_state
@@ -719,7 +731,7 @@ impl Application for Bl3Application {
                                 match current_file.as_bytes() {
                                     Ok((output, save_file)) => {
                                         return Command::perform(
-                                            interaction::save::save_file(
+                                            interaction::file_save::save_file(
                                                 self.config.backup_dir().to_path_buf(),
                                                 output_file,
                                                 output,
@@ -792,7 +804,7 @@ impl Application for Bl3Application {
                             }
                             ManageProfileInteractionMessage::Profile(profile_msg) => {
                                 match profile_msg {
-                                    ProfileProfileInteractionMessage::GuardianRankTokens(
+                                    ProfileInteractionMessage::GuardianRankTokens(
                                         guardian_rank_tokens,
                                     ) => {
                                         self.manage_profile_state
@@ -800,7 +812,7 @@ impl Application for Bl3Application {
                                             .profile_state
                                             .guardian_rank_tokens_input = guardian_rank_tokens;
                                     }
-                                    ProfileProfileInteractionMessage::ScienceLevelSelected(
+                                    ProfileInteractionMessage::ScienceLevelSelected(
                                         science_level,
                                     ) => {
                                         self.manage_profile_state
@@ -808,7 +820,7 @@ impl Application for Bl3Application {
                                             .profile_state
                                             .science_level_selected = science_level;
                                     }
-                                    ProfileProfileInteractionMessage::ScienceTokens(
+                                    ProfileInteractionMessage::ScienceTokens(
                                         science_level_tokens,
                                     ) => {
                                         self.manage_profile_state
@@ -816,7 +828,7 @@ impl Application for Bl3Application {
                                             .profile_state
                                             .science_tokens_input = science_level_tokens;
                                     }
-                                    ProfileProfileInteractionMessage::SkinMessage(skin_message) => {
+                                    ProfileInteractionMessage::SkinMessage(skin_message) => {
                                         let skin_unlocker = &mut self
                                             .manage_profile_state
                                             .profile_view_state
@@ -824,42 +836,34 @@ impl Application for Bl3Application {
                                             .skin_unlocker;
 
                                         match skin_message {
-                                            ProfileSkinUnlockedMessage::CharacterSkins(
-                                                selected,
-                                            ) => {
+                                            SkinUnlockedMessage::CharacterSkins(selected) => {
                                                 skin_unlocker.character_skins.is_unlocked =
                                                     selected;
                                             }
-                                            ProfileSkinUnlockedMessage::CharacterHeads(
-                                                selected,
-                                            ) => {
+                                            SkinUnlockedMessage::CharacterHeads(selected) => {
                                                 skin_unlocker.character_heads.is_unlocked =
                                                     selected;
                                             }
-                                            ProfileSkinUnlockedMessage::EchoThemes(selected) => {
+                                            SkinUnlockedMessage::EchoThemes(selected) => {
                                                 skin_unlocker.echo_themes.is_unlocked = selected;
                                             }
-                                            ProfileSkinUnlockedMessage::Emotes(selected) => {
+                                            SkinUnlockedMessage::Emotes(selected) => {
                                                 skin_unlocker.emotes.is_unlocked = selected;
                                             }
-                                            ProfileSkinUnlockedMessage::RoomDecorations(
-                                                selected,
-                                            ) => {
+                                            SkinUnlockedMessage::RoomDecorations(selected) => {
                                                 skin_unlocker.room_decorations.is_unlocked =
                                                     selected;
                                             }
-                                            ProfileSkinUnlockedMessage::WeaponSkins(selected) => {
+                                            SkinUnlockedMessage::WeaponSkins(selected) => {
                                                 skin_unlocker.weapon_skins.is_unlocked = selected;
                                             }
-                                            ProfileSkinUnlockedMessage::WeaponTrinkets(
-                                                selected,
-                                            ) => {
+                                            SkinUnlockedMessage::WeaponTrinkets(selected) => {
                                                 skin_unlocker.weapon_trinkets.is_unlocked =
                                                     selected;
                                             }
                                         }
                                     }
-                                    ProfileProfileInteractionMessage::SduMessage(sdu_message) => {
+                                    ProfileInteractionMessage::SduMessage(sdu_message) => {
                                         let sdu_unlocker = &mut self
                                             .manage_profile_state
                                             .profile_view_state
@@ -867,15 +871,15 @@ impl Application for Bl3Application {
                                             .sdu_unlocker;
 
                                         match sdu_message {
-                                            ProfileSduMessage::Bank(level) => {
+                                            SduMessage::Bank(level) => {
                                                 sdu_unlocker.bank.input = level;
                                             }
-                                            ProfileSduMessage::LostLoot(level) => {
+                                            SduMessage::LostLoot(level) => {
                                                 sdu_unlocker.lost_loot.input = level;
                                             }
                                         }
                                     }
-                                    ProfileProfileInteractionMessage::MaxSduSlotsPressed => {
+                                    ProfileInteractionMessage::MaxSduSlotsPressed => {
                                         let sdu_unlocker = &mut self
                                             .manage_profile_state
                                             .profile_view_state
@@ -886,6 +890,111 @@ impl Application for Bl3Application {
 
                                         sdu_unlocker.lost_loot.input =
                                             ProfileSduSlot::LostLoot.maximum();
+                                    }
+                                    ProfileInteractionMessage::GuardianRewardMessage(
+                                        guardian_message,
+                                    ) => {
+                                        let guardian_reward_unlocker = &mut self
+                                            .manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .guardian_reward_unlocker;
+
+                                        match guardian_message {
+                                            GuardianRewardMessage::Accuracy(r) => {
+                                                guardian_reward_unlocker.accuracy.input = r;
+                                            }
+                                            GuardianRewardMessage::ActionSkillCooldown(r) => {
+                                                guardian_reward_unlocker
+                                                    .action_skill_cooldown
+                                                    .input = r;
+                                            }
+                                            GuardianRewardMessage::CriticalDamage(r) => {
+                                                guardian_reward_unlocker.critical_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::ElementalDamage(r) => {
+                                                guardian_reward_unlocker.elemental_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::FFYLDuration(r) => {
+                                                guardian_reward_unlocker.ffyl_duration.input = r;
+                                            }
+                                            GuardianRewardMessage::FFYLMovementSpeed(r) => {
+                                                guardian_reward_unlocker
+                                                    .ffyl_movement_speed
+                                                    .input = r;
+                                            }
+                                            GuardianRewardMessage::GrenadeDamage(r) => {
+                                                guardian_reward_unlocker.grenade_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::GunDamage(r) => {
+                                                guardian_reward_unlocker.gun_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::GunFireRate(r) => {
+                                                guardian_reward_unlocker.gun_fire_rate.input = r;
+                                            }
+                                            GuardianRewardMessage::MaxHealth(r) => {
+                                                guardian_reward_unlocker.max_health.input = r;
+                                            }
+                                            GuardianRewardMessage::MeleeDamage(r) => {
+                                                guardian_reward_unlocker.melee_damage.input = r;
+                                            }
+                                            GuardianRewardMessage::RarityRate(r) => {
+                                                guardian_reward_unlocker.rarity_rate.input = r;
+                                            }
+                                            GuardianRewardMessage::RecoilReduction(r) => {
+                                                guardian_reward_unlocker.recoil_reduction.input = r;
+                                            }
+                                            GuardianRewardMessage::ReloadSpeed(r) => {
+                                                guardian_reward_unlocker.reload_speed.input = r;
+                                            }
+                                            GuardianRewardMessage::ShieldCapacity(r) => {
+                                                guardian_reward_unlocker.shield_capacity.input = r;
+                                            }
+                                            GuardianRewardMessage::ShieldRechargeDelay(r) => {
+                                                guardian_reward_unlocker
+                                                    .shield_recharge_delay
+                                                    .input = r;
+                                            }
+                                            GuardianRewardMessage::ShieldRechargeRate(r) => {
+                                                guardian_reward_unlocker
+                                                    .shield_recharge_rate
+                                                    .input = r;
+                                            }
+                                            GuardianRewardMessage::VehicleDamage(r) => {
+                                                guardian_reward_unlocker.vehicle_damage.input = r;
+                                            }
+                                        }
+                                    }
+                                    ProfileInteractionMessage::MaxGuardianRewardsPressed => {
+                                        let guardian_reward_unlocker = &mut self
+                                            .manage_profile_state
+                                            .profile_view_state
+                                            .profile_state
+                                            .guardian_reward_unlocker;
+
+                                        let tokens = i32::MAX;
+
+                                        guardian_reward_unlocker.accuracy.input = tokens;
+                                        guardian_reward_unlocker.action_skill_cooldown.input =
+                                            tokens;
+                                        guardian_reward_unlocker.critical_damage.input = tokens;
+                                        guardian_reward_unlocker.elemental_damage.input = tokens;
+                                        guardian_reward_unlocker.ffyl_duration.input = tokens;
+                                        guardian_reward_unlocker.ffyl_movement_speed.input = tokens;
+                                        guardian_reward_unlocker.grenade_damage.input = tokens;
+                                        guardian_reward_unlocker.gun_damage.input = tokens;
+                                        guardian_reward_unlocker.gun_fire_rate.input = tokens;
+                                        guardian_reward_unlocker.max_health.input = tokens;
+                                        guardian_reward_unlocker.melee_damage.input = tokens;
+                                        guardian_reward_unlocker.rarity_rate.input = tokens;
+                                        guardian_reward_unlocker.recoil_reduction.input = tokens;
+                                        guardian_reward_unlocker.reload_speed.input = tokens;
+                                        guardian_reward_unlocker.shield_capacity.input = tokens;
+                                        guardian_reward_unlocker.shield_recharge_delay.input =
+                                            tokens;
+                                        guardian_reward_unlocker.shield_recharge_rate.input =
+                                            tokens;
+                                        guardian_reward_unlocker.vehicle_damage.input = tokens;
                                     }
                                 }
                             }
@@ -977,21 +1086,25 @@ impl Application for Bl3Application {
                                 let mut current_file =
                                     self.manage_profile_state.current_file.clone();
 
-                                if let Err(e) = manage_profile::map_all_states_to_profile(
-                                    &mut self.manage_profile_state,
-                                    &mut current_file,
-                                ) {
-                                    let msg = format!("Failed to save profile: {}", e);
+                                let guardian_data_injection_required =
+                                    match manage_profile::map_all_states_to_profile(
+                                        &mut self.manage_profile_state,
+                                        &mut current_file,
+                                    ) {
+                                        Ok(injection_required) => injection_required,
+                                        Err(e) => {
+                                            let msg = format!("Failed to save profile: {}", e);
 
-                                    error!("{}", msg);
+                                            error!("{}", msg);
 
-                                    self.notification = Some(Notification::new(
-                                        msg,
-                                        NotificationSentiment::Negative,
-                                    ));
+                                            self.notification = Some(Notification::new(
+                                                msg,
+                                                NotificationSentiment::Negative,
+                                            ));
 
-                                    return Command::none();
-                                }
+                                            return Command::none();
+                                        }
+                                    };
 
                                 let output_file = self
                                     .config
@@ -1001,12 +1114,14 @@ impl Application for Bl3Application {
                                 match current_file.as_bytes() {
                                     Ok((output, profile)) => {
                                         return Command::perform(
-                                            interaction::save::save_profile(
+                                            interaction::file_save::save_profile(
                                                 self.config.backup_dir().to_path_buf(),
+                                                self.config.saves_dir().to_path_buf(),
                                                 output_file,
                                                 output,
                                                 self.manage_profile_state.current_file.clone(),
                                                 profile,
+                                                guardian_data_injection_required,
                                             ),
                                             |r| {
                                                 Bl3Message::SaveProfileCompleted(
@@ -1047,14 +1162,10 @@ impl Application for Bl3Application {
                             );
                         }
                         SettingsInteractionMessage::OpenConfigDirCompleted(res) => {
-                            if let MessageResult::Error(e) = res {
-                                let msg = format!("Failed to open config folder: {}", e);
-
-                                error!("{}", msg);
-
-                                self.notification =
-                                    Some(Notification::new(msg, NotificationSentiment::Negative));
-                            }
+                            res.handle_ui_error(
+                                "Failed to open config folder",
+                                &mut self.notification,
+                            );
                         }
                         SettingsInteractionMessage::OpenBackupDir => {
                             return Command::perform(
@@ -1073,14 +1184,10 @@ impl Application for Bl3Application {
                             );
                         }
                         SettingsInteractionMessage::OpenBackupDirCompleted(res) => {
-                            if let MessageResult::Error(e) = res {
-                                let msg = format!("Failed to open backups folder: {}", e);
-
-                                error!("{}", msg);
-
-                                self.notification =
-                                    Some(Notification::new(msg, NotificationSentiment::Negative));
-                            }
+                            res.handle_ui_error(
+                                "Failed to open backups folder",
+                                &mut self.notification,
+                            );
                         }
                         SettingsInteractionMessage::ChangeBackupDir => {
                             self.settings_state.choose_backup_dir_window_open = true;
@@ -1142,14 +1249,10 @@ impl Application for Bl3Application {
                             );
                         }
                         SettingsInteractionMessage::OpenSavesDirCompleted(res) => {
-                            if let MessageResult::Error(e) = res {
-                                let msg = format!("Failed to open saves folder: {}", e);
-
-                                error!("{}", msg);
-
-                                self.notification =
-                                    Some(Notification::new(msg, NotificationSentiment::Negative));
-                            }
+                            res.handle_ui_error(
+                                "Failed to open saves folder",
+                                &mut self.notification,
+                            );
                         }
                         SettingsInteractionMessage::ChangeSavesDir => {
                             self.settings_state.choose_saves_dir_window_open = true;
@@ -1229,7 +1332,10 @@ impl Application for Bl3Application {
                     InteractionMessage::LoadedFileSelected(loaded_file) => {
                         self.loaded_files_selected = loaded_file;
 
-                        state_mappers::map_loaded_file_to_state(self);
+                        state_mappers::map_loaded_file_to_state(self).handle_ui_error(
+                            "Failed to map loaded file to editor",
+                            &mut self.notification,
+                        );
                     }
                     InteractionMessage::RefreshSavesDirectory => {
                         self.view_state = ViewState::Loading;
@@ -1287,7 +1393,10 @@ impl Application for Bl3Application {
                                 .clone(),
                         );
 
-                        state_mappers::map_loaded_file_to_state(self);
+                        state_mappers::map_loaded_file_to_state(self).handle_ui_error(
+                            "Failed to map loaded file to editor",
+                            &mut self.notification,
+                        );
 
                         self.config.set_saves_dir(dir);
                         self.settings_state.saves_dir_input =
@@ -1308,16 +1417,6 @@ impl Application for Bl3Application {
 
                         self.notification =
                             Some(Notification::new(msg, NotificationSentiment::Negative));
-                    }
-                },
-            },
-            Bl3Message::ManageSave(manage_save_msg) => match manage_save_msg {
-                ManageSaveMessage::General(general_msg) => match general_msg {
-                    GeneralMessage::GenerateRandomGuidCompleted(guid) => {
-                        self.manage_save_state
-                            .save_view_state
-                            .general_state
-                            .guid_input = guid;
                     }
                 },
             },
@@ -1342,7 +1441,7 @@ impl Application for Bl3Application {
                     };
 
                     return Command::perform(
-                        interaction::save::load_files_after_save(
+                        interaction::file_save::load_files_after_save(
                             self.config.saves_dir().to_path_buf(),
                             bl3_file_type,
                         ),
@@ -1379,7 +1478,7 @@ impl Application for Bl3Application {
                     };
 
                     return Command::perform(
-                        interaction::save::load_files_after_save(
+                        interaction::file_save::load_files_after_save(
                             self.config.saves_dir().to_path_buf(),
                             bl3_file_type,
                         ),
@@ -1404,17 +1503,21 @@ impl Application for Bl3Application {
 
                         let selected_file = self.loaded_files.iter().find(|f| **f == saved_file);
 
-                        self.loaded_files_selected =
-                            Box::new(if let Some(selected_file) = selected_file {
-                                selected_file.to_owned()
-                            } else {
+                        if let Some(selected_file) = selected_file {
+                            self.loaded_files_selected = Box::new(selected_file.to_owned());
+                        } else {
+                            self.loaded_files_selected = Box::new(
                                 self.loaded_files
                                     .get(0)
                                     .expect("loaded_files was empty")
-                                    .clone()
-                            });
+                                    .clone(),
+                            );
 
-                        state_mappers::map_loaded_file_to_state(self);
+                            state_mappers::map_loaded_file_to_state(self).handle_ui_error(
+                                "Failed to map loaded file to editor",
+                                &mut self.notification,
+                            );
+                        }
                     }
                     MessageResult::Error(e) => {
                         let msg = format!("Failed to load save folder: {}", e);
@@ -1444,7 +1547,7 @@ impl Application for Bl3Application {
             .size(40)
             .color(Color::from_rgb8(242, 203, 5))
             .width(Length::Fill)
-            .horizontal_alignment(HorizontalAlignment::Left);
+            .horizontal_alignment(Horizontal::Left);
 
         let refresh_icon_handle = svg::Handle::from_memory(REFRESH);
 
@@ -1521,7 +1624,7 @@ impl Application for Bl3Application {
         let mut menu_bar_editor_content = Row::new()
             .push(title)
             .spacing(15)
-            .align_items(Align::Center);
+            .align_items(Alignment::Center);
 
         if view_state_discrim == manage_save_discrim || view_state_discrim == manage_profile_discrim
         {
@@ -1556,10 +1659,10 @@ impl Application for Bl3Application {
                 Row::new()
                     .push(update_button)
                     .spacing(10)
-                    .align_items(Align::Center),
+                    .align_items(Alignment::Center),
             )
             .width(Length::Fill)
-            .align_x(Align::Start);
+            .align_x(Horizontal::Left);
 
             menu_bar_content = menu_bar_content.push(update_content);
         }

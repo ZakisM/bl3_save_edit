@@ -45,7 +45,8 @@ code was based off of their work.
 Thanks to HackerSmacker for their PS4
 bitmasks: https://github.com/HackerSmacker/CSave/blob/022c4e78ac7fa68e2338804bc0148ac9be3296f7/FileTranslator.c.
 
-Huge thanks to Levin from [Lootlemon](https://www.lootlemon.com/) for providing items that are available to import inside the editor!
+Huge thanks to Levin from [Lootlemon](https://www.lootlemon.com/) for providing items that are available to import
+inside the editor!
 
 Thanks to those who created these docs:
 

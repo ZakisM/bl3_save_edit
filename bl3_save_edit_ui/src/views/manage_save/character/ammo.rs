@@ -1,8 +1,9 @@
 use std::rc::Rc;
 
 use derivative::Derivative;
+use iced::alignment::Horizontal;
 use iced::{
-    button, text_input, tooltip, Align, Button, Color, Column, Container, Length, Row, Text,
+    button, text_input, tooltip, Alignment, Button, Color, Column, Container, Length, Row, Text,
     Tooltip,
 };
 
@@ -33,13 +34,12 @@ pub struct AmmoSetterField {
 }
 
 impl AmmoSetterField {
-    pub fn new<S, F>(name: S, text_margin: usize, ammo_pool: AmmoPool, on_changed: F) -> Self
+    pub fn new<F>(text_margin: usize, ammo_pool: AmmoPool, on_changed: F) -> Self
     where
-        S: AsRef<str>,
         F: 'static + Fn(i32) -> CharacterAmmoMessage,
     {
         AmmoSetterField {
-            name: name.as_ref().to_owned(),
+            name: ammo_pool.to_string(),
             text_margin,
             ammo_pool,
             on_changed: Rc::new(on_changed),
@@ -93,7 +93,7 @@ impl AmmoSetterField {
                 .style(Bl3UiTooltipStyle),
             )
             .width(Length::Fill)
-            .align_items(Align::Center)
+            .align_items(Alignment::Center)
     }
 }
 
@@ -112,38 +112,17 @@ pub struct AmmoSetter {
 impl std::default::Default for AmmoSetter {
     fn default() -> Self {
         Self {
-            sniper: AmmoSetterField::new(
-                "Sniper",
-                0,
-                AmmoPool::Sniper,
-                CharacterAmmoMessage::Sniper,
-            ),
-            heavy: AmmoSetterField::new("Heavy", 4, AmmoPool::Heavy, CharacterAmmoMessage::Heavy),
-            shotgun: AmmoSetterField::new(
-                "Shotgun",
-                0,
-                AmmoPool::Shotgun,
-                CharacterAmmoMessage::Shotgun,
-            ),
-            grenade: AmmoSetterField::new(
-                "Grenade",
-                4,
-                AmmoPool::Grenade,
-                CharacterAmmoMessage::Grenade,
-            ),
-            smg: AmmoSetterField::new("SMG", 0, AmmoPool::Smg, CharacterAmmoMessage::Smg),
+            sniper: AmmoSetterField::new(0, AmmoPool::Sniper, CharacterAmmoMessage::Sniper),
+            heavy: AmmoSetterField::new(4, AmmoPool::Heavy, CharacterAmmoMessage::Heavy),
+            shotgun: AmmoSetterField::new(0, AmmoPool::Shotgun, CharacterAmmoMessage::Shotgun),
+            grenade: AmmoSetterField::new(4, AmmoPool::Grenade, CharacterAmmoMessage::Grenade),
+            smg: AmmoSetterField::new(0, AmmoPool::Smg, CharacterAmmoMessage::Smg),
             assault_rifle: AmmoSetterField::new(
-                "AR",
                 4,
                 AmmoPool::Ar,
                 CharacterAmmoMessage::AssaultRifle,
             ),
-            pistol: AmmoSetterField::new(
-                "Pistol",
-                0,
-                AmmoPool::Pistol,
-                CharacterAmmoMessage::Pistol,
-            ),
+            pistol: AmmoSetterField::new(0, AmmoPool::Pistol, CharacterAmmoMessage::Pistol),
             max_all_button_state: button::State::default(),
         }
     }
@@ -161,7 +140,7 @@ impl AmmoSetter {
                             .color(Color::from_rgb8(242, 203, 5)),
                     )
                     .padding(10)
-                    .align_x(Align::Center)
+                    .align_x(Horizontal::Center)
                     .width(Length::Fill)
                     .style(Bl3UiStyle),
                 )
@@ -203,7 +182,7 @@ impl AmmoSetter {
                                 )
                                 .padding(5),
                             )
-                            .align_items(Align::Center)
+                            .align_items(Alignment::Center)
                             .spacing(15),
                     )
                     .padding(20)

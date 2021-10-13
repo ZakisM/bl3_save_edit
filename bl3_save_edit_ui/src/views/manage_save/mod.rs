@@ -2,7 +2,7 @@ use bl3_save_edit_core::bl3_save::Bl3Save;
 
 use crate::views::manage_save::character::SaveCharacterInteractionMessage;
 use crate::views::manage_save::currency::SaveCurrencyInteractionMessage;
-use crate::views::manage_save::general::{GeneralMessage, SaveGeneralInteractionMessage};
+use crate::views::manage_save::general::SaveGeneralInteractionMessage;
 use crate::views::manage_save::inventory::SaveInventoryInteractionMessage;
 use crate::views::manage_save::main::{
     SaveTabBarInteractionMessage, SaveTabBarView, SaveViewState,
@@ -20,12 +20,6 @@ pub mod vehicle;
 pub struct ManageSaveState {
     pub save_view_state: SaveViewState,
     pub current_file: Bl3Save,
-}
-
-//These messages are currently only being used for async messages
-#[derive(Debug, Clone)]
-pub enum ManageSaveMessage {
-    General(GeneralMessage),
 }
 
 #[derive(Debug, Clone)]

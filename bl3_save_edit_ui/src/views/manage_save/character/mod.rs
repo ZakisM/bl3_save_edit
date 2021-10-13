@@ -1,5 +1,5 @@
 use iced::{
-    pick_list, text_input, tooltip, Align, Column, Container, Length, PickList, Row, Tooltip,
+    pick_list, text_input, tooltip, Alignment, Column, Container, Length, PickList, Row, Tooltip,
 };
 
 use bl3_save_edit_core::bl3_save::character_data::MAX_CHARACTER_LEVEL;
@@ -139,7 +139,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
             .style(Bl3UiStyle)
             .into_element(),
         )
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::FillPortion(3))
     .height(Length::Units(36))
@@ -168,7 +168,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
             .style(Bl3UiStyle)
             .into_element(),
         )
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::FillPortion(1))
     .height(Length::Units(36))
@@ -213,7 +213,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
             .style(Bl3UiTooltipStyle),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -253,7 +253,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
             .style(Bl3UiTooltipStyle),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -284,7 +284,7 @@ pub fn view(character_state: &mut CharacterState) -> Container<Bl3Message> {
             .into_element(),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))

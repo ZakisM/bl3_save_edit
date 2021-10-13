@@ -1,7 +1,8 @@
 use std::fmt::Formatter;
 use std::str::FromStr;
 
-use anyhow::{bail, Result};
+use anyhow::{bail, Context, Result};
+use bitflags::bitflags;
 use bitvec::prelude::*;
 use byteorder::{BigEndian, WriteBytesExt};
 use encoding_rs::mem::decode_latin1;
@@ -15,10 +16,19 @@ use crate::game_data::{BALANCE_NAME_MAPPING, BALANCE_TO_INV_KEY};
 use crate::parser::read_be_signed_int;
 use crate::resources::{
     INVENTORY_INV_DATA_PARTS, INVENTORY_PARTS_ALL_CATEGORIZED, INVENTORY_SERIAL_DB,
+    INVENTORY_SERIAL_DB_PARTS_CATEGORIZED,
 };
 
 pub const MAX_BL3_ITEM_PARTS: usize = 63;
 pub const MAX_BL3_ITEM_ANOINTMENTS: usize = 15;
+
+bitflags! {
+    pub struct ItemFlags: i32 {
+        const SEEN = 0x1;
+        const FAVORITE = 0x2;
+        const JUNK = 0x4;
+    }
+}
 
 // Translated from https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/bl3save/datalib.py
 // All credits to apocalyptech
@@ -37,6 +47,8 @@ pub struct Bl3Item {
     manufacturer_part: ManufacturerPart,
     level: usize,
     pub item_parts: Option<Bl3ItemParts>,
+    pub item_type: ItemType,
+    pub flags: Option<ItemFlags>,
 }
 
 #[derive(Debug, Clone, Default, Eq, PartialEq, Ord, PartialOrd)]
@@ -49,7 +61,6 @@ pub struct Bl3ItemParts {
     pub additional_data: Vec<usize>,
     pub num_customs: usize,
     pub rerolled: usize,
-    pub item_type: ItemType,
     pub rarity: ItemRarity,
     pub weapon_type: Option<WeaponType>,
 }
@@ -132,21 +143,25 @@ pub struct Bl3Part {
     pub idx: usize,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Display, EnumString)]
+#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString)]
 pub enum ItemType {
     #[strum(serialize = "BPInvPart_Artifact_C", to_string = "Artifact")]
     Artifact,
+    #[strum(serialize = "BPInvPart_ClassMod_C", to_string = "Class Mod")]
+    ClassMod,
     #[strum(serialize = "BPInvPart_GrenadeMod_C", to_string = "Grenade Mod")]
     GrenadeMod,
     #[strum(serialize = "BPInvPart_Shield_C", to_string = "Shield")]
     Shield,
     #[strum(to_string = "Weapon")]
     Weapon,
+    #[strum(to_string = "Other")]
+    Other,
 }
 
 impl std::default::Default for ItemType {
     fn default() -> Self {
-        Self::Weapon
+        Self::Other
     }
 }
 
@@ -202,7 +217,7 @@ pub enum WeaponType {
 }
 
 impl Bl3Item {
-    pub fn from_serial_bytes(serial: &[u8]) -> Result<Self> {
+    pub fn from_serial_bytes(serial: &[u8], flags: Option<ItemFlags>) -> Result<Self> {
         let serial = serial;
 
         if serial.len() < 5 {
@@ -282,14 +297,16 @@ impl Bl3Item {
             .as_ref()
             .and_then(|bs| item_part_data.get(bs));
 
+        let balance_lower = balance.to_lowercase();
+        let balance_short_name_lower = balance_short_name
+            .as_ref()
+            .map(|b| b.to_lowercase())
+            .unwrap_or_else(|| balance_lower.clone());
+
         let balance_eng_name = BALANCE_NAME_MAPPING
             .par_iter()
             .find_first(|gd| {
-                balance_short_name
-                    .as_ref()
-                    .unwrap_or(&balance)
-                    .to_lowercase()
-                    == gd.ident.rsplit('/').next().unwrap_or(gd.ident)
+                balance_short_name_lower == gd.ident.rsplit('/').next().unwrap_or(gd.ident)
             })
             .map(|gd| gd.name.to_owned());
 
@@ -311,9 +328,11 @@ impl Bl3Item {
             idx: manufacturer_idx,
         };
 
+        let mut item_type = ItemType::Other;
+
         let item_parts = if let Some(part_inv_key) = BALANCE_TO_INV_KEY
             .par_iter()
-            .find_first(|gd| balance.to_lowercase() == gd.ident)
+            .find_first(|gd| balance_lower == gd.ident)
             .map(|gd| gd.name.to_owned())
         {
             let mut should_not_allow_parts_parsing = false;
@@ -355,8 +374,6 @@ impl Bl3Item {
                 bail!("Could not fully parse the item data, there was unexpected data left.")
             }
 
-            let item_type = ItemType::from_str(&part_inv_key).unwrap_or_default();
-
             let rarity = item_part_info
                 .and_then(|info| ItemRarity::from_str(&info.rarity).ok())
                 .unwrap_or_default();
@@ -371,6 +388,12 @@ impl Bl3Item {
                 _ => None,
             };
 
+            item_type = if weapon_type.is_some() {
+                ItemType::Weapon
+            } else {
+                ItemType::from_str(&part_inv_key).unwrap_or_default()
+            };
+
             let item_parts = Bl3ItemParts {
                 part_inv_key,
                 part_bits,
@@ -380,7 +403,6 @@ impl Bl3Item {
                 additional_data,
                 num_customs,
                 rerolled,
-                item_type,
                 rarity,
                 weapon_type,
             };
@@ -409,19 +431,25 @@ impl Bl3Item {
             manufacturer_part,
             level,
             item_parts,
+            item_type,
+            flags,
         })
     }
 
     pub fn from_serial_base64(serial: &str) -> Result<Self> {
-        let serial_lower = serial.to_lowercase();
+        if serial.len() < 5 {
+            bail!("Serial length must be longer than 4 characters.");
+        }
 
-        if !serial_lower.starts_with("bl3(") || !serial_lower.ends_with(')') {
+        let serial_start = serial[0..4].to_lowercase();
+
+        if serial_start != "bl3(" || !serial.ends_with(')') {
             bail!("Serial must start with 'BL3(' and end with ')'.")
         }
 
         let decoded = base64::decode(&serial[4..serial.len() - 1])?;
 
-        Self::from_serial_bytes(&decoded)
+        Self::from_serial_bytes(&decoded, None)
     }
 
     pub fn encrypt_serial(&self, seed: i32) -> Result<Vec<u8>> {
@@ -482,9 +510,11 @@ impl Bl3Item {
     }
 
     pub fn set_balance(&mut self, balance_part: BalancePart) -> Result<()> {
+        let balance_ident_lower = balance_part.ident.to_lowercase();
+
         match BALANCE_TO_INV_KEY
             .iter()
-            .find(|gd| balance_part.ident.to_lowercase() == gd.ident)
+            .find(|gd| balance_ident_lower == gd.ident)
             .map(|gd| gd.name.to_owned())
         {
             None => {
@@ -497,9 +527,29 @@ impl Bl3Item {
             }
             Some(part_inv_key) => {
                 if let Some(item_parts) = &mut self.item_parts {
+                    let inventory_serial_db_parts_categorized =
+                        &*INVENTORY_SERIAL_DB_PARTS_CATEGORIZED;
+
+                    let all_parts_list = inventory_serial_db_parts_categorized.get(&part_inv_key);
+
                     item_parts.part_inv_key = part_inv_key;
 
-                    item_parts.parts = Vec::new();
+                    // Try to keep valid parts on our item instead of removing all
+                    if let Some(all_parts) = all_parts_list {
+                        item_parts.parts.retain(|p| {
+                            all_parts.par_iter().any(|rcp| {
+                                rcp.parts.par_iter().any(|rp| {
+                                    if let Some(short_ident) = &p.short_ident {
+                                        rp.name == *short_ident
+                                    } else {
+                                        false
+                                    }
+                                })
+                            })
+                        });
+                    } else {
+                        item_parts.parts = Vec::new();
+                    }
                 } else {
                     self.item_parts = Some(Bl3ItemParts {
                         part_inv_key,
@@ -608,6 +658,104 @@ impl Bl3Item {
         Ok(())
     }
 
+    pub fn move_part_up(&mut self, index: &mut usize) -> Result<()> {
+        let curr_index = *index;
+
+        if let Some(item_parts) = &mut self.item_parts {
+            if curr_index != 0 {
+                let parts = &mut item_parts.parts;
+
+                let current = parts
+                    .get(curr_index)
+                    .context("failed to find this part on the item")?
+                    .to_owned();
+
+                parts.remove(curr_index);
+                parts.insert(curr_index - 1, current);
+
+                *index -= 1;
+            }
+        }
+
+        self.update_weapon_serial()?;
+
+        Ok(())
+    }
+
+    pub fn move_part_down(&mut self, index: &mut usize) -> Result<()> {
+        let curr_index = *index;
+
+        if let Some(item_parts) = &mut self.item_parts {
+            if curr_index != item_parts.parts.len() - 1 {
+                let parts = &mut item_parts.parts;
+
+                let current = parts
+                    .get(curr_index)
+                    .context("failed to find this part on the item")?
+                    .to_owned();
+
+                parts.remove(curr_index);
+                parts.insert(curr_index + 1, current);
+
+                *index += 1;
+            }
+        }
+
+        self.update_weapon_serial()?;
+
+        Ok(())
+    }
+
+    pub fn move_part_top(&mut self, index: &mut usize) -> Result<()> {
+        let curr_index = *index;
+
+        if let Some(item_parts) = &mut self.item_parts {
+            if curr_index != 0 {
+                let parts = &mut item_parts.parts;
+
+                let current = parts
+                    .get(curr_index)
+                    .context("failed to find this part on the item")?
+                    .to_owned();
+
+                parts.remove(curr_index);
+                parts.insert(0, current);
+
+                *index = 0;
+            }
+        }
+
+        self.update_weapon_serial()?;
+
+        Ok(())
+    }
+
+    pub fn move_part_bottom(&mut self, index: &mut usize) -> Result<()> {
+        let curr_index = *index;
+
+        if let Some(item_parts) = &mut self.item_parts {
+            let len = item_parts.parts.len() - 1;
+
+            if curr_index != len {
+                let parts = &mut item_parts.parts;
+
+                let current = parts
+                    .get(curr_index)
+                    .context("failed to find this part on the item")?
+                    .to_owned();
+
+                parts.remove(curr_index);
+                parts.insert(len, current);
+
+                *index = len;
+            }
+        }
+
+        self.update_weapon_serial()?;
+
+        Ok(())
+    }
+
     pub fn update_weapon_serial(&mut self) -> Result<()> {
         let serial_db = &*INVENTORY_SERIAL_DB;
 
@@ -666,7 +814,7 @@ impl Bl3Item {
 
         let full_serial = self.encrypt_serial(0)?;
 
-        *self = Bl3Item::from_serial_bytes(&full_serial)?;
+        *self = Bl3Item::from_serial_bytes(&full_serial, self.flags)?;
 
         Ok(())
     }
@@ -773,7 +921,7 @@ mod tests {
         let orig_serial_number = serial_number.clone();
 
         let decrypted =
-            Bl3Item::from_serial_bytes(&serial_number).expect("failed to decrypt serial");
+            Bl3Item::from_serial_bytes(&serial_number, None).expect("failed to decrypt serial");
 
         assert_eq!(decrypted.balance_part.ident, "/Game/PatchDLC/Hibiscus/Gear/Shields/_Unique/OldGod/Balance/InvBalD_Shield_OldGod.InvBalD_Shield_OldGod");
         assert_eq!(

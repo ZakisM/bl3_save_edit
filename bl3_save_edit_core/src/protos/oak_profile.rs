@@ -22,7 +22,8 @@
 /// Generated files are compatible only with the same version
 /// of protobuf runtime.
 // const _PROTOBUF_VERSION_CHECK: () = ::protobuf::VERSION_2_25_1;
-#[derive(PartialEq, Clone, Default)]
+
+#[derive(PartialEq,Clone,Default)]
 pub struct PlayerInputBinding_Button {
     // message fields
     pub rebind_data_path: ::std::string::String,
@@ -106,13 +107,13 @@ impl ::protobuf::Message for PlayerInputBinding_Button {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.rebind_data_path)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.key_names)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -191,7 +192,7 @@ impl ::protobuf::Message for PlayerInputBinding_Button {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<PlayerInputBinding_Button>(
                 "PlayerInputBinding_Button",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -222,7 +223,7 @@ impl ::protobuf::reflect::ProtobufValue for PlayerInputBinding_Button {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct PlayerInputBinding_Axis_Key {
     // message fields
     pub key_name: ::std::string::String,
@@ -319,13 +320,13 @@ impl ::protobuf::Message for PlayerInputBinding_Axis_Key {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.key_name)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.scale_3d)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -407,7 +408,7 @@ impl ::protobuf::Message for PlayerInputBinding_Axis_Key {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<PlayerInputBinding_Axis_Key>(
                 "PlayerInputBinding_Axis_Key",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -438,7 +439,7 @@ impl ::protobuf::reflect::ProtobufValue for PlayerInputBinding_Axis_Key {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct PlayerInputBinding_Axis {
     // message fields
     pub rebind_data_path: ::std::string::String,
@@ -527,13 +528,13 @@ impl ::protobuf::Message for PlayerInputBinding_Axis {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.rebind_data_path)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.keys)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -615,7 +616,7 @@ impl ::protobuf::Message for PlayerInputBinding_Axis {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<PlayerInputBinding_Axis>(
                 "PlayerInputBinding_Axis",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -646,7 +647,7 @@ impl ::protobuf::reflect::ProtobufValue for PlayerInputBinding_Axis {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct PlayerInputBinding_Category {
     // message fields
     pub category_data_path: ::std::string::String,
@@ -793,19 +794,19 @@ impl ::protobuf::Message for PlayerInputBinding_Category {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.category_data_path)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.context_data_path)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.button_bindings)?;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.axis_bindings)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -912,7 +913,7 @@ impl ::protobuf::Message for PlayerInputBinding_Category {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<PlayerInputBinding_Category>(
                 "PlayerInputBinding_Category",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -945,7 +946,7 @@ impl ::protobuf::reflect::ProtobufValue for PlayerInputBinding_Category {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct PlayerInputBindings {
     // message fields
     pub categories: ::protobuf::RepeatedField<PlayerInputBinding_Category>,
@@ -1007,10 +1008,10 @@ impl ::protobuf::Message for PlayerInputBindings {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.categories)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -1081,7 +1082,7 @@ impl ::protobuf::Message for PlayerInputBindings {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<PlayerInputBindings>(
                 "PlayerInputBindings",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -1111,7 +1112,7 @@ impl ::protobuf::reflect::ProtobufValue for PlayerInputBindings {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakProfileLastInventoryFilterInfo {
     // message fields
     pub slot_type_id: ::std::string::String,
@@ -1185,17 +1186,17 @@ impl ::protobuf::Message for OakProfileLastInventoryFilterInfo {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.slot_type_id)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.last_filter_index = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -1274,7 +1275,7 @@ impl ::protobuf::Message for OakProfileLastInventoryFilterInfo {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakProfileLastInventoryFilterInfo>(
                 "OakProfileLastInventoryFilterInfo",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -1305,7 +1306,7 @@ impl ::protobuf::reflect::ProtobufValue for OakProfileLastInventoryFilterInfo {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakProfileMenuTutorialInfo {
     // message fields
     pub seen_tutorials: ::protobuf::RepeatedField<::std::string::String>,
@@ -1394,24 +1395,24 @@ impl ::protobuf::Message for OakProfileMenuTutorialInfo {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.seen_tutorials)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.tutorials_disabled = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.tutorials_allowed_in_non_game_modes = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -1501,7 +1502,7 @@ impl ::protobuf::Message for OakProfileMenuTutorialInfo {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakProfileMenuTutorialInfo>(
                 "OakProfileMenuTutorialInfo",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -1533,7 +1534,7 @@ impl ::protobuf::reflect::ProtobufValue for OakProfileMenuTutorialInfo {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakFriendEncounterData {
     // message fields
     pub num_encounters: u32,
@@ -1600,17 +1601,17 @@ impl ::protobuf::Message for OakFriendEncounterData {
                     }
                     let tmp = is.read_uint32()?;
                     self.num_encounters = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.time_last_encounter = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -1689,7 +1690,7 @@ impl ::protobuf::Message for OakFriendEncounterData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakFriendEncounterData>(
                 "OakFriendEncounterData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -1720,7 +1721,7 @@ impl ::protobuf::reflect::ProtobufValue for OakFriendEncounterData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GearSoldByFriendData {
     // message fields
     pub gear_serial_number: ::std::string::String,
@@ -1821,20 +1822,20 @@ impl ::protobuf::Message for GearSoldByFriendData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.gear_serial_number)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.player_class_identifier_hash = tmp;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.friend_net_id)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -1924,7 +1925,7 @@ impl ::protobuf::Message for GearSoldByFriendData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GearSoldByFriendData>(
                 "GearSoldByFriendData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -1956,7 +1957,7 @@ impl ::protobuf::reflect::ProtobufValue for GearSoldByFriendData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GuardianRankRewardSaveGameData {
     // message fields
     pub num_tokens: i32,
@@ -2034,13 +2035,13 @@ impl ::protobuf::Message for GuardianRankRewardSaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.num_tokens = tmp;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.reward_data_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -2119,7 +2120,7 @@ impl ::protobuf::Message for GuardianRankRewardSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GuardianRankRewardSaveGameData>(
                 "GuardianRankRewardSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -2150,7 +2151,7 @@ impl ::protobuf::reflect::ProtobufValue for GuardianRankRewardSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GuardianRankProfileData {
     // message fields
     pub available_tokens: i32,
@@ -2296,41 +2297,41 @@ impl ::protobuf::Message for GuardianRankProfileData {
                     }
                     let tmp = is.read_int32()?;
                     self.available_tokens = tmp;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.rank_rewards)?;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.guardian_rank = tmp;
-                }
+                },
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.guardian_experience = tmp;
-                }
+                },
                 5 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.guardian_reward_random_seed = tmp;
-                }
+                },
                 6 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.new_guardian_experience = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -2456,7 +2457,7 @@ impl ::protobuf::Message for GuardianRankProfileData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GuardianRankProfileData>(
                 "GuardianRankProfileData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -2491,7 +2492,7 @@ impl ::protobuf::reflect::ProtobufValue for GuardianRankProfileData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct RecentlyMetPlayer {
     // message fields
     pub shift_player_id: ::std::string::String,
@@ -2592,20 +2593,20 @@ impl ::protobuf::Message for RecentlyMetPlayer {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.shift_player_id)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.first_party_player_id)?;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.show_shift_player_entry = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -2695,7 +2696,7 @@ impl ::protobuf::Message for RecentlyMetPlayer {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<RecentlyMetPlayer>(
                 "RecentlyMetPlayer",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -2727,7 +2728,7 @@ impl ::protobuf::reflect::ProtobufValue for RecentlyMetPlayer {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct Profile {
     // message fields
     pub enable_aim_assist: bool,
@@ -6424,1308 +6425,1308 @@ impl ::protobuf::Message for Profile {
                     }
                     let tmp = is.read_bool()?;
                     self.enable_aim_assist = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.gamepad_invert_look = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.gamepad_invert_turn = tmp;
-                }
+                },
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.gamepad_invert_move = tmp;
-                }
+                },
                 5 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.gamepad_invert_strafe = tmp;
-                }
+                },
                 6 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_vibration = tmp;
-                }
+                },
                 7 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.invert_mouse_pitch = tmp;
-                }
+                },
                 8 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_mouse_smoothing = tmp;
-                }
+                },
                 9 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.mouse_scale = tmp;
-                }
+                },
                 10 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.show_damage_numbers = tmp;
-                }
+                },
                 11 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.show_damage_number_icons = tmp;
-                }
+                },
                 12 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_training_messages = tmp;
-                }
+                },
                 13 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.show_text_chat = tmp;
-                }
+                },
                 14 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.center_crosshair = tmp;
-                }
+                },
                 15 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.toggle_sprint = tmp;
-                }
+                },
                 16 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.toggle_crouch = tmp;
-                }
+                },
                 17 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.censor_content = tmp;
-                }
+                },
                 18 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.music_volume = tmp;
-                }
+                },
                 19 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.sound_effects_volume = tmp;
-                }
+                },
                 20 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.vo_volume = tmp;
-                }
+                },
                 21 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.voice_volume = tmp;
-                }
+                },
                 22 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_optional_vo = tmp;
-                }
+                },
                 23 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.push_to_talk = tmp;
-                }
+                },
                 24 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_controller_audio = tmp;
-                }
+                },
                 25 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.speaker_angle_front = tmp;
-                }
+                },
                 26 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.speaker_angle_side = tmp;
-                }
+                },
                 27 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.speaker_angle_back = tmp;
-                }
+                },
                 28 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.speaker_setup = tmp;
-                }
+                },
                 29 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.mute_audio_on_focus_loss = tmp;
-                }
+                },
                 34 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.hide_strict_nat_help_dialog = tmp;
-                }
+                },
                 35 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.player_input_bindings)?;
-                }
+                },
                 36 => {
                     ::protobuf::rt::read_repeated_uint32_into(wire_type, is, &mut self.news_hashes)?;
-                }
+                },
                 37 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.last_used_savegame_id = tmp;
-                }
+                },
                 38 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.gamepad_hip_sensitivity_level = tmp;
-                }
+                },
                 39 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.gamepad_zoomed_sensitivity_level = tmp;
-                }
+                },
                 40 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.gamepad_vehicle_sensitivity_level = tmp;
-                }
+                },
                 41 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_movement_dead_zone_x = tmp;
-                }
+                },
                 42 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_movement_dead_zone_y = tmp;
-                }
+                },
                 43 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_look_dead_zone_inner_x = tmp;
-                }
+                },
                 44 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_look_dead_zone_outer_x = tmp;
-                }
+                },
                 45 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_look_dead_zone_inner_y = tmp;
-                }
+                },
                 46 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_look_dead_zone_outer_y = tmp;
-                }
+                },
                 47 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_movement_dead_zone_x = tmp;
-                }
+                },
                 48 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_movement_dead_zone_y = tmp;
-                }
+                },
                 49 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_look_dead_zone_inner_x = tmp;
-                }
+                },
                 50 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_look_dead_zone_outer_x = tmp;
-                }
+                },
                 51 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_look_dead_zone_inner_y = tmp;
-                }
+                },
                 52 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_look_dead_zone_outer_y = tmp;
-                }
+                },
                 53 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_left_dead_zone_inner = tmp;
-                }
+                },
                 54 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_left_dead_zone_outer = tmp;
-                }
+                },
                 55 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_right_dead_zone_inner = tmp;
-                }
+                },
                 56 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_right_dead_zone_outer = tmp;
-                }
+                },
                 57 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_look_axial_dead_zone_scale = tmp;
-                }
+                },
                 58 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_move_axial_dead_zone_scale = tmp;
-                }
+                },
                 59 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.gamepad_use_advanced_hip_aim_settings = tmp;
-                }
+                },
                 60 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.gamepad_use_advanced_zoomed_aim_settings = tmp;
-                }
+                },
                 61 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.gamepad_use_advanced_vehicle_aim_settings = tmp;
-                }
+                },
                 62 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_hip_yaw_rate = tmp;
-                }
+                },
                 63 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_hip_pitch_rate = tmp;
-                }
+                },
                 64 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_hip_extra_yaw = tmp;
-                }
+                },
                 65 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_hip_extra_pitch = tmp;
-                }
+                },
                 66 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_hip_ramp_up_time = tmp;
-                }
+                },
                 67 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_hip_ramp_up_delay = tmp;
-                }
+                },
                 68 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_zoomed_yaw_rate = tmp;
-                }
+                },
                 69 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_zoomed_pitch_rate = tmp;
-                }
+                },
                 70 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_zoomed_extra_yaw = tmp;
-                }
+                },
                 71 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_zoomed_extra_pitch = tmp;
-                }
+                },
                 72 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_zoomed_ramp_up_time = tmp;
-                }
+                },
                 73 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_zoomed_ramp_up_delay = tmp;
-                }
+                },
                 74 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_yaw_rate = tmp;
-                }
+                },
                 75 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_pitch_rate = tmp;
-                }
+                },
                 76 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_extra_yaw = tmp;
-                }
+                },
                 77 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_extra_pitch = tmp;
-                }
+                },
                 78 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_ramp_up_time = tmp;
-                }
+                },
                 79 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.gamepad_vehicle_ramp_up_delay = tmp;
-                }
+                },
                 80 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.ironsight_aim_assist = tmp;
-                }
+                },
                 81 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.walking_joystick_scheme = tmp;
-                }
+                },
                 82 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.driving_joystick_scheme = tmp;
-                }
+                },
                 83 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.mouse_ads_scale = tmp;
-                }
+                },
                 84 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.mouse_vehicle_scale = tmp;
-                }
+                },
                 85 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.mouse_ironsight_aim_assist = tmp;
-                }
+                },
                 86 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.vehicle_input_mode = tmp;
-                }
+                },
                 87 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.weapon_aim_toggle = tmp;
-                }
+                },
                 88 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.mantle_requires_button = tmp;
-                }
+                },
                 89 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.fixed_minimap_rotation = tmp;
-                }
+                },
                 90 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.map_invert_pitch = tmp;
-                }
+                },
                 91 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.map_invert_yaw = tmp;
-                }
+                },
                 92 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.difficulty = tmp;
-                }
+                },
                 93 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.swap_dual_wield_controls = tmp;
-                }
+                },
                 94 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.base_fov = tmp;
-                }
+                },
                 95 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.crosshair_neutral_color_frame = tmp;
-                }
+                },
                 96 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.crosshair_enemy_color_frame = tmp;
-                }
+                },
                 97 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.crosshair_ally_color_frame = tmp;
-                }
+                },
                 98 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_subtitles = tmp;
-                }
+                },
                 99 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_closed_captions = tmp;
-                }
+                },
                 100 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.last_status_menu_page)?;
-                }
+                },
                 101 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.inventory_screen_last_filter)?;
-                }
+                },
                 102 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.tutorial_info)?;
-                }
+                },
                 103 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.default_network_type = tmp;
-                }
+                },
                 104 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.default_invite_type = tmp;
-                }
+                },
                 105 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.matchmaking_region)?;
-                }
+                },
                 106 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.streaming_service = tmp;
-                }
+                },
                 107 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.max_cached_friend_events = tmp;
-                }
+                },
                 108 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.max_cached_friend_statuses = tmp;
-                }
+                },
                 109 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.friend_events)?;
-                }
+                },
                 110 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.friend_statuses)?;
-                }
+                },
                 111 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.last_whisper_fetch_events_time = tmp;
-                }
+                },
                 112 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.last_whisper_fetch_statuses_time = tmp;
-                }
+                },
                 113 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.desired_crossplay_state = tmp;
-                }
+                },
                 133 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.friend_encounters)?;
-                }
+                },
                 134 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.max_friend_encounter_size = tmp;
-                }
+                },
                 135 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.profile_stats_data)?;
-                }
+                },
                 136 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.bank_inventory_category_list)?;
-                }
+                },
                 137 => {
                     ::protobuf::rt::read_repeated_bytes_into(wire_type, is, &mut self.bank_inventory_list)?;
-                }
+                },
                 138 => {
                     ::protobuf::rt::read_repeated_bytes_into(wire_type, is, &mut self.lost_loot_inventory_list)?;
-                }
+                },
                 139 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.npc_mail_items)?;
-                }
+                },
                 140 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.mail_guids)?;
-                }
+                },
                 141 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.unread_mail_guids)?;
-                }
+                },
                 142 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.gear_sold_by_friends)?;
-                }
+                },
                 143 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.profile_sdu_list)?;
-                }
+                },
                 144 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_customizations)?;
-                }
+                },
                 145 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_inventory_customization_parts)?;
-                }
+                },
                 146 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.guardian_rank)?;
-                }
+                },
                 147 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_crew_quarters_decorations)?;
-                }
+                },
                 148 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_crew_quarters_rooms)?;
-                }
+                },
                 150 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_mouse_acceleration = tmp;
-                }
+                },
                 151 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_gamepad_input = tmp;
-                }
+                },
                 152 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.use_classic_gamepad_input = tmp;
-                }
+                },
                 153 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.master_volume = tmp;
-                }
+                },
                 154 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.monitor_display_type = tmp;
-                }
+                },
                 155 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.graphics_mode = tmp;
-                }
+                },
                 156 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.frame_rate_limit = tmp;
-                }
+                },
                 157 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.base_vehicle_fov = tmp;
-                }
+                },
                 158 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.graphics_quality = tmp;
-                }
+                },
                 159 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.anisotropic_filtering = tmp;
-                }
+                },
                 160 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.shadow_quality = tmp;
-                }
+                },
                 161 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.display_performance_stats = tmp;
-                }
+                },
                 162 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.texture_detail = tmp;
-                }
+                },
                 163 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.draw_distance = tmp;
-                }
+                },
                 164 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.clutter = tmp;
-                }
+                },
                 165 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.tessellation = tmp;
-                }
+                },
                 166 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.foliage = tmp;
-                }
+                },
                 167 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.foliage_shadows = tmp;
-                }
+                },
                 168 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.planar_reflections = tmp;
-                }
+                },
                 169 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.volumetric_fog = tmp;
-                }
+                },
                 170 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.screen_space_reflections = tmp;
-                }
+                },
                 171 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.character_texture_detail = tmp;
-                }
+                },
                 172 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.character_detail = tmp;
-                }
+                },
                 173 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.ambient_occlusion_quality = tmp;
-                }
+                },
                 174 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.object_motion_blur = tmp;
-                }
+                },
                 175 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.lens_flare = tmp;
-                }
+                },
                 176 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.combat_number_long_format = tmp;
-                }
+                },
                 177 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.show_minimap_legendaries = tmp;
-                }
+                },
                 178 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.use_player_callouts = tmp;
-                }
+                },
                 179 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.friend_event_notification_lifetime = tmp;
-                }
+                },
                 180 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.friend_event_notification_frequency = tmp;
-                }
+                },
                 181 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.trade_request_reception_type = tmp;
-                }
+                },
                 182 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.head_bob_scale = tmp;
-                }
+                },
                 184 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.has_seen_first_boot = tmp;
-                }
+                },
                 189 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.subs_cc_size = tmp;
-                }
+                },
                 190 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.cc_subs_background_opacity = tmp;
-                }
+                },
                 191 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.walking_button_scheme = tmp;
-                }
+                },
                 192 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.driving_button_scheme = tmp;
-                }
+                },
                 193 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.glyph_mode = tmp;
-                }
+                },
                 194 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.use_MPH = tmp;
-                }
+                },
                 195 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.registered_downloadable_entitlements)?;
-                }
+                },
                 196 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.seen_news_items)?;
-                }
+                },
                 197 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.auto_centering_enabled = tmp;
-                }
+                },
                 198 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.increased_chance_for_subscribers = tmp;
-                }
+                },
                 199 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.rare_chest_event_enabled = tmp;
-                }
+                },
                 200 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.badass_event_enabled = tmp;
-                }
+                },
                 201 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.pinata_event_enabled = tmp;
-                }
+                },
                 202 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.min_time_between_badass_events = tmp;
-                }
+                },
                 203 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.hud_scale_multiplier = tmp;
-                }
+                },
                 204 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.disable_spatial_audio__or__has_reset_console_fov = tmp;
-                }
+                },
                 205 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.total_playtime_seconds = tmp;
-                }
+                },
                 206 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.moxxis_drink_event_enabled = tmp;
-                }
+                },
                 207 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.moxxis_drink_event_bits_product_id = tmp;
-                }
+                },
                 208 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.challenge_data)?;
-                }
+                },
                 209 => {
                     ::protobuf::rt::read_repeated_int32_into(wire_type, is, &mut self.CitizenScienceLevelProgression)?;
-                }
+                },
                 210 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.default_dead_zone_inner_updated = tmp;
-                }
+                },
                 211 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.disable_event_content = tmp;
-                }
+                },
                 212 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.desired_friend_sync_state = tmp;
-                }
+                },
                 213 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.needs_shift_first_boot = tmp;
-                }
+                },
                 214 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.recently_met_players)?;
-                }
+                },
                 215 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.CitizenScienceActiveBoosterIndex = tmp;
-                }
+                },
                 216 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.CitizenScienceActiveBoosterRemainingTime = tmp;
-                }
+                },
                 217 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.CitizenScienceActiveBoosterTotalTime = tmp;
-                }
+                },
                 218 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.StreamerPrimaryActiveBoosterIndex = tmp;
-                }
+                },
                 219 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.StreamerPrimaryActiveBoosterRemainingTime = tmp;
-                }
+                },
                 220 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.StreamerPrimaryActiveBoosterTotalTime = tmp;
-                }
+                },
                 221 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.StreamerSecondaryActiveBoosterIndex = tmp;
-                }
+                },
                 222 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.StreamerSecondaryActiveBoosterRemainingTime = tmp;
-                }
+                },
                 223 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.StreamerSecondaryActiveBoosterTotalTime = tmp;
-                }
+                },
                 224 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.StreamerBoosterTier = tmp;
-                }
+                },
                 226 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.CitizenScienceCSBucksAmount = tmp;
-                }
+                },
                 227 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.bCitizenScienceHasSeenIntroVideo = tmp;
-                }
+                },
                 228 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.bCitizenScienceTutorialDone = tmp;
-                }
+                },
                 229 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enable_trigger_feedback = tmp;
-                }
+                },
                 230 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.fixed_initial_zonemap_rotation = tmp;
-                }
+                },
                 231 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.vault_card)?;
-                }
+                },
                 232 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.player_selected_league = tmp;
-                }
+                },
                 233 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.needs_shift_first_boot_primary = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -10069,7 +10070,7 @@ impl ::protobuf::Message for Profile {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Profile>(
                 "Profile",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -10301,7 +10302,7 @@ impl ::protobuf::reflect::ProtobufValue for Profile {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct Profile_FriendEncountersEntry {
     // message fields
     pub key: ::std::string::String,
@@ -10398,13 +10399,13 @@ impl ::protobuf::Message for Profile_FriendEncountersEntry {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.key)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.value)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -10486,7 +10487,7 @@ impl ::protobuf::Message for Profile_FriendEncountersEntry {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Profile_FriendEncountersEntry>(
                 "Profile.FriendEncountersEntry",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }

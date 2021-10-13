@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
-use iced::{button, Align, Button, Color, Column, Container, HorizontalAlignment, Length, Text};
+use iced::alignment::{Horizontal, Vertical};
+use iced::{button, Alignment, Button, Color, Column, Container, Length, Text};
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
@@ -35,7 +36,7 @@ pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Conta
     let mut dir_button = Button::new(
         &mut choose_save_directory_state.choose_dir_button_state,
         Text::new("Select...")
-            .horizontal_alignment(HorizontalAlignment::Center)
+            .horizontal_alignment(Horizontal::Center)
             .font(JETBRAINS_MONO)
             .size(18),
     )
@@ -52,11 +53,11 @@ pub fn view(choose_save_directory_state: &mut ChooseSaveDirectoryState) -> Conta
         .push(dir_button_text)
         .push(dir_button.into_element())
         .spacing(20)
-        .align_items(Align::Center);
+        .align_items(Alignment::Center);
 
     Container::new(contents)
         .width(Length::Fill)
         .height(Length::Fill)
-        .align_x(Align::Center)
-        .align_y(Align::Center)
+        .align_x(Horizontal::Center)
+        .align_y(Vertical::Center)
 }

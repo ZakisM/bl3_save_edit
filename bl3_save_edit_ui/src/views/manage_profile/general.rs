@@ -1,5 +1,6 @@
 use iced::{
-    pick_list, text_input, tooltip, Align, Column, Container, Length, PickList, TextInput, Tooltip,
+    pick_list, text_input, tooltip, Alignment, Column, Container, Length, PickList, TextInput,
+    Tooltip,
 };
 
 use bl3_save_edit_core::parser::HeaderType;
@@ -52,7 +53,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
         )
         .spacing(15)
         .width(Length::FillPortion(9))
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -82,7 +83,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
             .into_element(),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))

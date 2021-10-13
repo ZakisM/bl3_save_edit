@@ -1,8 +1,9 @@
 use std::rc::Rc;
 
 use derivative::Derivative;
+use iced::alignment::{Horizontal, Vertical};
 use iced::{
-    button, text_input, tooltip, Align, Button, Color, Column, Container, Length, Row, Text,
+    button, text_input, tooltip, Alignment, Button, Color, Column, Container, Length, Row, Text,
     Tooltip,
 };
 
@@ -11,7 +12,7 @@ use bl3_save_edit_core::bl3_profile::sdu::ProfileSduSlot;
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
-use crate::views::manage_profile::profile::{ProfileProfileInteractionMessage, ProfileSduMessage};
+use crate::views::manage_profile::profile::{ProfileInteractionMessage, SduMessage};
 use crate::views::manage_profile::ManageProfileInteractionMessage;
 use crate::views::InteractionExt;
 use crate::widgets::number_input::NumberInput;
@@ -25,25 +26,19 @@ pub struct SduUnlockField {
     pub sdu_slot: ProfileSduSlot,
     pub input: i32,
     input_state: text_input::State,
-    #[derivative(Debug = "ignore", Default(value = "Rc::new(ProfileSduMessage::Bank)"))]
-    on_changed: Rc<dyn Fn(i32) -> ProfileSduMessage>,
+    #[derivative(Debug = "ignore", Default(value = "Rc::new(SduMessage::Bank)"))]
+    on_changed: Rc<dyn Fn(i32) -> SduMessage>,
 }
 
 impl SduUnlockField {
-    pub fn new<S, F>(
-        name: S,
-        text_margin: usize,
-        sdu_slot_type: ProfileSduSlot,
-        on_changed: F,
-    ) -> Self
+    pub fn new<F>(text_margin: usize, sdu_slot: ProfileSduSlot, on_changed: F) -> Self
     where
-        S: AsRef<str>,
-        F: 'static + Fn(i32) -> ProfileSduMessage,
+        F: 'static + Fn(i32) -> SduMessage,
     {
         SduUnlockField {
-            name: name.as_ref().to_owned(),
+            name: sdu_slot.to_string(),
             text_margin,
-            sdu_slot: sdu_slot_type,
+            sdu_slot,
             on_changed: Rc::new(on_changed),
             ..Default::default()
         }
@@ -73,7 +68,7 @@ impl SduUnlockField {
                         move |v| {
                             InteractionMessage::ManageProfileInteraction(
                                 ManageProfileInteractionMessage::Profile(
-                                    ProfileProfileInteractionMessage::SduMessage(on_changed(v)),
+                                    ProfileInteractionMessage::SduMessage(on_changed(v)),
                                 ),
                             )
                         },
@@ -95,7 +90,7 @@ impl SduUnlockField {
                 .style(Bl3UiTooltipStyle),
             )
             .width(Length::Fill)
-            .align_items(Align::Center)
+            .align_items(Alignment::Center)
     }
 }
 
@@ -109,13 +104,8 @@ pub struct SduUnlocker {
 impl std::default::Default for SduUnlocker {
     fn default() -> Self {
         Self {
-            bank: SduUnlockField::new("Bank", 0, ProfileSduSlot::Bank, ProfileSduMessage::Bank),
-            lost_loot: SduUnlockField::new(
-                "Lost Loot",
-                4,
-                ProfileSduSlot::LostLoot,
-                ProfileSduMessage::LostLoot,
-            ),
+            bank: SduUnlockField::new(0, ProfileSduSlot::Bank, SduMessage::Bank),
+            lost_loot: SduUnlockField::new(0, ProfileSduSlot::LostLoot, SduMessage::LostLoot),
             unlock_all_button_state: button::State::default(),
         }
     }
@@ -133,18 +123,15 @@ impl SduUnlocker {
                             .color(Color::from_rgb8(242, 203, 5)),
                     )
                     .padding(10)
-                    .align_x(Align::Center)
+                    .align_x(Horizontal::Center)
                     .width(Length::Fill)
                     .style(Bl3UiStyle),
                 )
                 .push(
                     Container::new(
                         Column::new()
-                            .push(
-                                Row::new()
-                                    .push(self.bank.view())
-                                    .push(self.lost_loot.view()),
-                            )
+                            .push(self.bank.view())
+                            .push(self.lost_loot.view())
                             .push(
                                 Container::new(
                                     Button::new(
@@ -155,7 +142,7 @@ impl SduUnlocker {
                                     )
                                     .on_press(InteractionMessage::ManageProfileInteraction(
                                         ManageProfileInteractionMessage::Profile(
-                                            ProfileProfileInteractionMessage::MaxSduSlotsPressed,
+                                            ProfileInteractionMessage::MaxSduSlotsPressed,
                                         ),
                                     ))
                                     .padding(10)
@@ -163,14 +150,14 @@ impl SduUnlocker {
                                     .into_element(),
                                 )
                                 .height(Length::Fill)
-                                .align_y(Align::End)
+                                .align_y(Vertical::Bottom)
                                 .padding(5),
                             )
-                            .align_items(Align::Center)
+                            .align_items(Alignment::Center)
                             .spacing(15),
                     )
                     .padding(20)
-                    .height(Length::Units(260))
+                    .height(Length::Units(295))
                     .style(Bl3UiStyle),
                 ),
         )

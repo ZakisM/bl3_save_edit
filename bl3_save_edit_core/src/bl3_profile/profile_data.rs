@@ -1,13 +1,12 @@
 use std::convert::TryInto;
-use std::str::FromStr;
 
 use anyhow::{Context, Result};
 use derivative::Derivative;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use rayon::prelude::ParallelSliceMut;
 use strum::{EnumMessage, IntoEnumIterator};
 
 use crate::bl3_item::Bl3Item;
+use crate::bl3_profile::guardian_reward::{GuardianReward, GuardianRewardData};
 use crate::bl3_profile::profile_currency::ProfileCurrency;
 use crate::bl3_profile::science_levels::{BorderlandsScienceInfo, BorderlandsScienceLevel};
 use crate::bl3_profile::sdu::{ProfileSduSlot, ProfileSduSlotData};
@@ -18,7 +17,9 @@ use crate::game_data::{
     PROFILE_HEADS, PROFILE_HEADS_DEFAULTS, PROFILE_SKINS, PROFILE_SKINS_DEFAULTS,
     PROFILE_WEAPON_SKINS, PROFILE_WEAPON_TRINKETS,
 };
-use crate::protos::oak_profile::{GuardianRankProfileData, Profile};
+use crate::protos::oak_profile::{
+    GuardianRankProfileData, GuardianRankRewardSaveGameData, Profile,
+};
 use crate::protos::oak_shared::{
     CrewQuartersDecorationItemSaveGameData, InventoryCategorySaveData,
     OakCustomizationSaveGameData, OakInventoryCustomizationPartInfo, OakSDUSaveGameData,
@@ -37,7 +38,8 @@ pub struct ProfileData {
     vault_card_2_keys: i32,
     vault_card_2_chests: i32,
     guardian_rank: i32,
-    guardian_rank_tokens: i32,
+    guardian_tokens: i32,
+    guardian_rewards: Vec<GuardianRewardData>,
     borderlands_science_info: BorderlandsScienceInfo,
     sdu_slots: Vec<ProfileSduSlotData>,
     bank_items: Vec<Bl3Item>,
@@ -89,17 +91,33 @@ impl ProfileData {
             })
             .unwrap_or(0);
 
-        let guardian_rank = profile
+        let guardian_rank_profile_data = profile
             .guardian_rank
             .as_ref()
-            .map(|g| g.guardian_rank)
-            .unwrap_or(0);
+            .context("failed to read profile Guardian Rank profile data.")?;
 
-        let guardian_rank_tokens = profile
-            .guardian_rank
-            .as_ref()
-            .map(|g| g.available_tokens)
-            .unwrap_or(0);
+        let guardian_rank = guardian_rank_profile_data.guardian_rank;
+
+        let guardian_rank_tokens = guardian_rank_profile_data.available_tokens;
+
+        let guardian_rewards = GuardianReward::iter()
+            .map(|reward| {
+                let path = reward.get_serializations()[0];
+
+                let current = guardian_rank_profile_data
+                    .rank_rewards
+                    .iter()
+                    .find(|eg| eg.reward_data_path == path)
+                    .map(|eg| eg.num_tokens)
+                    .unwrap_or(0);
+
+                GuardianRewardData {
+                    current,
+                    max: i32::MAX,
+                    reward,
+                }
+            })
+            .collect::<Vec<_>>();
 
         let borderlands_science_level_solves = &profile.CitizenScienceLevelProgression;
 
@@ -116,48 +134,37 @@ impl ProfileData {
             }
         };
 
-        let mut sdu_slots = profile
-            .profile_sdu_list
-            .par_iter()
-            .map(|s| {
-                let slot = ProfileSduSlot::from_str(&s.sdu_data_path)?;
-                let max = slot.maximum();
+        let mut sdu_slots = ProfileSduSlot::iter()
+            .map(|sdu| {
+                let path = sdu.get_serializations()[0];
 
-                Ok(ProfileSduSlotData {
-                    slot,
-                    current: s.sdu_level,
-                    max,
-                })
-            })
-            .collect::<Result<Vec<_>>>()?;
+                let current = profile
+                    .profile_sdu_list
+                    .iter()
+                    .find(|s| s.sdu_data_path == path)
+                    .map(|s| s.sdu_level)
+                    .unwrap_or(0);
 
-        // make sure that we include all sdu slots that might not be in our save
-        ProfileSduSlot::iter().for_each(|sdu| {
-            let contains_sdu_slot = sdu_slots.par_iter().any(|profile_sdu| {
-                std::mem::discriminant(&sdu) == std::mem::discriminant(&profile_sdu.slot)
-            });
-
-            if !contains_sdu_slot {
-                sdu_slots.push(ProfileSduSlotData {
-                    current: 0,
+                ProfileSduSlotData {
+                    current,
                     max: sdu.maximum(),
-                    slot: sdu,
-                })
-            }
-        });
+                    sdu,
+                }
+            })
+            .collect::<Vec<_>>();
 
-        sdu_slots.par_sort();
+        sdu_slots.sort();
 
         let bank_items = profile
             .bank_inventory_list
             .par_iter()
-            .filter_map(|i| Bl3Item::from_serial_bytes(i).ok())
+            .filter_map(|i| Bl3Item::from_serial_bytes(i, None).ok())
             .collect::<Vec<_>>();
 
         let lost_loot_items = profile
             .lost_loot_inventory_list
             .par_iter()
-            .filter_map(|i| Bl3Item::from_serial_bytes(i).ok())
+            .filter_map(|i| Bl3Item::from_serial_bytes(i, None).ok())
             .collect::<Vec<_>>();
 
         let mut character_skins_unlocked = PROFILE_SKINS_DEFAULTS.len();
@@ -227,7 +234,8 @@ impl ProfileData {
             vault_card_2_keys,
             vault_card_2_chests,
             guardian_rank,
-            guardian_rank_tokens,
+            guardian_tokens: guardian_rank_tokens,
+            guardian_rewards,
             borderlands_science_info,
             sdu_slots,
             bank_items,
@@ -269,7 +277,7 @@ impl ProfileData {
         let hash = currency
             .get_hash()
             .and_then(|h| h.try_into().map_err(anyhow::Error::new))
-            .with_context(|| format!("Failed to read hash for currency: {}", currency))?;
+            .with_context(|| format!("failed to read hash for currency: {}", currency))?;
 
         if let Some(inv_cat_save_data) = self
             .profile
@@ -386,12 +394,57 @@ impl ProfileData {
         self.guardian_rank = new_rank;
 
         if let Some(tokens) = tokens {
-            self.guardian_rank_tokens = tokens;
+            self.guardian_tokens = tokens;
         }
     }
 
-    pub fn guardian_rank_tokens(&self) -> i32 {
-        self.guardian_rank_tokens
+    pub fn guardian_tokens(&self) -> i32 {
+        self.guardian_tokens
+    }
+
+    pub fn guardian_rewards(&self) -> &Vec<GuardianRewardData> {
+        &self.guardian_rewards
+    }
+
+    pub fn set_guardian_reward(
+        &mut self,
+        guardian_reward: &GuardianReward,
+        tokens: i32,
+    ) -> Result<()> {
+        let reward_path = guardian_reward.get_serializations()[0];
+
+        let guardian_rank_profile_data = self
+            .profile
+            .guardian_rank
+            .as_mut()
+            .context("failed to read profile Guardian Rank profile data.")?;
+
+        if let Some(reward) = guardian_rank_profile_data
+            .rank_rewards
+            .iter_mut()
+            .find(|eg| eg.reward_data_path == reward_path)
+        {
+            reward.num_tokens = tokens;
+        } else {
+            guardian_rank_profile_data
+                .rank_rewards
+                .push(GuardianRankRewardSaveGameData {
+                    num_tokens: tokens,
+                    reward_data_path: reward_path.to_owned(),
+                    unknown_fields: Default::default(),
+                    cached_size: Default::default(),
+                });
+        }
+
+        if let Some(existing) = self
+            .guardian_rewards
+            .iter_mut()
+            .find(|g| &g.reward == guardian_reward)
+        {
+            existing.current = tokens;
+        }
+
+        Ok(())
     }
 
     pub fn borderlands_science_info(&self) -> &BorderlandsScienceInfo {
@@ -435,11 +488,11 @@ impl ProfileData {
             })
         }
 
-        if let Some(current_slot) = self.sdu_slots.iter_mut().find(|i| i.slot == *sdu_slot) {
+        if let Some(current_slot) = self.sdu_slots.iter_mut().find(|i| i.sdu == *sdu_slot) {
             current_slot.current = level;
         } else {
             self.sdu_slots.push(ProfileSduSlotData {
-                slot: sdu_slot.to_owned(),
+                sdu: sdu_slot.to_owned(),
                 current: level,
                 max: sdu_slot.maximum(),
             });
@@ -448,6 +501,10 @@ impl ProfileData {
 
     pub fn bank_items(&self) -> &Vec<Bl3Item> {
         &self.bank_items
+    }
+
+    pub fn bank_items_mut(&mut self) -> &mut Vec<Bl3Item> {
+        &mut self.bank_items
     }
 
     pub fn remove_bank_item(&mut self, index: usize) {

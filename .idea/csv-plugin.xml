@@ -206,14 +206,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/bl3_save_edit_core/resources/Lootlemon_BL3_Items.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="C:\Users\zakmi\Downloads\Lootlemon_BL3_Items.csv">
+        <entry key="/bl3_save_edit_core/resources/LOOTLEMON_BL3_ITEMS.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -382,13 +375,6 @@
           </value>
         </entry>
         <entry key="\bl3_save_edit_core\resources\INVENTORY_PARTS_ALL.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\bl3_save_edit_core\resources\Lootlemon_BL3_Items.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

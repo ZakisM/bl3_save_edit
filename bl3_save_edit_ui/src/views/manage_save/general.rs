@@ -1,5 +1,5 @@
 use iced::{
-    button, pick_list, text_input, tooltip, Align, Button, Column, Container, Length, PickList,
+    button, pick_list, text_input, tooltip, Alignment, Button, Column, Container, Length, PickList,
     Row, Text, TextInput, Tooltip,
 };
 
@@ -25,11 +25,6 @@ pub struct GeneralState {
     pub generate_guid_button_state: button::State,
     pub save_type_selector: pick_list::State<HeaderType>,
     pub save_type_selected: HeaderType,
-}
-
-#[derive(Debug, Clone)]
-pub enum GeneralMessage {
-    GenerateRandomGuidCompleted(String),
 }
 
 #[derive(Debug, Clone)]
@@ -70,9 +65,9 @@ pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
             )
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -106,7 +101,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
             )
             .push(
                 Button::new(
@@ -122,7 +117,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
                 .style(Bl3UiStyle)
                 .into_element(),
             )
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -162,7 +157,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
             .style(Bl3UiTooltipStyle),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -192,7 +187,7 @@ pub fn view(general_state: &mut GeneralState) -> Container<Bl3Message> {
             .into_element(),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))

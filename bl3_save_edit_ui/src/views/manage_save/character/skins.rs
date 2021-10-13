@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use derivative::Derivative;
-use iced::{pick_list, Align, Column, Container, Length, PickList, Row};
+use iced::{pick_list, Alignment, Column, Container, Length, PickList, Row};
 use rayon::prelude::ParallelSliceMut;
 
 use bl3_save_edit_core::bl3_save::player_class::PlayerClass;
@@ -109,7 +109,7 @@ impl SkinPickList {
                 .style(Bl3UiStyle)
                 .into_element(),
             )
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
         )
         .width(Length::Fill)
         .height(Length::Units(36))

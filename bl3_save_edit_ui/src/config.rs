@@ -8,6 +8,7 @@ use tracing::info;
 use crate::bl3_ui::MessageResult;
 
 const CONFIG_DIR: &str = "bl3_save_editor";
+const BACKUP_DIR: &str = "backups";
 const CONFIG_NAME: &str = "config.toml";
 
 #[derive(Debug, Clone)]
@@ -30,10 +31,13 @@ fn default_scale_factor() -> f64 {
 }
 
 fn default_backup_dir() -> PathBuf {
-    let config_dir = dirs::config_dir().unwrap_or_default().join(CONFIG_DIR);
+    let backup_dir = dirs::config_dir()
+        .unwrap_or_default()
+        .join(CONFIG_DIR)
+        .join(BACKUP_DIR);
 
-    if config_dir.exists() {
-        config_dir
+    if backup_dir.exists() {
+        backup_dir
     } else {
         PathBuf::default()
     }
@@ -42,6 +46,10 @@ fn default_backup_dir() -> PathBuf {
 impl Bl3Config {
     pub fn load() -> Self {
         let config_dir = dirs::config_dir().unwrap_or_default().join(CONFIG_DIR);
+        let backup_dir = dirs::config_dir()
+            .unwrap_or_default()
+            .join(CONFIG_DIR)
+            .join(BACKUP_DIR);
 
         if let Ok(mut config) = std::fs::read(&config_dir.join(CONFIG_NAME))
             .map_err(anyhow::Error::new)
@@ -57,8 +65,8 @@ impl Bl3Config {
             info!("Creating default config");
 
             Self {
-                config_dir: config_dir.clone(),
-                backup_dir: config_dir,
+                config_dir,
+                backup_dir,
                 saves_dir: Default::default(),
                 ui_scale_factor: default_scale_factor(),
             }

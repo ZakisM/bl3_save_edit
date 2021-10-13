@@ -4,7 +4,7 @@ use strum::{Display, EnumMessage, EnumString};
 pub enum PlayerClass {
     #[strum(
         serialize = "/Game/PlayerCharacters/Beastmaster/PlayerClassId_Beastmaster.PlayerClassId_Beastmaster",
-        to_string = "BeastMaster"
+        to_string = "Beastmaster"
     )]
     BeastMaster,
     #[strum(

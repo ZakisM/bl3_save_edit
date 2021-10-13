@@ -1,4 +1,4 @@
-use iced::{button, text_input, Align, Button, Column, Container, Length, Row, Text};
+use iced::{button, text_input, Alignment, Button, Column, Container, Length, Row, Text};
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::Bl3UiStyle;
@@ -55,7 +55,7 @@ pub fn view(currency_state: &mut CurrencyState) -> Container<Bl3Message> {
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
             )
             .push(
                 Button::new(
@@ -71,7 +71,7 @@ pub fn view(currency_state: &mut CurrencyState) -> Container<Bl3Message> {
                 .style(Bl3UiStyle)
                 .into_element(),
             )
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -105,7 +105,7 @@ pub fn view(currency_state: &mut CurrencyState) -> Container<Bl3Message> {
                 )
                 .spacing(15)
                 .width(Length::FillPortion(9))
-                .align_items(Align::Center),
+                .align_items(Alignment::Center),
             )
             .push(
                 Button::new(
@@ -121,7 +121,7 @@ pub fn view(currency_state: &mut CurrencyState) -> Container<Bl3Message> {
                 .style(Bl3UiStyle)
                 .into_element(),
             )
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))

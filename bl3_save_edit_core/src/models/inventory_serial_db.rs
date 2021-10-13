@@ -87,8 +87,9 @@ impl InventorySerialDb {
             .members()
             .into_iter()
             .enumerate()
+            .par_bridge()
             .map(|(i, p)| (i, p.to_string()))
-            .find(|(_, p)| p.to_lowercase().contains(&name_with_stop))
+            .find_first(|(_, p)| p.to_lowercase().contains(&name_with_stop))
             .map(|(i, p)| (i, p));
 
         if let Some((idx, ident)) = part_info {

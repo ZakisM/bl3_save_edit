@@ -1,10 +1,11 @@
-use iced::{pick_list, text_input, Align, Column, Container, Length, PickList, Row};
+use iced::{pick_list, text_input, Alignment, Column, Container, Length, PickList, Row};
 
 use bl3_save_edit_core::bl3_profile::science_levels::BorderlandsScienceLevel;
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::Bl3UiStyle;
 use crate::resources::fonts::JETBRAINS_MONO;
+use crate::views::manage_profile::profile::guardian_rewards::GuardianRewardUnlocker;
 use crate::views::manage_profile::profile::sdu::SduUnlocker;
 use crate::views::manage_profile::profile::skin_unlocker::SkinUnlocker;
 use crate::views::manage_profile::ManageProfileInteractionMessage;
@@ -12,6 +13,7 @@ use crate::views::InteractionExt;
 use crate::widgets::labelled_element::LabelledElement;
 use crate::widgets::number_input::NumberInput;
 
+pub mod guardian_rewards;
 pub mod sdu;
 pub mod skin_unlocker;
 
@@ -25,20 +27,23 @@ pub struct ProfileState {
     pub science_tokens_input_state: text_input::State,
     pub skin_unlocker: SkinUnlocker,
     pub sdu_unlocker: SduUnlocker,
+    pub guardian_reward_unlocker: GuardianRewardUnlocker,
 }
 
 #[derive(Debug, Clone)]
-pub enum ProfileProfileInteractionMessage {
+pub enum ProfileInteractionMessage {
     GuardianRankTokens(i32),
     ScienceLevelSelected(BorderlandsScienceLevel),
     ScienceTokens(i32),
-    SkinMessage(ProfileSkinUnlockedMessage),
-    SduMessage(ProfileSduMessage),
+    SkinMessage(SkinUnlockedMessage),
+    SduMessage(SduMessage),
     MaxSduSlotsPressed,
+    GuardianRewardMessage(GuardianRewardMessage),
+    MaxGuardianRewardsPressed,
 }
 
 #[derive(Debug, Clone)]
-pub enum ProfileSkinUnlockedMessage {
+pub enum SkinUnlockedMessage {
     CharacterSkins(bool),
     CharacterHeads(bool),
     EchoThemes(bool),
@@ -49,9 +54,31 @@ pub enum ProfileSkinUnlockedMessage {
 }
 
 #[derive(Debug, Clone)]
-pub enum ProfileSduMessage {
+pub enum SduMessage {
     Bank(i32),
     LostLoot(i32),
+}
+
+#[derive(Debug, Clone)]
+pub enum GuardianRewardMessage {
+    Accuracy(i32),
+    ActionSkillCooldown(i32),
+    CriticalDamage(i32),
+    ElementalDamage(i32),
+    FFYLDuration(i32),
+    FFYLMovementSpeed(i32),
+    GrenadeDamage(i32),
+    GunDamage(i32),
+    GunFireRate(i32),
+    MaxHealth(i32),
+    MeleeDamage(i32),
+    RarityRate(i32),
+    RecoilReduction(i32),
+    ReloadSpeed(i32),
+    ShieldCapacity(i32),
+    ShieldRechargeDelay(i32),
+    ShieldRechargeRate(i32),
+    VehicleDamage(i32),
 }
 
 pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
@@ -67,7 +94,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
                 |v| {
                     InteractionMessage::ManageProfileInteraction(
                         ManageProfileInteractionMessage::Profile(
-                            ProfileProfileInteractionMessage::GuardianRankTokens(v),
+                            ProfileInteractionMessage::GuardianRankTokens(v),
                         ),
                     )
                 },
@@ -80,7 +107,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
             .into_element(),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::Fill)
     .height(Length::Units(36))
@@ -97,7 +124,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
                 |h| {
                     InteractionMessage::ManageProfileInteraction(
                         ManageProfileInteractionMessage::Profile(
-                            ProfileProfileInteractionMessage::ScienceLevelSelected(h),
+                            ProfileInteractionMessage::ScienceLevelSelected(h),
                         ),
                     )
                 },
@@ -110,7 +137,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
             .into_element(),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::FillPortion(2))
     .height(Length::Units(36))
@@ -128,7 +155,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
                 |v| {
                     InteractionMessage::ManageProfileInteraction(
                         ManageProfileInteractionMessage::Profile(
-                            ProfileProfileInteractionMessage::ScienceTokens(v),
+                            ProfileInteractionMessage::ScienceTokens(v),
                         ),
                     )
                 },
@@ -141,7 +168,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
             .into_element(),
         )
         .spacing(15)
-        .align_items(Align::Center),
+        .align_items(Alignment::Center),
     )
     .width(Length::FillPortion(2))
     .height(Length::Units(36))
@@ -152,25 +179,37 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
         .push(borderlands_science_tokens)
         .spacing(20);
 
-    let skin_unlocker = profile_state
-        .skin_unlocker
+    let guardian_reward_unlocker = profile_state
+        .guardian_reward_unlocker
         .view()
-        .width(Length::FillPortion(3));
+        .width(Length::Fill);
 
-    let sdu_unlocker = profile_state
-        .sdu_unlocker
-        .view()
-        .width(Length::FillPortion(2));
+    let main_column = Container::new(
+        Column::new()
+            .push(guardian_rank_tokens)
+            .push(borderlands_science_row)
+            .push(guardian_reward_unlocker)
+            .spacing(20),
+    )
+    .height(Length::Units(560))
+    .width(Length::Fill);
 
-    let skin_sdu_row = Row::new()
-        .push(skin_unlocker)
-        .push(sdu_unlocker)
-        .spacing(20);
+    let skin_unlocker = profile_state.skin_unlocker.view();
 
-    let all_contents = Column::new()
-        .push(guardian_rank_tokens)
-        .push(borderlands_science_row)
-        .push(skin_sdu_row)
+    let sdu_unlocker = profile_state.sdu_unlocker.view();
+
+    let skin_unlocker_sdu_unlocker_column = Container::new(
+        Column::new()
+            .push(skin_unlocker)
+            .push(sdu_unlocker)
+            .spacing(20),
+    )
+    .height(Length::Units(560))
+    .width(Length::Units(350));
+
+    let all_contents = Row::new()
+        .push(main_column)
+        .push(skin_unlocker_sdu_unlocker_column)
         .spacing(20);
 
     Container::new(all_contents).padding(30)

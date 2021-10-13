@@ -18,6 +18,7 @@ use crate::parser::{decrypt, encrypt, HeaderType};
 use crate::protos::oak_profile::Profile;
 use crate::{file_helper, parser};
 
+pub mod guardian_reward;
 pub mod profile_currency;
 pub mod profile_data;
 pub mod science_levels;
@@ -185,7 +186,7 @@ impl fmt::Display for Bl3Profile {
         writeln!(
             f,
             "Guardian Rank Tokens: {}",
-            self.profile_data.guardian_rank_tokens()
+            self.profile_data.guardian_tokens()
         )?;
         writeln!(
             f,
@@ -202,11 +203,7 @@ impl fmt::Display for Bl3Profile {
         writeln!(f, "SDUs:")?;
 
         for slot in self.profile_data.sdu_slots() {
-            writeln!(
-                f,
-                "{:>1}- {}: {}/{}",
-                " ", slot.slot, slot.current, slot.max
-            )?;
+            writeln!(f, "{:>1}- {}: {}/{}", " ", slot.sdu, slot.current, slot.max)?;
         }
 
         writeln!(f, "Items in Bank: {}", self.profile_data.bank_items().len())?;
@@ -287,7 +284,7 @@ mod tests {
         assert_eq!(bl3_profile.profile_data.vault_card_1_keys(), 0);
         assert_eq!(bl3_profile.profile_data.vault_card_1_chests(), 0);
         assert_eq!(bl3_profile.profile_data.guardian_rank(), 226);
-        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens(), 8);
+        assert_eq!(bl3_profile.profile_data.guardian_tokens(), 8);
         assert_eq!(
             bl3_profile
                 .profile_data
@@ -307,12 +304,12 @@ mod tests {
             *bl3_profile.profile_data.sdu_slots(),
             vec![
                 ProfileSduSlotData {
-                    slot: ProfileSduSlot::Bank,
+                    sdu: ProfileSduSlot::Bank,
                     current: 23,
                     max: ProfileSduSlot::Bank.maximum(),
                 },
                 ProfileSduSlotData {
-                    slot: ProfileSduSlot::LostLoot,
+                    sdu: ProfileSduSlot::LostLoot,
                     current: 8,
                     max: ProfileSduSlot::LostLoot.maximum(),
                 },
@@ -345,7 +342,7 @@ mod tests {
         assert_eq!(bl3_profile.profile_data.vault_card_1_keys(), 0);
         assert_eq!(bl3_profile.profile_data.vault_card_1_chests(), 0);
         assert_eq!(bl3_profile.profile_data.guardian_rank(), 200);
-        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens(), 0);
+        assert_eq!(bl3_profile.profile_data.guardian_tokens(), 0);
         assert_eq!(
             bl3_profile
                 .profile_data
@@ -365,12 +362,12 @@ mod tests {
             *bl3_profile.profile_data.sdu_slots(),
             vec![
                 ProfileSduSlotData {
-                    slot: ProfileSduSlot::Bank,
+                    sdu: ProfileSduSlot::Bank,
                     current: 8,
                     max: ProfileSduSlot::Bank.maximum(),
                 },
                 ProfileSduSlotData {
-                    slot: ProfileSduSlot::LostLoot,
+                    sdu: ProfileSduSlot::LostLoot,
                     current: 8,
                     max: ProfileSduSlot::LostLoot.maximum(),
                 },
@@ -403,7 +400,7 @@ mod tests {
         assert_eq!(bl3_profile.profile_data.vault_card_1_keys(), 0);
         assert_eq!(bl3_profile.profile_data.vault_card_1_chests(), 0);
         assert_eq!(bl3_profile.profile_data.guardian_rank(), 69420);
-        assert_eq!(bl3_profile.profile_data.guardian_rank_tokens(), 99999999);
+        assert_eq!(bl3_profile.profile_data.guardian_tokens(), 99999999);
         assert_eq!(
             bl3_profile
                 .profile_data
@@ -423,12 +420,12 @@ mod tests {
             *bl3_profile.profile_data.sdu_slots(),
             vec![
                 ProfileSduSlotData {
-                    slot: ProfileSduSlot::Bank,
+                    sdu: ProfileSduSlot::Bank,
                     current: 23,
                     max: ProfileSduSlot::Bank.maximum(),
                 },
                 ProfileSduSlotData {
-                    slot: ProfileSduSlot::LostLoot,
+                    sdu: ProfileSduSlot::LostLoot,
                     current: 8,
                     max: ProfileSduSlot::LostLoot.maximum(),
                 },

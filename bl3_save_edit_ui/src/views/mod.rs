@@ -1,9 +1,7 @@
 use std::fmt::Display;
 
-use iced::{
-    button, container, svg, Align, Button, Color, Element, HorizontalAlignment, Length, Row, Svg,
-    Text,
-};
+use iced::alignment::Horizontal;
+use iced::{button, container, svg, Alignment, Button, Color, Element, Length, Row, Svg, Text};
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::resources::fonts::JETBRAINS_MONO_BOLD;
@@ -54,14 +52,14 @@ fn tab_bar_button<'a, V: Display + PartialEq>(
             .push(icon)
             .push(
                 Text::new(tab_bar_view.to_string())
-                    .horizontal_alignment(HorizontalAlignment::Center)
+                    .horizontal_alignment(Horizontal::Center)
                     .font(JETBRAINS_MONO_BOLD)
                     .size(18),
             )
             .padding(5)
             .spacing(10)
             .width(Length::Units(length))
-            .align_items(Align::Center),
+            .align_items(Alignment::Center),
     )
     .on_press(on_press_message)
     .padding(5);

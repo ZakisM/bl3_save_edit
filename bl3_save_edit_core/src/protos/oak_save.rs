@@ -22,7 +22,8 @@
 /// Generated files are compatible only with the same version
 /// of protobuf runtime.
 // const _PROTOBUF_VERSION_CHECK: () = ::protobuf::VERSION_2_25_1;
-#[derive(PartialEq, Clone, Default)]
+
+#[derive(PartialEq,Clone,Default)]
 pub struct PlayerClassSaveGameData {
     // message fields
     pub player_class_path: ::std::string::String,
@@ -96,17 +97,17 @@ impl ::protobuf::Message for PlayerClassSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.player_class_path)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.dlc_package_id = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -185,7 +186,7 @@ impl ::protobuf::Message for PlayerClassSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<PlayerClassSaveGameData>(
                 "PlayerClassSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -216,7 +217,7 @@ impl ::protobuf::reflect::ProtobufValue for PlayerClassSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct ResourcePoolSavegameData {
     // message fields
     pub amount: f32,
@@ -294,13 +295,13 @@ impl ::protobuf::Message for ResourcePoolSavegameData {
                     }
                     let tmp = is.read_float()?;
                     self.amount = tmp;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.resource_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -379,7 +380,7 @@ impl ::protobuf::Message for ResourcePoolSavegameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<ResourcePoolSavegameData>(
                 "ResourcePoolSavegameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -410,7 +411,7 @@ impl ::protobuf::reflect::ProtobufValue for ResourcePoolSavegameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct RegionSaveGameData {
     // message fields
     pub game_stage: i32,
@@ -520,27 +521,27 @@ impl ::protobuf::Message for RegionSaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.game_stage = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.play_through_idx = tmp;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.region_path)?;
-                }
+                },
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.dlc_package_id = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -641,7 +642,7 @@ impl ::protobuf::Message for RegionSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<RegionSaveGameData>(
                 "RegionSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -674,7 +675,7 @@ impl ::protobuf::reflect::ProtobufValue for RegionSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct InventoryBalanceStateInitializationData {
     // message fields
     pub game_stage: i32,
@@ -911,31 +912,31 @@ impl ::protobuf::Message for InventoryBalanceStateInitializationData {
                     }
                     let tmp = is.read_int32()?;
                     self.game_stage = tmp;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.inventory_data)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.inventory_balance_data)?;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.manufacturer_data)?;
-                }
+                },
                 5 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.part_list)?;
-                }
+                },
                 6 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.generic_part_list)?;
-                }
+                },
                 7 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.additional_data)?;
-                }
+                },
                 8 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.customization_part_list)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -1080,7 +1081,7 @@ impl ::protobuf::Message for InventoryBalanceStateInitializationData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<InventoryBalanceStateInitializationData>(
                 "InventoryBalanceStateInitializationData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -1117,7 +1118,7 @@ impl ::protobuf::reflect::ProtobufValue for InventoryBalanceStateInitializationD
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakInventoryItemSaveGameData {
     // message fields
     pub item_serial_number: ::std::vec::Vec<u8>,
@@ -1273,30 +1274,30 @@ impl ::protobuf::Message for OakInventoryItemSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.item_serial_number)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.pickup_order_index = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.flags = tmp;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.weapon_skin_path)?;
-                }
+                },
                 5 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.development_save_data)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -1411,7 +1412,7 @@ impl ::protobuf::Message for OakInventoryItemSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakInventoryItemSaveGameData>(
                 "OakInventoryItemSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -1445,7 +1446,7 @@ impl ::protobuf::reflect::ProtobufValue for OakInventoryItemSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct EquippedInventorySaveGameData {
     // message fields
     pub inventory_list_index: i32,
@@ -1566,23 +1567,23 @@ impl ::protobuf::Message for EquippedInventorySaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.inventory_list_index = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.enabled = tmp;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.slot_data_path)?;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.trinket_data_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -1683,7 +1684,7 @@ impl ::protobuf::Message for EquippedInventorySaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<EquippedInventorySaveGameData>(
                 "EquippedInventorySaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -1716,7 +1717,7 @@ impl ::protobuf::reflect::ProtobufValue for EquippedInventorySaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakAbilityTreeItemSaveGameData {
     // message fields
     pub item_asset_path: ::std::string::String,
@@ -1822,31 +1823,31 @@ impl ::protobuf::Message for OakAbilityTreeItemSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.item_asset_path)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.points = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.max_points = tmp;
-                }
+                },
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.tree_identifier = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -1947,7 +1948,7 @@ impl ::protobuf::Message for OakAbilityTreeItemSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakAbilityTreeItemSaveGameData>(
                 "OakAbilityTreeItemSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -1980,7 +1981,7 @@ impl ::protobuf::reflect::ProtobufValue for OakAbilityTreeItemSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakAbilitySlotSaveGameData {
     // message fields
     pub ability_class_path: ::std::string::String,
@@ -2065,13 +2066,13 @@ impl ::protobuf::Message for OakAbilitySlotSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.ability_class_path)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.slot_asset_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -2150,7 +2151,7 @@ impl ::protobuf::Message for OakAbilitySlotSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakAbilitySlotSaveGameData>(
                 "OakAbilitySlotSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -2181,7 +2182,7 @@ impl ::protobuf::reflect::ProtobufValue for OakAbilitySlotSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakActionAbilityAugmentSaveGameData {
     // message fields
     pub action_ability_class_path: ::std::string::String,
@@ -2293,16 +2294,16 @@ impl ::protobuf::Message for OakActionAbilityAugmentSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.action_ability_class_path)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.slot_asset_path)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.augment_asset_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -2392,7 +2393,7 @@ impl ::protobuf::Message for OakActionAbilityAugmentSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakActionAbilityAugmentSaveGameData>(
                 "OakActionAbilityAugmentSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -2424,7 +2425,7 @@ impl ::protobuf::reflect::ProtobufValue for OakActionAbilityAugmentSaveGameData 
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakActionAbilityAugmentConfigurationSaveGameData {
     // message fields
     pub ability_class_path: ::std::string::String,
@@ -2563,19 +2564,19 @@ impl ::protobuf::Message for OakActionAbilityAugmentConfigurationSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.ability_class_path)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.augment_asset_path)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.mod_slot_asset_path)?;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.mod_asset_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -2676,7 +2677,7 @@ impl ::protobuf::Message for OakActionAbilityAugmentConfigurationSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakActionAbilityAugmentConfigurationSaveGameData>(
                 "OakActionAbilityAugmentConfigurationSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -2709,7 +2710,7 @@ impl ::protobuf::reflect::ProtobufValue for OakActionAbilityAugmentConfiguration
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakPlayerAbilitySaveGameData {
     // message fields
     pub ability_points: i32,
@@ -2900,29 +2901,29 @@ impl ::protobuf::Message for OakPlayerAbilitySaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.ability_points = tmp;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.tree_item_list)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.ability_slot_list)?;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.augment_slot_list)?;
-                }
+                },
                 5 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.augment_configuration_list)?;
-                }
+                },
                 6 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.tree_grade = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -3057,7 +3058,7 @@ impl ::protobuf::Message for OakPlayerAbilitySaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakPlayerAbilitySaveGameData>(
                 "OakPlayerAbilitySaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -3092,7 +3093,7 @@ impl ::protobuf::reflect::ProtobufValue for OakPlayerAbilitySaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct MissionStatusPlayerSaveGameData {
     // message fields
     pub status: MissionStatusPlayerSaveGameData_MissionState,
@@ -3283,47 +3284,47 @@ impl ::protobuf::Message for MissionStatusPlayerSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_proto3_enum_with_unknown_fields_into(wire_type, is, &mut self.status, 1, &mut self.unknown_fields)?
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.has_been_viewed_in_log = tmp;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_repeated_int32_into(wire_type, is, &mut self.objectives_progress)?;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.mission_class_path)?;
-                }
+                },
                 5 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.active_objective_set_path)?;
-                }
+                },
                 6 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.dlc_package_id = tmp;
-                }
+                },
                 7 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.kickoff_played = tmp;
-                }
+                },
                 8 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.league_instance = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -3468,7 +3469,7 @@ impl ::protobuf::Message for MissionStatusPlayerSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<MissionStatusPlayerSaveGameData>(
                 "MissionStatusPlayerSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -3505,7 +3506,7 @@ impl ::protobuf::reflect::ProtobufValue for MissionStatusPlayerSaveGameData {
     }
 }
 
-#[derive(Clone, PartialEq, Eq, Debug, Hash)]
+#[derive(Clone,PartialEq,Eq,Debug,Hash)]
 pub enum MissionStatusPlayerSaveGameData_MissionState {
     MS_NotStarted = 0,
     MS_Active = 1,
@@ -3549,7 +3550,8 @@ impl ::protobuf::ProtobufEnum for MissionStatusPlayerSaveGameData_MissionState {
     }
 }
 
-impl ::std::marker::Copy for MissionStatusPlayerSaveGameData_MissionState {}
+impl ::std::marker::Copy for MissionStatusPlayerSaveGameData_MissionState {
+}
 
 impl ::std::default::Default for MissionStatusPlayerSaveGameData_MissionState {
     fn default() -> Self {
@@ -3563,7 +3565,7 @@ impl ::protobuf::reflect::ProtobufValue for MissionStatusPlayerSaveGameData_Miss
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct MissionPlaythroughSaveGameData {
     // message fields
     pub mission_list: ::protobuf::RepeatedField<MissionStatusPlayerSaveGameData>,
@@ -3652,13 +3654,13 @@ impl ::protobuf::Message for MissionPlaythroughSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.mission_list)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.tracked_mission_class_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -3740,7 +3742,7 @@ impl ::protobuf::Message for MissionPlaythroughSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<MissionPlaythroughSaveGameData>(
                 "MissionPlaythroughSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -3771,7 +3773,7 @@ impl ::protobuf::reflect::ProtobufValue for MissionPlaythroughSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct ActiveFastTravelSaveData {
     // message fields
     pub active_travel_station_name: ::std::string::String,
@@ -3845,17 +3847,17 @@ impl ::protobuf::Message for ActiveFastTravelSaveData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.active_travel_station_name)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.blacklisted = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -3934,7 +3936,7 @@ impl ::protobuf::Message for ActiveFastTravelSaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<ActiveFastTravelSaveData>(
                 "ActiveFastTravelSaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -3965,7 +3967,7 @@ impl ::protobuf::reflect::ProtobufValue for ActiveFastTravelSaveData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct PlaythroughActiveFastTravelSaveData {
     // message fields
     pub active_travel_stations: ::protobuf::RepeatedField<ActiveFastTravelSaveData>,
@@ -4027,10 +4029,10 @@ impl ::protobuf::Message for PlaythroughActiveFastTravelSaveData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.active_travel_stations)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -4101,7 +4103,7 @@ impl ::protobuf::Message for PlaythroughActiveFastTravelSaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<PlaythroughActiveFastTravelSaveData>(
                 "PlaythroughActiveFastTravelSaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -4131,7 +4133,7 @@ impl ::protobuf::reflect::ProtobufValue for PlaythroughActiveFastTravelSaveData 
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct DiscoveredAreaInfo {
     // message fields
     pub discovered_area_name: ::std::string::String,
@@ -4205,17 +4207,17 @@ impl ::protobuf::Message for DiscoveredAreaInfo {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.discovered_area_name)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.discovered_playthroughs = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -4294,7 +4296,7 @@ impl ::protobuf::Message for DiscoveredAreaInfo {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<DiscoveredAreaInfo>(
                 "DiscoveredAreaInfo",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -4325,7 +4327,7 @@ impl ::protobuf::reflect::ProtobufValue for DiscoveredAreaInfo {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct DiscoveredLevelInfo {
     // message fields
     pub discovered_level_name: ::std::string::String,
@@ -4430,20 +4432,20 @@ impl ::protobuf::Message for DiscoveredLevelInfo {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.discovered_level_name)?;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.discovered_playthroughs = tmp;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.discovered_area_info)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -4536,7 +4538,7 @@ impl ::protobuf::Message for DiscoveredLevelInfo {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<DiscoveredLevelInfo>(
                 "DiscoveredLevelInfo",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -4568,7 +4570,7 @@ impl ::protobuf::reflect::ProtobufValue for DiscoveredLevelInfo {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct DiscoveredPlanetInfo {
     // message fields
     pub discovered_planet: ::std::string::String,
@@ -4642,17 +4644,17 @@ impl ::protobuf::Message for DiscoveredPlanetInfo {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.discovered_planet)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.is_new_planet = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -4731,7 +4733,7 @@ impl ::protobuf::Message for DiscoveredPlanetInfo {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<DiscoveredPlanetInfo>(
                 "DiscoveredPlanetInfo",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -4762,7 +4764,7 @@ impl ::protobuf::reflect::ProtobufValue for DiscoveredPlanetInfo {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct DiscoverySaveData {
     // message fields
     pub discovered_level_info: ::protobuf::RepeatedField<DiscoveredLevelInfo>,
@@ -4824,10 +4826,10 @@ impl ::protobuf::Message for DiscoverySaveData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.discovered_level_info)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -4898,7 +4900,7 @@ impl ::protobuf::Message for DiscoverySaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<DiscoverySaveData>(
                 "DiscoverySaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -4928,7 +4930,7 @@ impl ::protobuf::reflect::ProtobufValue for DiscoverySaveData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct VehicleUnlockedSaveGameData {
     // message fields
     pub asset_path: ::std::string::String,
@@ -5002,17 +5004,17 @@ impl ::protobuf::Message for VehicleUnlockedSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.asset_path)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.just_unlocked = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -5091,7 +5093,7 @@ impl ::protobuf::Message for VehicleUnlockedSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<VehicleUnlockedSaveGameData>(
                 "VehicleUnlockedSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -5122,7 +5124,7 @@ impl ::protobuf::reflect::ProtobufValue for VehicleUnlockedSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakCARMenuVehicleConfigSaveData {
     // message fields
     pub loadout_save_name: ::std::string::String,
@@ -5471,58 +5473,58 @@ impl ::protobuf::Message for OakCARMenuVehicleConfigSaveData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.loadout_save_name)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.body_asset_path)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.wheel_asset_path)?;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.armor_asset_path)?;
-                }
+                },
                 5 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.core_mod_asset_path)?;
-                }
+                },
                 6 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.gunner_weapon_asset_path)?;
-                }
+                },
                 7 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.driver_weapon_asset_path)?;
-                }
+                },
                 8 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.ornament_asset_path)?;
-                }
+                },
                 9 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.material_decal_asset_path)?;
-                }
+                },
                 10 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.material_asset_path)?;
-                }
+                },
                 11 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.color_index_1 = tmp;
-                }
+                },
                 12 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.color_index_2 = tmp;
-                }
+                },
                 13 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.color_index_3 = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -5722,7 +5724,7 @@ impl ::protobuf::Message for OakCARMenuVehicleConfigSaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakCARMenuVehicleConfigSaveData>(
                 "OakCARMenuVehicleConfigSaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -5764,7 +5766,7 @@ impl ::protobuf::reflect::ProtobufValue for OakCARMenuVehicleConfigSaveData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct CustomPlayerColorSaveGameData {
     // message fields
     pub color_parameter: ::std::string::String,
@@ -5932,30 +5934,30 @@ impl ::protobuf::Message for CustomPlayerColorSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.color_parameter)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.applied_color)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.split_color)?;
-                }
+                },
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.use_default_color = tmp;
-                }
+                },
                 5 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.use_default_split_color = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -6073,7 +6075,7 @@ impl ::protobuf::Message for CustomPlayerColorSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<CustomPlayerColorSaveGameData>(
                 "CustomPlayerColorSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -6107,7 +6109,7 @@ impl ::protobuf::reflect::ProtobufValue for CustomPlayerColorSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GuardianRankSaveGameData {
     // message fields
     pub guardian_rank: i32,
@@ -6174,17 +6176,17 @@ impl ::protobuf::Message for GuardianRankSaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.guardian_rank = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.guardian_experience = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -6263,7 +6265,7 @@ impl ::protobuf::Message for GuardianRankSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GuardianRankSaveGameData>(
                 "GuardianRankSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -6294,7 +6296,7 @@ impl ::protobuf::reflect::ProtobufValue for GuardianRankSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GuardianRankRewardCharacterSaveGameData {
     // message fields
     pub num_tokens: i32,
@@ -6388,20 +6390,20 @@ impl ::protobuf::Message for GuardianRankRewardCharacterSaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.num_tokens = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.is_enabled = tmp;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.reward_data_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -6491,7 +6493,7 @@ impl ::protobuf::Message for GuardianRankRewardCharacterSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GuardianRankRewardCharacterSaveGameData>(
                 "GuardianRankRewardCharacterSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -6523,7 +6525,7 @@ impl ::protobuf::reflect::ProtobufValue for GuardianRankRewardCharacterSaveGameD
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GuardianRankPerkCharacterSaveGameData {
     // message fields
     pub is_enabled: bool,
@@ -6601,13 +6603,13 @@ impl ::protobuf::Message for GuardianRankPerkCharacterSaveGameData {
                     }
                     let tmp = is.read_bool()?;
                     self.is_enabled = tmp;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.perk_data_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -6686,7 +6688,7 @@ impl ::protobuf::Message for GuardianRankPerkCharacterSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GuardianRankPerkCharacterSaveGameData>(
                 "GuardianRankPerkCharacterSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -6717,7 +6719,7 @@ impl ::protobuf::reflect::ProtobufValue for GuardianRankPerkCharacterSaveGameDat
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GuardianRankCharacterSaveGameData {
     // message fields
     pub guardian_available_tokens: i32,
@@ -6910,51 +6912,51 @@ impl ::protobuf::Message for GuardianRankCharacterSaveGameData {
                     }
                     let tmp = is.read_int32()?;
                     self.guardian_available_tokens = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.guardian_rank = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.guardian_experience = tmp;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.rank_rewards)?;
-                }
+                },
                 5 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.rank_perks)?;
-                }
+                },
                 6 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.guardian_reward_random_seed = tmp;
-                }
+                },
                 7 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.new_guardian_experience = tmp;
-                }
+                },
                 8 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.is_rank_system_enabled = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -7105,7 +7107,7 @@ impl ::protobuf::Message for GuardianRankCharacterSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GuardianRankCharacterSaveGameData>(
                 "GuardianRankCharacterSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -7142,7 +7144,7 @@ impl ::protobuf::reflect::ProtobufValue for GuardianRankCharacterSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct CrewQuartersDecorationSaveData {
     // message fields
     pub decoration_index: i32,
@@ -7220,13 +7222,13 @@ impl ::protobuf::Message for CrewQuartersDecorationSaveData {
                     }
                     let tmp = is.read_int32()?;
                     self.decoration_index = tmp;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.decoration_data_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -7305,7 +7307,7 @@ impl ::protobuf::Message for CrewQuartersDecorationSaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersDecorationSaveData>(
                 "CrewQuartersDecorationSaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -7336,7 +7338,7 @@ impl ::protobuf::reflect::ProtobufValue for CrewQuartersDecorationSaveData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct CrewQuartersSaveData {
     // message fields
     pub preferred_room_assignment: i32,
@@ -7445,16 +7447,16 @@ impl ::protobuf::Message for CrewQuartersSaveData {
                     }
                     let tmp = is.read_int32()?;
                     self.preferred_room_assignment = tmp;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.decorations)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.room_data_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -7547,7 +7549,7 @@ impl ::protobuf::Message for CrewQuartersSaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersSaveData>(
                 "CrewQuartersSaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -7579,7 +7581,7 @@ impl ::protobuf::reflect::ProtobufValue for CrewQuartersSaveData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct CrewQuartersGunRackItemSaveData {
     // message fields
     pub encrypted_serial_number: ::std::vec::Vec<u8>,
@@ -7703,16 +7705,16 @@ impl ::protobuf::Message for CrewQuartersGunRackItemSaveData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.encrypted_serial_number)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.slot_asset_path)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.development_save_data)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -7805,7 +7807,7 @@ impl ::protobuf::Message for CrewQuartersGunRackItemSaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersGunRackItemSaveData>(
                 "CrewQuartersGunRackItemSaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -7837,7 +7839,7 @@ impl ::protobuf::reflect::ProtobufValue for CrewQuartersGunRackItemSaveData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct CrewQuartersGunRackSaveData {
     // message fields
     pub rack_save_data: ::protobuf::RepeatedField<CrewQuartersGunRackItemSaveData>,
@@ -7899,10 +7901,10 @@ impl ::protobuf::Message for CrewQuartersGunRackSaveData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.rack_save_data)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -7973,7 +7975,7 @@ impl ::protobuf::Message for CrewQuartersGunRackSaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<CrewQuartersGunRackSaveData>(
                 "CrewQuartersGunRackSaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -8003,7 +8005,7 @@ impl ::protobuf::reflect::ProtobufValue for CrewQuartersGunRackSaveData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct EchoLogSaveGameData {
     // message fields
     pub has_been_seen_in_log: bool,
@@ -8081,13 +8083,13 @@ impl ::protobuf::Message for EchoLogSaveGameData {
                     }
                     let tmp = is.read_bool()?;
                     self.has_been_seen_in_log = tmp;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.echo_log_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -8166,7 +8168,7 @@ impl ::protobuf::Message for EchoLogSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<EchoLogSaveGameData>(
                 "EchoLogSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -8197,7 +8199,7 @@ impl ::protobuf::reflect::ProtobufValue for EchoLogSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct MapIDData {
     // message fields
     pub zone_name_id: u32,
@@ -8264,17 +8266,17 @@ impl ::protobuf::Message for MapIDData {
                     }
                     let tmp = is.read_uint32()?;
                     self.zone_name_id = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.map_name_id = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -8353,7 +8355,7 @@ impl ::protobuf::Message for MapIDData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<MapIDData>(
                 "MapIDData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -8384,7 +8386,7 @@ impl ::protobuf::reflect::ProtobufValue for MapIDData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GameStateSaveData {
     // message fields
     pub last_traveled_map_id: ::protobuf::SingularPtrField<MapIDData>,
@@ -8486,24 +8488,24 @@ impl ::protobuf::Message for GameStateSaveData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.last_traveled_map_id)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.mayhem_level = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.mayhem_random_seed = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -8596,7 +8598,7 @@ impl ::protobuf::Message for GameStateSaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GameStateSaveData>(
                 "GameStateSaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -8628,7 +8630,7 @@ impl ::protobuf::reflect::ProtobufValue for GameStateSaveData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct ChallengeCategoryProgressSaveData {
     // message fields
     pub category_progress: ::std::vec::Vec<u8>,
@@ -8686,10 +8688,10 @@ impl ::protobuf::Message for ChallengeCategoryProgressSaveData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.category_progress)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -8757,7 +8759,7 @@ impl ::protobuf::Message for ChallengeCategoryProgressSaveData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<ChallengeCategoryProgressSaveData>(
                 "ChallengeCategoryProgressSaveData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -8787,7 +8789,7 @@ impl ::protobuf::reflect::ProtobufValue for ChallengeCategoryProgressSaveData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakPlayerCharacterAugmentSaveGameData {
     // message fields
     pub slot_asset_path: ::std::string::String,
@@ -8872,13 +8874,13 @@ impl ::protobuf::Message for OakPlayerCharacterAugmentSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.slot_asset_path)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.augment_asset_path)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -8957,7 +8959,7 @@ impl ::protobuf::Message for OakPlayerCharacterAugmentSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakPlayerCharacterAugmentSaveGameData>(
                 "OakPlayerCharacterAugmentSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -8988,7 +8990,7 @@ impl ::protobuf::reflect::ProtobufValue for OakPlayerCharacterAugmentSaveGameDat
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakPlayerCharacterSlotSaveGameData {
     // message fields
     pub augment_slot_list: ::protobuf::RepeatedField<OakPlayerCharacterAugmentSaveGameData>,
@@ -9050,10 +9052,10 @@ impl ::protobuf::Message for OakPlayerCharacterSlotSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.augment_slot_list)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -9124,7 +9126,7 @@ impl ::protobuf::Message for OakPlayerCharacterSlotSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakPlayerCharacterSlotSaveGameData>(
                 "OakPlayerCharacterSlotSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -9154,7 +9156,7 @@ impl ::protobuf::reflect::ProtobufValue for OakPlayerCharacterSlotSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct UITrackingSaveGameData {
     // message fields
     pub has_seen_skill_menu_unlock: bool,
@@ -9327,55 +9329,55 @@ impl ::protobuf::Message for UITrackingSaveGameData {
                     }
                     let tmp = is.read_bool()?;
                     self.has_seen_skill_menu_unlock = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.has_seen_guardian_rank_menu_unlock = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.has_seen_echo_boot_ammo_bar = tmp;
-                }
+                },
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.has_seen_echo_boot_shield_bar = tmp;
-                }
+                },
                 5 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.has_seen_echo_boot_grenades = tmp;
-                }
+                },
                 6 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.highest_thvm_breadcrumb_seen = tmp;
-                }
+                },
                 7 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.inventory_slot_unlocks_seen)?;
-                }
+                },
                 8 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.saved_spin_offset = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -9520,7 +9522,7 @@ impl ::protobuf::Message for UITrackingSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<UITrackingSaveGameData>(
                 "UITrackingSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -9557,7 +9559,7 @@ impl ::protobuf::reflect::ProtobufValue for UITrackingSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct PlanetCycleInfo {
     // message fields
     pub planet_name: ::std::string::String,
@@ -9647,24 +9649,24 @@ impl ::protobuf::Message for PlanetCycleInfo {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.planet_name)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.cycle_length = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.last_cached_time = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -9754,7 +9756,7 @@ impl ::protobuf::Message for PlanetCycleInfo {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<PlanetCycleInfo>(
                 "PlanetCycleInfo",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -9786,7 +9788,7 @@ impl ::protobuf::reflect::ProtobufValue for PlanetCycleInfo {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct TimeOfDaySaveGameData {
     // message fields
     pub planet_cycle_info: ::protobuf::RepeatedField<PlanetCycleInfo>,
@@ -9875,13 +9877,13 @@ impl ::protobuf::Message for TimeOfDaySaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.planet_cycle_info)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.planet_cycle)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -9963,7 +9965,7 @@ impl ::protobuf::Message for TimeOfDaySaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<TimeOfDaySaveGameData>(
                 "TimeOfDaySaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -9994,7 +9996,7 @@ impl ::protobuf::reflect::ProtobufValue for TimeOfDaySaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct LevelPersistence_Actor_SaveGameData {
     // message fields
     pub actor_name: ::std::string::String,
@@ -10068,17 +10070,17 @@ impl ::protobuf::Message for LevelPersistence_Actor_SaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.actor_name)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.timer_remaining = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -10157,7 +10159,7 @@ impl ::protobuf::Message for LevelPersistence_Actor_SaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<LevelPersistence_Actor_SaveGameData>(
                 "LevelPersistence_Actor_SaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -10188,7 +10190,7 @@ impl ::protobuf::reflect::ProtobufValue for LevelPersistence_Actor_SaveGameData 
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct LevelPersistence_Level_SaveGameData {
     // message fields
     pub level_name: ::std::string::String,
@@ -10277,13 +10279,13 @@ impl ::protobuf::Message for LevelPersistence_Level_SaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.level_name)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.saved_actors)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -10365,7 +10367,7 @@ impl ::protobuf::Message for LevelPersistence_Level_SaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<LevelPersistence_Level_SaveGameData>(
                 "LevelPersistence_Level_SaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -10396,7 +10398,7 @@ impl ::protobuf::reflect::ProtobufValue for LevelPersistence_Level_SaveGameData 
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GbxZoneMapFODSavedLevelData {
     // message fields
     pub level_name: ::std::string::String,
@@ -10561,48 +10563,48 @@ impl ::protobuf::Message for GbxZoneMapFODSavedLevelData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.level_name)?;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.fod_texture_size = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.num_chunks = tmp;
-                }
+                },
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed32 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_float()?;
                     self.discovery_percentage = tmp;
-                }
+                },
                 5 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.data_state = tmp;
-                }
+                },
                 6 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.data_revision = tmp;
-                }
+                },
                 7 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.fod_data)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -10736,7 +10738,7 @@ impl ::protobuf::Message for GbxZoneMapFODSavedLevelData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GbxZoneMapFODSavedLevelData>(
                 "GbxZoneMapFODSavedLevelData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -10772,7 +10774,7 @@ impl ::protobuf::reflect::ProtobufValue for GbxZoneMapFODSavedLevelData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct GbxZoneMapFODSaveGameData {
     // message fields
     pub level_data: ::protobuf::RepeatedField<GbxZoneMapFODSavedLevelData>,
@@ -10834,10 +10836,10 @@ impl ::protobuf::Message for GbxZoneMapFODSaveGameData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.level_data)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -10908,7 +10910,7 @@ impl ::protobuf::Message for GbxZoneMapFODSaveGameData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<GbxZoneMapFODSaveGameData>(
                 "GbxZoneMapFODSaveGameData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -10938,7 +10940,7 @@ impl ::protobuf::reflect::ProtobufValue for GbxZoneMapFODSaveGameData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct OakProfileCloudData {
     // message fields
     pub profile_stats_data: ::protobuf::RepeatedField<super::oak_shared::GameStatSaveGameData>,
@@ -11424,74 +11426,74 @@ impl ::protobuf::Message for OakProfileCloudData {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.profile_stats_data)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_repeated_bytes_into(wire_type, is, &mut self.bank_inventory_list)?;
-                }
+                },
                 3 => {
                     ::protobuf::rt::read_repeated_bytes_into(wire_type, is, &mut self.lost_loot_inventory_list)?;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.npc_mail_items)?;
-                }
+                },
                 5 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.profile_sdu_list)?;
-                }
+                },
                 6 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_customizations)?;
-                }
+                },
                 7 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_inventory_customization_parts)?;
-                }
+                },
                 8 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.guardian_experience = tmp;
-                }
+                },
                 9 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_crew_quarters_decorations)?;
-                }
+                },
                 10 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_crew_quarters_rooms)?;
-                }
+                },
                 11 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.challenge_data)?;
-                }
+                },
                 12 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.mail_guids)?;
-                }
+                },
                 13 => {
                     ::protobuf::rt::read_repeated_int32_into(wire_type, is, &mut self.CitizenScienceLevelProgression)?;
-                }
+                },
                 14 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.CitizenScienceCSBucksAmount = tmp;
-                }
+                },
                 15 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.vault_card)?;
-                }
+                },
                 25 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.bCitizenScienceHasSeenIntroVideo = tmp;
-                }
+                },
                 26 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.bCitizenScienceTutorialDone = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -11762,7 +11764,7 @@ impl ::protobuf::Message for OakProfileCloudData {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<OakProfileCloudData>(
                 "OakProfileCloudData",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -11808,7 +11810,7 @@ impl ::protobuf::reflect::ProtobufValue for OakProfileCloudData {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct Character {
     // message fields
     pub save_game_id: u32,
@@ -13534,258 +13536,258 @@ impl ::protobuf::Message for Character {
                     }
                     let tmp = is.read_uint32()?;
                     self.save_game_id = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int64()?;
                     self.last_save_timestamp = tmp;
-                }
+                },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.time_played_seconds = tmp;
-                }
+                },
                 4 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.player_class_data)?;
-                }
+                },
                 5 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.resource_pools)?;
-                }
+                },
                 6 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.saved_regions)?;
-                }
+                },
                 7 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.experience_points = tmp;
-                }
+                },
                 8 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.game_stats_data)?;
-                }
+                },
                 9 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.inventory_category_list)?;
-                }
+                },
                 10 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.inventory_items)?;
-                }
+                },
                 11 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.equipped_inventory_list)?;
-                }
+                },
                 12 => {
                     ::protobuf::rt::read_repeated_int32_into(wire_type, is, &mut self.active_weapon_list)?;
-                }
+                },
                 13 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.ability_data)?;
-                }
+                },
                 14 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.last_play_through_index = tmp;
-                }
+                },
                 15 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.playthroughs_completed = tmp;
-                }
+                },
                 16 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.show_new_playthrough_notification = tmp;
-                }
+                },
                 17 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.mission_playthroughs_data)?;
-                }
+                },
                 21 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.active_travel_stations)?;
-                }
+                },
                 22 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.discovery_data)?;
-                }
+                },
                 23 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.last_active_travel_station)?;
-                }
+                },
                 24 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.vehicles_unlocked_data)?;
-                }
+                },
                 25 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.vehicle_parts_unlocked)?;
-                }
+                },
                 26 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.vehicle_loadouts)?;
-                }
+                },
                 27 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.vehicle_last_loadout_index = tmp;
-                }
+                },
                 28 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.challenge_data)?;
-                }
+                },
                 29 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.sdu_list)?;
-                }
+                },
                 30 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.selected_customizations)?;
-                }
+                },
                 31 => {
                     ::protobuf::rt::read_repeated_int32_into(wire_type, is, &mut self.equipped_emote_customizations)?;
-                }
+                },
                 32 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.selected_color_customizations)?;
-                }
+                },
                 33 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.guardian_rank)?;
-                }
+                },
                 34 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.crew_quarters_room)?;
-                }
+                },
                 35 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.crew_quarters_gun_rack)?;
-                }
+                },
                 36 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.unlocked_echo_logs)?;
-                }
+                },
                 37 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.has_played_special_echo_log_insert_already = tmp;
-                }
+                },
                 38 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.nickname_mappings)?;
-                }
+                },
                 39 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.last_traveled_map_id)?;
-                }
+                },
                 40 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.challenge_category_completion_pcts)?;
-                }
+                },
                 41 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.character_slot_save_game_data)?;
-                }
+                },
                 42 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.ui_tracking_save_game_data)?;
-                }
+                },
                 43 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.preferred_character_name)?;
-                }
+                },
                 44 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_int32()?;
                     self.name_character_limit = tmp;
-                }
+                },
                 45 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.preferred_group_mode = tmp;
-                }
+                },
                 46 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.time_of_day_save_game_data)?;
-                }
+                },
                 47 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.level_persistence_data)?;
-                }
+                },
                 48 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.accumulated_level_persistence_reset_timer_seconds = tmp;
-                }
+                },
                 49 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.mayhem_level = tmp;
-                }
+                },
                 50 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.gbx_zone_map_fod_save_game_data)?;
-                }
+                },
                 51 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.active_or_blacklisted_travel_stations)?;
-                }
+                },
                 52 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.last_active_travel_station_for_playthrough)?;
-                }
+                },
                 53 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.game_state_save_data_for_playthrough)?;
-                }
+                },
                 54 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.registered_downloadable_entitlements)?;
-                }
+                },
                 55 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.active_travel_stations_for_playthrough)?;
-                }
+                },
                 56 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.save_game_guid)?;
-                }
+                },
                 57 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.guardian_rank_character_data)?;
-                }
+                },
                 58 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.optional_objective_reward_fixup_applied = tmp;
-                }
+                },
                 59 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.vehicle_part_rewards_fixup_applied = tmp;
-                }
+                },
                 60 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.last_active_league = tmp;
-                }
+                },
                 61 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.last_active_league_instance = tmp;
-                }
+                },
                 62 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.active_league_instance_for_event)?;
-                }
+                },
                 63 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_bool()?;
                     self.levelled_save_vehicle_part_rewards_fixup_applied = tmp;
-                }
+                },
                 64 => {
                     ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.profile_cloud_data)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -14615,7 +14617,7 @@ impl ::protobuf::Message for Character {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Character>(
                 "Character",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -14705,7 +14707,7 @@ impl ::protobuf::reflect::ProtobufValue for Character {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct Character_NicknameMappingsEntry {
     // message fields
     pub key: ::std::string::String,
@@ -14790,13 +14792,13 @@ impl ::protobuf::Message for Character_NicknameMappingsEntry {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.key)?;
-                }
+                },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.value)?;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -14875,7 +14877,7 @@ impl ::protobuf::Message for Character_NicknameMappingsEntry {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Character_NicknameMappingsEntry>(
                 "Character.NicknameMappingsEntry",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }
@@ -14906,7 +14908,7 @@ impl ::protobuf::reflect::ProtobufValue for Character_NicknameMappingsEntry {
     }
 }
 
-#[derive(PartialEq, Clone, Default)]
+#[derive(PartialEq,Clone,Default)]
 pub struct Character_ActiveLeagueInstanceForEventEntry {
     // message fields
     pub key: u32,
@@ -14973,17 +14975,17 @@ impl ::protobuf::Message for Character_ActiveLeagueInstanceForEventEntry {
                     }
                     let tmp = is.read_uint32()?;
                     self.key = tmp;
-                }
+                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
                     self.value = tmp;
-                }
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                }
+                },
             };
         }
         ::std::result::Result::Ok(())
@@ -15062,7 +15064,7 @@ impl ::protobuf::Message for Character_ActiveLeagueInstanceForEventEntry {
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Character_ActiveLeagueInstanceForEventEntry>(
                 "Character.ActiveLeagueInstanceForEventEntry",
                 fields,
-                file_descriptor_proto(),
+                file_descriptor_proto()
             )
         })
     }

@@ -2,11 +2,11 @@ use std::str::FromStr;
 
 use anyhow::{Context, Result};
 use derivative::Derivative;
-use rayon::iter::{IntoParallelRefIterator, ParallelBridge, ParallelIterator};
-use rayon::prelude::ParallelSliceMut;
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use strum::{EnumMessage, IntoEnumIterator};
 
-use crate::bl3_item::Bl3Item;
+use crate::bl3_item::{Bl3Item, ItemFlags};
+use crate::bl3_profile::guardian_reward::GuardianReward;
 use crate::bl3_save::ammo::{AmmoPool, AmmoPoolData};
 use crate::bl3_save::challenge_data::Challenge;
 use crate::bl3_save::challenge_data::ChallengeData;
@@ -26,7 +26,8 @@ use crate::game_data::{
     VEHICLE_SKINS_OUTRUNNER, VEHICLE_SKINS_TECHNICAL,
 };
 use crate::protos::oak_save::{
-    Character, OakInventoryItemSaveGameData, VehicleUnlockedSaveGameData,
+    Character, GuardianRankCharacterSaveGameData, GuardianRankRewardCharacterSaveGameData,
+    GuardianRankSaveGameData, OakInventoryItemSaveGameData, VehicleUnlockedSaveGameData,
 };
 use crate::protos::oak_shared::{
     GameStatSaveGameData, InventoryCategorySaveData, OakSDUSaveGameData,
@@ -85,11 +86,7 @@ impl CharacterData {
         let available_head_skins = PROFILE_HEADS_DEFAULTS
             .par_iter()
             .chain(PROFILE_HEADS.par_iter())
-            .filter(|h| {
-                h.ident
-                    .to_lowercase()
-                    .contains(&player_class.to_string().to_lowercase())
-            })
+            .filter(|h| h.ident.contains(&player_class.to_string()))
             .cloned()
             .collect::<Vec<_>>();
 
@@ -107,11 +104,7 @@ impl CharacterData {
         let available_character_skins = PROFILE_SKINS_DEFAULTS
             .par_iter()
             .chain(PROFILE_SKINS.par_iter())
-            .filter(|h| {
-                h.ident
-                    .to_lowercase()
-                    .contains(&player_class.to_string().to_lowercase())
-            })
+            .filter(|h| h.ident.contains(&player_class.to_string()))
             .cloned()
             .collect::<Vec<_>>();
 
@@ -155,45 +148,32 @@ impl CharacterData {
             })
             .collect::<Result<Vec<_>>>()?;
 
-        unlockable_inventory_slots.par_sort();
+        unlockable_inventory_slots.sort();
 
-        let mut sdu_slots = character
-            .sdu_list
-            .par_iter()
-            .map(|s| {
-                let slot = SaveSduSlot::from_str(&s.sdu_data_path).with_context(|| {
-                    format!("failed to read save sdu slot: {}", &s.sdu_data_path)
-                })?;
-                let max = slot.maximum();
+        let mut sdu_slots = SaveSduSlot::iter()
+            .map(|sdu| {
+                let path = sdu.get_serializations()[0];
 
-                Ok(SaveSduSlotData {
-                    slot,
-                    current: s.sdu_level,
-                    max,
-                })
-            })
-            .collect::<Result<Vec<_>>>()?;
+                let current = character
+                    .sdu_list
+                    .iter()
+                    .find(|s| s.sdu_data_path == path)
+                    .map(|s| s.sdu_level)
+                    .unwrap_or(0);
 
-        // make sure that we include all sdu slots that might not be in our save
-        SaveSduSlot::iter().for_each(|sdu| {
-            let contains_sdu_slot = sdu_slots.par_iter().any(|save_sdu| {
-                std::mem::discriminant(&sdu) == std::mem::discriminant(&save_sdu.slot)
-            });
-
-            if !contains_sdu_slot {
-                sdu_slots.push(SaveSduSlotData {
-                    current: 0,
+                SaveSduSlotData {
+                    current,
                     max: sdu.maximum(),
-                    slot: sdu,
-                })
-            }
-        });
+                    sdu,
+                }
+            })
+            .collect::<Vec<_>>();
 
-        sdu_slots.par_sort();
+        sdu_slots.sort();
 
         let mut ammo_pools = character
             .resource_pools
-            .par_iter()
+            .iter()
             .filter(|rp| !rp.resource_path.contains("Eridium"))
             .map(|rp| {
                 let ammo = AmmoPool::from_str(&rp.resource_path)
@@ -209,15 +189,14 @@ impl CharacterData {
             })
             .collect::<Result<Vec<_>>>()?;
 
-        ammo_pools.par_sort();
+        ammo_pools.sort();
 
         let mut challenge_milestones = Challenge::iter()
-            .par_bridge()
             .filter(|challenge| {
-                let challenge_path = challenge.get_serializations()[0].to_lowercase();
+                let challenge_path = challenge.get_serializations()[0];
 
-                if challenge_path.contains("character") {
-                    challenge_path.contains(&player_class.to_string().to_lowercase())
+                if challenge_path.contains("Character") {
+                    challenge_path.contains(&player_class.to_string())
                 } else {
                     true
                 }
@@ -239,7 +218,7 @@ impl CharacterData {
             })
             .collect::<Result<Vec<_>>>()?;
 
-        challenge_milestones.par_sort();
+        challenge_milestones.sort();
 
         let mut outrunner_chassis = 0;
         let mut jetbeast_chassis = 0;
@@ -364,7 +343,10 @@ impl CharacterData {
         let inventory_items = character
             .inventory_items
             .par_iter()
-            .filter_map(|i| Bl3Item::from_serial_bytes(&i.item_serial_number).ok())
+            .filter_map(|i| {
+                Bl3Item::from_serial_bytes(&i.item_serial_number, ItemFlags::from_bits(i.flags))
+                    .ok()
+            })
             .collect::<Vec<_>>();
 
         Ok(Self {
@@ -502,6 +484,80 @@ impl CharacterData {
 
     pub fn guardian_rank(&self) -> i32 {
         self.guardian_rank
+    }
+
+    pub fn set_guardian_rank(&mut self, new_rank: i32, tokens: Option<i32>) {
+        if let Some(guardian_rank) = self.character.guardian_rank.as_mut() {
+            guardian_rank.guardian_rank = new_rank;
+        } else {
+            let guardian_rank = GuardianRankSaveGameData {
+                guardian_rank: new_rank,
+                guardian_experience: 0,
+                unknown_fields: Default::default(),
+                cached_size: Default::default(),
+            };
+
+            self.character.guardian_rank = Some(guardian_rank).into();
+        }
+
+        if let Some(guardian_data) = self.character.guardian_rank_character_data.as_mut() {
+            guardian_data.guardian_rank = new_rank;
+
+            if let Some(tokens) = tokens {
+                guardian_data.guardian_available_tokens = tokens;
+            }
+        } else {
+            let guardian_data = GuardianRankCharacterSaveGameData {
+                guardian_available_tokens: tokens.unwrap_or(0),
+                guardian_rank: new_rank,
+                guardian_experience: 0,
+                rank_rewards: Default::default(),
+                rank_perks: Default::default(),
+                guardian_reward_random_seed: 0,
+                new_guardian_experience: 0,
+                is_rank_system_enabled: false,
+                unknown_fields: Default::default(),
+                cached_size: Default::default(),
+            };
+
+            self.character.guardian_rank_character_data = Some(guardian_data).into();
+        }
+
+        self.guardian_rank = new_rank;
+    }
+
+    pub fn set_guardian_reward(
+        &mut self,
+        guardian_reward: &GuardianReward,
+        tokens: i32,
+    ) -> Result<()> {
+        let reward_path = guardian_reward.get_serializations()[0];
+
+        let guardian_rank_character_data = self
+            .character
+            .guardian_rank_character_data
+            .as_mut()
+            .context("failed to read character Guardian Rank character data.")?;
+
+        if let Some(reward) = guardian_rank_character_data
+            .rank_rewards
+            .iter_mut()
+            .find(|eg| eg.reward_data_path == reward_path)
+        {
+            reward.num_tokens = tokens;
+        } else {
+            guardian_rank_character_data.rank_rewards.push(
+                GuardianRankRewardCharacterSaveGameData {
+                    num_tokens: tokens,
+                    is_enabled: true,
+                    reward_data_path: reward_path.to_owned(),
+                    unknown_fields: Default::default(),
+                    cached_size: Default::default(),
+                },
+            );
+        }
+
+        Ok(())
     }
 
     pub fn head_skin_selected(&self) -> GameDataKv {
@@ -734,11 +790,11 @@ impl CharacterData {
             })
         }
 
-        if let Some(current_slot) = self.sdu_slots.iter_mut().find(|i| i.slot == *sdu_slot) {
+        if let Some(current_slot) = self.sdu_slots.iter_mut().find(|i| i.sdu == *sdu_slot) {
             current_slot.current = level;
         } else {
             self.sdu_slots.push(SaveSduSlotData {
-                slot: sdu_slot.to_owned(),
+                sdu: sdu_slot.to_owned(),
                 current: level,
                 max: sdu_slot.maximum(),
             });
@@ -832,24 +888,26 @@ impl CharacterData {
         &self.inventory_items
     }
 
+    pub fn inventory_items_mut(&mut self) -> &mut Vec<Bl3Item> {
+        &mut self.inventory_items
+    }
+
     pub fn create_inventory_item(
-        item: &Bl3Item,
         pickup_order_index: i32,
+        item: &Bl3Item,
         is_seen: bool,
-        is_favourite: bool,
-        is_trash: bool,
     ) -> Result<OakInventoryItemSaveGameData> {
-        let mut flags = 0;
+        let flags: i32 = if let Some(flags) = item.flags {
+            flags.bits()
+        } else {
+            let mut default_flags = ItemFlags::empty();
 
-        if is_seen {
-            flags |= 0x1;
-        }
+            if is_seen {
+                default_flags |= ItemFlags::SEEN;
+            }
 
-        if is_favourite {
-            flags |= 0x2
-        } else if is_trash {
-            flags |= 0x4
-        }
+            default_flags.bits()
+        };
 
         let item_serial_number = item.get_serial_number(true)?;
 
@@ -877,8 +935,7 @@ impl CharacterData {
     }
 
     pub fn add_inventory_item(&mut self, pickup_order_index: i32, item: &Bl3Item) -> Result<()> {
-        let new_oak_item =
-            Self::create_inventory_item(item, pickup_order_index, true, true, false)?;
+        let new_oak_item = Self::create_inventory_item(pickup_order_index, item, true)?;
 
         self.character.inventory_items.push(new_oak_item);
 
@@ -893,8 +950,7 @@ impl CharacterData {
         item_index: usize,
         item: &Bl3Item,
     ) -> Result<()> {
-        let new_oak_item =
-            Self::create_inventory_item(item, pickup_order_index, true, true, false)?;
+        let new_oak_item = Self::create_inventory_item(pickup_order_index, item, true)?;
 
         self.character
             .inventory_items

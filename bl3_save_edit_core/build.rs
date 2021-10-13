@@ -53,7 +53,7 @@ fn main() {
         "game_data/VEHICLE_SKINS_JETBEAST.csv",
     ];
 
-    let lootlemon_items = "resources/Lootlemon_BL3_Items.csv";
+    let lootlemon_items = "resources/LOOTLEMON_BL3_ITEMS.csv";
 
     for input in proto_inputs {
         println!("cargo:rerun-if-changed={}", input);

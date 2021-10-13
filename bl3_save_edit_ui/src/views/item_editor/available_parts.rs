@@ -1,5 +1,6 @@
+use iced::alignment::{Horizontal, Vertical};
 use iced::{
-    button, scrollable, text_input, Align, Button, Checkbox, Color, Column, Container, Element,
+    button, scrollable, text_input, Alignment, Button, Checkbox, Color, Column, Container, Element,
     Length, Row, Scrollable, Text,
 };
 use rayon::iter::IntoParallelRefIterator;
@@ -102,23 +103,20 @@ impl AvailableResourcePart {
 
         let part_contents_col = add_extra_part_info(part_contents_col, &self.part.info);
 
-        let part_contents = Container::new(part_contents_col).align_x(Align::Start);
+        let part_contents = Container::new(part_contents_col).align_x(Horizontal::Left);
+
+        let index = AvailablePartTypeIndex {
+            category_index: self.category_index,
+            part_index: self.part_index,
+        };
 
         Button::new(&mut self.button_state, part_contents)
             .on_press(interaction_message(match self.part_type {
                 AvailablePartType::Parts => {
-                    ItemEditorInteractionMessage::AvailablePartPressed(AvailablePartTypeIndex {
-                        category_index: self.category_index,
-                        part_index: self.part_index,
-                    })
+                    ItemEditorInteractionMessage::AvailablePartPressed(index)
                 }
                 AvailablePartType::Anointments => {
-                    ItemEditorInteractionMessage::AvailableAnointmentPressed(
-                        AvailablePartTypeIndex {
-                            category_index: self.category_index,
-                            part_index: self.part_index,
-                        },
-                    )
+                    ItemEditorInteractionMessage::AvailableAnointmentPressed(index)
                 }
             }))
             .padding(10)
@@ -180,7 +178,7 @@ impl AvailableParts {
                 .padding(1)
                 .width(Length::FillPortion(2)),
             )
-            .align_items(Align::Center);
+            .align_items(Alignment::Center);
 
         let mut available_parts_column = Column::new().push(Container::new(title_row));
 
@@ -201,7 +199,7 @@ impl AvailableParts {
                         )
                     });
 
-                    let checkbox =
+                    let show_all_parts_checkbox =
                         Checkbox::new(self.show_all_available_parts, "Show All Parts", move |c| {
                             interaction_message(
                                 ItemEditorInteractionMessage::ShowAllAvailablePartsSelected(c),
@@ -217,7 +215,7 @@ impl AvailableParts {
                     if specific_parts.is_some() {
                         available_parts_column = available_parts_column.push(
                             Container::new(
-                                Container::new(checkbox)
+                                Container::new(show_all_parts_checkbox)
                                     .padding(15)
                                     .width(Length::Fill)
                                     .style(Bl3UiStyleNoBorder),
@@ -246,7 +244,7 @@ impl AvailableParts {
         if let Some(available_parts) = &available_parts {
             let amount: usize = available_parts.iter().map(|cat_p| cat_p.parts.len()).sum();
 
-            let placeholder = match self.parts_tab_type {
+            let search_placeholder = match self.parts_tab_type {
                 AvailablePartType::Parts => format!("Search {} Available Parts...", amount),
                 AvailablePartType::Anointments => {
                     format!("Search {} Available Anointments...", amount)
@@ -255,7 +253,7 @@ impl AvailableParts {
 
             let search_input = TextInputLimited::new(
                 &mut self.search_input_state,
-                &placeholder,
+                &search_placeholder,
                 &self.search_input,
                 500,
                 move |s| {
@@ -274,8 +272,8 @@ impl AvailableParts {
             available_parts_column = available_parts_column.push(search_input);
         }
 
-        if let Some(available_parts) = available_parts {
-            let search_query = &self.search_input;
+        if let Some(available_parts) = &available_parts {
+            let search_query = self.search_input.trim();
 
             self.parts = available_parts.clone();
 
@@ -308,18 +306,24 @@ impl AvailableParts {
                 .flatten()
                 .collect::<Vec<_>>();
 
+            let category_name = if self.parts_tab_type == AvailablePartType::Anointments {
+                Some("Anointment")
+            } else {
+                None
+            };
+
             if !filtered_parts.is_empty() {
                 let available_parts_list = self.parts.iter_mut().enumerate().fold(
                     Column::new(),
                     |mut curr, (cat_index, cat_parts)| {
                         if cat_parts
                             .parts
-                            .iter()
+                            .par_iter()
                             .any(|cat_p| filtered_parts.contains(&cat_p))
                         {
                             curr = curr.push(
                                 Container::new(
-                                    Text::new(&cat_parts.category)
+                                    Text::new(category_name.unwrap_or(&cat_parts.category))
                                         .font(JETBRAINS_MONO_BOLD)
                                         .size(17)
                                         .color(Color::from_rgb8(242, 203, 5)),
@@ -335,6 +339,7 @@ impl AvailableParts {
                                 let is_active = selected_available_part_type_index.category_index
                                     == cat_index
                                     && selected_available_part_type_index.part_index == part_index;
+
                                 curr = curr.push(p.view(is_active, interaction_message));
                             }
                         }
@@ -362,8 +367,8 @@ impl AvailableParts {
                     )
                     .width(Length::Fill)
                     .height(Length::Fill)
-                    .align_x(Align::Center)
-                    .align_y(Align::Center),
+                    .align_x(Horizontal::Center)
+                    .align_y(Vertical::Center),
                 );
             }
         } else {
@@ -376,8 +381,8 @@ impl AvailableParts {
                 )
                 .width(Length::Fill)
                 .height(Length::Fill)
-                .align_x(Align::Center)
-                .align_y(Align::Center),
+                .align_x(Horizontal::Center)
+                .align_y(Vertical::Center),
             )
         }
 

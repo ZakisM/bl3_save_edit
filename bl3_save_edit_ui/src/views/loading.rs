@@ -1,4 +1,5 @@
-use iced::{Align, Color, Container, Length, Text};
+use iced::alignment::{Horizontal, Vertical};
+use iced::{Color, Container, Length, Text};
 
 use crate::bl3_ui::Bl3Message;
 use crate::resources::fonts::JETBRAINS_MONO;
@@ -12,6 +13,6 @@ pub fn view<'a>() -> Container<'a, Bl3Message> {
     Container::new(loading_text)
         .width(Length::Fill)
         .height(Length::Fill)
-        .align_x(Align::Center)
-        .align_y(Align::Center)
+        .align_x(Horizontal::Center)
+        .align_y(Vertical::Center)
 }
