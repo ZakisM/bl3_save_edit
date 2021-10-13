@@ -10,7 +10,7 @@ converting between them).
 
 # Screenshot
 
-<img width="1762" alt="Screenshot 2021-10-13 at 15 52 57" src="https://user-images.githubusercontent.com/8143258/137158363-9ab9d685-b361-4435-8434-1e0ff61546b2.png">
+<img width="1762" alt="Screenshot 2021-10-13 at 16 03 15" src="https://user-images.githubusercontent.com/8143258/137160314-81ff5ba1-b89c-4c9c-a7e8-ae905a101fe9.png">
 
 # How to use
 
