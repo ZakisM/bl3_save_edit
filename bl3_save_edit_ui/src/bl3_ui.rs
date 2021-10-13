@@ -341,16 +341,18 @@ impl Application for Bl3Application {
                                         .guid_input = guid;
                                 }
                                 SaveGeneralInteractionMessage::Slot(slot) => {
-                                    let filename = format!("{}.sav", slot);
+                                    let filename = format!("{:x}.sav", slot);
 
                                     self.manage_save_state
                                         .save_view_state
                                         .general_state
                                         .slot_input = slot;
+
                                     self.manage_save_state
                                         .save_view_state
                                         .general_state
                                         .filename_input = filename.clone();
+
                                     self.manage_save_state.current_file.file_name = filename;
                                 }
                                 SaveGeneralInteractionMessage::GenerateGuidPressed => {
