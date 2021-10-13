@@ -187,7 +187,7 @@ dependencies = [
 
 [[package]]
 name = "bl3_save_edit_ui"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "anyhow",
  "bl3_save_edit_core",
