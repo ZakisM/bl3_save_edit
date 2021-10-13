@@ -105,7 +105,14 @@ jobs:
           depth: 50
 
       - name: Install dependencies
-        run: sudo apt install libxkbcommon-dev
+        run: |
+          sudo apt update \
+          && sudo apt upgrade \
+          && sudo apt install libxkbcommon-dev \
+          && sudo apt install libxcb-shape0 \
+          && sudo apt install libxcb-shape0-dev \
+          && sudo apt install libxcb-xfixes0 \
+          && sudo apt install libxcb-xfixes0-dev
 
       - run: ci/set_rust_version.bash ${{ matrix.channel }} ${{ matrix.target }}
 
