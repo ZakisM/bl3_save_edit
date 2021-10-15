@@ -62,8 +62,7 @@ pub struct ItemEditorState {
     pub all_item_levels_input: i32,
     pub all_item_levels_input_state: text_input::State,
     pub all_item_levels_button_state: button::State,
-    pub import_item_from_clipboard_button_state: button::State,
-    pub import_item_from_serial_button_state: button::State,
+    pub import_serial_button_state: button::State,
     items: Vec<ItemEditorListItem>,
     lootlemon_items: ItemEditorLootlemonItems,
     pub search_items_input_state: text_input::State,
@@ -169,30 +168,6 @@ impl ItemEditorState {
             .iter()
             .position(|i| i.item == previous_item)
             .unwrap_or(0)
-    }
-
-    pub fn import_item_from_serial(
-        &mut self,
-        item_serial: &str,
-        notification: &mut Option<Notification>,
-    ) {
-        match Bl3Item::from_serial_base64(item_serial) {
-            Ok(item) => {
-                let item_pos = self.add_item(item);
-
-                self.selected_item_index = item_pos;
-
-                self.search_items_input_state.focus();
-
-                self.item_list_tab_type = ItemListTabType::Items;
-
-                self.map_current_item_if_exists_to_editor_state()
-                    .handle_ui_error("Failed to map imported item to editor", notification);
-            }
-            Err(e) => {
-                e.handle_ui_error("Failed to import serial", notification);
-            }
-        }
     }
 }
 
@@ -313,7 +288,6 @@ pub enum ItemEditorInteractionMessage {
     CurrentAnointmentPressed(CurrentPartTypeIndex),
     ImportSerialInputChanged(String),
     CreateItemPressed,
-    ImportItemFromClipboardPressed,
     ImportItemFromSerialPressed,
     AllItemLevel(i32),
     SetAllItemLevelsPressed,
@@ -759,26 +733,30 @@ impl ItemEditorInteractionMessage {
                     .map_current_item_if_exists_to_editor_state()
                     .handle_ui_error("Failed map created item to editor", &mut notification);
             }
-            ItemEditorInteractionMessage::ImportItemFromClipboardPressed => {
-                match util::get_clipboard_contents() {
-                    Ok(contents) => {
-                        let contents = contents.trim();
+            ItemEditorInteractionMessage::ImportItemFromSerialPressed => {
+                let item_serial = item_editor_state.import_serial_input.trim();
 
-                        item_editor_state.import_item_from_serial(contents, &mut notification);
+                match Bl3Item::from_serial_base64(item_serial) {
+                    Ok(item) => {
+                        let item_pos = item_editor_state.add_item(item);
+
+                        item_editor_state.selected_item_index = item_pos;
+
+                        item_editor_state.search_items_input_state.focus();
+
+                        item_editor_state.item_list_tab_type = ItemListTabType::Items;
+
+                        item_editor_state
+                            .map_current_item_if_exists_to_editor_state()
+                            .handle_ui_error(
+                                "Failed to map imported item to editor",
+                                &mut notification,
+                            );
                     }
                     Err(e) => {
-                        let msg = format!("Failed to read clipboard contents: {}.", e);
-
-                        notification =
-                            Some(Notification::new(msg, NotificationSentiment::Negative));
+                        e.handle_ui_error("Failed to import serial", &mut notification);
                     }
                 }
-            }
-            ItemEditorInteractionMessage::ImportItemFromSerialPressed => {
-                let item_serial = item_editor_state.import_serial_input.clone();
-                let item_serial = item_serial.trim();
-
-                item_editor_state.import_item_from_serial(item_serial, &mut notification);
             }
             ItemEditorInteractionMessage::AllItemLevel(item_level_input) => {
                 item_editor_state.all_item_levels_input = item_level_input;
@@ -1024,7 +1002,7 @@ where
         )
         .push(
             Button::new(
-                &mut item_editor_state.import_item_from_serial_button_state,
+                &mut item_editor_state.import_serial_button_state,
                 Text::new("Import").font(JETBRAINS_MONO_BOLD).size(17),
             )
             .on_press(interaction_message(
@@ -1043,21 +1021,6 @@ where
         )
         .on_press(interaction_message(
             ItemEditorInteractionMessage::CreateItemPressed,
-        ))
-        .padding(10)
-        .style(Bl3UiStyle)
-        .into_element(),
-    );
-
-    let import_item_from_clipboard_button = Container::new(
-        Button::new(
-            &mut item_editor_state.import_item_from_clipboard_button_state,
-            Text::new("Import Serial From Clipboard")
-                .font(JETBRAINS_MONO_BOLD)
-                .size(17),
-        )
-        .on_press(interaction_message(
-            ItemEditorInteractionMessage::ImportItemFromClipboardPressed,
         ))
         .padding(10)
         .style(Bl3UiStyle)
@@ -1118,7 +1081,6 @@ where
 
     let general_options_row = Row::new()
         .push(create_item_button)
-        .push(import_item_from_clipboard_button)
         .push(
             Container::new(serial_importer)
                 .width(Length::FillPortion(8))
