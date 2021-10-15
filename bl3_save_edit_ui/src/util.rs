@@ -30,6 +30,13 @@ impl ErrorExt for anyhow::Error {
     }
 }
 
+pub fn get_clipboard_contents() -> Result<String> {
+    match ClipboardProvider::new().and_then(|mut ctx: ClipboardContext| ctx.get_contents()) {
+        Ok(contents) => Ok(contents),
+        Err(e) => bail!("{}", e.to_string()),
+    }
+}
+
 pub fn set_clipboard_contents(contents: String) -> Result<()> {
     match ClipboardProvider::new().and_then(|mut ctx: ClipboardContext| ctx.set_contents(contents))
     {
