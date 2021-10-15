@@ -311,8 +311,10 @@ pub enum ItemEditorInteractionMessage {
     AvailableAnointmentPressed(AvailablePartTypeIndex),
     CurrentPartPressed(bool, CurrentPartTypeIndex),
     CurrentAnointmentPressed(CurrentPartTypeIndex),
+    ImportSerialInputChanged(String),
     CreateItemPressed,
     ImportItemFromClipboardPressed,
+    ImportItemFromSerialPressed,
     AllItemLevel(i32),
     SetAllItemLevelsPressed,
     ItemLevel(i32),
@@ -737,6 +739,9 @@ impl ItemEditorInteractionMessage {
                     }
                 }
             }
+            ItemEditorInteractionMessage::ImportSerialInputChanged(s) => {
+                item_editor_state.import_serial_input = s;
+            }
             ItemEditorInteractionMessage::CreateItemPressed => {
                 let item = Bl3Item::from_serial_base64("BL3(BAAAAAD2aoA+P1vAEgA=)").unwrap();
 
@@ -768,6 +773,12 @@ impl ItemEditorInteractionMessage {
                             Some(Notification::new(msg, NotificationSentiment::Negative));
                     }
                 }
+            }
+            ItemEditorInteractionMessage::ImportItemFromSerialPressed => {
+                let item_serial = item_editor_state.import_serial_input.clone();
+                let item_serial = item_serial.trim();
+
+                item_editor_state.import_item_from_serial(item_serial, &mut notification);
             }
             ItemEditorInteractionMessage::AllItemLevel(item_level_input) => {
                 item_editor_state.all_item_levels_input = item_level_input;
@@ -984,6 +995,47 @@ where
     let number_of_lootlemon_items = item_editor_state.lootlemon_items.items.len();
     let item_list_tab_type = &item_editor_state.item_list_tab_type;
 
+    let serial_importer = Row::new()
+        .push(
+            LabelledElement::create(
+                "Import Serial",
+                Length::Units(120),
+                TextInputLimited::new(
+                    &mut item_editor_state.import_serial_input_state,
+                    "BL3(AwAAAABmboC7I9xAEzwShMJVX8nPYwsAAA==)",
+                    &item_editor_state.import_serial_input,
+                    500,
+                    move |s| {
+                        interaction_message(ItemEditorInteractionMessage::ImportSerialInputChanged(
+                            s,
+                        ))
+                    },
+                )
+                .0
+                .font(JETBRAINS_MONO)
+                .padding(10)
+                .size(17)
+                .style(Bl3UiStyle)
+                .into_element(),
+            )
+            .spacing(15)
+            .width(Length::FillPortion(9))
+            .align_items(Alignment::Center),
+        )
+        .push(
+            Button::new(
+                &mut item_editor_state.import_item_from_serial_button_state,
+                Text::new("Import").font(JETBRAINS_MONO_BOLD).size(17),
+            )
+            .on_press(interaction_message(
+                ItemEditorInteractionMessage::ImportItemFromSerialPressed,
+            ))
+            .padding(10)
+            .style(Bl3UiStyle)
+            .into_element(),
+        )
+        .align_items(Alignment::Center);
+
     let create_item_button = Container::new(
         Button::new(
             &mut item_editor_state.create_item_button_state,
@@ -1016,8 +1068,8 @@ where
         Row::new()
             .push(
                 LabelledElement::create(
-                    "All Item Levels",
-                    Length::Units(135),
+                    "All Levels",
+                    Length::Units(95),
                     Tooltip::new(
                         NumberInput::new(
                             &mut item_editor_state.all_item_levels_input_state,
@@ -1067,6 +1119,12 @@ where
     let general_options_row = Row::new()
         .push(create_item_button)
         .push(import_item_from_clipboard_button)
+        .push(
+            Container::new(serial_importer)
+                .width(Length::FillPortion(8))
+                .height(Length::Units(36))
+                .style(Bl3UiStyle),
+        )
         .push(
             Container::new(edit_all_item_levels_input)
                 .width(Length::FillPortion(2))
