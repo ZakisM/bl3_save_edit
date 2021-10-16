@@ -973,28 +973,43 @@ where
     let number_of_lootlemon_items = item_editor_state.lootlemon_items.items.len();
     let item_list_tab_type = &item_editor_state.item_list_tab_type;
 
+    let serial_importer_tooltip_msg = if cfg!(target_os = "macos") {
+        "Paste an Item Serial here using CMD+V"
+    } else {
+        "Paste an Item Serial here using CTRL+V"
+    };
+
     let serial_importer = Row::new()
         .push(
             LabelledElement::create(
                 "Import Serial",
                 Length::Units(120),
-                TextInputLimited::new(
-                    &mut item_editor_state.import_serial_input_state,
-                    "BL3(AwAAAABmboC7I9xAEzwShMJVX8nPYwsAAA==)",
-                    &item_editor_state.import_serial_input,
-                    500,
-                    move |s| {
-                        interaction_message(ItemEditorInteractionMessage::ImportSerialInputChanged(
-                            s,
-                        ))
-                    },
+                Tooltip::new(
+                    TextInputLimited::new(
+                        &mut item_editor_state.import_serial_input_state,
+                        "BL3(AwAAAABmboC7I9xAEzwShMJVX8nPYwsAAA==)",
+                        &item_editor_state.import_serial_input,
+                        500,
+                        move |s| {
+                            interaction_message(
+                                ItemEditorInteractionMessage::ImportSerialInputChanged(s),
+                            )
+                        },
+                    )
+                    .0
+                    .font(JETBRAINS_MONO)
+                    .padding(10)
+                    .size(17)
+                    .style(Bl3UiStyle)
+                    .into_element(),
+                    serial_importer_tooltip_msg,
+                    tooltip::Position::Top,
                 )
-                .0
-                .font(JETBRAINS_MONO)
+                .gap(10)
                 .padding(10)
+                .font(JETBRAINS_MONO)
                 .size(17)
-                .style(Bl3UiStyle)
-                .into_element(),
+                .style(Bl3UiTooltipStyle),
             )
             .spacing(15)
             .width(Length::FillPortion(9))
