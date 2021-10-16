@@ -1,3 +1,4 @@
+![Build](https://github.com/ZakisM/bl3_save_edit/actions/workflows/ci.yml/badge.svg)
 ![](https://img.shields.io/github/downloads/ZakisM/bl3_save_edit/latest/total)
 ![](https://img.shields.io/github/downloads/ZakisM/bl3_save_edit/total)
 
