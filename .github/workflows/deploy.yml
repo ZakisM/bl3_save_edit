@@ -1,4 +1,4 @@
-name: Mean Bean Deploy
+name: Deploy
 
 on:
   push:
