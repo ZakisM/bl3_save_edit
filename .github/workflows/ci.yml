@@ -1,4 +1,4 @@
-name: Mean Bean CI
+name: Build
 
 on:
   pull_request:
