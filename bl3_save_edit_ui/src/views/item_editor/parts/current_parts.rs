@@ -18,6 +18,7 @@ use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder, Bl3UiTooltipStyle};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::extra_part_info::add_extra_part_info;
 use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
+use crate::views::item_editor::parts::filter_parts;
 use crate::views::item_editor::parts_tab_bar::CurrentPartType;
 use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::tab_bar_button::tab_bar_button;
@@ -137,7 +138,7 @@ pub struct ItemEditorCategorizedParts {
 #[derive(Debug, Clone, Default, Ord, PartialOrd, Eq, PartialEq)]
 pub struct Bl3PartWithInfo {
     pub part: Bl3Part,
-    info: ResourcePartInfo,
+    pub info: ResourcePartInfo,
 }
 
 #[derive(Debug, Default)]
@@ -162,6 +163,7 @@ impl CurrentParts {
         &mut self,
         item: &Bl3Item,
         anointments_list: &[ResourceCategorizedParts],
+        specific_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         interaction_message: F,
     ) -> Container<Bl3Message>
@@ -343,36 +345,8 @@ impl CurrentParts {
         }
 
         if !self.parts.is_empty() {
-            let search_query = self.search_input.trim();
-
-            let filtered_parts = parts
-                .par_iter()
-                .map(|cat_p| {
-                    cat_p
-                        .parts
-                        .par_iter()
-                        .filter(|p| {
-                            p.part.part.ident.to_lowercase().contains(search_query)
-                                || p.part
-                                    .info
-                                    .positives
-                                    .par_iter()
-                                    .any(|p| p.to_lowercase().contains(search_query))
-                                || p.part
-                                    .info
-                                    .negatives
-                                    .par_iter()
-                                    .any(|n| n.to_lowercase().contains(search_query))
-                                || p.part
-                                    .info
-                                    .effects
-                                    .par_iter()
-                                    .any(|e| e.to_lowercase().contains(search_query))
-                        })
-                        .collect::<Vec<&CurrentItemEditorPart>>()
-                })
-                .flatten()
-                .collect::<Vec<_>>();
+            let filtered_parts: Vec<&CurrentItemEditorPart> =
+                filter_parts(&self.search_input, &parts);
 
             let amount: usize = parts.iter().map(|cat_p| cat_p.parts.len()).sum();
 
@@ -641,11 +615,11 @@ impl CurrentParts {
 }
 
 fn part_contains(short_ident: Option<&String>, ident: &str, cat_part_name: &str) -> bool {
-    let name_with_stop = format!("{}.", cat_part_name.to_lowercase());
-
     if let Some(short_ident) = short_ident {
-        cat_part_name.to_lowercase() == short_ident.to_lowercase()
+        cat_part_name.eq_ignore_ascii_case(short_ident)
     } else {
+        let name_with_stop = format!("{}.", cat_part_name.to_lowercase());
+
         ident.to_lowercase().contains(&name_with_stop)
     }
 }

@@ -14,6 +14,7 @@ use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder};
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::views::item_editor::extra_part_info::add_extra_part_info;
 use crate::views::item_editor::item_button_style::ItemEditorButtonStyle;
+use crate::views::item_editor::parts::filter_parts;
 use crate::views::item_editor::parts_tab_bar::AvailablePartType;
 use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::tab_bar_button::tab_bar_button;
@@ -273,38 +274,9 @@ impl AvailableParts {
         }
 
         if let Some(available_parts) = &available_parts {
-            let search_query = self.search_input.trim();
-
             self.parts = available_parts.clone();
 
-            let filtered_parts = available_parts
-                .par_iter()
-                .map(|cat_p| {
-                    cat_p
-                        .parts
-                        .par_iter()
-                        .filter(|p| {
-                            p.part.name.to_lowercase().contains(search_query)
-                                || p.part
-                                    .info
-                                    .positives
-                                    .par_iter()
-                                    .any(|p| p.to_lowercase().contains(search_query))
-                                || p.part
-                                    .info
-                                    .negatives
-                                    .par_iter()
-                                    .any(|n| n.to_lowercase().contains(search_query))
-                                || p.part
-                                    .info
-                                    .effects
-                                    .par_iter()
-                                    .any(|e| e.to_lowercase().contains(search_query))
-                        })
-                        .collect::<Vec<&AvailableResourcePart>>()
-                })
-                .flatten()
-                .collect::<Vec<_>>();
+            let filtered_parts = filter_parts(&self.search_input, available_parts);
 
             let category_name = if self.parts_tab_type == AvailablePartType::Anointments {
                 Some("Anointment")

@@ -22,6 +22,9 @@ use bl3_save_edit_core::bl3_profile::Bl3Profile;
 use bl3_save_edit_core::bl3_save::character_data::MAX_CHARACTER_LEVEL;
 use bl3_save_edit_core::bl3_save::Bl3Save;
 use bl3_save_edit_core::resources::{INVENTORY_SERIAL_DB, LOOTLEMON_ITEMS};
+use parts::available_parts;
+use parts::available_parts::AvailablePartTypeIndex;
+use parts::current_parts::CurrentPartTypeIndex;
 
 use crate::bl3_ui::{Bl3Message, InteractionMessage, MessageResult};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiStyleNoBorder, Bl3UiTooltipStyle};
@@ -29,8 +32,6 @@ use crate::commands::interaction;
 use crate::resources::fonts::{JETBRAINS_MONO, JETBRAINS_MONO_BOLD};
 use crate::util;
 use crate::util::ErrorExt;
-use crate::views::item_editor::available_parts::AvailablePartTypeIndex;
-use crate::views::item_editor::current_parts::CurrentPartTypeIndex;
 use crate::views::item_editor::item_editor_list_item::ItemEditorListItem;
 use crate::views::item_editor::item_editor_lootlemon_item::ItemEditorLootlemonItem;
 use crate::views::item_editor::parts_tab_bar::{AvailablePartType, CurrentPartType};
@@ -41,14 +42,13 @@ use crate::widgets::notification::{Notification, NotificationSentiment};
 use crate::widgets::number_input::NumberInput;
 use crate::widgets::text_input_limited::TextInputLimited;
 
-pub mod available_parts;
-pub mod current_parts;
 pub mod editor;
 pub mod extra_part_info;
 pub mod item_button_style;
 pub mod item_editor_list_item;
 pub mod item_editor_lootlemon_item;
 pub mod list_item_contents;
+pub mod parts;
 pub mod parts_tab_bar;
 
 #[derive(Derivative)]
@@ -1199,6 +1199,7 @@ where
         |mut curr, (i, item)| {
             let item_type = item.item.item_type;
 
+            //Show the categories for our items
             if item_list_tab_type == &ItemListTabType::Items
                 && !inventory_item_categories.contains(&item_type)
                 && filtered_items
