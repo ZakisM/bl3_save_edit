@@ -144,8 +144,8 @@ pub fn get_filtered_mission_list<const LENGTH: usize>(
         .filter(|ms| ms.status == status)
         .map(|ms| {
             all_missions
-                .iter()
-                .find(|gd| ms.mission_class_path.contains(gd.ident))
+                .par_iter()
+                .find_first(|gd| ms.mission_class_path.eq_ignore_ascii_case(gd.ident))
                 .map(|gd| gd.name.to_string())
                 .unwrap_or_else(|| ms.mission_class_path.to_owned())
         })

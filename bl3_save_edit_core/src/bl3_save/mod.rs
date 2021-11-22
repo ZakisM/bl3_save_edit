@@ -351,7 +351,7 @@ mod tests {
                 "Bad Reception",
                 "Bloody Harvest: The Rebloodening",
                 "Cistern of Slaughter",
-                "Dynasty Dash: Pandora",
+                "Dynasty Dash: Devil's Razor",
                 "Invasion of Privacy",
                 "Let's Get It Vaughn",
                 "Maliwannabees",

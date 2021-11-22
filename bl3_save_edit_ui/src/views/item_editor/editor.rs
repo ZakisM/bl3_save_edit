@@ -14,8 +14,8 @@ use bl3_save_edit_core::resources::{
 use crate::bl3_ui::{Bl3Message, InteractionMessage};
 use crate::bl3_ui_style::{Bl3UiStyle, Bl3UiTooltipStyle};
 use crate::resources::fonts::JETBRAINS_MONO;
-use crate::views::item_editor::available_parts::AvailableParts;
-use crate::views::item_editor::current_parts::CurrentParts;
+use crate::views::item_editor::parts::available_parts::AvailableParts;
+use crate::views::item_editor::parts::current_parts::CurrentParts;
 use crate::views::item_editor::ItemEditorInteractionMessage;
 use crate::views::{InteractionExt, NO_SEARCH_RESULTS_FOUND_MESSAGE};
 use crate::widgets::labelled_element::LabelledElement;
@@ -329,9 +329,13 @@ impl Editor {
             interaction_message,
         );
 
-        let current_parts_contents =
-            self.current_parts
-                .view(item, anointments_list, all_parts_list, interaction_message);
+        let current_parts_contents = self.current_parts.view(
+            item,
+            anointments_list,
+            specific_parts_list,
+            all_parts_list,
+            interaction_message,
+        );
 
         let parts_editor_contents = Container::new(
             Row::new()

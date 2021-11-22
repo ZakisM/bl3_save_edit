@@ -187,7 +187,24 @@ pub fn map_profile_state_to_profile(
     }
 
     // Only do this if guardian rank has changed as we need to inject the data into every save.
-    if guardian_rank != profile.profile_data.guardian_rank() as i64 {
+    let guardian_rank_has_changed =
+        profile
+            .profile_data
+            .guardian_rewards()
+            .iter()
+            .any(|curr_reward| {
+                if let Some(modified_reward) = guardian_reward_unlocker
+                    .all_rewards()
+                    .iter()
+                    .find(|r| r.guardian_reward == curr_reward.reward)
+                {
+                    modified_reward.input != curr_reward.current
+                } else {
+                    false
+                }
+            });
+
+    if guardian_rank_has_changed {
         info!("Setting guardian rank and injecting into all saves...");
 
         for g in guardian_reward_unlocker.all_rewards() {

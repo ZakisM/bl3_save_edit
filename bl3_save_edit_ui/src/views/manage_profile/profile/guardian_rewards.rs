@@ -239,37 +239,37 @@ impl GuardianRewardUnlocker {
                         Column::new()
                             .push(
                                 Row::new()
-                                    .push(self.critical_damage.view())
+                                    .push(self.grenade_damage.view())
                                     .push(self.ffyl_duration.view())
                                     .push(self.accuracy.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.grenade_damage.view())
+                                    .push(self.gun_damage.view())
                                     .push(self.ffyl_movement_speed.view())
                                     .push(self.action_skill_cooldown.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.gun_damage.view())
+                                    .push(self.gun_fire_rate.view())
                                     .push(self.max_health.view())
                                     .push(self.rarity_rate.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.gun_fire_rate.view())
+                                    .push(self.melee_damage.view())
                                     .push(self.shield_capacity.view())
                                     .push(self.recoil_reduction.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.melee_damage.view())
+                                    .push(self.vehicle_damage.view())
                                     .push(self.shield_recharge_delay.view())
                                     .push(self.reload_speed.view()),
                             )
                             .push(
                                 Row::new()
-                                    .push(self.vehicle_damage.view())
+                                    .push(self.critical_damage.view())
                                     .push(self.shield_recharge_rate.view())
                                     .push(self.elemental_damage.view()),
                             )

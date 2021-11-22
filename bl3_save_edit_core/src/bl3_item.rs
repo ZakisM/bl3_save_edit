@@ -869,7 +869,7 @@ impl Bl3Item {
 
         let part = INVENTORY_SERIAL_DB
             .get_part_ident(category, part_idx)
-            .unwrap_or_else(|_| "unknown".to_owned());
+            .unwrap_or_else(|_| "Unknown".to_owned());
 
         Ok((part, num_bits, part_idx))
     }
@@ -890,7 +890,7 @@ impl Bl3Item {
 
             let ident = INVENTORY_SERIAL_DB
                 .get_part_ident(category, part_idx)
-                .unwrap_or_else(|_| "unknown".to_owned());
+                .unwrap_or_else(|_| "Unknown part".to_owned());
 
             let short_ident = ident.rsplit('.').next().map(|s| s.to_owned());
 
