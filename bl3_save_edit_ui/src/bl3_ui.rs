@@ -155,7 +155,7 @@ impl Application for Bl3Application {
     fn new(config: Self::Flags) -> (Self, Command<Self::Message>) {
         let startup_commands = [
             Command::perform(initialization::load_lazy_data(), |_| {
-                Bl3Message::Initialization(InitializationMessage::LazyData)
+                Bl3Message::Initialization(InitializationMessage::LoadSaves)
             }),
             Command::perform(update::get_latest_release(), |r| {
                 Bl3Message::LatestRelease(MessageResult::handle_result(r))
@@ -184,14 +184,6 @@ impl Application for Bl3Application {
         )
     }
 
-    fn background_color(&self) -> Color {
-        Color::from_rgb8(23, 23, 23)
-    }
-
-    fn scale_factor(&self) -> f64 {
-        self.settings_state.ui_scale_factor
-    }
-
     fn title(&self) -> String {
         format!("Borderlands 3 Save Editor - v{}", VERSION)
     }
@@ -199,7 +191,7 @@ impl Application for Bl3Application {
     fn update(&mut self, message: Self::Message) -> Command<Self::Message> {
         match message {
             Bl3Message::Initialization(initialization_msg) => match initialization_msg {
-                InitializationMessage::LazyData => {
+                InitializationMessage::LoadSaves => {
                     if self.config.saves_dir().exists() {
                         return Command::perform(
                             interaction::choose_save_directory::load_files_in_directory(
@@ -1029,6 +1021,16 @@ impl Application for Bl3Application {
                                     ) => {
                                         keys_state.vault_card_2_chests_input = vault_card_2_chests;
                                     }
+                                    ProfileKeysInteractionMessage::VaultCard3Keys(
+                                        vault_card_3_keys,
+                                    ) => {
+                                        keys_state.vault_card_3_keys_input = vault_card_3_keys;
+                                    }
+                                    ProfileKeysInteractionMessage::VaultCard3Chests(
+                                        vault_card_3_chests,
+                                    ) => {
+                                        keys_state.vault_card_3_chests_input = vault_card_3_chests;
+                                    }
                                     ProfileKeysInteractionMessage::MaxGoldenKeysPressed => {
                                         keys_state.golden_keys_input = i32::MAX;
                                     }
@@ -1046,6 +1048,12 @@ impl Application for Bl3Application {
                                     }
                                     ProfileKeysInteractionMessage::MaxVaultCard2ChestsPressed => {
                                         keys_state.vault_card_2_chests_input = i32::MAX;
+                                    }
+                                    ProfileKeysInteractionMessage::MaxVaultCard3KeysPressed => {
+                                        keys_state.vault_card_3_keys_input = i32::MAX;
+                                    }
+                                    ProfileKeysInteractionMessage::MaxVaultCard3ChestsPressed => {
+                                        keys_state.vault_card_3_chests_input = i32::MAX;
                                     }
                                 }
                             }
@@ -1505,6 +1513,16 @@ impl Application for Bl3Application {
 
                         if let Some(selected_file) = selected_file {
                             self.loaded_files_selected = Box::new(selected_file.to_owned());
+
+                            match selected_file {
+                                Bl3FileType::PcProfile(_) | Bl3FileType::Ps4Profile(_) => {
+                                    state_mappers::map_loaded_file_to_state(self).handle_ui_error(
+                                        "Failed to map loaded file to editor",
+                                        &mut self.notification,
+                                    );
+                                }
+                                _ => (),
+                            }
                         } else {
                             self.loaded_files_selected = Box::new(
                                 self.loaded_files
@@ -1707,5 +1725,13 @@ impl Application for Bl3Application {
             .height(Length::Fill)
             .style(Bl3UiContentStyle)
             .into()
+    }
+
+    fn background_color(&self) -> Color {
+        Color::from_rgb8(23, 23, 23)
+    }
+
+    fn scale_factor(&self) -> f64 {
+        self.settings_state.ui_scale_factor
     }
 }

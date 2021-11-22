@@ -4,6 +4,7 @@ use anyhow::{Context, Result};
 use derivative::Derivative;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use strum::{EnumMessage, IntoEnumIterator};
+use tracing::error;
 
 use crate::bl3_item::Bl3Item;
 use crate::bl3_profile::guardian_reward::{GuardianReward, GuardianRewardData};
@@ -37,6 +38,8 @@ pub struct ProfileData {
     vault_card_1_chests: i32,
     vault_card_2_keys: i32,
     vault_card_2_chests: i32,
+    vault_card_3_keys: i32,
+    vault_card_3_chests: i32,
     guardian_rank: i32,
     guardian_tokens: i32,
     guardian_rewards: Vec<GuardianRewardData>,
@@ -87,6 +90,21 @@ impl ProfileData {
                 vc.vault_card_claimed_rewards
                     .par_iter()
                     .find_first(|v| v.vault_card_id == 2)
+                    .map(|v| v.vault_card_chests)
+            })
+            .unwrap_or(0);
+
+        let vault_card_3_keys = ProfileCurrency::VaultCardThreeId
+            .get_profile_currency(&profile.bank_inventory_category_list)
+            .unwrap_or(0);
+
+        let vault_card_3_chests = profile
+            .vault_card
+            .as_ref()
+            .and_then(|vc| {
+                vc.vault_card_claimed_rewards
+                    .par_iter()
+                    .find_first(|v| v.vault_card_id == 3)
                     .map(|v| v.vault_card_chests)
             })
             .unwrap_or(0);
@@ -233,6 +251,8 @@ impl ProfileData {
             vault_card_1_chests,
             vault_card_2_keys,
             vault_card_2_chests,
+            vault_card_3_keys,
+            vault_card_3_chests,
             guardian_rank,
             guardian_tokens: guardian_rank_tokens,
             guardian_rewards,
@@ -265,12 +285,21 @@ impl ProfileData {
     pub fn vault_card_1_chests(&self) -> i32 {
         self.vault_card_1_chests
     }
+
     pub fn vault_card_2_keys(&self) -> i32 {
         self.vault_card_2_keys
     }
 
     pub fn vault_card_2_chests(&self) -> i32 {
         self.vault_card_2_chests
+    }
+
+    pub fn vault_card_3_keys(&self) -> i32 {
+        self.vault_card_3_keys
+    }
+
+    pub fn vault_card_3_chests(&self) -> i32 {
+        self.vault_card_3_chests
     }
 
     pub fn set_currency(&mut self, currency: &ProfileCurrency, quantity: i32) -> Result<()> {
@@ -309,6 +338,9 @@ impl ProfileData {
             }
             ProfileCurrency::VaultCardTwoId => {
                 self.vault_card_2_keys = quantity;
+            }
+            ProfileCurrency::VaultCardThreeId => {
+                self.vault_card_3_keys = quantity;
             }
         }
 
@@ -361,6 +393,7 @@ impl ProfileData {
         match vault_card_id {
             1 => self.vault_card_1_chests = vault_card_chests,
             2 => self.vault_card_2_chests = vault_card_chests,
+            3 => self.vault_card_3_chests = vault_card_chests,
             _ => (),
         }
     }
@@ -588,6 +621,7 @@ impl ProfileData {
         match skin_type {
             ProfileSkinType::Regular(set) => match set {
                 SkinSet::RoomDecorations => {
+                    // Use previous customizations as we want to re-order alphabetically
                     let previous_customizations =
                         self.profile.unlocked_crew_quarters_decorations.clone();
 
@@ -605,7 +639,15 @@ impl ProfileData {
                     });
 
                     previous_customizations.iter().for_each(|pc| {
-                        if !self.profile.unlocked_crew_quarters_decorations.contains(pc) {
+                        if !self
+                            .profile
+                            .unlocked_crew_quarters_decorations
+                            .iter()
+                            .any(|ucd| {
+                                ucd.decoration_item_asset_path
+                                    .eq_ignore_ascii_case(&pc.decoration_item_asset_path)
+                            })
+                        {
                             self.profile
                                 .unlocked_crew_quarters_decorations
                                 .push(pc.to_owned());
@@ -614,9 +656,12 @@ impl ProfileData {
                 }
                 _ => {
                     skins.iter().for_each(|c| {
-                        if !self.profile.unlocked_customizations.iter().any(|uc| {
-                            uc.customization_asset_path.to_lowercase() == c.ident.to_lowercase()
-                        }) {
+                        if !self
+                            .profile
+                            .unlocked_customizations
+                            .iter()
+                            .any(|uc| uc.customization_asset_path.eq_ignore_ascii_case(c.ident))
+                        {
                             self.profile.unlocked_customizations.push(
                                 OakCustomizationSaveGameData {
                                     is_new: true,
@@ -630,35 +675,28 @@ impl ProfileData {
                 }
             },
             ProfileSkinType::Weapon(_) => {
-                let previous_inventory_customizations =
-                    self.profile.unlocked_inventory_customization_parts.clone();
-
-                self.profile.unlocked_inventory_customization_parts.clear();
-
                 skins.iter().for_each(|c| {
-                    let hash: u32 = get_checksum_hash(c.ident)
+                    if let Ok(hash) = get_checksum_hash(c.ident)
                         .and_then(|h| h.try_into().map_err(anyhow::Error::new))
-                        .unwrap_or(0);
-
-                    self.profile.unlocked_inventory_customization_parts.push(
-                        OakInventoryCustomizationPartInfo {
-                            customization_part_hash: hash,
-                            is_new: true,
-                            unknown_fields: Default::default(),
-                            cached_size: Default::default(),
-                        },
-                    );
-                });
-
-                previous_inventory_customizations.iter().for_each(|pc| {
-                    if !self
-                        .profile
-                        .unlocked_inventory_customization_parts
-                        .contains(pc)
                     {
-                        self.profile
+                        let contains = self
+                            .profile
                             .unlocked_inventory_customization_parts
-                            .push(pc.to_owned());
+                            .iter()
+                            .any(|uic| uic.customization_part_hash == hash);
+
+                        if !contains {
+                            self.profile.unlocked_inventory_customization_parts.push(
+                                OakInventoryCustomizationPartInfo {
+                                    customization_part_hash: hash,
+                                    is_new: true,
+                                    unknown_fields: Default::default(),
+                                    cached_size: Default::default(),
+                                },
+                            );
+                        }
+                    } else {
+                        error!("When trying to unlock Weapon Skin/Trinket, failed to get hash for: {}.", c.ident);
                     }
                 });
             }

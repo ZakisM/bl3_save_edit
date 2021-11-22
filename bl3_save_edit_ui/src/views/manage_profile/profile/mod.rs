@@ -205,7 +205,7 @@ pub fn view(profile_state: &mut ProfileState) -> Container<Bl3Message> {
             .spacing(20),
     )
     .height(Length::Units(560))
-    .width(Length::Units(350));
+    .width(Length::Units(360));
 
     let all_contents = Row::new()
         .push(main_column)

@@ -6,7 +6,7 @@ use crate::resources::fonts::JETBRAINS_MONO;
 
 #[derive(Debug, Clone)]
 pub enum InitializationMessage {
-    LazyData,
+    LoadSaves,
 }
 
 pub fn view<'a>() -> Container<'a, Bl3Message> {
