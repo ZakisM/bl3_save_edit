@@ -764,7 +764,7 @@ impl Bl3Item {
         self.inv_data_bits = serial_db.get_num_bits("InventoryData", self.data_version)?;
         self.manufacturer_bits = serial_db.get_num_bits("ManufacturerData", self.data_version)?;
 
-        let mut new_serial_bits = ArbitraryBitVec::<Lsb0, u8>::new();
+        let mut new_serial_bits = ArbitraryBitVec::<u8, Lsb0>::new();
 
         // Header
         new_serial_bits.append_le(128, 8);

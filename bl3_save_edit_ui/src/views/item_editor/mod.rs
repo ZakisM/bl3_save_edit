@@ -3,7 +3,7 @@ use std::collections::HashSet;
 
 use anyhow::{bail, Result};
 use derivative::Derivative;
-use heck::TitleCase;
+use heck::ToTitleCase;
 use iced::alignment::{Horizontal, Vertical};
 use iced::{
     button, scrollable, text_input, tooltip, Alignment, Button, Color, Column, Command, Container,

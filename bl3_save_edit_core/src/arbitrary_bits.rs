@@ -1,4 +1,5 @@
 use anyhow::{bail, Result};
+use bitvec::field::BitField;
 use bitvec::prelude::*;
 
 // Inspired from https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/bl3save/datalib.py
@@ -8,15 +9,15 @@ use bitvec::prelude::*;
 pub struct ArbitraryBits<'a> {
     // We are using the bitvec library here instead of parsing with nom as the bit lengths do not
     // always fit into chunks of 8 and nom will drop any bits that do not fit into chunks of 8
-    bitslice: &'a BitSlice<Lsb0, u8>,
+    bitslice: &'a BitSlice<u8, Lsb0>,
 }
 
 impl<'a> ArbitraryBits<'a> {
-    pub fn new(bitslice: &'a BitSlice<Lsb0, u8>) -> Self {
+    pub fn new(bitslice: &'a BitSlice<u8, Lsb0>) -> Self {
         ArbitraryBits { bitslice }
     }
 
-    pub fn bitslice(&self) -> &'a BitSlice<Lsb0, u8> {
+    pub fn bitslice(&self) -> &'a BitSlice<u8, Lsb0> {
         self.bitslice
     }
 
@@ -32,32 +33,33 @@ impl<'a> ArbitraryBits<'a> {
         if num_bits > self.bitslice.len() {
             bail!("Invalid range passed to bit slice.")
         } else {
-            let res = self.bitslice[0..num_bits].load_le::<usize>();
-            self.bitslice = &self.bitslice[num_bits..];
+            let (head, tail) = self.bitslice.split_at(num_bits);
+            let res = head.load_le::<usize>();
+            self.bitslice = tail;
             Ok(res)
         }
     }
 }
 
 #[derive(Debug, Default)]
-pub struct ArbitraryBitVec<O = Lsb0, T = usize>
+pub struct ArbitraryBitVec<T = usize, O = Lsb0>
 where
-    O: BitOrder,
     T: BitStore,
+    O: BitOrder,
 {
-    pub bitvec: BitVec<O, T>,
+    pub bitvec: BitVec<T, O>,
     pub curr_index: usize,
 }
 
-impl<O, T> ArbitraryBitVec<O, T>
+impl<T, O> ArbitraryBitVec<T, O>
 where
-    O: BitOrder,
     T: BitStore,
-    BitSlice<O, T>: BitField,
+    O: BitOrder,
+    BitSlice<T, O>: BitField,
 {
     pub fn new() -> Self {
         ArbitraryBitVec {
-            bitvec: BitVec::<O, T>::new(),
+            bitvec: BitVec::<T, O>::new(),
             curr_index: 0,
         }
     }

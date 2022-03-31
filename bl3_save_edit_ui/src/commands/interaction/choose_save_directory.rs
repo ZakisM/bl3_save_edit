@@ -23,7 +23,8 @@ pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
     let default_dir = home_dir.join("IdeaProjects/bl3_save_edit/bl3_save_edit_core/test_files/");
 
     #[cfg(target_os = "macos")]
-    let default_dir = home_dir.join("Library/Application Support/GearboxSoftware/OakGame/Saved/SaveGames");
+    let default_dir =
+        home_dir.join("Library/Application Support/GearboxSoftware/OakGame/Saved/SaveGames");
 
     choose_dir(default_dir).await
 }

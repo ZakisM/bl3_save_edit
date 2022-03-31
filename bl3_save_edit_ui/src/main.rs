@@ -5,7 +5,7 @@ use std::env;
 use anyhow::{bail, Context, Result};
 use iced::window::icon::Icon;
 use iced::{window, Application, Settings};
-use image::{GenericImageView, ImageFormat};
+use image::ImageFormat;
 use tracing::{error, info};
 
 use crate::bl3_ui::Bl3Application;

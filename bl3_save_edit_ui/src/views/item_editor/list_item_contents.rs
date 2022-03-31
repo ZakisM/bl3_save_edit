@@ -1,4 +1,4 @@
-use heck::TitleCase;
+use heck::ToTitleCase;
 use iced::{container, svg, Color, Column, Container, Length, Row, Svg, Text};
 
 use bl3_save_edit_core::bl3_item::{Bl3Item, ItemFlags, ItemRarity, ItemType};
