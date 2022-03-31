@@ -1,9 +1,9 @@
-use std::ffi::OsStr;
 use std::path::PathBuf;
 
 use anyhow::{bail, Result};
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use tracing::{error, info};
+use rayon::iter::ParallelIterator;
+use rayon::prelude::ParallelBridge;
+use tracing::info;
 
 use bl3_save_edit_core::file_helper::Bl3FileType;
 
@@ -42,34 +42,28 @@ pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
 pub async fn load_files_in_directory(dir: PathBuf) -> Result<(PathBuf, Vec<Bl3FileType>)> {
     let start_time = tokio::time::Instant::now();
 
-    let mut dirs = tokio::fs::read_dir(&*dir).await?;
+    let current_dir = std::fs::read_dir(&*dir)?;
 
-    let mut all_data = vec![];
-
-    while let Ok(entry) = dirs.next_entry().await {
-        if let Some(entry) = entry {
-            let path = entry.path();
-            if !path.is_dir()
-                && path
-                    .extension()
-                    .and_then(OsStr::to_str)
-                    .and_then(|p| if p == "sav" { Some(()) } else { None })
-                    .is_some()
-            {
-                match tokio::fs::read(&path).await {
-                    Ok(data) => all_data.push((path, data)),
-                    Err(e) => error!("{}", e),
+    let all_files = tokio_rayon::spawn(move || {
+        current_dir
+            .into_iter()
+            .par_bridge()
+            .filter_map(|entry| entry.ok())
+            .filter(|entry| {
+                if let Ok(file_type) = entry.file_type() {
+                    file_type.is_file() && entry.file_name().to_string_lossy().ends_with(".sav")
+                } else {
+                    false
                 }
-            }
-        } else {
-            break;
-        }
-    }
+            })
+            .filter_map(|entry| {
+                let path = entry.path();
 
-    let all_files: Vec<Bl3FileType> = tokio_rayon::spawn(move || {
-        all_data
-            .par_iter()
-            .filter_map(|(file_name, data)| Bl3FileType::from_unknown_data(file_name, data).ok())
+                std::fs::read(&path)
+                    .map_err(anyhow::Error::from)
+                    .and_then(|data| Bl3FileType::from_unknown_data(&path, &data))
+                    .ok()
+            })
             .collect::<Vec<_>>()
     })
     .await;

@@ -11,7 +11,7 @@ pub trait ErrorExt {
 impl<T> ErrorExt for anyhow::Result<T> {
     fn handle_ui_error(&self, message: &str, notification: &mut Option<Notification>) {
         if let Err(e) = self {
-            let message = format!("{}: {}", message, e.to_string());
+            let message = format!("{}: {}", message, e);
 
             error!("{}", message);
 
@@ -22,7 +22,7 @@ impl<T> ErrorExt for anyhow::Result<T> {
 
 impl ErrorExt for anyhow::Error {
     fn handle_ui_error(&self, message: &str, notification: &mut Option<Notification>) {
-        let message = format!("{}: {}", message, self.to_string());
+        let message = format!("{}: {}", message, self);
 
         error!("{}", message);
 

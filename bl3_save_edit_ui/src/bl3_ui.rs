@@ -112,7 +112,7 @@ impl<T> MessageResult<T> {
 impl ErrorExt for MessageResult<()> {
     fn handle_ui_error(&self, message: &str, notification: &mut Option<Notification>) {
         if let MessageResult::Error(e) = self {
-            let message = format!("{}: {}.", message, e.to_string());
+            let message = format!("{}: {}.", message, e);
 
             error!("{}", message);
 

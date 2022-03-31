@@ -168,7 +168,7 @@ pub async fn get_latest_release() -> Result<Release> {
         .into_iter()
         .filter(|r| !r.prerelease)
         .find(|r| {
-            if let Some(release_version) = Version::from(&r.tag_name.replace("v", "")) {
+            if let Some(release_version) = Version::from(&r.tag_name.replace('v', "")) {
                 release_version > current_version
                     && r.assets.iter().any(|a| a.name == ASSET_ARCHIVE)
             } else {

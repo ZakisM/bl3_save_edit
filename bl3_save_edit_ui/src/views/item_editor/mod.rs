@@ -1208,7 +1208,7 @@ where
             {
                 curr = curr.push(
                     Container::new(
-                        Text::new(format!("{}s", item_type.to_string()))
+                        Text::new(format!("{}s", item_type))
                             .font(JETBRAINS_MONO_BOLD)
                             .size(18)
                             .color(Color::from_rgb8(242, 203, 5)),
@@ -1308,7 +1308,7 @@ where
                         {
                             curr = curr.push(
                                 Container::new(
-                                    Text::new(format!("{}s", item_type.to_string()))
+                                    Text::new(format!("{}s", item_type))
                                         .font(JETBRAINS_MONO_BOLD)
                                         .size(18)
                                         .color(Color::from_rgb8(242, 203, 5)),
@@ -1433,7 +1433,7 @@ pub fn get_filtered_items(
                     .flags
                     .map(|f| f.contains(ItemFlags::JUNK))
                     .unwrap_or(false)
-            || format!("level {}", item.level().to_string()).contains(&search_items_query)
+            || format!("level {}", item.level()).contains(&search_items_query)
             || item
                 .item_type
                 .to_string()

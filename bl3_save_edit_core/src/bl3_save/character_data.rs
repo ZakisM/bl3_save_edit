@@ -722,12 +722,7 @@ impl CharacterData {
             .equipped_inventory_list
             .iter_mut()
             .find(|s| s.slot_data_path == slot_path)
-            .with_context(|| {
-                format!(
-                    "failed to find inventory slot: {}",
-                    inventory_slot.to_string()
-                )
-            })?;
+            .with_context(|| format!("failed to find inventory slot: {}", inventory_slot))?;
 
         //Unlock in character data
         slot.enabled = true;
@@ -813,7 +808,7 @@ impl CharacterData {
             .resource_pools
             .iter_mut()
             .find(|rp| rp.resource_path == pool_path)
-            .with_context(|| format!("failed to find ammo pool: {}", ammo_pool.to_string()))?;
+            .with_context(|| format!("failed to find ammo pool: {}", ammo_pool))?;
 
         pool.amount = amount as f32;
 
