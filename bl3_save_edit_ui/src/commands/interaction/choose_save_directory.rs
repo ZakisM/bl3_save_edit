@@ -9,7 +9,6 @@ use bl3_save_edit_core::file_helper::Bl3FileType;
 
 use crate::commands::interaction::choose_dir;
 
-#[cfg(not(target_os = "macos"))]
 pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
     let home_dir = if existing_dir.exists() {
         existing_dir
@@ -23,18 +22,8 @@ pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
     #[cfg(target_os = "linux")]
     let default_dir = home_dir.join("IdeaProjects/bl3_save_edit/bl3_save_edit_core/test_files/");
 
-    choose_dir(default_dir).await
-}
-
-#[cfg(target_os = "macos")]
-pub async fn choose(existing_dir: PathBuf) -> Result<PathBuf> {
-    let default_dir = if existing_dir.exists() {
-        existing_dir
-    } else {
-        dirs::home_dir()
-            .unwrap_or_default()
-            .join("Library/Application Support/GearboxSoftware/OakGame/Saved/SaveGames")
-    };
+    #[cfg(target_os = "macos")]
+    let default_dir = home_dir.join("Library/Application Support/GearboxSoftware/OakGame/Saved/SaveGames");
 
     choose_dir(default_dir).await
 }
