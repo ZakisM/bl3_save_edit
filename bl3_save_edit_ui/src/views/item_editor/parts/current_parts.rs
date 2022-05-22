@@ -163,7 +163,7 @@ impl CurrentParts {
         &mut self,
         item: &Bl3Item,
         anointments_list: &[ResourceCategorizedParts],
-        specific_parts_list: Option<&Vec<ResourceCategorizedParts>>,
+        _specific_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         all_parts_list: Option<&Vec<ResourceCategorizedParts>>,
         interaction_message: F,
     ) -> Container<Bl3Message>

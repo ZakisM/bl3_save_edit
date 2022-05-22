@@ -1,7 +1,6 @@
 use std::fmt::Formatter;
 
 use anyhow::Result;
-
 pub const FAST_TRAVEL: [GameDataKv; 864] = [
     GameDataKv { ident: "/game/gamedata/fasttravel/fts_atlashq.fts_atlashq", name: "Atlas HQ" },
     GameDataKv { ident: "/game/gamedata/fasttravel/fts_atlashq_sendonly.fts_atlashq_sendonly", name: "Atlas HQ" },
@@ -1399,10 +1398,9 @@ pub const PROFILE_ECHO_THEMES: [GameDataKv; 89] = [
     GameDataKv { ident: "/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_53.ECHOTheme_53", name: "Worlds Best Commander" },
 ];
 
-pub const PROFILE_ECHO_THEMES_DEFAULTS: [GameDataKv; 1] = [GameDataKv {
-    ident: "/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_Default.ECHOTheme_Default",
-    name: "ECHO-3 Classic",
-}];
+pub const PROFILE_ECHO_THEMES_DEFAULTS: [GameDataKv; 1] = [
+    GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_Default.ECHOTheme_Default", name: "ECHO-3 Classic" },
+];
 
 pub const PROFILE_EMOTES: [GameDataKv; 84] = [
     GameDataKv { ident: "/Game/PlayerCharacters/_Customizations/Beastmaster/Emotes/CustomEmote_Beastmaster_11_Chicken_Dance.CustomEmote_Beastmaster_11_Chicken_Dance", name: "Chicken Dance" },
